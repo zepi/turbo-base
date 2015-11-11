@@ -1,0 +1,13 @@
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Administration', '\\Zepi\\Web\\General'); ?></h1>
+            
+            <?php echo $additionalData['overviewPage']; ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

@@ -1,0 +1,49 @@
+<?php
+    $user = $additionalData['user'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Delete user', '\\Zepi\\Web\\AccessControl'); ?></h1>
+            
+            <div class="message question">
+                <?php echo $this->translate('Would you really like to delete the following user?', '\\Zepi\\Web\\AccessControl'); ?>
+            </div>
+            
+            <div class="object-box clearfix">
+                <div>
+                    <div class="object-box-icon">
+                        <span class="mdi mdi-account"></span>
+                    </div>
+                    <div class="object-box-description">
+                        <dl class="dl-horizontal">
+                            <dt><?php echo $this->translate('User name', '\\Zepi\\Web\\AccessControl'); ?></dt>
+                            <dd><?php echo $user->getName(); ?></dd>
+                            <dt><?php echo $this->translate('UUID', '\\Zepi\\Web\\AccessControl'); ?></dt>
+                            <dd><?php echo $user->getUuid(); ?></dd>
+                            <dt><?php echo $this->translate('Email address', '\\Zepi\\Web\\AccessControl'); ?></dt>
+                            <dd><?php echo $user->getMetaData('email'); ?></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-list">
+                <div class="secondary-buttons align-left">
+                    <a href="<?php echo $request->getFullRoute('/administration/users/'); ?>" class="btn btn-default">Zurück</a>
+                </div>
+                <div class="primary-buttons align-center">
+                    <a href="<?php echo $request->getFullRoute() . '/confirmed'; ?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Löschen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

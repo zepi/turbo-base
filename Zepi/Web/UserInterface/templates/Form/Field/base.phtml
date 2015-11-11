@@ -1,0 +1,30 @@
+<?php
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+    
+    $showLabel = false;
+    $classes = '';
+    $additionalClasses = '';
+    if ($container->hasLabel() && $container->displayLabel()) {
+        $classes = 'col-sm-16 ';
+        if ($container->isMandatory()) {
+            $additionalClasses .= 'required';
+        }
+        
+        $showLabel = true;
+    } else if ($container->fullWidth()) {
+        $classes = 'col-sm-24';
+    } else {
+        $classes = 'col-sm-16 col-sm-offset-8';
+    }
+?>
+<div class="form-group">
+    <?php if ($showLabel): ?>
+        <label for="<?php echo $container->getHtmlId(); ?>" class="col-sm-8 control-label <?php echo $additionalClasses; ?>"><?php echo $container->getLabel(); ?></label>
+    <?php endif; ?>
+
+    <div class="<?php echo $classes . ' ' . $additionalClasses; ?>">
+        <?php echo $this->_templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
+        <p class="help-block"><?php echo $container->getHelpText(); ?></p>
+    </div>
+</div>

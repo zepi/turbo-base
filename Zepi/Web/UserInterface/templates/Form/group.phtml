@@ -1,0 +1,18 @@
+<?php
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+    
+    $classes = '';
+    if (!$container->hasLabel()) {
+        $classes = 'no-legend';
+    }
+?>
+<fieldset class="<?php echo $classes; ?>">
+    <?php if ($container->hasLabel()): ?>
+        <legend align="center"><?php echo $container->getLabel(); ?></legend>
+    <?php endif; ?>
+    
+    <?php foreach ($container->getParts() as $part): ?>
+        <?php echo $layoutRenderer->render($part); ?>
+    <?php endforeach; ?>
+</fieldset>

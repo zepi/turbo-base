@@ -1,0 +1,15 @@
+<?php
+    use \Zepi\Web\UserInterface\Form\ButtonGroup;
+
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+?>
+<form action="<?php echo $container->getUrl(); ?>" method="<?php echo $container->getMethod(); ?>" class="form-horizontal">
+    <?php foreach ($container->getParts() as $part): ?>
+        <?php echo $layoutRenderer->render($part); ?>
+    <?php endforeach; ?>
+    
+    <?php $csrfToken = $container->generateCsrfToken($request); ?>
+    <input type="hidden" name="csrf-key" value="<?php echo $csrfToken['key']; ?>" />
+    <input type="hidden" name="csrf-token" value="<?php echo $csrfToken['token']; ?>" />
+</form>

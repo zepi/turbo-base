@@ -1,0 +1,4 @@
+<?php $field = $additionalData['field']; ?>
+<input type="text" name="<?php echo $field->getHtmlName(); ?>" id="<?php echo $field->getHtmlId(); ?>" placeholder="<?php echo $field->getPlaceholder(); ?>" class="form-control <?php echo $field->getHtmlClasses(); ?>" value="<?php echo $field->getValue(); ?>"
+        <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+    />

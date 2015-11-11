@@ -1,0 +1,17 @@
+
+/**
+ * Structure
+ */
+fieldset { padding: 25px 0 0 0; margin: 30px 0 60px 0; border: 1px solid #AAAAAA; border-width: 1px 0 0 0; } 
+fieldset legend { padding: 0 10px; margin: 0 auto; font-size: 20px; font-weight: bold; color: #888888; border: none; width: auto; }
+fieldset.no-legend { border: none; margin: 0 0 60px 0; padding: 0; }
+.submit-btn { padding: 10px 30px; font-weight: 600; }
+.btn-large { line-height: 30px; }
+.btn-large span.mdi { font-size: 30px; vertical-align: middle; margin: 0 10px 0 0; }
+
+.input-group-btn-mdi .btn { padding: 4px 10px; }
+.input-group-btn .mdi { font-size: 20px; line-height: 24px; vertical-align: middle; }
+
+.control-label { font-weight: 400; }
+.control-label.required {font-weight: 700; }
+ 

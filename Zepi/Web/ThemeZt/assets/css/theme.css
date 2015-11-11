@@ -1,0 +1,108 @@
+/**
+ * Body
+ */
+body { font-family: 'Open Sans', sans-serif; color: #444444; background: #ffffff; margin-top: 140px; margin-bottom: 50px; overflow-y: scroll; }
+a, 
+a:link, 
+a:visited, 
+a:active { color: #000000; text-decoration: underline; }
+a:hover { text-decoration: none; }
+
+/**
+ * Header styles
+ */
+h1 { font-size: 28px; line-height: 28px; padding: 10px 0; margin: 0 0 20px 0; border-bottom: 1px solid #666666; font-weight: 600; }
+h2 { font-size: 22px; line-height: 22px; padding: 8px 0; margin: 0 0 20px 0; border-bottom: 1px solid #888888; font-weight: 600; }
+
+/**
+ * Header
+ */
+.header-row { position: absolute; top: 0; left: 0; right: 0; z-index: 9; background: #222222; color: #ffffff; height: 50px; }
+.logo-cell { padding: 0; font-size: 20px; float: left; font-weight: 700; }
+.icon-cell { float: right; }
+.icon-cell ul { list-style-type: none; padding: 0; margin: 0; border-left: 1px solid #000000; }
+.icon-cell ul:after { content: ""; display: table; clear: both; }
+.icon-cell ul li { float: left; font-size: 28px; padding: 5px 15px; cursor: pointer; border-right: 1px solid #000000; border-left: 1px solid #666666; background: #111111; }
+.icon-cell ul li:last-child { border-right: none; }
+.icon-cell ul li .mdi { margin: 3px 0; }
+.logo { width: 300px; height: 38px; display: block; margin: 6px 6px; text-align: left; }
+.logo img { width: 185px; }
+nav.header-navigation + .row { margin-top: 50px; }
+
+/**
+ * Header navigation
+ */
+nav.header-navigation { position: absolute; top: 50px; left: 0; right: 0; z-index: 10; background: #EAEAEA; border-bottom: 1px solid #AAAAAA; height: 40px; margin: 0 0 20px 0; }
+nav.header-navigation div.header-navigation-left { float: left; border-right: 1px solid #ffffff; height: 39px; }
+nav.header-navigation div.header-navigation-right { float: right; border-left: 1px solid #AAAAAA; height: 39px; }
+nav.header-navigation ul { list-style-type: none; padding: 0; margin: 0; display: inline-block; }
+nav.header-navigation ul.root > li { float: left; border-left: 1px solid #ffffff; border-right: 1px solid #AAAAAA; position: relative; }
+nav.header-navigation div.header-navigation-left > ul > li:first-child { border-left: 0; }
+nav.header-navigation div.header-navigation-left > ul > li > .submenu-holder { margin-left: -32px; }
+nav.header-navigation div.header-navigation-left > ul > li:first-child > ul.submenu { margin-left: -1px; }
+nav.header-navigation div.header-navigation-right > ul > li:last-child { border-right: 0; }
+nav.header-navigation div.header-navigation-right > ul > li > .submenu-holder { right: 0; margin-right: -31px; }
+nav.header-navigation ul li a { display: block; line-height: 39px; text-decoration: none; padding: 0 16px; font-size: 16px; font-weight: normal; }
+nav.header-navigation ul.root > li.active { background: #ffffff; border-bottom: 1px solid #FFFFFF; } 
+nav.header-navigation ul.root > li:hover { background: #ffffff; z-index: 30; }
+
+/* Subnavigation border fix */
+nav ul.root > li > .border-fix { display: none; background: #ffffff; height: 2px; bottom: -1px; left: -1px; right: 0; position: absolute; z-index: 20; }
+nav ul.root > li.has-children:hover > .border-fix,
+nav ul.root > li.active > .border-fix { /*display: block;*/ }
+
+/* Subnavigation tolerance area */
+nav li .submenu-holder { display: none; position: absolute; padding: 30px; margin: -30px; }
+nav li:hover > .submenu-holder { display: block; }
+nav ul.root > li > .submenu-holder { padding-top: 0; margin-top: 0; }
+
+/* Subnavigation */
+nav li ul.submenu { border: 1px solid #AAAAAA; background: #ffffff; }
+nav li ul.submenu > li { position: relative; }
+nav li ul.submenu > li > a { padding: 10px 30px 10px 10px; min-width: 230px; left: 0; right: 0; line-height: 1; font-size: 14px; }
+nav div.header-navigation-right li ul.submenu > li > a { padding: 10px 10px 10px 30px; min-width: 230px; left: 0; right: 0; line-height: 1; font-size: 14px; }
+nav ul.submenu > li > .submenu-holder { left: 100%; top: -1px; }
+nav div.header-navigation-right ul.submenu > li > .submenu-holder { left: -100%; top: -1px; }
+nav ul.submenu ul.submenu li { border-left: 1px solid #AAAAAA; margin-left: -1px; }
+nav ul.submenu ul.submenu li:first-child { margin-left: -1px; }
+nav div.header-navigation-left ul.submenu li.has-children > a:after { position: absolute; right: 0; top: 0; bottom: 0; padding: 4px 0px; font-family: MaterialDesignIcons; font-style: normal; font-weight: bold; font-size: 28px; line-height: 1; content: "\f1ef"; }
+nav div.header-navigation-right ul.submenu li.has-children > a:before { position: absolute; left: 0; top: 0; bottom: 0; padding: 4px 0px; font-family: MaterialDesignIcons; font-style: normal; font-weight: bold; font-size: 28px; line-height: 1; content: "\f1ee"; }
+nav li ul.submenu > li:hover > a { background: #EEEEEE; }
+nav li ul.submenu > li a:hover,
+nav li ul.submenu > li a:hover .glyphicon,
+nav li ul.submenu > li a:hover .mdi { background: #DDDDDD; }
+
+/* Icons */
+nav .glyphicon,
+nav .mdi { padding: 0 10px 4px 0; vertical-align: middle; color: #444444; font-size: 22px; }
+nav .mdi { font-size: 30px; padding: 0 8px 4px 0; margin-left: -4px; }
+nav .icon-only .glyphicon { padding: 0 1px 4px 0; }
+nav .icon-only .mdi { padding: 0 0 4px 0; margin: 0; }
+nav .submenu .glyphicon,
+nav .submenu .mdi { font-size: 16px; padding: 0 5px 0 0; margin: -4px 0 0 0; }
+
+/**
+ * Top navigation
+ */
+nav.navigation { margin-bottom: 40px; }
+nav.navigation ul { padding: 0; margin: 0; list-style-type: none; }
+nav.navigation ul.main-menu { background: #3f3f3f; height: 3px; }
+
+/**
+ * Breadcrumb
+ */
+nav ol.breadcrumb { margin-bottom: 50px; padding: 0 15px; }
+nav ol.breadcrumb li { padding: 0; line-height: 44px; }
+nav ol.breadcrumb li a { display: inline-block; }
+nav ol.breadcrumb li a.icon-link { padding: 0; }
+nav ol.breadcrumb li a.active { text-decoration: none; }
+nav ol.breadcrumb .glyphicon,
+nav ol.breadcrumb .mdi { margin: -4px 0 0; padding: 0 10px 0 0; }
+nav ol.breadcrumb .mdi { margin: -2px 0 0; font-size: 28px; }
+.breadcrumb > li + li::before { content: "\f1ef"; font-family: MaterialDesignIcons; font-size: 34px; line-height: 20px; padding: 0; vertical-align: middle; }
+
+/**
+ * Container
+ */
+.container-fluid { max-width: 90%; } 
+

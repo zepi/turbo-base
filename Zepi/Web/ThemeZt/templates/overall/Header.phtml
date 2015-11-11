@@ -1,0 +1,128 @@
+<?php 
+    use \Zepi\Web\General\Manager\AssetsManager;
+
+    $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'); 
+    $menuManager->activateCorrectMenuEntry();
+    $activeMainMenuEntry = null;
+    
+    $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
+    $assetManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <title><?php echo $metaInformationManager->getTitle(); ?></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+
+        <?php $framework->getEventManager()->executeEvent('\\Zepi\\Web\\General\\Event\\DisplayAssets'); ?>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <header>
+                <div class="header-row">
+                    <div class="logo-cell">
+                        <div class="logo">
+                            <img src="<?php echo $assetManager->getAssetUrl(AssetsManager::IMAGE, 'logo'); ?>" />
+                        </div>
+                    </div>
+                    <div class="icon-cell">
+                        <ul class="notification-bar">
+                            <?php $framework->getEventManager()->executeEvent('\\Zepi\\Web\\General\\Event\\NotificationBarElements'); ?>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="header-navigation clearfix">
+                    <div class="header-navigation-left">
+                        <ul class="root">
+                            <?php if ($menuManager != false): ?>
+                                <?php foreach ($menuManager->getMenuEntries('menu-left') as $menuEntry): ?>
+                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot'); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="header-navigation-right">
+                        <ul class="root">
+                            <?php if ($menuManager != false): ?>
+                                <?php foreach ($menuManager->getMenuEntries('menu-right') as $menuEntry): ?>
+                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot'); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            
+            <?php $entries = $menuManager->getBreadcrumbEntries(); ?>
+            <?php if (count($entries) > 0): ?>
+                <nav class="breadcrumb-row" role="breadcrumb">
+                    <div class="row">
+                        <div class="col-md-24">
+                            <ol class="breadcrumb">
+                                <?php 
+                                    $urlTarget = '';
+                                    $counter = 0; 
+                                ?>
+                                <?php foreach ($entries as $entry): ?>
+                                    <?php
+                                        $iconClass = '';
+                                        
+                                        $isLast = false;
+                                        if ($counter + 1 == count($entries)) {
+                                            $isLast = true;
+                                        }
+
+                                        if (strpos($entry->getIconClass(), 'glyphicon') === 0) {
+                                            $iconClass = 'glyphicon ' . $entry->getIconClass();
+                                        } else if (strpos($entry->getIconClass(), 'mdi') === 0) {
+                                            $iconClass = 'mdi ' . $entry->getIconClass();
+                                        } else if ($entry->getIconClass() !== '') {
+                                            $iconClass = 'icon ' . $entry->getIconClass();
+                                        }
+                                        
+                                        if ($entry->getTarget() != '' && $entry->getTarget() != '#') {
+                                            $urlTarget = $entry->getTarget();
+                                        }
+                                        
+                                        $counter++;
+                                    ?>
+                                    
+                                    <li>
+                                        <?php if ($iconClass !== ''): ?>
+                                            <?php if (!$isLast): ?>
+                                                <a href="<?php echo $request->getFullRoute($urlTarget); ?>" class="icon-link">
+                                            <?php endif; ?>
+                                                    <span class="<?php echo $iconClass; ?>"></span>
+                                            <?php if (!$isLast): ?>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        
+                                        <?php if ($entry->getName() !== ''): ?>
+                                            <?php if (!$isLast): ?>
+                                                <a href="<?php echo $request->getFullRoute($urlTarget); ?>">
+                                            <?php else: ?>
+                                            	<a href="<?php echo $request->getFullRoute($urlTarget); ?>" class="active">
+                                            <?php endif; ?>
+                                                <?php echo $entry->getName(); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ol>
+                        </div>
+                    </div>
+                </nav>
+            <?php endif; ?>
+        </div>

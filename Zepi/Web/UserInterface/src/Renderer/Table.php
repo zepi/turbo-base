@@ -1,0 +1,256 @@
+<?php
+/**
+ * Table Renderer
+ * 
+ * @package Zepi\Web\UserInterface
+ * @subpackage Renderer
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
+ */
+
+namespace Zepi\Web\UserInterface\Renderer;
+
+use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Web\UserInterface\Table\TableAbstract;
+use \Zepi\Web\UserInterface\Table\Head;
+use \Zepi\Web\UserInterface\Table\Body;
+use \Zepi\Web\UserInterface\Table\Foot;
+use \Zepi\Web\UserInterface\Table\Row;
+use \Zepi\Web\UserInterface\Table\FilterRow;
+use \Zepi\Web\UserInterface\Table\Column;
+use \Zepi\Web\UserInterface\Table\Cell;
+use \Zepi\Web\UserInterface\Table\PreparedTable;
+use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\Core\Utils\Entity\Filter;
+
+/**
+ * Table Renderer
+ * 
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
+ */
+class Table
+{
+    /**
+     * @access protected
+     * @var \Zepi\Web\UserInterface\Renderer\Pagination
+     */
+    protected $_paginationRenderer;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\UserInterface\Renderer\Pagination
+     */
+    public function __construct(Pagination $paginationRenderer)
+    {
+        $this->_paginationRenderer = $paginationRenderer;
+    }
+    
+    /**
+     * Renders the whole table
+     * 
+     * @access public
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @param integer $numberOfEntries
+     * @return \Zepi\Web\UserInterface\Table\PreparedTable
+     */
+    public function prepareTable(RequestAbstract $request, TableAbstract $table, $numberOfEntries = 10)
+    {
+        // If the table has no pagination we do not limit the number of entries 
+        // which will be displayed
+        if (!$table->hasPagination()) {
+            $numberOfEntries = false;
+        }
+        
+        // Generate the data request
+        $dataRequest = $this->_generateDataRequest($request, $table, $numberOfEntries);
+        
+        // Get the data
+        $data = $table->getData($dataRequest);
+        if (!is_array($data)) {
+            $data = array();
+        }
+
+        $preparedTable = new PreparedTable($table, $table->getColumns());
+        
+        // Add the table head
+        $preparedTable->setHead($this->_renderHead($table, $dataRequest));
+        
+        // Render the body and add it to the rendered table
+        $body = new Body();
+        foreach ($data as $object) {
+            $body->addRow($this->_renderRow($table, $body, $object));
+        }
+        $preparedTable->setBody($body);
+        
+        // Add the table foot
+        $preparedTable->setFoot($this->_renderFoot($table));
+        
+        // Add the pagination
+        if ($table->hasPagination()) {
+            $preparedTable->setPagination($this->_paginationRenderer->prepare($dataRequest, $table->countData($dataRequest), $numberOfEntries));
+        }
+        
+        return $preparedTable;
+    }
+
+    /**
+     * Generates a DataRequest object
+     * 
+     * @access protected
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @param integer $numberOfEntries
+     * @return \Zepi\Web\UserInterface\Table\DataRequest
+     */
+    protected function _generateDataRequest(RequestAbstract $request, TableAbstract $table, $numberOfEntries)
+    {
+        $updateRequired = false;
+        if ($request->hasParam('table-filter-update')) {
+            $updateRequired = true;
+        }
+        
+        $page = $request->getRouteParam(0);
+        $pageNotSet = false;
+        if ($page == '') {
+            $page = 1;
+            $pageNotSet = true;
+        }
+        
+        $sortBy = 'name';
+        $sortByDirection = 'ASC';
+        
+        // If the session has a data request object for the table, load it and refresh the data.
+        $savedDataRequestKey = get_class($table) . '.DataRequest.Saved';
+        $new = true;
+        $dataRequest = false;
+        if ($table->shouldSaveDataRequest() && $request->getSessionData($savedDataRequestKey) !== false) {
+            $dataRequest = unserialize($request->getSessionData($savedDataRequestKey));
+        }
+        
+        // Check if the data request is valid
+        if ($dataRequest !== false) {
+            if (!$pageNotSet) {
+                $dataRequest->setPage($page);
+                $dataRequest->setSortBy($sortBy);
+                $dataRequest->setSortByDirection($sortByDirection);
+            }
+            
+            $new = false;
+        } else {
+            $dataRequest = new DataRequest($page, $numberOfEntries, $sortBy, $sortByDirection);
+        }
+        
+        // Add the filters if the data request is new or the filter has changed
+        if ($new || $updateRequired) {
+            if ($updateRequired) {
+                $dataRequest->clearFilters();
+            }
+            
+            foreach ($table->getColumns() as $column) {
+                $key = 'table-filter-' . $column->getKey();
+
+                if ($column->isFilterable() && $request->hasParam($key) && $request->getParam($key) != '') {
+                    $dataRequest->addFilter(new Filter(
+                        $column->getKey(),
+                        $request->getParam('table-filter-' . $column->getKey()),
+                        'LIKE'
+                    ));
+                }
+            }
+        }
+
+        // Save the data request to the session if needed
+        if ($table->shouldSaveDataRequest()) {
+            $request->setSessionData($savedDataRequestKey, serialize($dataRequest));
+        }
+
+        return $dataRequest;
+    }
+    
+    /**
+     * Generates the object structure for the head
+     * 
+     * @access protected
+     * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @return \Zepi\Web\UserInterface\Table\Head
+     */
+    protected function _renderHead(TableAbstract $table, DataRequest $dataRequest)
+    {
+        $head = new Head();
+
+        // Add the name row
+        $row = new Row($head);
+        foreach ($table->getColumns() as $column) {
+            $cell = new Cell($column, $row, $column->getName());
+            
+            $row->addCell($cell);
+        }
+        
+        $head->addRow($row);
+        
+        // Add the filter row
+        $row = new FilterRow($head);
+        foreach ($table->getColumns() as $column) {
+            if ($column->isFilterable()) {
+                $value = '';
+                $filter = $dataRequest->getFilter($column->getKey());
+                if ($filter !== false) {
+                    $value = $filter->getNeededValue();
+                }
+                
+                $cell = new Cell($column, $row, $value);
+            } else {
+                $cell = new Cell($column, $row, null);
+            }
+            
+            $row->addCell($cell);
+        }
+        
+        $head->addRow($row);
+        
+        return $head;
+    }
+    
+    /**
+     * Renders the table row with the given row data
+     * 
+     * @access protected
+     * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @param \Zepi\Web\UserInterface\Table\Body $body
+     * @param mixed $object
+     * @return \Zepi\Web\UserInterface\Table\Row
+     */
+    public function _renderRow(TableAbstract $table, Body $body, $object)
+    {
+        $row = new Row($body);
+        foreach ($table->getColumns() as $column) {
+            $value = $table->getDataForRow($column->getKey(), $object);
+            
+            $cell = new Cell($column, $row, $value);
+            
+            $row->addCell($cell);
+        }
+        
+        return $row;
+    }
+    
+    /**
+     * Generates the object structure for the foot
+     * 
+     * @access protected
+     * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @return \Zepi\Web\UserInterface\Table\Foot
+     */
+    protected function _renderFoot(TableAbstract $table)
+    {
+        $foot = new Foot();
+        
+        return $foot;
+    }
+}

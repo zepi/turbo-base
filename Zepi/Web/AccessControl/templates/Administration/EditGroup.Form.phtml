@@ -1,0 +1,25 @@
+<?php
+    $title = $additionalData['title'];
+
+    $layout = $additionalData['layout'];
+    $layoutRenderer = $additionalData['layoutRenderer'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1>
+                <?php echo $title; ?>
+            </h1>
+            
+            <?php
+                // Render the form
+                echo $layoutRenderer->render($layout);
+            ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

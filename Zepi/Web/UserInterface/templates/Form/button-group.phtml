@@ -1,0 +1,9 @@
+<?php
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+?>
+<div class="button-group <?php echo $container->getClasses(); ?>">
+    <?php foreach ($container->getParts() as $part): ?>
+        <?php echo $layoutRenderer->render($part); ?>
+    <?php endforeach; ?>
+</div>

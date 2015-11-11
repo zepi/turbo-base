@@ -1,0 +1,24 @@
+<?php
+    // Get the data
+    $result = $additionalData['result'];
+    $errors = $additionalData['errors'];
+    $form = $additionalData['form'];
+    $layoutRenderer = $additionalData['layoutRenderer'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Login', '\\Zepi\\Web\\AccessControl'); ?></h1>
+            
+            <?php
+                // Render the form
+                echo $layoutRenderer->render($form);
+            ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

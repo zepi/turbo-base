@@ -1,0 +1,54 @@
+<?php 
+    $menuEntry = $response->getData('printingMenuEntry');
+    
+    // If the child is a hidden menu entry continue to the next one
+    if ($menuEntry instanceof \Zepi\Web\General\Entity\HiddenMenuEntry) {
+        return;
+    }
+    
+    // If the menu entry is empty we continue
+    if ($menuEntry->hideWhenEmpty() && !$menuEntry->hasChildren()) {
+        return;
+    }
+
+    $itemClass = $menuEntry->getClass();
+    $linkClass = '';
+    $iconClass = '';
+    
+    if ($menuEntry->isActive()) {
+        $itemClass .= ' active';
+        $activeMainMenuEntry = $menuEntry;
+    }
+    
+    if ($menuEntry->hasVisibleChildren()) {
+        $itemClass .= ' has-children';
+    }
+    
+    if ($menuEntry->getName() === '') {
+        $itemClass .= ' icon-only';
+    }
+    
+    if (strpos($menuEntry->getIconClass(), 'glyphicon') === 0) {
+        $iconClass = 'glyphicon ' . $menuEntry->getIconClass();
+    } else if (strpos($menuEntry->getIconClass(), 'mdi') === 0) {
+        $iconClass = 'mdi ' . $menuEntry->getIconClass();
+    } else if ($menuEntry->getIconClass() !== '') {
+        $iconClass = 'icon ' . $menuEntry->getIconClass();
+    }
+?>
+
+<li class="<?php echo $itemClass; ?>">
+    <a href="<?php echo $request->getFullRoute($menuEntry->getTarget()); ?>" class="<?php echo $linkClass; ?>">
+        <?php if ($iconClass !== ''): ?>
+            <span class="<?php echo $iconClass; ?>"></span>
+        <?php endif; ?>
+        
+        <?php echo $menuEntry->getName(); ?>
+    </a>
+    
+    <div class="border-fix"></div>
+    
+    <?php if ($menuEntry->hasVisibleChildren()): ?>
+        <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemSubmenu'); ?>
+    <?php endif; ?>
+</li>

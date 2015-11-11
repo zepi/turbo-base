@@ -1,0 +1,126 @@
+<?php
+/**
+ * Loads the content of the given asset.
+ * 
+ * @package Zepi\Web\General
+ * @subpackage EventHandler
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
+ */
+
+namespace Zepi\Web\General\EventHandler;
+
+use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Response\Response;
+use \Zepi\Web\Test\Exception;
+
+/**
+ * Loads the content of the given asset.
+ * 
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
+ */
+class LoadAssetContent implements EventHandlerInterface
+{
+    /**
+     * This event handler lists all activated modules with the description
+     * of each module.
+     * 
+     * @access public
+     * @param \Zepi\Turbo\Framework $framework
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Response\Response $response
+     * @param mixed $value
+     * 
+     * @throws Zepi\Core\Management\Exception The list with the activated modules can only be viewed from command line!
+     */
+    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    {
+        $assetsManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
+        
+        // Get the route params
+        $type = $request->getRouteParam(0); // Type of the asset
+        $hash = $request->getRouteParam(1); // Hash of the asset
+        $version = $request->getRouteParam(2); // Version of the file 
+        
+        // If the file isn't cached display nothing
+        if (!$assetsManager->isCached($type, $hash, $version)) {
+            $response->setOutput('/** Zepi Assets Manager: Not cached! */');
+            return;
+        }
+        
+        // Load the content
+        $content = $assetsManager->getAssetContent($type, $hash, $version);
+        if ($content === '') {
+            $content = '/** Zepi Assets Manager: File is empty or does not exists! */';
+        }
+        
+        // Define the if modified since timestamp
+        $cachedAssetTimestamp = $assetsManager->getCachedAssetTimestamp($type, $hash, $version);
+        $ifModifiedSince = -1;
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] != '') {
+            $ifModifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
+        }
+        
+        // Define the etag
+        $eTag = md5($content);
+        $eTagHeader = -1;
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] != '') {
+            $eTagHeader = $_SERVER['HTTP_IF_NONE_MATCH'];
+        }
+        
+        // Set the cache headers
+        $cacheTtl = 86400 * 365;
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $cachedAssetTimestamp) . ' GMT');
+        header('Expires: ' . gmdate("D, d M Y H:i:s", time() + $cacheTtl) . ' GMT');
+        header('Pragma: cache');
+        header('Etag: ' . $eTag);
+        header('Cache-Control: max-age=' . $cacheTtl);
+        
+        // Verify the cached timestamp and the eTag
+        if ($cachedAssetTimestamp === $ifModifiedSince || $eTag === $eTagHeader) {
+            header('HTTP/1,1 304 Not Modified');
+            exit;
+        }
+        
+        // Set the content type
+        $contentType = $this->_getContentType($type, $version);
+        if ($contentType !== '') {
+            header('Content-type: ' . $contentType, true);
+        }
+        
+        // Display the content
+        $response->setOutput($content);
+    }
+
+    /**
+     * Returns the content type for the given asset type.
+     * 
+     * @access protected
+     * @param string $type
+     * @param string $version
+     * @return string
+     */
+    protected function _getContentType($type, $version)
+    {
+        if ($type === 'css') {
+            return 'text/css';
+        } else if ($type === 'js') {
+            return 'text/javascript';
+        } else if ($type === 'image') {
+            $fileExtension = pathinfo($version, PATHINFO_EXTENSION);
+            
+            if ($fileExtension === 'svg') {
+                return 'image/svg+xml';
+            } else if ($fileExtension === 'jpg') {
+                return 'image/jpeg';
+            } else if ($fileExtension === 'gif') {
+                return 'image/gif';
+            } else if ($fileExtension === 'png') {
+                return 'image/png';
+            }
+        }
+    }
+}

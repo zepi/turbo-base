@@ -1,0 +1,47 @@
+<?php
+    $group = $additionalData['group'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Delete group', '\\Zepi\\Web\\AccessControl'); ?></h1>
+            
+            <div class="message question">
+                <?php echo $this->translate('Would you really like to delete the following group?', '\\Zepi\\Web\\AccessControl'); ?>
+            </div>
+            
+            <div class="object-box clearfix">
+                <div>
+                    <div class="object-box-icon">
+                        <span class="mdi mdi-account-multiple"></span>
+                    </div>
+                    <div class="object-box-description">
+                        <dl class="dl-horizontal">
+                            <dt><?php echo $this->translate('Group name', '\\Zepi\\Web\\AccessControl'); ?></dt>
+                            <dd><?php echo $group->getName(); ?></dd>
+                            <dt><?php echo $this->translate('UUID', '\\Zepi\\Web\\AccessControl'); ?></dt>
+                            <dd><?php echo $group->getUuid(); ?></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-list">
+                <div class="secondary-buttons align-left">
+                    <a href="<?php echo $request->getFullRoute('/administration/groups/'); ?>" class="btn btn-default">Zurück</a>
+                </div>
+                <div class="primary-buttons align-center">
+                    <a href="<?php echo $request->getFullRoute() . '/confirmed'; ?>" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Löschen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

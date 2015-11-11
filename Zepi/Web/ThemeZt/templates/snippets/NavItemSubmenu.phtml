@@ -1,0 +1,52 @@
+<?php 
+    $menuEntry = $response->getData('printingMenuEntry');
+    
+    // If the menu entry is empty we continue
+    if ($menuEntry->hideWhenEmpty() && !$menuEntry->hasChildren()) {
+        return;
+    } 
+?>
+<div class="submenu-holder">
+    <ul class="submenu">
+        <?php foreach ($menuEntry->getChildren() as $child): ?>
+            <?php
+                // If the child is a hidden menu entry continue to the next one
+                if ($child instanceof \Zepi\Web\General\Entity\HiddenMenuEntry) {
+                    continue;
+                }
+            
+                $itemClass = '';
+                
+                if ($child->hasChildren()) {
+                    $itemClass .= ' has-children';
+                }
+                
+                $targetUrl = $child->getBestTarget();
+            ?>
+            <li class="<?php echo $itemClass; ?>">
+                <?php 
+                    $iconClass = '';
+                    if (strpos($child->getIconClass(), 'glyphicon') === 0) {
+                        $iconClass = 'glyphicon ' . $child->getIconClass();
+                    } else if (strpos($child->getIconClass(), 'mdi') === 0) {
+                        $iconClass = 'mdi ' . $child->getIconClass();
+                    } else if ($child->getIconClass() !== '') {
+                        $iconClass = 'icon ' . $child->getIconClass();
+                    }
+                ?>
+                <a href="<?php echo $request->getFullRoute($targetUrl); ?>">
+                    <?php if ($iconClass !== ''): ?>
+                        <span class="<?php echo $iconClass; ?>"></span>
+                    <?php endif; ?>
+                    
+                    <?php echo $child->getName(); ?>
+                </a>
+                
+                <?php if ($child->hasChildren()): ?>
+                    <?php $response->setData('printingMenuEntry', $child); ?>
+                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemSubmenu'); ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

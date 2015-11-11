@@ -1,0 +1,17 @@
+<?php $field = $additionalData['field']; ?>
+<<?php echo $field->getHtmlType(); ?> 
+    <?php if ($field->getHtmlType() === 'button'): ?>
+        type="<?php echo $field->getType(); ?>"
+    <?php elseif ($field->getHtmlType() === 'a'): ?>
+        href="<?php echo $field->getHref(); ?>"
+    <?php endif; ?> 
+    value="<?php echo $field->getLabel(); ?>" 
+    name="<?php echo $field->getHtmlName(); ?>" 
+    id="<?php echo $field->getHtmlId(); ?>" 
+    class="btn <?php echo $field->getHtmlClasses(); ?>"
+>
+    <?php if ($field->hasIconClass()): ?>
+        <span class="<?php echo $field->getIconClass(); ?>"></span>
+    <?php endif; ?>
+    <?php echo $field->getLabel(); ?>
+</<?php echo $field->getHtmlType(); ?>>

@@ -1,0 +1,33 @@
+<?php
+    $userTable = $additionalData['userTable'];
+    $tableRenderer = $additionalData['tableRenderer'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1>
+                <?php echo $this->translate('User management', '\\Zepi\\Web\\AccessControl'); ?>
+                
+                <div class="header-toolbar-right">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="<?php echo $request->getFullRoute('administration/users/add'); ?>" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <?php echo $this->translate('Add user', '\\Zepi\\Web\\AccessControl'); ?>
+                        </a>
+                    </div>
+                </div>
+            </h1>
+            
+            <?php
+                $renderedTable = $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', array(
+                    'preparedTable' => $tableRenderer->prepareTable($request, $userTable, 10),
+                ));
+            ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

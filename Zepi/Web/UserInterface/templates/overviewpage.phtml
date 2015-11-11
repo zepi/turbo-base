@@ -1,0 +1,39 @@
+<?php
+    $menuEntry = $additionalData['menuEntry'];
+?>
+
+<h2><?php echo $menuEntry->getName(); ?></h2>
+<ul class="overview-navigation">
+    <?php foreach ($menuEntry->getChildren() as $child): ?>
+        <?php
+            $iconClass = '';
+                                        
+            if (strpos($child->getIconClass(), 'glyphicon') === 0) {
+                $iconClass = 'glyphicon ' . $child->getIconClass();
+            } else if (strpos($child->getIconClass(), 'mdi') === 0) {
+                $iconClass = 'mdi ' . $child->getIconClass();
+            } else if ($child->getIconClass() !== '') {
+                $iconClass = 'icon ' . $child->getIconClass();
+            }
+            
+            $urlTarget = '';
+            if ($child->getTarget() != '' && $child->getTarget() != '#') {
+                $urlTarget = $child->getTarget();
+            }
+        ?>
+        <li class="col-sm-4">
+            <a href="<?php echo $request->getFullRoute($urlTarget); ?>" class="overview-navigation-box">
+                <?php if ($iconClass !== ''): ?>
+                    <div class="overview-navigation-icon">
+                        <span class="<?php echo $iconClass; ?>"></span>
+                    </div>
+                    <div class="overview-navigation-label">
+                <?php else: ?>
+                    <div class="overview-navigation-label overview-navigation-without-icon">
+                <?php endif; ?>
+                    <?php echo $child->getName(); ?>
+                </div>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>

@@ -1,0 +1,10 @@
+<?php
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+?>
+<div role="tabpanel" class="tab-pane <?php if ($container->isActive()) { ?>active<?php } ?>" id="<?php echo $container->getHtmlId(); ?>">
+    <?php foreach ($container->getParts() as $part): ?>
+        <?php echo $layoutRenderer->render($part); ?>
+    <?php endforeach; ?>
+</div>
+ 

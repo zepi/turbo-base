@@ -1,0 +1,4 @@
+There were some errors with the submitted data: = Es gibt einige Fehler mit den von Ihnen abgesendeten Daten:
+%s is a mandatory field. Please fill out the field. = %s ist ein Pflichtfeld. Bitte füllen Sie es aus.
+Unknown error: %s = Unbekannter Fehler: %s
+Nothing found. = Nichts gefunden.

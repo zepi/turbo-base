@@ -1,0 +1,21 @@
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Delete group', '\\Zepi\\Web\\AccessControl'); ?></h1>
+            
+            <div class="message success">
+                <?php echo $this->translate('The group was successfully deleted.', '\\Zepi\\Web\\AccessControl'); ?>
+            </div>
+            
+            <div class="button-list">
+                <div class="secondary-buttons align-left">
+                    <a href="<?php echo $request->getFullRoute('/administration/groups/'); ?>" class="btn btn-default">Zurück</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

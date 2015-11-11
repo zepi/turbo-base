@@ -1,0 +1,34 @@
+.selector .selector-left-side,
+.selector .selector-center-buttons,
+.selector .selector-right-side { float: left; display: inline-block; }
+
+.selector .selector-left-side,
+.selector .selector-right-side { width: 50%; }
+.selector .selector-left-side { padding-right: 40px; margin-right: -20px; }
+.selector .selector-right-side { padding-left: 40px; margin-left: -20px; }
+
+.selector .selector-center-buttons { width: 40px; position: relative; }
+.selector .selector-center-buttons button { width: 100%; height: 40px; }
+
+.selector .selector-side-box { border: 1px solid #CCCCCC; }
+.selector .selector-side-box .selector-side-title { background: #E3E3E3; border-bottom: 1px solid #CCCCCC; padding: 10px 15px; }
+.selector .selector-side-box .selector-side-title h2 { border: none; margin: 0; padding: 0; }
+.selector .selector-side-box .item-search { border-bottom: 1px solid #CCCCCC; }
+.selector .selector-side-box .item-search .input-group-addon { border: none; border-right: 1px solid #CCCCCC; }
+.selector .selector-side-box .item-search input { border: none; border-radius: 0; }
+.selector .selector-side-box .item-list { height: 500px; background: #FFFFFF; overflow: auto; overflow-y: scroll; }
+.selector .selector-side-box .item-list > ul { list-style-type: none; padding: 0; margin: 0; }
+
+.selector .item-list .item { border-bottom: 1px solid #DDDDDD; padding: 10px; cursor: pointer; }
+.selector .item-list .item.item-disabled { opacity: 0.5; cursor: auto; }
+.selector .item-list .item:after { content: ""; display: table; clear: both; }
+.selector .item-list .item.active-item { background: #e0f1ff; }
+.selector .item-list .item .item-icon { float: left; line-height: 0; width: 6%; margin-right: 2%; }
+.selector .item-list .item .item-icon .mdi { font-size: 50px; line-height: 50px; }
+.selector .item-list .item .item-content { float: left; width: 92%; }
+.selector .item-list .item .item-name { font-size: 16px; font-weight: bold; margin-bottom: 10px; }
+
+.selector .item-list .item .item-data { font-size: 14px; margin-top: 5px; }
+.selector .item-list .item .item-data:after { content: ""; display: table; clear: both; }
+.selector .item-list .item .item-data .item-data-title { float: left; width: 23%; font-weight: bold; }
+.selector .item-list .item .item-data .item-data-content { float: left; width: 77%; }

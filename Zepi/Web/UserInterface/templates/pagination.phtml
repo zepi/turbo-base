@@ -1,0 +1,23 @@
+<?php 
+    use \Zepi\Web\UserInterface\Pagination\Dots;
+    use \Zepi\Web\UserInterface\Pagination\ActivePage;
+
+    $pagination = $additionalData['pagination'];
+?>
+<nav>
+    <ul class="pagination">
+        <?php foreach ($pagination->getEntries() as $entry): ?>
+            <li>
+                <?php if ($entry instanceof Dots): ?>
+                    <span>...</span>
+                <?php elseif ($entry instanceof ActivePage): ?>
+                    <span class="active"><?php echo $entry->getLabel(); ?></span>
+                <?php else: ?>
+                    <a href="<?php echo $request->getFullRoute('administration/users') . $entry->getUrl(); ?>">
+                        <?php echo $entry->getLabel(); ?>
+                    </a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>

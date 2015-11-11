@@ -1,0 +1,33 @@
+<?php
+    $groupTable = $additionalData['groupTable'];
+    $tableRenderer = $additionalData['tableRenderer'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1>
+                <?php echo $this->translate('Group management', '\\Zepi\\Web\\AccessControl'); ?>
+                
+                <div class="header-toolbar-right">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a href="<?php echo $request->getFullRoute('administration/groups/add'); ?>" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <?php echo $this->translate('Add group', '\\Zepi\\Web\\AccessControl'); ?>
+                        </a>
+                    </div>
+                </div>
+            </h1>
+            
+            <?php
+                $renderedTable = $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', array(
+                    'preparedTable' => $tableRenderer->prepareTable($request, $groupTable, 20),
+                ));
+            ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer'); ?>

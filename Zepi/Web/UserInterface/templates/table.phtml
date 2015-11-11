@@ -1,0 +1,79 @@
+<?php
+    use \Zepi\Web\UserInterface\Table\FilterRow;
+
+    $preparedTable = $additionalData['preparedTable'];
+?>
+
+<table class="table table-striped">
+    <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
+        <thead>
+            <?php foreach ($preparedTable->getHead()->getRows() as $row): ?>
+                <?php if ($row instanceof FilterRow): ?>
+                    <form action="<?php echo $request->getFullRoute(); ?>" method="post">
+                <?php endif; ?>
+                <tr>
+                    <?php foreach ($row->getCells() as $cell): ?>
+                        <?php if ($row instanceof FilterRow && $cell->getValue() !== null): ?>
+                            <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>" value="<?php echo $cell->getValue(); ?>" />
+                                    <span class="input-group-btn input-group-btn-mdi">
+                                        <button class="btn btn-default" type="submit"><span class="mdi mdi-magnify"></span></button>
+                                    </span>
+                                </div>
+                            </th>
+                        <?php else: ?>
+                            <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>"><?php echo $cell->getValue(); ?></th>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </tr>
+                <?php if ($row instanceof FilterRow): ?>
+                        <input type="hidden" value="1" name="table-filter-update" />
+                    </form>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </thead>
+    <?php endif; ?>
+    
+    <?php if ($preparedTable->hasBody() && $preparedTable->getBody()->hasRows()): ?>
+        <tbody>
+            <?php foreach ($preparedTable->getBody()->getRows() as $row): ?>
+                <tr>
+                    <?php foreach ($row->getCells() as $cell): ?>
+                        <td width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>"><?php echo $cell->getValue(); ?></td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    <?php else: ?>
+        <tbody>
+            <tr>
+                <td colspan="<?php echo $preparedTable->getNumberOfColumns(); ?>">
+                    <div class="message info">
+                        <?php echo $this->translate('Nothing found.', '\\Zepi\\Web\\UserInterface'); ?>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    <?php endif; ?>
+    
+    <?php if (($preparedTable->hasFoot() && $preparedTable->getFoot()->hasRows()) || $preparedTable->getTable()->hasPagination()): ?>
+        <tfoot>
+            <?php foreach ($preparedTable->getFoot()->getRows() as $row): ?>
+                <tr>
+                    <?php foreach ($row->getCells() as $cell): ?>
+                        <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>"><?php echo $cell->getValue(); ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+            
+            <?php if ($preparedTable->getTable()->hasPagination()): ?>
+                <tr>
+                    <td colspan="<?php echo $preparedTable->getNumberOfColumns(); ?>">
+                        <?php $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Pagination', array('pagination' => $preparedTable->getPagination())); ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tfoot>
+    <?php endif; ?>
+</table>
