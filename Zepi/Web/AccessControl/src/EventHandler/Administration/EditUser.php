@@ -429,7 +429,7 @@ class EditUser implements WebEventHandlerInterface
                                         )
                                     ),
                                     1000,
-                                    'text-left'
+                                    array('text-left')
                                 )
                             ), array('col-md-6')),
                             new Column(array(

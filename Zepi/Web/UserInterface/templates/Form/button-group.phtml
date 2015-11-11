@@ -2,7 +2,7 @@
     $layoutRenderer = $additionalData['layoutRenderer']; 
     $container = $additionalData['container'];
 ?>
-<div class="button-group <?php echo $container->getClasses(); ?>">
+<div class="button-group <?php echo implode(' ', $container->getClasses()); ?>">
     <?php foreach ($container->getParts() as $part): ?>
         <?php echo $layoutRenderer->render($part); ?>
     <?php endforeach; ?>
