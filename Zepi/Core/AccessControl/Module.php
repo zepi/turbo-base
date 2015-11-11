@@ -84,7 +84,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager':
                 if ($this->_accessLevelManager === null) {
                     // Get the templates backend
-                    $path = $this->_framework->getFrameworkDirectory() . '/data/access-levels.data';
+                    $path = $this->_framework->getRootDirectory() . '/data/access-levels.data';
                     $accessLevelsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
             
                     $this->_accessLevelManager = new $className(

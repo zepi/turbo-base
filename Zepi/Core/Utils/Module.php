@@ -62,7 +62,7 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager':
                 if ($this->_configurationManager === null) {
-                    $path = $this->_framework->getFrameworkDirectory() . '/config/framework.ini';
+                    $path = $this->_framework->getRootDirectory() . '/config/framework.ini';
                     $configFileBackend = new \Zepi\Core\Utils\Backend\ConfigurationFileBackend($path);
                     
                     $this->_configurationManager = new $className($configFileBackend);

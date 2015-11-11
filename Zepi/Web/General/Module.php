@@ -82,7 +82,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Web\\General\\Manager\\AssetsManager':
                 if ($this->_assetsManager === null) {
                     // Get the assets backend
-                    $path = $this->_framework->getFrameworkDirectory() . '/data/assets.data';
+                    $path = $this->_framework->getRootDirectory() . '/data/assets.data';
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
                     
                     // Get the cache backends
@@ -116,7 +116,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Web\\General\\Manager\\TemplatesManager':
                 if ($this->_templatesManager === null) {
                     // Get the templates backend
-                    $path = $this->_framework->getFrameworkDirectory() . '/data/templates.data';
+                    $path = $this->_framework->getRootDirectory() . '/data/templates.data';
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
                     
                     $this->_templatesManager = new $className(
