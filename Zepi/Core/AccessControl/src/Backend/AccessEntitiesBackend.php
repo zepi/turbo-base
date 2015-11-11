@@ -113,7 +113,7 @@ class AccessEntitiesBackend
             $data = $this->_databaseBackend->query($sql)->fetchAll();
 
             if ($data === false) {
-                return false;
+                return array();
             }
             
             $accessEntities = array();
@@ -123,7 +123,7 @@ class AccessEntitiesBackend
             
             return $accessEntities;
         } catch (\Exception $e) {
-            return false;
+            return array();
         }
     }
 

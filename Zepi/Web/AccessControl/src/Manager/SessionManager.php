@@ -71,7 +71,7 @@ class SessionManager
             $sessionTokenLifetime = $request->getSessionData('userSessionTokenLifetime');
             
             // Cleanup the session
-            $this->_cleanupSession($request, $response);
+            $this->_cleanupSession($request);
             
             // Save the old session token for some requests in the next 60 seconds
             if ($sessionToken !== false) {
@@ -81,7 +81,7 @@ class SessionManager
         }
         
         // Regenerate the session
-        $this->_regenerateSession($request, $response);
+        $this->_regenerateSession($request);
         
         $sessionToken = md5($user->getUuid()) . '-' . md5(uniqid());
         $sessionTokenLifeTime = time() + 300;
@@ -123,7 +123,7 @@ class SessionManager
         
         // There is a 1% chance that we regenerate the session
         if (mt_rand(1, 100) <= 1) {
-            $this->_regenerateSession($request, $response);
+            $this->_regenerateSession($request);
         }
 
         // Initialize the user session
@@ -141,7 +141,7 @@ class SessionManager
      */
     public function logoutUser(WebRequest $request, Response $response)
     {
-        $this->_cleanupSession($request, $response);
+        $this->_cleanupSession($request);
         
         $request->removeSession();
     }
@@ -191,7 +191,6 @@ class SessionManager
         }
         
         $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         $userUuid = $request->getSessionData('userUuid');        
         
         // If the given uuid doesn't exists, this session can't be valid
@@ -203,8 +202,8 @@ class SessionManager
         // okey. Our session token is not set or the lifetime is invalid or expired.
         // This is maybe an expired session or a hijacking attack...
         if ($notValid) {
-            $this->_cleanupSession($request, $response);
-            $this->_regenerateSession($request, $response);
+            $this->_cleanupSession($request);
+            $this->_regenerateSession($request);
             
             return false;
         }
@@ -250,9 +249,8 @@ class SessionManager
      * 
      * @access protected
      * @param \Zepi\Turbo\Request\WebRequest $request
-     * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _cleanupSession(WebRequest $request, Response $response)
+    protected function _cleanupSession(WebRequest $request)
     {
         $sessionToken= $request->getSessionData('userSessionToken');
         setcookie($sessionToken, 0, time() - 60, '/', '', $request->isSsl());
@@ -290,9 +288,8 @@ class SessionManager
      * 
      * @access protected
      * @param \Zepi\Turbo\Request\WebRequest $request
-     * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _regenerateSession(WebRequest $request, Response $response)
+    protected function _regenerateSession(WebRequest $request)
     {
         // Let the old session expire...
         $request->setSessionData('isObsolete', true);

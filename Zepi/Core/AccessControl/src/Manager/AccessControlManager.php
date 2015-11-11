@@ -110,7 +110,7 @@ class AccessControlManager
      * @param string $name
      * @param string $key
      * @param array $metaData
-     * @return string|boolean
+     * @return string|false
      */
     public function addAccessEntity($type, $name, $key, $metaData)
     {
@@ -233,6 +233,18 @@ class AccessControlManager
     public function revokePermission($accessEntityUuid, $accessLevel)
     {
         return $this->_permissionsBackend->revokePermission($accessEntityUuid, $accessLevel);
+    }
+    
+    /**
+     * Revokes the permissions for the given access level.
+     *
+     * @access public
+     * @param string $accessLevel
+     * @return boolean
+     */
+    public function revokePermissions($accessLevel)
+    {
+        return $this->_permissionsBackend->revokePermissions($accessLevel);
     }
     
     /**

@@ -779,7 +779,7 @@ class AssetsManager
      * @access protected
      * @param string $type
      * @param string $assetName
-     * @return boolean|array
+     * @return false|\Zepi\Web\General\Entity\Asset
      */
     protected function _getAssetFile($type, $assetName)
     {

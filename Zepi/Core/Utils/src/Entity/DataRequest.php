@@ -57,7 +57,7 @@ class DataRequest
     
     /**
      * @access protected
-     * @var integer
+     * @var false|integer
      */
     protected $_numberOfEntries;
     

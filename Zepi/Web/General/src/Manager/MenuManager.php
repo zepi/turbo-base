@@ -325,7 +325,7 @@ class MenuManager
      * 
      * @access protected
      * @param array $menuEntries
-     * @return boolean|\Zepi\Web\General\Entity\MenuEntry
+     * @return false|\Zepi\Web\General\Entity\MenuEntry
      */
     protected function _searchCorrectMenuEntryInArray($menuEntries)
     {

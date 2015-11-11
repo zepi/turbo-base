@@ -65,7 +65,7 @@ class RegisterMenuEntries implements WebEventHandlerInterface
         $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
 
-        if ($request->hasSession('Zepi\\Web\\AccessControl\\Entity\\Session')) {
+        if ($request->hasSession()) {
             $profileMenuEntry = new \Zepi\Web\General\Entity\MenuEntry(
                 'profile',
                 $translationManager->translate('Profile', '\\Zepi\\Web\\AccessControl'),

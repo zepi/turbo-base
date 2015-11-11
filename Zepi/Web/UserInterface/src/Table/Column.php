@@ -71,7 +71,7 @@ class Column
     
     /**
      * @access protected
-     * @var string
+     * @var boolean|string
      */
     protected $_fieldType;
     
@@ -167,7 +167,7 @@ class Column
      * Returns the field type of the column
      * 
      * @access public
-     * @return string
+     * @return boolean|string
      */
     public function getFieldType()
     {

@@ -251,4 +251,30 @@ class PermissionsBackend
             return false;
         }
     }
+    
+    /**
+     * Revokes the permission for the given access level.
+     *
+     * @access public
+     * @param string $accessLevel
+     * @return boolean
+     */
+    public function revokePermissions($accessLevel)
+    {
+        // Do not revoke the permissions if we haven't all data
+        if ($accessLevel == '') {
+            return false;
+        }
+    
+        try {
+            $sql = 'DELETE FROM permissions '
+                 . 'WHERE permission_access_level_key = ' . $this->_databaseBackend->escape($accessLevel);
+             
+            $this->_databaseBackend->execute($sql);
+    
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

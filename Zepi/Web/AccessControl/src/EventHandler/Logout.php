@@ -64,7 +64,7 @@ class Logout implements WebEventHandlerInterface
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
         // Redirect if the user hasn't a valid session
-        if (!$request->hasSession('Zepi\\Web\\AccessControl\\Entity\\Session')) {
+        if (!$request->hasSession()) {
             $response->redirectTo('/');
             return;
         }
