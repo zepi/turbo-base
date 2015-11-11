@@ -75,7 +75,7 @@ class DataRequest
     
     /**
      * @access protected
-     * @var string
+     * @var array
      */
     protected $_selectedFields = array();
     
@@ -126,7 +126,7 @@ class DataRequest
      * 
      * @access public
      * @param string $name
-     * @return \Zepi\Core\Utils\Entity\Filter
+     * @return false|\Zepi\Core\Utils\Entity\Filter
      */
     public function getFilter($name)
     {

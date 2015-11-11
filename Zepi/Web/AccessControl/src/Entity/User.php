@@ -121,7 +121,6 @@ class User extends AccessEntity
      */
     protected function _saltPassword($password)
     {
-        $salt = '';
         if (isset($this->_metaData['salt'])) {
             $salt = $this->_metaData['salt'];
         } else {

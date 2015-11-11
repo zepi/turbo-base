@@ -61,7 +61,7 @@ class ConfigurationManager
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Backend\ConfigurationFileBackend $objectBackend
+     * @param \Zepi\Core\Utils\Backend\ConfigurationFileBackend $configurationFileBackend
      */
     public function __construct(ConfigurationFileBackend $configurationFileBackend)
     {
@@ -94,7 +94,7 @@ class ConfigurationManager
      * @access public
      * @param string $group
      * @param string $key
-     * @return string
+     * @return false|string
      */
     public function getSetting($group, $key)
     {

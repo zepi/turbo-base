@@ -49,6 +49,12 @@ class LanguageFileManager
 {
     /**
      * @access protected
+     * @var \Zepi\Turbo\Framework
+     */
+    protected $_framework;
+    
+    /**
+     * @access protected
      * @var array
      */
     protected $_languageFiles = array();

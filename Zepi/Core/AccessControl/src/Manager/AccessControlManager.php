@@ -50,13 +50,13 @@ class AccessControlManager
 {
     /**
      * @access protected
-     * @var AccessEntityBackend
+     * @var \Zepi\Core\AccessControl\Backend\AccessEntitiesBackend
      */
     protected $_accessEntitiesBackend;
     
     /**
      * @access protected
-     * @var PermissionsBackend
+     * @var \Zepi\Core\AccessControl\Backend\PermissionsBackend
      */
     protected $_permissionsBackend;
     
@@ -268,7 +268,7 @@ class AccessControlManager
      * @access public
      * @param string $accessEntitiyUuid
      * @param array $accessLevels
-     * @param AccessEntity $modifier
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $donor
      */
     public function updatePermissions($accessEntitiyUuid, $accessLevels, AccessEntity $donor)
     {

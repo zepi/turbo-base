@@ -131,7 +131,7 @@ class PermissionsBackend
      *
      * @access public
      * @param string $accessEntityUuid
-     * @return array
+     * @return array|false
      */
     public function getPermissionsRaw($accessEntityUuid)
     {
@@ -163,7 +163,7 @@ class PermissionsBackend
      *
      * @access public
      * @param string $accessEntityUuid
-     * @return array
+     * @return array|false
      */
     public function getPermissions($accessEntityUuid)
     {

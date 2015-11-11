@@ -36,11 +36,10 @@
 
 namespace Zepi\Core\Management\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\CliEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
-use \Zepi\Turbo\Response\Response;
 use \Zepi\Turbo\Request\CliRequest;
+use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\Management\Exception;
 
 /**
@@ -50,7 +49,7 @@ use \Zepi\Core\Management\Exception;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class ListModules implements EventHandlerInterface
+class ListModules implements CliEventHandlerInterface
 {
     /**
      * This event handler lists all activated modules with the description
@@ -58,20 +57,14 @@ class ListModules implements EventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\CliRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
      * 
      * @throws Zepi\Core\Management\Exception The list with the activated modules can only be viewed from command line!
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function executeEvent(Framework $framework, CliRequest $request, Response $response, $value = null)
     {
-        // If the event is not executed by a command line we throw a new exception
-        if (!($request instanceof CliRequest)) {
-            throw new Exception('The list with the activated modules can only be viewed from command line!');
-            return;
-        }
-        
         $output = 'Activated modules:' . PHP_EOL;
         $output .= '==================' . PHP_EOL . PHP_EOL;
         $moduleManager = $framework->getModuleManager();

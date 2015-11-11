@@ -94,14 +94,14 @@ class ConfigurationFileBackend
      * Loads the configuration from the file.
      * 
      * @access public
-     * @return string
+     * @return array
      * 
      * @throws Zepi\Turbo\Exception The file "$path" isn't readable!
      */
     public function loadConfiguration()
     {
         if (!file_exists($this->_path)) {
-            return '';
+            return array();
         }
         
         if (!is_readable($this->_path)) {

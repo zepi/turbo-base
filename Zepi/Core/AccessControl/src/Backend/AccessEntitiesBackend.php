@@ -239,7 +239,7 @@ class AccessEntitiesBackend
      *
      * @access public 
      * @param string $uuid
-     * @return AccessEntity
+     * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      */
     public function getAccessEntityForUuid($uuid)
     {
@@ -265,7 +265,7 @@ class AccessEntitiesBackend
      * @access public
      * @param string $type
      * @param string $name
-     * @return AccessEntity
+     * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      */
     public function getAccessEntityForName($type, $name)
     {
@@ -291,7 +291,7 @@ class AccessEntitiesBackend
      * 
      * @access protected
      * @param array $data
-     * @return AccessEntity
+     * @return \Zepi\Core\AccessControl\Entity\AccessEntity
      */
     protected function _generateAccessEntityObject(array $data)
     {

@@ -35,9 +35,10 @@
 
 namespace Zepi\Web\General\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 
 /**
@@ -46,18 +47,18 @@ use \Zepi\Turbo\Response\Response;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Administration implements EventHandlerInterface
+class Administration implements WebEventHandlerInterface
 {
     /**
      * Displays the administration overview page
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
     {
         // Redirect if the user hasn't a valid session
         if (!$request->hasSession('Zepi\\Web\\AccessControl\\Entity\\Session')) {

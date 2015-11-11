@@ -35,9 +35,10 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\UserInterface\Form\Form;
 use \Zepi\Web\UserInterface\Form\Group;
@@ -54,7 +55,7 @@ use \Zepi\Web\UserInterface\Form\Field\Submit;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Login implements EventHandlerInterface
+class Login implements WebEventHandlerInterface
 {
     /**
      * Filters the given menu entries and removes all protected menu
@@ -62,11 +63,11 @@ class Login implements EventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
     {
         // Set the title for the page
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');

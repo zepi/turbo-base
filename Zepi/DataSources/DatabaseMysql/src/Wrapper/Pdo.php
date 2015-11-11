@@ -81,11 +81,10 @@ class Pdo
     * Constructs the object.
 	* Parameters are the same as in the original PDO class.
 	*
-	* @param string $_dsn
-	* @param string $_username
-	* @param string $_password
-	* @param array $_options
-	* @return null
+	* @param string $dsn
+	* @param string $username
+	* @param string $password
+	* @param array $options
 	*/
     public function __construct($dsn, $username = '', $password = '', $options = array())
     {

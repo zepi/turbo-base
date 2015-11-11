@@ -57,7 +57,7 @@ class AccessLevelManager
     
     /**
      * @access protected
-     * @var Zepi\Turbo\Framework
+     * @var \Zepi\Turbo\Framework
      */
     protected $_framework;
     
@@ -161,7 +161,7 @@ class AccessLevelManager
         $this->_saveAccessLevels();
         
         // Revoke all permissions for the given access level key
-        $this->_accessControlManager->revokePermissions($key);
+        $this->_accessControlManager->revokePermission($key);
     }
     
     /**
