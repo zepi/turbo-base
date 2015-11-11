@@ -124,13 +124,13 @@ class MenuEntry
         $window = 'self',
         $hideWhenEmpty = false
     ) {
-       $this->_key = $key;
-       $this->_name = $name;
-       $this->_target = $target;
-       $this->_window = $window;
-       $this->_class = $class;
-       $this->_iconClass = $iconClass;
-       $this->_hideWhenEmpty = $hideWhenEmpty;
+        $this->_key = $key;
+        $this->_name = $name;
+        $this->_target = $target;
+        $this->_window = $window;
+        $this->_class = $class;
+        $this->_iconClass = $iconClass;
+        $this->_hideWhenEmpty = $hideWhenEmpty;
     }
     
     /**
@@ -219,7 +219,7 @@ class MenuEntry
      */
     public function getChildren()
     {
-       return $this->_children;
+        return $this->_children;
     }
     
     /**

@@ -258,7 +258,7 @@ class AssetsManager
      * @param string $type
      * @param string $hash
      * @param string $version
-     * @return boolean
+     * @return string
      */
     public function getAssetContent($type, $hash, $version)
     {
@@ -418,7 +418,7 @@ class AssetsManager
      * @access public
      * @param string $type
      * @param string $fileName
-     * @return array|false
+     * @return string|false
      */
     public function generateCachedFile($type, $fileName)
     {
@@ -478,7 +478,7 @@ class AssetsManager
      * @access protected
      * @param string $type
      * @param array $files
-     * @return boolean
+     * @return string
      */
     protected function _buildTypeCache($type, $files)
     {
@@ -534,7 +534,7 @@ class AssetsManager
      * @access protected
      * @param string $type
      * @param string $fileName
-     * @return boolean
+     * @return boolean|string
      */
     protected function _buildFileCache($type, $fileName)
     {
@@ -606,8 +606,8 @@ class AssetsManager
     protected function _minifyContent($type, $content)
     {
         $content = preg_replace("/((?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\s*\/\/\s.*))|(?:\s{1,}\/\/.*)/", "", $content);
-        $content = str_replace(array("\r\n","\r","\t","\n",'  ','    ','     '), '', $content);
-        $content = preg_replace(array('(( )+\))','(\)( )+)'), ')', $content);
+        $content = str_replace(array("\r\n", "\r", "\t", "\n", '  ', '    ', '     '), '', $content);
+        $content = preg_replace(array('(( )+\))', '(\)( )+)'), ')', $content);
         
         // Use these minifing rules only for css
         if ($type === self::CSS) {
@@ -653,7 +653,7 @@ class AssetsManager
      */
     protected function _hasCachedFile($hash)
     {
-        return (isset($this->_cachedFiles[$hash]));;
+        return (isset($this->_cachedFiles[$hash]));
     }
     
     /**

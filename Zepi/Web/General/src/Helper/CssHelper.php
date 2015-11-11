@@ -130,7 +130,7 @@ class CssHelper
                 $urlData = 'data:image/gif;base64,' . $encodedContent;
                 
                 // Replace the reference in the css content
-                $content = str_replace($match[1], '\'' .$urlData . '\'', $content);
+                $content = str_replace($match[1], '\'' . $urlData . '\'', $content);
             } else {
                 $type = AssetsManager::BINARY;
                 

@@ -307,7 +307,7 @@ class Form extends Part
     protected function _generateHash($length)
     {
         $token = '';
-        for($i = 0; $i < $length; ++ $i) {
+        for ($i = 0; $i < $length; ++ $i) {
             $rand = mt_rand(0, 35);
             
             if ($rand < 26) {
