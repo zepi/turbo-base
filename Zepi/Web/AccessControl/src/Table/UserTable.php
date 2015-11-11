@@ -107,8 +107,8 @@ class UserTable extends TableAbstract
      */
     public function getDataForRow($key, $object)
     {
-    	$translationManager = $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-		
+        $translationManager = $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+
         switch ($key) {
             case 'name':
                 return '<span class="mdi mdi-account"></span>' . $object->getName();

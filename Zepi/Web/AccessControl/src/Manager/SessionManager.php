@@ -252,7 +252,7 @@ class SessionManager
      */
     protected function _cleanupSession(WebRequest $request)
     {
-        $sessionToken= $request->getSessionData('userSessionToken');
+        $sessionToken = $request->getSessionData('userSessionToken');
         setcookie($sessionToken, 0, time() - 60, '/', '', $request->isSsl());
         
         $oldSessionToken = $request->getSessionData('oldUserSessionToken');

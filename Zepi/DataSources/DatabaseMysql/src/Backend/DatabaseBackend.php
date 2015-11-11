@@ -165,15 +165,15 @@ class DatabaseBackend
      */
     public function query($sql)
     {
-       try {
-           $this->_connect();
-           $statement = $this->_pdo->query($sql);
+        try {
+            $this->_connect();
+            $statement = $this->_pdo->query($sql);
 
-           $statement->setFetchMode(\PDO::FETCH_ASSOC);           
-           return $statement;
-       } catch (\PDOException $e) {
-           throw new Exception('Failure in executing the sql query: "' . $e . '"');
-       }
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);           
+            return $statement;
+        } catch (\PDOException $e) {
+            throw new Exception('Failure in executing the sql query: "' . $e . '"');
+        }
     }
     
     /**

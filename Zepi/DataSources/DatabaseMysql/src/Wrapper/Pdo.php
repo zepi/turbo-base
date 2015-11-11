@@ -79,13 +79,13 @@ class Pdo
     
     /**
      * Constructs the object.
- 	 * Parameters are the same as in the original PDO class.
-	 *
-	 * @param string $dsn
-	 * @param string $username
-	 * @param string $password
-	 * @param array $options
-	 */
+     * Parameters are the same as in the original PDO class.
+     *
+     * @param string $dsn
+     * @param string $username
+     * @param string $password
+     * @param array $options
+     */
     public function __construct($dsn, $username = '', $password = '', $options = array())
     {
         $this->_dsn = $dsn;
@@ -95,12 +95,12 @@ class Pdo
     }
     
     /**
-	 * Delegates all method calls to the PDO object, lazy initializing it on demand.
-	 *
-	 * @param string $method
-	 * @param array $parameters
-	 * @return mixed
-	 */
+     * Delegates all method calls to the PDO object, lazy initializing it on demand.
+     *
+     * @param string $method
+     * @param array $parameters
+     * @return mixed
+     */
     public function __call($method, $parameters)
     {
         if ($this->_connectionTime < (time() - 300)) {

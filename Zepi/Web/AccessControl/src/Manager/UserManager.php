@@ -78,7 +78,7 @@ class UserManager
      * Adds the given user to the access entities
      * 
      * @param \Zepi\Web\AccessControl\Entity\User $user
-     * @return boolean
+     * @return false|\Zepi\Web\AccessControl\Entity\User
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot add the user. Username is already in use.
      */

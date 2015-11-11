@@ -162,7 +162,7 @@ class AccessEntitiesBackend
      * 
      * @access public
      * @param integer $id
-     * @return string|boolean
+     * @return string|false
      */
     public function getUuid($id)
     {
@@ -314,7 +314,7 @@ class AccessEntitiesBackend
         // Load the permissions for the entity
         $permissions = $this->_permissionsBackend->getPermissions($accessEntity->getUuid());
         
-        if ($permission !== false) {
+        if ($permissions !== false) {
             $accessEntity->setPermissions($permissions);
         }
 
