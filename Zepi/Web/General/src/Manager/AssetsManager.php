@@ -314,6 +314,20 @@ class AssetsManager
     }
     
     /**
+     * Returns true if the asset for the given type
+     * and file name exists.
+     * 
+     * @access public
+     * @param string $type
+     * @param string $fileName
+     * @return boolean
+     */
+    public function hasAsset($type, $fileName)
+    {
+        return (isset($this->_assets[$type][$fileName]));
+    }
+    
+    /**
      * Adds a file as an asset.
      * 
      * @access public
@@ -323,7 +337,7 @@ class AssetsManager
     public function removeAsset($type, $fileName)
     {
         // If the key doesn't exists return false
-        if (!isset($this->_assets[$type][$fileName])) {
+        if (!$this->hasAsset($type, $fileName)) {
             return false;
         }
         
@@ -621,12 +635,25 @@ class AssetsManager
     {
         $hash = $this->_getTypeHash($type);
 
-        if (!isset($this->_cachedFiles[$hash])) {
+        if (!$this->_hasCachedFile($hash)) {
             return false;
         }
 
         $fileData = $this->_cachedFiles[$hash];
         $this->_fileBackend->deleteFile($fileData['file']);
+    }
+    
+    /**
+     * Returns true if there is a cached file for the given
+     * hash
+     * 
+     * @access protected
+     * @param string $hash
+     * @return boolean
+     */
+    protected function _hasCachedFile($hash)
+    {
+        return (isset($this->_cachedFiles[$hash]));;
     }
     
     /**
@@ -638,7 +665,7 @@ class AssetsManager
     protected function _removeOldCacheFile($file)
     {
         $hash = $this->_getHash($file);
-        if (!isset($this->_cachedFiles[$hash])) {
+        if (!$this->_hasCachedFile($hash)) {
             return false;
         }
 
@@ -783,7 +810,7 @@ class AssetsManager
      */
     protected function _getAssetFile($type, $assetName)
     {
-        if (!isset($this->_assets[$type][$assetName])) {
+        if (!$this->hasAsset($type, $fileName)) {
             return false;
         }
     
