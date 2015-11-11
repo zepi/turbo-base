@@ -47,7 +47,7 @@ use \Zepi\Core\Utils\Entity\DataRequest;
  */
 class DatabaseBackend
 {
-	/**
+    /**
      * @var bool
      */
     protected $_isConnected = false;
@@ -146,13 +146,12 @@ class DatabaseBackend
     public function execute($sql)
     {
         try {
-             $this->_connect();
-             $statement = $this->_pdo->query($sql);
+            $this->_connect();
+            $statement = $this->_pdo->query($sql);
              
-             return $statement->rowCount();
-        }
-        catch (\PDOException $e) {
-             throw new Exception('Failure in preparing the sql query: "' . $e . '"');
+            return $statement->rowCount();
+        } catch (\PDOException $e) {
+            throw new Exception('Failure in preparing the sql query: "' . $e . '"');
         }
     }
     
@@ -167,14 +166,13 @@ class DatabaseBackend
     public function query($sql)
     {
        try {
-            $this->_connect();
-            $statement = $this->_pdo->query($sql);
- 
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);           
-            return $statement;
-       }
-       catch (\PDOException $e) {
-            throw new Exception('Failure in executing the sql query: "' . $e .'"');
+           $this->_connect();
+           $statement = $this->_pdo->query($sql);
+
+           $statement->setFetchMode(\PDO::FETCH_ASSOC);           
+           return $statement;
+       } catch (\PDOException $e) {
+           throw new Exception('Failure in executing the sql query: "' . $e . '"');
        }
     }
     

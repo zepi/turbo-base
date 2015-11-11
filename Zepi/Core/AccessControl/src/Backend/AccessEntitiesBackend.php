@@ -313,7 +313,10 @@ class AccessEntitiesBackend
         
         // Load the permissions for the entity
         $permissions = $this->_permissionsBackend->getPermissions($accessEntity->getUuid());
-        $accessEntity->setPermissions($permissions);
+        
+        if ($permission !== false) {
+            $accessEntity->setPermissions($permissions);
+        }
 
         return $accessEntity;
     }

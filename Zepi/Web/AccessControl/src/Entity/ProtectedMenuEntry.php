@@ -74,9 +74,9 @@ class ProtectedMenuEntry extends MenuEntry
         $class = '', 
         $window = 'self'
     ) {
-       parent::__construct($key, $name, $target, $iconClass, $class, $window);
-       
-       $this->_accessLevelKey = $accessLevelKey;
+        parent::__construct($key, $name, $target, $iconClass, $class, $window);
+        
+        $this->_accessLevelKey = $accessLevelKey;
     }
     
     /**

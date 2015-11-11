@@ -175,7 +175,7 @@ class AccessControlManager
      *
      * @access public 
      * @param string $uuid
-     * @return AccessEntity
+     * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
      */
     public function getAccessEntityForUuid($uuid)
     {
@@ -187,7 +187,7 @@ class AccessControlManager
      * 
      * @param string $type
      * @param string $name
-     * @return AccessEntity
+     * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
      */
     public function getAccessEntityForName($type, $name)
     {

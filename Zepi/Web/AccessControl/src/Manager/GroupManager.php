@@ -78,7 +78,7 @@ class GroupManager
      * Adds the given group to the access entities
      * 
      * @param \Zepi\Web\AccessControl\Entity\Group $group
-     * @return boolean
+     * @return false|\Zepi\Web\AccessControl\Entity\Group
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot add the group. The name of the group is already in use.
      */
