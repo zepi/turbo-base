@@ -1,0 +1,8 @@
+{
+    "name": "zepi/turbo-base",
+    "description": "Turbo base delivers the base modules for zepi/turbo",
+    "require": {
+        "php": ">=5.3.0",
+        "zepi/turbo": "*"
+    }
+}
