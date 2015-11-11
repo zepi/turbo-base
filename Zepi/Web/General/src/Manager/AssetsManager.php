@@ -534,7 +534,7 @@ class AssetsManager
      * @access protected
      * @param string $type
      * @param string $fileName
-     * @return boolean|string
+     * @return false|string
      */
     protected function _buildFileCache($type, $fileName)
     {
