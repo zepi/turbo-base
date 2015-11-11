@@ -84,7 +84,7 @@ class DataRequest
      * 
      * @access public
      * @param integer $page
-     * @param integer $numberOfEntries
+     * @param false|integer $numberOfEntries
      * @param string $sortBy
      * @param string $sortByDirection
      * @param array $selectedFields
@@ -175,10 +175,14 @@ class DataRequest
      * Returns the offset
      * 
      * @access public
-     * @return integer
+     * @return false|integer
      */
     public function getOffset()
     {
+        if ($this->_numberOfEntries === false) {
+            return false;
+        }
+        
         return ($this->_page - 1) * $this->_numberOfEntries;
     }
     
@@ -186,7 +190,7 @@ class DataRequest
      * Returns the number of entries
      * 
      * @access public
-     * @return integer
+     * @return false|integer
      */
     public function getNumberOfEntries()
     {
@@ -197,7 +201,7 @@ class DataRequest
      * Sets the number of entries
      * 
      * @access public
-     * @param integer $numberOfEntries
+     * @param false|integer $numberOfEntries
      */
     public function setNumberOfEntries($numberOfEntries)
     {

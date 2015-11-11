@@ -36,9 +36,9 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
 
@@ -49,7 +49,7 @@ use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class FilterMenuEntriesForProtectedEntries implements EventHandlerInterface
+class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
 {
     /**
      * Filters the given menu entries and removes all protected menu
@@ -57,11 +57,11 @@ class FilterMenuEntriesForProtectedEntries implements EventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
     {
         // Get the entries
         $entries = $response->getData('menu.entries');
@@ -79,10 +79,10 @@ class FilterMenuEntriesForProtectedEntries implements EventHandlerInterface
      * @access protected
      * @param array $entries
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
-     * @return $entries
+     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @return array
      */
-    protected function _verifyEntries($entries, Framework $framework, RequestAbstract $request)
+    protected function _verifyEntries($entries, Framework $framework, WebRequest $request)
     {
         foreach ($entries as $key => $entry) {
             // If the entry is a ProtectedMenuEntry, verify the entry
@@ -110,12 +110,12 @@ class FilterMenuEntriesForProtectedEntries implements EventHandlerInterface
      * Verifies a protected menu entry.
      * 
      * @access protected
-     * @param \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry $protectedMenuEntry
+     * @param \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry $protectedEntry
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
-    protected function _verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, Framework $framework, RequestAbstract $request)
+    protected function _verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, Framework $framework, WebRequest $request)
     {
         // If the user has no session we do not have to check the permissions
         if (!$request->hasSession()) {
@@ -123,7 +123,6 @@ class FilterMenuEntriesForProtectedEntries implements EventHandlerInterface
         }
         
         // Check the database
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         if ($request->getSession()->hasAccess($protectedEntry->getAccessLevelKey())) {
             return true;
         }

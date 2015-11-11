@@ -77,7 +77,6 @@ abstract class TableAbstract
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param array $columns
      * @param boolean $hasPagination
      * @param boolean $hasFilters
      * @param boolean $saveDataRequest

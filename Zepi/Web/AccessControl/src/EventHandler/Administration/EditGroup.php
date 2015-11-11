@@ -142,14 +142,17 @@ class EditGroup implements WebEventHandlerInterface
      * Handle the save process
      *
      * @access protected
-     * @param \Zepi\Web\UserInterface\Type\Form $form
+     * @param \Zepi\Web\UserInterface\Type\Form $editGroupForm
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      */
-    protected function _processData(Form $editGroupForm, Framework $framework, RequestAbstract $request, Response $response, EntityGroup $group)
+    protected function _processData(Form $editGroupForm, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
+        // Get the translation manager
+        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        
         // Process the submitted form data
         $editGroupForm->processFormData($request);
         
@@ -192,11 +195,11 @@ class EditGroup implements WebEventHandlerInterface
      * @access protected
      * @param \Zepi\Web\UserInterface\Type\Form $form
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      */
-    protected function _saveGroup(Form $form, Framework $framework, RequestAbstract $request, Response $response, EntityGroup $group)
+    protected function _saveGroup(Form $form, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
         // Get the password data
         $formGroup = $form->searchPartByKeyAndType('required-data');
@@ -289,12 +292,12 @@ class EditGroup implements WebEventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @return \Zepi\Web\UserInterface\Layout\Page
      */
-    protected function _getLayout(Framework $framework, RequestAbstract $request, Response $response, EntityGroup $group)
+    protected function _getLayout(Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
         $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         $accessLevelManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');

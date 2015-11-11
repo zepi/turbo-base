@@ -96,7 +96,7 @@ class Group extends Part
         // If the group isn't assigned to a data form we can not generate
         // the id of the group.
         if (!$form) {
-            return false;
+            return '';
         }
         
         return $form->getHtmlId() . '-' . $this->_key;

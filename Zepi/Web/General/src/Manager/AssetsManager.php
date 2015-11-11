@@ -319,10 +319,8 @@ class AssetsManager
      * @access public
      * @param string $type
      * @param string $fileName
-     * @param string $file
-     * @param array $dependencies
      */
-    public function removeAsset($type, $fileName, $file, $dependencies = array())
+    public function removeAsset($type, $fileName)
     {
         // If the key doesn't exists return false
         if (!isset($this->_assets[$type][$fileName])) {
@@ -406,7 +404,7 @@ class AssetsManager
      * @access public
      * @param string $type
      * @param string $fileName
-     * @return array
+     * @return array|false
      */
     public function generateCachedFile($type, $fileName)
     {
@@ -465,7 +463,7 @@ class AssetsManager
      * 
      * @access protected
      * @param string $type
-     * @param string $files
+     * @param array $files
      * @return boolean
      */
     protected function _buildTypeCache($type, $files)
@@ -548,7 +546,7 @@ class AssetsManager
         $targetFile = $this->_buildFilePath($type, $hash, $version);
 
         // Save the cached file
-        $this->_removeOldCacheFile($type, $fileName);
+        $this->_removeOldCacheFile($fileName);
         $this->_fileBackend->saveToFile($content, $targetFile);
 
         // Save the cached files in the data array
@@ -618,7 +616,6 @@ class AssetsManager
      * 
      * @access protected
      * @param string $type
-     * @param string $file
      */
     protected function _removeOldTypeCacheFile($type)
     {
@@ -636,10 +633,9 @@ class AssetsManager
      * Deletes the old cache file before a new one is saved.
      * 
      * @access protected
-     * @param string $type
      * @param string $file
      */
-    protected function _removeOldCacheFile($type, $file)
+    protected function _removeOldCacheFile($file)
     {
         $hash = $this->_getHash($file);
         if (!isset($this->_cachedFiles[$hash])) {
@@ -738,7 +734,7 @@ class AssetsManager
      * @access public
      * @param array $sortedAssets
      * @param array $assets
-     * @param \Zepi\Web\General\Manager\AssetsManager $asset
+     * @param \Zepi\Web\General\Entity\Asset $asset
      * @return array
      */
     protected function _resolveDependencies($sortedAssets, $assets, $asset)

@@ -40,7 +40,7 @@ use \Zepi\Web\UserInterface\Form\Group;
 use \Zepi\Web\UserInterface\Form\ButtonGroup;
 use \Zepi\Web\UserInterface\Form\Field\Button;
 use \Zepi\Web\UserInterface\Form\Error;
-use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Web\UserInterface\Layout\Part;
 
 /**
@@ -85,10 +85,10 @@ class Form extends Part
      * Constructs the object
      * 
      * @access public
-     * @param stirng $key
+     * @param string $key
      * @param string $url
      * @param string $method
-     * @param array $part
+     * @param array $parts
      */
     public function __construct($key, $url, $method, $parts = array())
     {
@@ -182,9 +182,9 @@ class Form extends Part
      * Processes all form data
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      */
-    public function processFormData(RequestAbstract $request)
+    public function processFormData(WebRequest $request)
     {
         /**
          * If there is no csrf-key or csrf-token we return immediately 
@@ -285,10 +285,10 @@ class Form extends Part
      * in the session data.
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @return array
      */
-    public function generateCsrfToken(RequestAbstract $request)
+    public function generateCsrfToken(WebRequest $request)
     {
         $key = 'csrf-' . $this->_generateHash(32);
         $token = $this->_generateHash(128);

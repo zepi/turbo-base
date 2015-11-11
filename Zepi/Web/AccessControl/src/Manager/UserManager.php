@@ -97,6 +97,10 @@ class UserManager
             $user->getMetaDataArray()
         );
         
+        if ($uuid === false) {
+            throw new Exception('Cannot add the user. Internal softeware error.');
+        }
+        
         return $this->_accessControlManager->getAccessEntityForUuid($uuid);
     }
     

@@ -138,10 +138,10 @@ class ProfileChangePassword implements WebEventHandlerInterface
      * @access protected
      * @param \Zepi\Web\UserInterface\Form\Form $form
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _changePassword(Form $form, Framework $framework, RequestAbstract $request, Response $response)
+    protected function _changePassword(Form $form, Framework $framework, WebRequest $request, Response $response)
     {
         // Get the logged in user 
         $session = $request->getSession();
@@ -205,11 +205,11 @@ class ProfileChangePassword implements WebEventHandlerInterface
      * 
      * @access protected
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, RequestAbstract $request, Response $response)
+    protected function _createForm(Framework $framework, WebRequest $request, Response $response)
     {
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         

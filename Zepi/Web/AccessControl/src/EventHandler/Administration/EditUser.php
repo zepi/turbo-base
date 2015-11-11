@@ -143,12 +143,15 @@ class EditUser implements WebEventHandlerInterface
      * @access protected
      * @param \Zepi\Web\UserInterface\Type\Form $editUserForm
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      */
-    protected function _processData(Form $editUserForm, Framework $framework, RequestAbstract $request, Response $response, User $user)
+    protected function _processData(Form $editUserForm, Framework $framework, WebRequest $request, Response $response, User $user)
     {
+        // Get the translation manager
+        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        
         // Process the submitted form data
         $editUserForm->processFormData($request);
         
@@ -191,11 +194,11 @@ class EditUser implements WebEventHandlerInterface
      * @access protected
      * @param \Zepi\Web\UserInterface\Type\Form $form
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      */
-    protected function _saveUser(Form $form, Framework $framework, RequestAbstract $request, Response $response, User $user)
+    protected function _saveUser(Form $form, Framework $framework, WebRequest $request, Response $response, User $user)
     {
         // Get the password data
         $group = $form->searchPartByKeyAndType('required-data');
@@ -290,12 +293,12 @@ class EditUser implements WebEventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      * @return \Zepi\Web\UserInterface\Layout\Page
      */
-    public function _getLayout(Framework $framework, RequestAbstract $request, Response $response, User $user)
+    public function _getLayout(Framework $framework, WebRequest $request, Response $response, User $user)
     {
         $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         $accessLevelManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');

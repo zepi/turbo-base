@@ -89,7 +89,7 @@ class Column
      * @param string $name
      * @param mixed $width
      * @param boolean $filterable
-     * @param string $fieldType
+     * @param boolean|string $fieldType
      * @param string $classes
      */
     public function __construct($key, $name, $width, $filterable = false, $fieldType = 'text', $classes = '')

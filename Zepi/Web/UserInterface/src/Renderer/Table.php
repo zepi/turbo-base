@@ -36,7 +36,7 @@
 namespace Zepi\Web\UserInterface\Renderer;
 
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Web\UserInterface\Table\TableAbstract;
 use \Zepi\Web\UserInterface\Table\Head;
 use \Zepi\Web\UserInterface\Table\Body;
@@ -78,12 +78,12 @@ class Table
      * Renders the whole table
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
      * @param integer $numberOfEntries
      * @return \Zepi\Web\UserInterface\Table\PreparedTable
      */
-    public function prepareTable(RequestAbstract $request, TableAbstract $table, $numberOfEntries = 10)
+    public function prepareTable(WebRequest $request, TableAbstract $table, $numberOfEntries = 10)
     {
         // If the table has no pagination we do not limit the number of entries 
         // which will be displayed
@@ -116,7 +116,7 @@ class Table
         $preparedTable->setFoot($this->_renderFoot($table));
         
         // Add the pagination
-        if ($table->hasPagination()) {
+        if ($table->hasPagination() && $numberOfEntries !== false) {
             $preparedTable->setPagination($this->_paginationRenderer->prepare($dataRequest, $table->countData($dataRequest), $numberOfEntries));
         }
         
@@ -127,12 +127,12 @@ class Table
      * Generates a DataRequest object
      * 
      * @access protected
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
-     * @param integer $numberOfEntries
+     * @param false|integer $numberOfEntries
      * @return \Zepi\Web\UserInterface\Table\DataRequest
      */
-    protected function _generateDataRequest(RequestAbstract $request, TableAbstract $table, $numberOfEntries)
+    protected function _generateDataRequest(WebRequest $request, TableAbstract $table, $numberOfEntries)
     {
         $updateRequired = false;
         if ($request->hasParam('table-filter-update')) {

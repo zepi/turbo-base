@@ -156,7 +156,7 @@ abstract class AbstractContainer
      * with this key registred return false.
      * 
      * @access public
-     * @return \Zepi\Web\UserInterface\Layout\Part
+     * @return false|\Zepi\Web\UserInterface\Layout\Part
      */    
     public function getPart($key)
     {

@@ -127,17 +127,6 @@ class SelectorItem
     }
     
     /**
-     * Returns the module namespace of the access level
-     *
-     * @access public
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->_namespace;
-    }
-    
-    /**
      * Returns the hash of the access level
      *
      * @access public

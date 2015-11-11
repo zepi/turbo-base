@@ -96,7 +96,10 @@ class Button extends FieldAbstract
         $this->_label = $label;
         $this->_iconClass = $iconClass;
         $this->_htmlType = $htmlType;
-        $this->_href = $href;
+        
+        if ($href !== false) {
+            $this->_href = $href;
+        }
         
         if (count($classes) > 0) {
             $this->_classes = array_merge($this->_classes, $classes);

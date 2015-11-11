@@ -55,7 +55,7 @@ class OverviewPage
      * @param \Zepi\Web\General\Entity\MenuEntry $menuEntry
      * @return string
      */
-    public function render(Framework $framework, MenuEntry $menuEntry, $level = 1)
+    public function render(Framework $framework, MenuEntry $menuEntry)
     {
         // If the MenuEntry hasn't any children we return an empty string.
         if (!$menuEntry->hasChildren()) {

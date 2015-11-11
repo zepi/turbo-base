@@ -97,6 +97,10 @@ class GroupManager
             $group->getMetaDataArray()
         );
         
+        if ($uuid === false) {
+            throw new Exception('Cannot add the group. Internal softeware error.');
+        }
+        
         return $this->_accessControlManager->getAccessEntityForUuid($uuid);
     }
     

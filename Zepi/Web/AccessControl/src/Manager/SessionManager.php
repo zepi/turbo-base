@@ -36,7 +36,7 @@
 namespace Zepi\Web\AccessControl\Manager;
 
 use Zepi\Turbo\Framework;
-use Zepi\Turbo\Request\RequestAbstract;
+use Zepi\Turbo\Request\WebRequest;
 use Zepi\Turbo\Response\Response;
 use Zepi\Web\AccessControl\Entity\Session;
 use Zepi\Web\AccessControl\Entity\User;
@@ -59,11 +59,11 @@ class SessionManager
      * Initializes the user session
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      */
-    public function initializeUserSession(RequestAbstract $request, Response $response, User $user)
+    public function initializeUserSession(WebRequest $request, Response $response, User $user)
     {
         // If the session already has user data ...
         if ($request->getSessionData('userUuid') !== false) {
@@ -97,10 +97,10 @@ class SessionManager
      * Initializes the session
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    public function reinitializeSession(Framework $framework, RequestAbstract $request, Response $response)
+    public function reinitializeSession(Framework $framework, WebRequest $request, Response $response)
     {
         // Sets the correct name:
         session_name('ZTSM');
@@ -136,10 +136,10 @@ class SessionManager
      * Logouts the logged in user
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    public function logoutUser(RequestAbstract $request, Response $response)
+    public function logoutUser(WebRequest $request, Response $response)
     {
         $this->_cleanupSession($request, $response);
         
@@ -152,11 +152,11 @@ class SessionManager
      * 
      * @access protected
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @return boolean
      */
-    protected function _reinitializeUserSession(Framework $framework, RequestAbstract $request, Response $response)
+    protected function _reinitializeUserSession(Framework $framework, WebRequest $request, Response $response)
     {
         $token = $request->getSessionData('userSessionToken');
         $lifetime = $request->getSessionData('userSessionTokenLifetime');
@@ -228,9 +228,9 @@ class SessionManager
      * Starts the session and saves the base session informations.
      * 
      * @access protected
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      */
-    protected function _startSession(RequestAbstract $request)
+    protected function _startSession(WebRequest $request)
     {
         // Save the nonce base on the session
         $request->setSessionData('nonceBase', md5(uniqid()));
@@ -249,10 +249,10 @@ class SessionManager
      * Removes all user and token data from the session
      * 
      * @access protected
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _cleanupSession(RequestAbstract $request, Response $response)
+    protected function _cleanupSession(WebRequest $request, Response $response)
     {
         $sessionToken= $request->getSessionData('userSessionToken');
         setcookie($sessionToken, 0, time() - 60, '/', '', $request->isSsl());
@@ -272,10 +272,10 @@ class SessionManager
      * the function will return false, otherwise true.
      * 
      * @access protected
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
-    protected function _validateSessionData(RequestAbstract $request)
+    protected function _validateSessionData(WebRequest $request)
     {
         if ($request->getSessionData('isObsolete') && $request->getSessionData('maxLifetime') < time()) {
             return false;
@@ -289,10 +289,10 @@ class SessionManager
      * session id.
      * 
      * @access protected
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _regenerateSession(RequestAbstract $request, Response $response)
+    protected function _regenerateSession(WebRequest $request, Response $response)
     {
         // Let the old session expire...
         $request->setSessionData('isObsolete', true);

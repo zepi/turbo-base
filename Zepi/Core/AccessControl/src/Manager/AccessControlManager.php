@@ -109,7 +109,7 @@ class AccessControlManager
      * @param string $type
      * @param string $name
      * @param string $key
-     * @param string $metaData
+     * @param array $metaData
      * @return string|boolean
      */
     public function addAccessEntity($type, $name, $key, $metaData)
@@ -125,7 +125,7 @@ class AccessControlManager
      * @param string $uuid
      * @param string $name
      * @param string $key
-     * @param string $metaData
+     * @param array $metaData
      * @return boolean
      */
     public function updateAccessEntity($uuid, $name, $key, $metaData)

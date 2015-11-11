@@ -50,21 +50,15 @@ class ButtonGroup extends Group
     protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup';
     
     /**
-     * @access protected
-     * @var string
-     */
-    protected $_classes = '';
-    
-    /**
      * Constructs the object
      * 
      * @access public
      * @param string $key
      * @param array $parts
-     * @param string $classes
+     * @param array $classes
      * @param integer $priority
      */
-    public function __construct($key, $parts = array(), $priority = 10, $classes = 'text-center')
+    public function __construct($key, $parts = array(), $priority = 10, $classes = array('text-center'))
     {
         $this->_key = $key;
         $this->_priority = $priority;
@@ -73,16 +67,5 @@ class ButtonGroup extends Group
         foreach ($parts as $part) {
             $this->addPart($part);
         }
-    }
-    
-    /**
-     * Returns all classes of this button group
-     * 
-     * @access public
-     * @return string
-     */
-    public function getClasses()
-    {
-        return $this->_classes;
     }
 }

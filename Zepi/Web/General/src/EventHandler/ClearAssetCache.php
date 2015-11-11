@@ -64,7 +64,7 @@ class ClearAssetCache implements CliEventHandlerInterface
         $assetsManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         
         // Clean the asset cache
-        $result = $assetsManager->clearAssetCache();
+        $assetsManager->clearAssetCache();
         $response->setOutputPart('cacheCleared', 'The asset cache was successfully cleared!');
     }
 }

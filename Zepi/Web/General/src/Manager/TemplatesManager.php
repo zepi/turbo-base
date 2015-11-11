@@ -57,7 +57,7 @@ class TemplatesManager
     
     /**
      * @access protected
-     * @var Zepi\Turbo\Framework
+     * @var \Zepi\Turbo\Framework
      */
     protected $_framework;
     

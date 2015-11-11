@@ -304,7 +304,7 @@ class MenuManager
      * Searches the correct menu entry based on the requested route.
      * 
      * @access protected
-     * @return boolean|\Zepi\Web\General\Entity\MenuEntry
+     * @return false|\Zepi\Web\General\Entity\MenuEntry
      */
     protected function _searchCorrectMenuEntry()
     {

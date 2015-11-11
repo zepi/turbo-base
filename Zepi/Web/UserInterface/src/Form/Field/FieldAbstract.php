@@ -106,7 +106,7 @@ abstract class FieldAbstract extends Part
      * @access public
      * @param string $label
      * @param boolean $isMandatory
-     * @param string $value
+     * @param mixed $value
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
@@ -171,7 +171,7 @@ abstract class FieldAbstract extends Part
          * If the field isn't assigned to a form group return false
          */
         if (!$group) {
-            return false;
+            return '';
         }
         
         return $group->getHtmlId() . '-' . $this->_key;
@@ -185,7 +185,7 @@ abstract class FieldAbstract extends Part
      */
     public function getHtmlName()
     {
-        $group = $this->getParent('\\Zepi\\Web\\UserInterface\\Form\\Group');
+        $group = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Group');
         
         /**
          * If the field isn't assigned to a form group return false
@@ -300,7 +300,7 @@ abstract class FieldAbstract extends Part
      * Sets the html form value of the field
      * 
      * @access public
-     * @param string $value
+     * @param mixed $value
      */
     public function setValue($value)
     {

@@ -325,6 +325,8 @@ class AccessEntitiesBackend
      * @access public
      * @param string $type
      * @param string $name
+     * @param string $key
+     * @param array $metaData
      * @return string|boolean
      */
     public function addAccessEntity($type, $name, $key, $metaData = array())
