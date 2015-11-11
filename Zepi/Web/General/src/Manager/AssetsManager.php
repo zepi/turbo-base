@@ -810,7 +810,7 @@ class AssetsManager
      */
     protected function _getAssetFile($type, $assetName)
     {
-        if (!$this->hasAsset($type, $fileName)) {
+        if (!$this->hasAsset($type, $assetName)) {
             return false;
         }
     
