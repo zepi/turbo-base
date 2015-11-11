@@ -1,6 +1,16 @@
 {
     "name": "zepi/turbo-base",
     "description": "Turbo base delivers the base modules for zepi/turbo",
+    "homepage": "https://turbo.zepi.net",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthias Zobrist",
+            "email": "matthias.zobrist@zepi.net",
+            "homepage": "https://zepi.net",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=5.3.0",
         "zepi/turbo": "*"
