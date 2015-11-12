@@ -57,7 +57,6 @@ class ClearAssetCache implements CliEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\CliRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
