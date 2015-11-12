@@ -35,8 +35,8 @@
 
 namespace Zepi\Core\AccessControl\Manager;
 
-use \Zepi\Core\AccessControl\Backend\AccessEntitiesBackend;
-use \Zepi\Core\AccessControl\Backend\PermissionsBackend;
+use \Zepi\Core\AccessControl\DataSource\AccessEntitiesDataSourceInterface;
+use \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface;
 use \Zepi\Core\Utils\Entity\DataRequest;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
 
@@ -50,29 +50,29 @@ class AccessControlManager
 {
     /**
      * @access protected
-     * @var \Zepi\Core\AccessControl\Backend\AccessEntitiesBackend
+     * @var \Zepi\Core\AccessControl\DataSource\AccessEntitiesDataSourceInterface
      */
-    protected $_accessEntitiesBackend;
+    protected $_accessEntitiesDataSource;
     
     /**
      * @access protected
-     * @var \Zepi\Core\AccessControl\Backend\PermissionsBackend
+     * @var \Zepi\Core\AccessControl\PermissionsDataSourceInterface
      */
-    protected $_permissionsBackend;
+    protected $_permissionsDataSource;
     
     /**
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\Core\AccessControl\Backend\AccessEntitiesBackend $accessEntitiesBackend
-     * @param \Zepi\Core\AccessControl\Backend\PermissionsBackend $permissionsBackend
+     * @param \Zepi\Core\AccessControl\DataSource\AccessEntitiesDataSourceInterface $accessEntitiesDataSource
+     * @param \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface $permissionsDataSource
      */
     public function __construct(
-        AccessEntitiesBackend $accessEntitiesBackend, 
-        PermissionsBackend $permissionsBackend
+        AccessEntitiesDataSourceInterface $accessEntitiesDataSource, 
+        PermissionsDataSourceInterface $permissionsDataSource
     ) {
-        $this->_accessEntitiesBackend = $accessEntitiesBackend;
-        $this->_permissionsBackend = $permissionsBackend;
+        $this->_accessEntitiesDataSource = $accessEntitiesDataSource;
+        $this->_permissionsDataSource = $permissionsDataSource;
     }
     
     /**
@@ -85,7 +85,7 @@ class AccessControlManager
      */
     public function getAccessEntities(DataRequest $dataRequest)
     {
-        return $this->_accessEntitiesBackend->getAccessEntities($dataRequest);
+        return $this->_accessEntitiesDataSource->getAccessEntities($dataRequest);
     }
     
     /**
@@ -98,7 +98,7 @@ class AccessControlManager
      */
     public function countAccessEntities(DataRequest $dataRequest)
     {
-        return $this->_accessEntitiesBackend->countAccessEntities($dataRequest);
+        return $this->_accessEntitiesDataSource->countAccessEntities($dataRequest);
     }
     
     /**
@@ -114,7 +114,7 @@ class AccessControlManager
      */
     public function addAccessEntity($type, $name, $key, $metaData)
     {
-        return $this->_accessEntitiesBackend->addAccessEntity($type, $name, $key, $metaData);
+        return $this->_accessEntitiesDataSource->addAccessEntity($type, $name, $key, $metaData);
     }
     
     /**
@@ -130,7 +130,7 @@ class AccessControlManager
      */
     public function updateAccessEntity($uuid, $name, $key, $metaData)
     {
-        return $this->_accessEntitiesBackend->updateAccessEntity($uuid, $name, $key, $metaData);
+        return $this->_accessEntitiesDataSource->updateAccessEntity($uuid, $name, $key, $metaData);
     }
     
     /**
@@ -142,7 +142,7 @@ class AccessControlManager
      */
     public function deleteAccessEntity($uuid)
     {
-        return $this->_accessEntitiesBackend->deleteAccessEntity($uuid);
+        return $this->_accessEntitiesDataSource->deleteAccessEntity($uuid);
     }
     
     /**
@@ -154,7 +154,7 @@ class AccessControlManager
      */
     public function hasAccessEntityForUuid($uuid)
     {
-        return $this->_accessEntitiesBackend->hasAccessEntityForUuid($uuid);
+        return $this->_accessEntitiesDataSource->hasAccessEntityForUuid($uuid);
     }
     
     /**
@@ -167,7 +167,7 @@ class AccessControlManager
      */
     public function hasAccessEntityForName($type, $name)
     {
-        return $this->_accessEntitiesBackend->hasAccessEntityForName($type, $name);
+        return $this->_accessEntitiesDataSource->hasAccessEntityForName($type, $name);
     }
     
     /**
@@ -179,7 +179,7 @@ class AccessControlManager
      */
     public function getAccessEntityForUuid($uuid)
     {
-        return $this->_accessEntitiesBackend->getAccessEntityForUuid($uuid);
+        return $this->_accessEntitiesDataSource->getAccessEntityForUuid($uuid);
     }
     
     /**
@@ -191,7 +191,7 @@ class AccessControlManager
      */
     public function getAccessEntityForName($type, $name)
     {
-        return $this->_accessEntitiesBackend->getAccessEntityForName($type, $name);
+        return $this->_accessEntitiesDataSource->getAccessEntityForName($type, $name);
     }
     
     /**
@@ -205,7 +205,7 @@ class AccessControlManager
      */
     public function hasAccess($accessEntityUuid, $accessLevel)
     {
-        return $this->_permissionsBackend->hasAccess($accessEntityUuid, $accessLevel);
+        return $this->_permissionsDataSource->hasAccess($accessEntityUuid, $accessLevel);
     }
     
     /**
@@ -219,7 +219,7 @@ class AccessControlManager
      */
     public function grantPermission($accessEntityUuid, $accessLevel, $grantedBy)
     {
-        return $this->_permissionsBackend->grantPermission($accessEntityUuid, $accessLevel, $grantedBy);
+        return $this->_permissionsDataSource->grantPermission($accessEntityUuid, $accessLevel, $grantedBy);
     }
     
     /**
@@ -232,7 +232,7 @@ class AccessControlManager
      */
     public function revokePermission($accessEntityUuid, $accessLevel)
     {
-        return $this->_permissionsBackend->revokePermission($accessEntityUuid, $accessLevel);
+        return $this->_permissionsDataSource->revokePermission($accessEntityUuid, $accessLevel);
     }
     
     /**
@@ -244,7 +244,7 @@ class AccessControlManager
      */
     public function revokePermissions($accessLevel)
     {
-        return $this->_permissionsBackend->revokePermissions($accessLevel);
+        return $this->_permissionsDataSource->revokePermissions($accessLevel);
     }
     
     /**
@@ -257,7 +257,7 @@ class AccessControlManager
      */
     public function getPermissionsRaw($accessEntityUuid)
     {
-        return $this->_permissionsBackend->getPermissionsRaw($accessEntityUuid);
+        return $this->_permissionsDataSource->getPermissionsRaw($accessEntityUuid);
     }
     
     /**
@@ -269,7 +269,7 @@ class AccessControlManager
      */
     public function getPermissions($accessEntityUuid)
     {
-        return $this->_permissionsBackend->getPermissions($accessEntityUuid);
+        return $this->_permissionsDataSource->getPermissions($accessEntityUuid);
     }
     
     /**

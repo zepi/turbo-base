@@ -72,10 +72,12 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager':
                 if ($this->_accessControlManager === null) {
-                    $accessEntitiesBackend = $this->getInstance('\\Zepi\\Core\\AccessControl\\Backend\\AccessEntitiesBackend');
-                    $permissionsBackend = $this->getInstance('\\Zepi\\Core\\AccessControl\\Backend\\PermissionsBackend');
+                    $dataSourceManager = $this->_framework->getDataSourceManager();
                     
-                    $this->_accessControlManager = new $className($accessEntitiesBackend, $permissionsBackend);
+                    $accessEntitiesDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface');
+                    $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
+                    
+                    $this->_accessControlManager = new $className($accessEntitiesDataSource, $permissionDataSource);
                 }
                 
                 return $this->_accessControlManager;
@@ -98,19 +100,21 @@ class Module extends ModuleAbstract
                 return $this->_accessLevelManager;
                 break;
             
-            case '\\Zepi\\Core\\AccessControl\\Backend\\AccessEntitiesBackend':
-                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSources\\DatabaseMysql\\Backend\\DatabaseBackend');
-                $permissionsBackend = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Backend\\PermissionsBackend');
+            case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql':
+                $dataSourceManager = $this->_framework->getDataSourceManager();
                 
-                $accessEntitiesBackend = new $className($databaseMysqlBackend, $permissionsBackend);
-                return $accessEntitiesBackend;
+                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSource\\Mysql\\Backend\\DatabaseBackend');
+                $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
+                
+                $dataSource = new $className($databaseMysqlBackend, $permissionDataSource);
+                return $dataSource;
             break;
             
-            case '\\Zepi\\Core\\AccessControl\\Backend\\PermissionsBackend':
-                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSources\\DatabaseMysql\\Backend\\DatabaseBackend');
+            case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql':
+                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSource\\Mysql\\Backend\\DatabaseBackend');
                 
-                $permissionsBackend = new $className($databaseMysqlBackend, $this->_framework->getEventManager());
-                return $permissionsBackend;
+                $dataSource = new $className($databaseMysqlBackend, $this->_framework->getEventManager());
+                return $dataSource;
             break;
             
             default: 
@@ -134,22 +138,27 @@ class Module extends ModuleAbstract
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('access|denied', '\\Zepi\\Core\\AccessControl\\Event\\AccessDenied');
         
-        // This is a fresh activation of this module
-        if ($oldVersionNumber === '') {
-            $accessEntitiesBackend = $this->getInstance('\\Zepi\\Core\\AccessControl\\Backend\\AccessEntitiesBackend');
-            $accessEntitiesBackend->setupDatabase();
-            
-            $permissionsBackend = $this->getInstance('\\Zepi\\Core\\AccessControl\\Backend\\PermissionsBackend');
-            $permissionsBackend->setupDatabase();
-        }
+        // Data Sources
+        $dataSourceManager = $this->_framework->getDataSourceManager();
+        $dataSourceManager->addDataSource(
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface',
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
+        );
+        
+        $dataSourceManager->addDataSource(
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface',
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
+        );
         
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
-            '\\Global\\*',
-            'Global Super User',
-            'Super user privileges. Can do everything.',
-            '\\Zepi\\Core\\AccessControl'
+                '\\Global\\*',
+                'Global Super User',
+                'Super user privileges. Can do everything.',
+                '\\Zepi\\Core\\AccessControl'
         ));
     }
     
@@ -169,5 +178,19 @@ class Module extends ModuleAbstract
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->removeAccessLevel('\\Global\\*');
+        
+        // Data Sources
+        $dataSourceManager = $this->_framework->getDataSourceManager();
+        $dataSourceManager->removeDataSource(
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface',
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
+        );
+        
+        $dataSourceManager->removeDataSource(
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface',
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
+        );
     }
 }

@@ -25,38 +25,39 @@
  */
 
 /**
- * The PermissionsBackend communicates with the database and 
+ * The PermissionsDataSourceMysql communicates with the MySQL Database and 
  * loads and saves the permissions.
  * 
  * @package Zepi\Core\AccessControl
- * @subpackage Backend
+ * @subpackage DataSource
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Core\AccessControl\Backend;
+namespace Zepi\Core\AccessControl\DataSource;
 
-use \Zepi\DataSources\DatabaseMysql\Backend\DatabaseBackend;
+use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
+use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
 use \Zepi\Turbo\Manager\EventManager;
 
 /**
- * The PermissionsBackend communicates with the database and 
+ * The PermissionsDataSourceMysql communicates with the MySQL Database and 
  * loads and saves the permissions.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class PermissionsBackend
+class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsDataSourceInterface
 {
     /**
      * @access protected
-     * @var DatabaseBackend
+     * @var \Zepi\DataSource\Mysql\Backend\DatabaseBackend
      */
     protected $_databaseBackend;
     
     /**
      * @access protected
-     * @var EventManager
+     * @var \Zepi\Turbo\Manager\EventManager
      */
     protected $_eventManager;
     
@@ -64,7 +65,7 @@ class PermissionsBackend
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSources\DatabaseMysql\Backend\DatabaseBackend $databaseBackend
+     * @param \Zepi\DataSource\Mysql\Backend\DatabaseBackend $databaseBackend
      * @param \Zepi\Turbo\Manager\EventManager $eventManager
      */
     public function __construct(DatabaseBackend $databaseBackend, EventManager $eventManager)
@@ -74,11 +75,13 @@ class PermissionsBackend
     }
     
     /**
-     * Sets up the database for the access levels backend
-     * 
+     * Executes the setup for the data source. Returns true if everything
+     * worked as expected or fals if any error occoured.
+     *
      * @access public
+     * @return boolean
      */
-    public function setupDatabase()
+    public function setup()
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `permissions` (' 
              . '  `permission_id` int(11) NOT NULL AUTO_INCREMENT,'

@@ -25,29 +25,30 @@
  */
 
 /**
- * The AccessEntitiesBackend communicates with the database and 
+ * The AccessEntitiesDataSourceMysql communicates with the database and 
  * loads and saves the access entities.
  * 
  * @package Zepi\Core\AccessControl
- * @subpackage Backend
+ * @subpackage DataSource
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Core\AccessControl\Backend;
+namespace Zepi\Core\AccessControl\DataSource;
 
-use \Zepi\DataSources\DatabaseMysql\Backend\DatabaseBackend;
+use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
+use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
 use \Zepi\Core\Utils\Entity\DataRequest;
 
 /**
- * The AccessEntitiesBackend communicates with the database and 
+ * The AccessEntitiesDataSourceMysql communicates with the database and 
  * loads and saves the access entities.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class AccessEntitiesBackend
+class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntitiesDataSourceInterface
 {
     /**
      * @access protected
@@ -57,29 +58,31 @@ class AccessEntitiesBackend
     
     /**
      * @access protected
-     * @var \Zepi\Core\AccessControl\Backend\PermissionsBackend
+     * @var \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface
      */
-    protected $_permissionsBackend;
+    protected $_permissionsDataSource;
     
     /**
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSources\DatabaseMysql\Backend\DatabaseBackend $databaseBackend
-     * @param \Zepi\Core\AccessControl\Backend\PermissionsBackend $permissionsBackend
+     * @param \Zepi\DataSource\Mysql\Backend\DatabaseBackend $databaseBackend
+     * @param \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface $permissionsDataSource
      */
-    public function __construct(DatabaseBackend $databaseBackend, PermissionsBackend $permissionsBackend)
+    public function __construct(DatabaseBackend $databaseBackend, PermissionsDataSourceInterface $permissionsDataSource)
     {
         $this->_databaseBackend = $databaseBackend;
-        $this->_permissionsBackend = $permissionsBackend;
+        $this->_permissionsDataSource = $permissionsDataSource;
     }
     
     /**
-     * Sets up the database for the access levels backend
-     * 
+     * Executes the setup for the data source. Returns true if everything
+     * worked as expected or fals if any error occoured.
+     *
      * @access public
+     * @return boolean
      */
-    public function setupDatabase()
+    public function setup()
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `access_entities` (' 
              . '  `access_entity_id` int(11) NOT NULL AUTO_INCREMENT,'
@@ -94,6 +97,8 @@ class AccessEntitiesBackend
              . ') ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;';
         
         $this->_databaseBackend->execute($sql);
+        
+        return true;
     }
     
     /**
@@ -312,7 +317,7 @@ class AccessEntitiesBackend
         );
         
         // Load the permissions for the entity
-        $permissions = $this->_permissionsBackend->getPermissions($accessEntity->getUuid());
+        $permissions = $this->_permissionsDataSource->getPermissions($accessEntity->getUuid());
         
         if ($permissions !== false) {
             $accessEntity->setPermissions($permissions);
