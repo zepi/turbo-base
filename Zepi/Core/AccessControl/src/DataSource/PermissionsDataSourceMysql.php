@@ -36,6 +36,7 @@
 
 namespace Zepi\Core\AccessControl\DataSource;
 
+use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
 use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
 use \Zepi\Turbo\Manager\EventManager;
@@ -103,6 +104,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @param string $accessEntityUuid
      * @param string $accessLevel
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot verifiy the permission for uuid "{uuid}" and access level {accessLevel}.
      */
     public function hasAccess($accessEntityUuid, $accessLevel)
     {
@@ -124,7 +127,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
             
             return false;                        
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot verify the permission for uuid "' . $accessEntityUuid . '" and access level "' . $accessLevel . '".', 0, $e);
         }
     }
     
@@ -135,6 +138,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @access public
      * @param string $accessEntityUuid
      * @return array|false
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the permission for the given uuid "{uuid}".
      */
     public function getPermissionsRaw($accessEntityUuid)
     {
@@ -156,7 +161,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
 
             return $accessLevels;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot load the permission for the given uuid "' . $accessEntityUuid . '".', 0, $e);
         }
     }
     
@@ -167,6 +172,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @access public
      * @param string $accessEntityUuid
      * @return array|false
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the permission for the given uuid "{uuid}".
      */
     public function getPermissions($accessEntityUuid)
     {
@@ -182,7 +189,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     
             return $accessLevels;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot load the permission for the given uuid "' . $accessEntityUuid . '".', 0, $e);
         }
     }
     
@@ -194,6 +201,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @param string $accessLevel
      * @param string $grantedBy
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot grant the access level "{accessLevel}" for the given uuid "{accessEntityUuid}".
      */
     public function grantPermission($accessEntityUuid, $accessLevel, $grantedBy)
     {
@@ -218,7 +227,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
             
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot grant the access level "' . $accessLevel . '" for the given uuid "' . $accessEntityUuid . '".', 0, $e);
         }
     }
     
@@ -229,6 +238,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @param string $accessEntityUuid
      * @param string $accessLevel
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot revoke the access level "{accessLevel}" from the given uuid "{accessEntityUuid}".
      */
     public function revokePermission($accessEntityUuid, $accessLevel)
     {
@@ -251,7 +262,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
             
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot revoke the access level "' . $accessLevel . '" from the given uuid "' . $accessEntityUuid . '".', 0, $e);
         }
     }
     
@@ -261,6 +272,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * @access public
      * @param string $accessLevel
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot revoke the access levels "{accessLevel}".
      */
     public function revokePermissions($accessLevel)
     {
@@ -277,7 +290,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot revoke the access levels "' . $accessLevel . '".', 0, $e);
         }
     }
 }

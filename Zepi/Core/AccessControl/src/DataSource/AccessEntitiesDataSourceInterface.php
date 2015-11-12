@@ -63,7 +63,7 @@ interface AccessEntitiesDataSourceInterface
      *
      * @access public 
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return integer
+     * @return false|integer
      */
     public function countAccessEntities(DataRequest $dataRequest);
     

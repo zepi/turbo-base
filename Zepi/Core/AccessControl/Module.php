@@ -183,14 +183,12 @@ class Module extends ModuleAbstract
         $dataSourceManager = $this->_framework->getDataSourceManager();
         $dataSourceManager->removeDataSource(
             '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface',
-            '\\Zepi\\DataSource\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
+            '\\Zepi\\DataSource\\Mysql'
         );
         
         $dataSourceManager->removeDataSource(
             '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface',
-            '\\Zepi\\DataSource\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
+            '\\Zepi\\DataSource\\Mysql'
         );
     }
 }

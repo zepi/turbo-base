@@ -36,6 +36,7 @@
 
 namespace Zepi\Core\AccessControl\DataSource;
 
+use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
 use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
@@ -108,6 +109,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @access public 
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return array
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the access entities for the given data request.
      */
     public function getAccessEntities(DataRequest $dataRequest)
     {
@@ -128,7 +131,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return $accessEntities;
         } catch (\Exception $e) {
-            return array();
+            throw new Exception('Cannot load the access entities for the given data request from the database.', 0, $e);
         }
     }
 
@@ -138,7 +141,9 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      *
      * @access public 
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return integer
+     * @return false|integer
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot count the access entities for the given data request.
      */
     public function countAccessEntities(DataRequest $dataRequest)
     {
@@ -158,7 +163,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return intval($data['countEntries']);
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot count the access entities for the given data request.', 0, $e);
         }
     }
     
@@ -168,6 +173,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @access public
      * @param integer $id
      * @return string|false
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the uuid for access entitiy id "{id}".
      */
     public function getUuid($id)
     {
@@ -183,7 +190,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return false;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot load the uuid for access entitiy id "' . $id . '".', 0, $e);
         }
     }
     
@@ -193,6 +200,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @access public
      * @param string $uuid
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot check if there is an access entitiy for the given uuid "{uuid}".
      */
     public function hasAccessEntityForUuid($uuid)
     {
@@ -208,7 +217,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return false;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot check if there is an access entitiy for the given uuid "' . $uuid . '".', 0, $e);
         }
     }
     
@@ -219,6 +228,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @param string $type
      * @param string $name
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot check if there is an access entitiy for the given type "{type}" and name "{name}".
      */
     public function hasAccessEntityForName($type, $name)
     {
@@ -235,7 +246,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return false;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot check if there is an access entitiy for the given type "' . $type . '" and name "' . $name . '".', 0, $e);
         }
     }
     
@@ -245,6 +256,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @access public 
      * @param string $uuid
      * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the access entitiy from the database for the given uuid "{uuid}".
      */
     public function getAccessEntityForUuid($uuid)
     {
@@ -260,7 +273,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return $this->_generateAccessEntityObject($data);
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot load the access entitiy from the database for the given uuid "' . $uuid . '".', 0, $e);
         }
     }
     
@@ -271,6 +284,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @param string $type
      * @param string $name
      * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load access entitiy from the database for the given type "{type}" and name "{name}".
      */
     public function getAccessEntityForName($type, $name)
     {
@@ -287,7 +302,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return $this->_generateAccessEntityObject($data);
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot load the access entitiy for the given type "' . $type . '" and name "' . $name . '".', 0, $e);
         }
     }
 
@@ -336,6 +351,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @param string $key
      * @param array $metaData
      * @return string|false
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot add the new access entity "{name}".
      */
     public function addAccessEntity($type, $name, $key, $metaData = array())
     {
@@ -355,7 +372,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return $uuid;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot add the new access entitiy "' . $name .'".', 0, $e);
         }
     }
     
@@ -369,6 +386,8 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
      * @param string $key
      * @param array $metaData
      * @return boolean
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot update the access entity "{name}".
      */
     public function updateAccessEntity($uuid, $name, $key, $metaData)
     {
@@ -383,7 +402,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot update the access entitiy "' . $uuid . '".', 0, $e);
         }
     }
     
@@ -404,7 +423,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception('Cannot delete the access entitiy "' . $uuid . '".', 0, $e);
         }
     }
 }
