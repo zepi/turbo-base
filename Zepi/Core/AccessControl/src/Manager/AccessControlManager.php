@@ -56,7 +56,7 @@ class AccessControlManager
     
     /**
      * @access protected
-     * @var \Zepi\Core\AccessControl\PermissionsDataSourceInterface
+     * @var \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface
      */
     protected $_permissionsDataSource;
     
