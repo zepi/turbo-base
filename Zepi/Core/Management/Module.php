@@ -55,9 +55,9 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache', '\\Zepi\\Core\\Management\\EventHandler\\RebuildFrameworkCache');
-        $eventManager->addEventHandler('\\Zepi\\Core\\Management\\Event\\ListModules', '\\Zepi\\Core\\Management\\EventHandler\\ListModules');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache', '\\Zepi\\Core\\Management\\EventHandler\\RebuildFrameworkCache');
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\Management\\Event\\ListModules', '\\Zepi\\Core\\Management\\EventHandler\\ListModules');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('core|rebuildFrameworkCache', '\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache');
@@ -71,9 +71,9 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache', '\\Zepi\\Core\\Management\\EventHandler\\RebuildFrameworkCache');
-        $eventManager->removeEventHandler('\\Zepi\\Core\\Management\\Event\\ListModules', '\\Zepi\\Core\\Management\\EventHandler\\ListModules');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache', '\\Zepi\\Core\\Management\\EventHandler\\RebuildFrameworkCache');
+        $runtimeManager->removeEventHandler('\\Zepi\\Core\\Management\\Event\\ListModules', '\\Zepi\\Core\\Management\\EventHandler\\ListModules');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->removeRoute('core|rebuildFrameworkCache', '\\Zepi\\Core\\Management\\Event\\RebuildFrameworkCache');

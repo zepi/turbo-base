@@ -174,7 +174,7 @@ class Selector extends FieldAbstract
             
             $values[] = $item->getKey();
         }
-        
+
         $this->_value = $values;
         
         $this->_transformItems();

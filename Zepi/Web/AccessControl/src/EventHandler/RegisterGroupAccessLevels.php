@@ -57,9 +57,8 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
         $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
         $accessLevelManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');

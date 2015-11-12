@@ -57,9 +57,8 @@ class Homepage implements WebEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\Starter\\Templates\\Homepage', $framework, $request, $response));

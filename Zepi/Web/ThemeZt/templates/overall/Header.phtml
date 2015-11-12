@@ -23,7 +23,7 @@
         
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
 
-        <?php $framework->getEventManager()->executeEvent('\\Zepi\\Web\\General\\Event\\DisplayAssets'); ?>
+        <?php $framework->getRuntimeManager()->executeEvent('\\Zepi\\Web\\General\\Event\\DisplayAssets'); ?>
     </head>
     <body>
         <div class="container-fluid">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="icon-cell">
                         <ul class="notification-bar">
-                            <?php $framework->getEventManager()->executeEvent('\\Zepi\\Web\\General\\Event\\NotificationBarElements'); ?>
+                            <?php $framework->getRuntimeManager()->executeEvent('\\Zepi\\Web\\General\\Event\\NotificationBarElements'); ?>
                         </ul>
                     </div>
                 </div>

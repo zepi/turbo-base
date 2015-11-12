@@ -58,9 +58,8 @@ class RegisterMenuEntries implements WebEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');

@@ -113,7 +113,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql':
                 $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSource\\Mysql\\Backend\\DatabaseBackend');
                 
-                $dataSource = new $className($databaseMysqlBackend, $this->_framework->getEventManager());
+                $dataSource = new $className($databaseMysqlBackend, $this->_framework->getRuntimeManager());
                 return $dataSource;
             break;
             
@@ -132,8 +132,8 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('access|denied', '\\Zepi\\Core\\AccessControl\\Event\\AccessDenied');
@@ -169,8 +169,8 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->removeRoute('access|denied', '\\Zepi\\Core\\AccessControl\\Event\\AccessDenied');

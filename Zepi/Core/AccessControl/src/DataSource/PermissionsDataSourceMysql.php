@@ -39,7 +39,7 @@ namespace Zepi\Core\AccessControl\DataSource;
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
 use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
-use \Zepi\Turbo\Manager\EventManager;
+use \Zepi\Turbo\Manager\RuntimeManager;
 
 /**
  * The PermissionsDataSourceMysql communicates with the MySQL Database and 
@@ -58,21 +58,21 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     
     /**
      * @access protected
-     * @var \Zepi\Turbo\Manager\EventManager
+     * @var \Zepi\Turbo\Manager\RuntimeManager
      */
-    protected $_eventManager;
+    protected $_runtimeManager;
     
     /**
      * Constructs the object
      * 
      * @access public
      * @param \Zepi\DataSource\Mysql\Backend\DatabaseBackend $databaseBackend
-     * @param \Zepi\Turbo\Manager\EventManager $eventManager
+     * @param \Zepi\Turbo\Manager\RuntimeManager $runtimeManager
      */
-    public function __construct(DatabaseBackend $databaseBackend, EventManager $eventManager)
+    public function __construct(DatabaseBackend $databaseBackend, RuntimeManager $runtimeManager)
     {
         $this->_databaseBackend = $databaseBackend;
-        $this->_eventManager = $eventManager;
+        $this->_runtimeManager = $runtimeManager;
     }
     
     /**
@@ -185,8 +185,8 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         try {
             $accessLevels = $this->getPermissionsRaw($accessEntityUuid);
     
-            $accessLevels = $this->_eventManager->executeEvent('\\Zepi\\Core\\AccessControl\\Event\\PermissionsBackend\\ResolvePermissions', $accessLevels);
-    
+            $accessLevels = $this->_runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', $accessLevels);
+
             return $accessLevels;
         } catch (\Exception $e) {
             throw new Exception('Cannot load the permission for the given uuid "' . $accessEntityUuid . '".', 0, $e);

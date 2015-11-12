@@ -59,13 +59,10 @@ class RebuildFrameworkCache implements CliEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\CliRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
-     * 
-     * @throws Zepi\Core\Management\Exception The cache can only rebuilt by command line interface!
      */
-    public function executeEvent(Framework $framework, CliRequest $request, Response $response, $value = '')
+    public function execute(Framework $framework, CliRequest $request, Response $response)
     {
-        $framework->getEventManager()->clearCache(false);
+        $framework->getRuntimeManager()->clearCache(false);
         $framework->getRouteManager()->clearCache(false);
         
         $framework->getModuleManager()->reactivateModules();

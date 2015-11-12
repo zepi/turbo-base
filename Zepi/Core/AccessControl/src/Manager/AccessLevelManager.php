@@ -173,8 +173,8 @@ class AccessLevelManager
     public function getAccessLevels()
     {
         // Give the modules the opportunity to add additional access levels
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->executeEvent('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->executeEvent('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels');
         
         return $this->_accessLevels;
     }

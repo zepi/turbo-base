@@ -76,9 +76,8 @@ class EditGroup implements WebEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         // Redirect if the user hasn't a valid session
         if (!$request->hasSession() || !$request->getSession()->hasAccess('\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups')) {
@@ -233,7 +232,7 @@ class EditGroup implements WebEventHandlerInterface
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $this->_cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
-        
+
         $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         $accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
         

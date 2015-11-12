@@ -57,9 +57,8 @@ class RegisterRenderer implements EventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
         $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $templatesManager->addRenderer($framework->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer'));

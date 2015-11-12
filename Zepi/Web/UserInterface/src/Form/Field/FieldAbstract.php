@@ -171,7 +171,7 @@ abstract class FieldAbstract extends Part
          * If the field isn't assigned to a form group return false
          */
         if (!$group) {
-            return '';
+            return $this->_key;
         }
         
         return $group->getHtmlId() . '-' . $this->_key;
@@ -191,7 +191,7 @@ abstract class FieldAbstract extends Part
          * If the field isn't assigned to a form group return false
          */
         if (!$group) {
-            return false;
+            return $this->_key;
         }
         
         return $group->getKey() . '-' . $this->_key;

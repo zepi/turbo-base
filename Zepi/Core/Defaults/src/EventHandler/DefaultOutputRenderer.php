@@ -53,17 +53,16 @@ use \Zepi\Turbo\Response\Response;
 class DefaultOutputRenderer implements EventHandlerInterface
 {
     /**
-     * The DefaultOutputRenderer is the default output renderer.
-     * The output will be text based and contains all output parts
-     * from the response.
+     * Executes the event. This function must handle all exceptions. 
+     * If the function doesn't catch an exception, the exception 
+     * will terminate the whole process.
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
         if ($response->hasOutput()) {
             return;

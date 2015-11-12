@@ -129,10 +129,10 @@ class MenuManager
      */
     public function getMenuEntries($location)
     {
-        $eventManager = $this->_framework->getEventManager();
+        $runtimeManager = $this->_framework->getRuntimeManager();
         
         // Give the modules the opportunity to add additional menu entries
-        $eventManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
+        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
         
         // If this location does not exists, return an empty array
         if (!isset($this->_menuEntries[$location])) {
@@ -145,7 +145,7 @@ class MenuManager
         $response->setData('menu.entries', $this->_menuEntries[$location]);
         
         // Execute the event
-        $eventManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries');
+        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries');
         
         return $response->getData('menu.entries');
     }
@@ -227,10 +227,10 @@ class MenuManager
      */
     public function activateCorrectMenuEntry()
     {
-        $eventManager = $this->_framework->getEventManager();
+        $runtimeManager = $this->_framework->getRuntimeManager();
         
         // Execute the pre search correct menu entry event.
-        $eventManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry');
+        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry');
         
         // Search the correct menu entry, if no menu entry is set
         if ($this->_activeMenuEntry == null) {
@@ -242,7 +242,7 @@ class MenuManager
         }
         
         // Execute the post search correct menu entry event
-        $eventManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PostSearchCorrectMenuEntry');
+        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PostSearchCorrectMenuEntry');
 
         // Activate the menu entry
         if ($this->_activeMenuEntry !== null) {

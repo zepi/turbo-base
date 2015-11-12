@@ -28,14 +28,14 @@
  * Replaces all group access levels with the permissions of the group
  * 
  * @package Zepi\Web\AccessControl
- * @subpackage EventHandler
+ * @subpackage FilterHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler;
+namespace Zepi\Web\AccessControl\FilterHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
@@ -48,7 +48,7 @@ use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class ResolveGroupPermissions implements EventHandlerInterface
+class ResolveGroupPermissions implements FilterHandlerInterface
 {
     /**
      * Replaces all group access levels with the permissions of the group
@@ -58,8 +58,9 @@ class ResolveGroupPermissions implements EventHandlerInterface
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
+     * @return mixed
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = null)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
         $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
         

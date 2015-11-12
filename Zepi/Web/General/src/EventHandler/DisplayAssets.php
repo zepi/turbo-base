@@ -59,11 +59,8 @@ class DisplayAssets implements WebEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
-     * 
-     * @throws Zepi\Core\Management\Exception The list with the activated modules can only be viewed from command line!
      */
-    public function executeEvent(Framework $framework, WebRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         $assetsManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         

@@ -126,8 +126,8 @@ class Module extends ModuleAbstract
                     $this->_templatesManager->initializeTemplatesManager();
                     
                     // Execute the register renderer event
-                    $eventManager = $this->_framework->getEventManager();
-                    $eventManager->executeEvent('\\Zepi\\Web\\General\\Event\\RegisterRenderers');
+                    $runtimeManager = $this->_framework->getRuntimeManager();
+                    $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\RegisterRenderers');
                 }
                 
                 return $this->_templatesManager;
@@ -187,11 +187,11 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\Administration', '\\Zepi\\Web\\General\\EventHandler\\Administration');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\Administration', '\\Zepi\\Web\\General\\EventHandler\\Administration');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
@@ -214,10 +214,11 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Web\\General\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\Administration', '\\Zepi\\Web\\General\\EventHandler\\Administration');
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->removeRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);

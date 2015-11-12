@@ -84,8 +84,8 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         // Add the event handler
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Web\\Starter\\Event\\Homepage', '\\Zepi\\Web\\Starter\\EventHandler\\Homepage');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\Starter\\Event\\Homepage', '\\Zepi\\Web\\Starter\\EventHandler\\Homepage');
         
         // Add the route
         $routeManager = $this->_framework->getRouteManager();
@@ -104,8 +104,8 @@ class Module extends ModuleAbstract
     public function deactivate()
     {
         // Add the event handler
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Web\\Starter\\Event\\Homepage', '\\Zepi\\Web\\Starter\\EventHandler\\Homepage');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\Starter\\Event\\Homepage', '\\Zepi\\Web\\Starter\\EventHandler\\Homepage');
         
         // Add the route
         $routeManager = $this->_framework->getRouteManager();

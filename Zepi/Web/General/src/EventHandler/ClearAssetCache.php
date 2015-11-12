@@ -59,7 +59,7 @@ class ClearAssetCache implements CliEventHandlerInterface
      * @param \Zepi\Turbo\Response\Response $response
      * @param mixed $value
      */
-    public function executeEvent(Framework $framework, CliRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         $assetsManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         

@@ -53,9 +53,9 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
-        $eventManager->addEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
+        $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
     }
     
     /**
@@ -65,8 +65,8 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
-        $eventManager->removeEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
+        $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
     }
 }

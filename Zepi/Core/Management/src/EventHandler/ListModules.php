@@ -59,11 +59,8 @@ class ListModules implements CliEventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\CliRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
-     * 
-     * @throws Zepi\Core\Management\Exception The list with the activated modules can only be viewed from command line!
      */
-    public function executeEvent(Framework $framework, CliRequest $request, Response $response, $value = null)
+    public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         $output = 'Activated modules:' . PHP_EOL;
         $output .= '==================' . PHP_EOL . PHP_EOL;

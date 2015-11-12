@@ -58,9 +58,8 @@ class DefaultRouteNotFound implements EventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @param mixed $value
      */
-    public function executeEvent(Framework $framework, RequestAbstract $request, Response $response, $value = '')
+    public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
         $response->setOutputPart('404', 'The requested route is not available. We can\'t execute the request.');
     }

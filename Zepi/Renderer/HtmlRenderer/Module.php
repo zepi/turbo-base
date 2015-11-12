@@ -96,8 +96,8 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
     }
     
     /**
@@ -107,6 +107,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
     }
 }

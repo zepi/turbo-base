@@ -149,25 +149,30 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Management\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Management\\Users');
-        $eventManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession');
-        $eventManager->addEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
-        $eventManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
-        $eventManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\EventHandler\\ResolveGroupPermissions');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Management\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Management\\Users');
+        $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
         
         // Administration
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditUser');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteUser');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Groups');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditGroup');
-        $eventManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditUser');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteUser');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Groups');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditGroup');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup');
+        
+        
+        
+        $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
+        
+        
         
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('login', '\\Zepi\\Web\\AccessControl\\Event\\Login');
@@ -188,6 +193,8 @@ class Module extends ModuleAbstract
         $routeManager->addRoute('administration|groups|modify|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup');
         $routeManager->addRoute('administration|groups|delete|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
         $routeManager->addRoute('administration|groups|delete|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
+        
+        
         
         $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\LoginForm', $this->_directory . '/templates/Login.Form.phtml');
@@ -228,25 +235,29 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $eventManager = $this->_framework->getEventManager();
-        $eventManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Management\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Management\\Users');
-        $eventManager->removeEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
-        $eventManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
-        $eventManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\EventHandler\\ResolveGroupPermissions');
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Management\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Management\\Users');
+        $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
+        $runtimeManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
         
         // Administration
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditUser');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteUser');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Groups');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditGroup');
-        $eventManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditUser');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteUser');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Groups');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditGroup');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup');
+        
+        
+        
+        $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
+        
         
         
         $routeManager = $this->_framework->getRouteManager();
@@ -268,6 +279,7 @@ class Module extends ModuleAbstract
         $routeManager->removeRoute('administration|groups|modify|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup');
         $routeManager->removeRoute('administration|groups|delete|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
         $routeManager->removeRoute('administration|groups|delete|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
+        
         
         
         $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
