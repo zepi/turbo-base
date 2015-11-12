@@ -166,15 +166,19 @@ abstract class FieldAbstract extends Part
     public function getHtmlId()
     {
         $group = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Group');
-
+        $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form');
+        $id = '';
+        
         /**
          * If the field isn't assigned to a form group return false
          */
-        if (!$group) {
-            return $this->_key;
+        if ($group !== false) {
+            $id = $group->getHtmlId() . '-';
+        } else if ($form !== false) {
+            $id = $form->getHtmlId() . '-';
         }
         
-        return $group->getHtmlId() . '-' . $this->_key;
+        return $id . $this->_key;
     }
     
     /**
@@ -186,15 +190,16 @@ abstract class FieldAbstract extends Part
     public function getHtmlName()
     {
         $group = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Group');
+        $name = '';
         
         /**
          * If the field isn't assigned to a form group return false
          */
-        if (!$group) {
-            return $this->_key;
+        if ($group !== false) {
+            $name = $group->getKey() . '-';
         }
         
-        return $group->getKey() . '-' . $this->_key;
+        return $name . $this->_key;
     }
     
     /**
