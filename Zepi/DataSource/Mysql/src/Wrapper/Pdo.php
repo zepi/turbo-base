@@ -29,13 +29,13 @@
  * Wraps PDO to work around connecting to the database in PDO constructor.
  * Will lazy initialize DB connection on first request.
  * 
- * @package Zepi\DataSources\DatabaseMysql
+ * @package Zepi\DataSource\Mysql
  * @subpackage Wrapper
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\DataSources\DatabaseMysql\Wrapper;
+namespace Zepi\DataSource\Mysql\Wrapper;
 
 /**
  * Database handler class.
