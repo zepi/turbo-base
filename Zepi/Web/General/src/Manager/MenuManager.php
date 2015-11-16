@@ -139,15 +139,10 @@ class MenuManager
             return array();
         }
         
-        // Save the data in the response
-        $response = $this->_framework->getResponse();
-        $response->setData('menu.location', $location);
-        $response->setData('menu.entries', $this->_menuEntries[$location]);
-        
         // Execute the event
-        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries');
+        $menuEntries = $runtimeManager->executeFilter('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', $this->_menuEntries[$location]);
         
-        return $response->getData('menu.entries');
+        return $menuEntries;
     }
     
     /**

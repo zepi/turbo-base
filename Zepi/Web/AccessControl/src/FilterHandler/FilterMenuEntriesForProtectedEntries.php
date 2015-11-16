@@ -29,15 +29,16 @@
  * control levels for the protected menu entries.
  * 
  * @package Zepi\Web\AccessControl
- * @subpackage EventHandler
+ * @subpackage FilterHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler;
+namespace Zepi\Web\AccessControl\FilterHandler;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
@@ -49,7 +50,7 @@ use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
+class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
 {
     /**
      * Filters the given menu entries and removes all protected menu
@@ -57,19 +58,20 @@ class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
+     * @param mixed $value
+     * @return mixed
      */
-    public function execute(Framework $framework, WebRequest $request, Response $response)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
-        // Get the entries
-        $entries = $response->getData('menu.entries');
+        // If the request is not a web request return the value as we received it
+        if (!is_a($request, '\\Zepi\\Turbo\\Request\\WebRequest')) {
+            return $value;
+        }
         
         // Verify the entries
-        $entries = $this->_verifyEntries($entries, $framework, $request);
-        
-        // Save the entries
-        $response->setData('menu.entries', $entries);
+        return $this->_verifyEntries($value, $request);
     }
     
     /**
@@ -77,16 +79,15 @@ class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
      * 
      * @access protected
      * @param array $entries
-     * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return array
      */
-    protected function _verifyEntries($entries, Framework $framework, WebRequest $request)
+    protected function _verifyEntries($entries, WebRequest $request)
     {
         foreach ($entries as $key => $entry) {
             // If the entry is a ProtectedMenuEntry, verify the entry
             if ($entry instanceof \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry) {
-                $result = $this->_verifyProtectedEntry($entry, $framework, $request);
+                $result = $this->_verifyProtectedEntry($entry, $request);
                 
                 // If the entry isn't allowed remove it from the array
                 if (!$result) {
@@ -96,7 +97,7 @@ class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
             
             // If the entry has children, verify all children
             if ($entry->hasChildren()) {
-                $children = $this->_verifyEntries($entry->getChildren(), $framework, $request);
+                $children = $this->_verifyEntries($entry->getChildren(), $request);
                 
                 $entry->setChildren($children);
             }
@@ -110,11 +111,10 @@ class FilterMenuEntriesForProtectedEntries implements WebEventHandlerInterface
      * 
      * @access protected
      * @param \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry $protectedEntry
-     * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
-    protected function _verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, Framework $framework, WebRequest $request)
+    protected function _verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, WebRequest $request)
     {
         // If the user has no session we do not have to check the permissions
         if (!$request->hasSession()) {

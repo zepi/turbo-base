@@ -150,7 +150,6 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         $runtimeManager = $this->_framework->getRuntimeManager();
-        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
@@ -170,6 +169,7 @@ class Module extends ModuleAbstract
         
         
         
+        $runtimeManager->addFilterHandler('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\FilterHandler\\FilterMenuEntriesForProtectedEntries');
         $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
         
         
@@ -256,7 +256,8 @@ class Module extends ModuleAbstract
         
         
         
-        $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
+        $runtimeManager->removeFilterHandler('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\FilterHandler\\FilterMenuEntriesForProtectedEntries');
+        $runtimeManager->removeFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
         
         
         
