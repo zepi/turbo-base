@@ -106,6 +106,17 @@ class ConfigurationManager
     }
     
     /**
+     * Returns all setting groups and settings
+     *
+     * @access public
+     * @return array
+     */
+    public function getSettings()
+    {
+        return $this->_settings;
+    }
+    
+    /**
      * Returns true if the given settings key exists.
      * 
      * @access public
