@@ -141,13 +141,11 @@ class Module extends ModuleAbstract
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();
         $dataSourceManager->addDataSource(
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface',
             '\\Zepi\\DataSource\\Mysql',
             '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
         );
         
         $dataSourceManager->addDataSource(
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface',
             '\\Zepi\\DataSource\\Mysql',
             '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
         );
@@ -182,13 +180,13 @@ class Module extends ModuleAbstract
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();
         $dataSourceManager->removeDataSource(
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface',
-            '\\Zepi\\DataSource\\Mysql'
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
         );
         
         $dataSourceManager->removeDataSource(
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface',
-            '\\Zepi\\DataSource\\Mysql'
+            '\\Zepi\\DataSource\\Mysql',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
         );
     }
 }
