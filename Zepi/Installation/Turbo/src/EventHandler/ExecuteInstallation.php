@@ -88,7 +88,10 @@ class ExecuteInstallation implements CliEventHandlerInterface
         
         // Execute the DataSource setups
         $dataSourceManager = $framework->getDataSourceManager();
-        
+        foreach ($dataSourceManager->getDataSourceTypeClasses() as $type) {
+            $dataSource = $dataSourceManager->getDataSource($type);
+            $dataSource->setup();
+        }
     }
     
     /**
