@@ -125,7 +125,7 @@ class LanguageFileManager
         
         // Load the module
         $moduleManager = $this->_framework->getModuleManager();
-        $module = $moduleManager->getModuleByNamespace($namespace);
+        $module = $moduleManager->getModule($namespace);
         if ($module === false) {
             return false;
         }
