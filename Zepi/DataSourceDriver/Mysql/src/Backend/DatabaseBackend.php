@@ -27,16 +27,16 @@
 /**
  * Database Backend to connect to a database
  * 
- * @package Zepi\DataSource\Mysql
+ * @package Zepi\DataSourceDriver\Mysql
  * @subpackage Backend
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\DataSource\Mysql\Backend;
+namespace Zepi\DataSourceDriver\Mysql\Backend;
 
-use \Zepi\DataSource\Mysql\Wrapper\Pdo;
-use \Zepi\DataSource\Mysql\Exception;
+use \Zepi\DataSourceDriver\Mysql\Wrapper\Pdo;
+use \Zepi\DataSourceDriver\Mysql\Exception;
 use \Zepi\Core\Utils\Entity\DataRequest;
 
 /**
@@ -53,14 +53,14 @@ class DatabaseBackend
     protected $_isConnected = false;
     
     /**
-     * @var \Zepi\DataSource\Mysql\Wrapper\Pdo
+     * @var \Zepi\DataSourceDriver\Mysql\Wrapper\Pdo
      */
     protected $_pdo;
     
     /**
      * Constructs the object.
      *
-     * @param \Zepi\DataSource\Mysql\Wrapper\Pdo $pdo
+     * @param \Zepi\DataSourceDriver\Mysql\Wrapper\Pdo $pdo
      */
     public function __construct(Pdo $pdo)
     {
@@ -141,7 +141,7 @@ class DatabaseBackend
      * @param string $sql
      * @return integer
      * 
-     * @throws \Zepi\DataSource\Mysql\Exception Failure in preparing the sql query
+     * @throws \Zepi\DataSourceDriver\Mysql\Exception Failure in preparing the sql query
      */
     public function execute($sql)
     {
@@ -161,7 +161,7 @@ class DatabaseBackend
      * @param string $sql
      * @return PDOStatement|false
      * 
-     * @throws \Zepi\DataSource\Mysql\Exception Failure in executing the sql query
+     * @throws \Zepi\DataSourceDriver\Mysql\Exception Failure in executing the sql query
      */
     public function query($sql)
     {

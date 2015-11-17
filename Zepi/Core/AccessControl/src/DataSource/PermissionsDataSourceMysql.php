@@ -38,7 +38,7 @@ namespace Zepi\Core\AccessControl\DataSource;
 
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
-use \Zepi\DataSource\Mysql\Backend\DatabaseBackend;
+use \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend;
 use \Zepi\Turbo\Manager\RuntimeManager;
 
 /**
@@ -52,7 +52,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
 {
     /**
      * @access protected
-     * @var \Zepi\DataSource\Mysql\Backend\DatabaseBackend
+     * @var \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend
      */
     protected $_databaseBackend;
     
@@ -66,7 +66,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSource\Mysql\Backend\DatabaseBackend $databaseBackend
+     * @param \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend $databaseBackend
      * @param \Zepi\Turbo\Manager\RuntimeManager $runtimeManager
      */
     public function __construct(DatabaseBackend $databaseBackend, RuntimeManager $runtimeManager)

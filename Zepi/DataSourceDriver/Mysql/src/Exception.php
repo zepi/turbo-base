@@ -27,12 +27,12 @@
 /**
  * The exception
  * 
- * @package Zepi\DataSource\Mysql
+ * @package Zepi\DataSourceDriver\Mysql
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\DataSource\Mysql;
+namespace Zepi\DataSourceDriver\Mysql;
 
 /**
  * The exception

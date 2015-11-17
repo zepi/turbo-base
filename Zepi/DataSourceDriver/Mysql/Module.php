@@ -27,12 +27,12 @@
 /**
  * This module delivers the MySQL Database data source.
  * 
- * @package Zepi\DataSource\Mysql
+ * @package Zepi\DataSourceDriver\Mysql
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\DataSource\Mysql;
+namespace Zepi\DataSourceDriver\Mysql;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
 
@@ -51,7 +51,7 @@ class Module extends ModuleAbstract
      */
     public function initialize()
     {
-        $this->_framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSource\\Mysql');
+        $this->_framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Mysql');
     }
     
     
@@ -65,7 +65,7 @@ class Module extends ModuleAbstract
     public function getInstance($className)
     {
         switch ($className) {
-            case '\\Zepi\\DataSource\\Mysql\\Backend\\DatabaseBackend':
+            case '\\Zepi\\DataSourceDriver\\Mysql\\Backend\\DatabaseBackend':
                 $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                 
                 $databaseHost = $configurationManager->getSetting('mysql', 'databaseHost');
@@ -75,7 +75,7 @@ class Module extends ModuleAbstract
                 $databaseUser = $configurationManager->getSetting('mysql', 'databaseUser');
                 $databasePassword = $configurationManager->getSetting('mysql', 'databasePassword');
                 
-                $pdo = new \Zepi\DataSource\Mysql\Wrapper\Pdo($pdoDsn, $databaseUser, $databasePassword);
+                $pdo = new \Zepi\DataSourceDriver\Mysql\Wrapper\Pdo($pdoDsn, $databaseUser, $databasePassword);
                 
                 $databaseBackend = new $className($pdo);
                 return $databaseBackend;
