@@ -54,7 +54,12 @@ class CliHelper
      */
     public function confirmAction($text, $defaultValue = 'yes')
     {
-        echo $text . ' (yes/no) [' . $defaultValue . '] ';
+        $defaultValueStr = '';
+        if ($defaultValue != '') {
+            $defaultValueStr = '[' . $defaultValue . '] ';
+        }
+        
+        echo $text . ' (yes/no) ' . $defaultValueStr;
         
         $handle = fopen('php://stdin', 'r');
         $line = fgets($handle);
@@ -79,9 +84,14 @@ class CliHelper
      * @param string $defaultValue
      * @return string
      */
-    public function inputText($text, $defaultValue = 'yes')
+    public function inputText($text, $defaultValue = '')
     {
-        echo $text . ' [' . $defaultValue . '] ';
+        $defaultValueStr = '';
+        if ($defaultValue != '') {
+            $defaultValueStr = '[' . $defaultValue . '] ';
+        }
+        
+        echo $text . ' ' . $defaultValueStr;
     
         $handle = fopen('php://stdin', 'r');
         $line = fgets($handle);
