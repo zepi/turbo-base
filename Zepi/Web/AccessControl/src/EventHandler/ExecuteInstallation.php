@@ -84,7 +84,7 @@ class ExecuteInstallation implements CliEventHandlerInterface
         $user->setNewPassword($password);
         
         // Save the super-admin user
-        $userManager->addUser($user);
+        $user = $userManager->addUser($user);
         
         // Add the super-admin access level
         $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
