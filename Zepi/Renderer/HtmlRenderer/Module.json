@@ -1,0 +1,18 @@
+{
+    "module": {
+        "name": "HTML Renderer",
+        "description": "This module delivers an easy to use template system.",
+        "namespace": "\\Zepi\\Renderer\\HtmlRenderer",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2014 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Web\\General": "*",
+            "\\Zepi\\Core\\Language": "*"
+        }
+    }
+}
+

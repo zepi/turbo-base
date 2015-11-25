@@ -1,0 +1,16 @@
+{
+    "module": {
+        "name": "MySQL Data Source",
+        "description": "This module delivers the MySQL Database data source.",
+        "namespace": "\\Zepi\\DataSourceDriver\\Mysql",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2014 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Core\\Utils": "*"
+        }
+    }
+}
