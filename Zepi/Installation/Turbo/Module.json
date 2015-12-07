@@ -1,0 +1,16 @@
+{
+    "module": {
+        "name": "zepi Turbo Installer",
+        "description": "Turbo Installer",
+        "namespace": "\\Zepi\\Installation\\Turbo\\",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2015 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Core\\Utils": "*"
+        }
+    }
+}

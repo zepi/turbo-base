@@ -1,0 +1,18 @@
+{
+    "module": {
+        "name": "Zepi Web User Interface",
+        "description": "This module delivers the frontend user interface for the zepi Turbo.",
+        "namespace": "\\Zepi\\Web\\UserInterface",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2015 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Core\\Utils": "*",
+            "\\Zepi\\Renderer\\HtmlRenderer": "*",
+            "\\Zepi\\Web\\General": "*"
+        }
+    }
+}
