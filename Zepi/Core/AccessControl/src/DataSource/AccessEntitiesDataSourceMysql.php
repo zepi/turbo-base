@@ -170,13 +170,13 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
     /**
      * Returns the uuid of the given access entity id
      * 
-     * @access public
+     * @access protected
      * @param integer $id
      * @return string|false
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the uuid for access entitiy id "{id}".
      */
-    public function getUuid($id)
+    protected function _getUuid($id)
     {
         try {
             $sql = 'SELECT access_entity_uuid FROM access_entities '
@@ -368,7 +368,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             $this->_databaseBackend->execute($sql);
             
             $lastId = $this->_databaseBackend->getLastId();
-            $uuid = $this->getUuid($lastId);
+            $uuid = $this->_getUuid($lastId);
             
             return $uuid;
         } catch (\Exception $e) {

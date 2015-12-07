@@ -68,15 +68,6 @@ interface AccessEntitiesDataSourceInterface
     public function countAccessEntities(DataRequest $dataRequest);
     
     /**
-     * Returns the uuid of the given access entity id
-     * 
-     * @access public
-     * @param integer $id
-     * @return string|false
-     */
-    public function getUuid($id);
-    
-    /**
      * Returns true if there is a access entity for the given uuid
      * 
      * @access public
