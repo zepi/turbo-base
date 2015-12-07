@@ -68,27 +68,18 @@ class AccessLevelManager
     protected $_accessLevelsObjectBackend;
     
     /**
-     * @access protected
-     * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
-     */
-    protected $_accessControlManager;
-    
-    /**
      * Constructs the object
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Backend\ObjectBackendAbstract $accessLevelObjectBackend
-     * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
      */
     public function __construct(
         Framework $framework,
-        ObjectBackendAbstract $accessLevelObjectBackend,
-        AccessControlManager $accessControlManager
+        ObjectBackendAbstract $accessLevelObjectBackend
     ) {
         $this->_framework = $framework;
         $this->_accessLevelsObjectBackend = $accessLevelObjectBackend;
-        $this->_accessControlManager = $accessControlManager;
     }
     
     /**
@@ -161,7 +152,8 @@ class AccessLevelManager
         $this->_saveAccessLevels();
         
         // Revoke all permissions for the given access level key
-        $this->_accessControlManager->revokePermissions($key);
+        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', $key);
     }
     
     /**

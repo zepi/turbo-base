@@ -91,8 +91,7 @@ class Module extends ModuleAbstract
             
                     $this->_accessLevelManager = new $className(
                             $this->_framework,
-                            $accessLevelsObjectBackend,
-                            $this->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager')
+                            $accessLevelsObjectBackend
                     );
                     $this->_accessLevelManager->initializeAccessLevelManager();
                 }
@@ -133,10 +132,7 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         $runtimeManager = $this->_framework->getRuntimeManager();
-        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
-        
-        $routeManager = $this->_framework->getRouteManager();
-        $routeManager->addRoute('access|denied', '\\Zepi\\Core\\AccessControl\\Event\\AccessDenied');
+        $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
         
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();
@@ -168,10 +164,7 @@ class Module extends ModuleAbstract
     public function deactivate()
     {
         $runtimeManager = $this->_framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessDenied', '\\Zepi\\Core\\AccessControl\\EventHandler\\AccessDenied');
-        
-        $routeManager = $this->_framework->getRouteManager();
-        $routeManager->removeRoute('access|denied', '\\Zepi\\Core\\AccessControl\\Event\\AccessDenied');
+        $runtimeManager->removeFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
         
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
