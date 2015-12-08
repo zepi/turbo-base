@@ -46,7 +46,7 @@
                             <?php if ($menuManager != false): ?>
                                 <?php foreach ($menuManager->getMenuEntries('menu-left') as $menuEntry): ?>
                                     <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot'); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>
@@ -56,7 +56,7 @@
                             <?php if ($menuManager != false): ?>
                                 <?php foreach ($menuManager->getMenuEntries('menu-right') as $menuEntry): ?>
                                     <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot'); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>

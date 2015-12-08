@@ -86,10 +86,10 @@ class Module extends ModuleAbstract
         
         // Add the templates
         $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
     }
     
     /**
@@ -119,9 +119,9 @@ class Module extends ModuleAbstract
         
         // Remove the templates
         $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
     }
 }

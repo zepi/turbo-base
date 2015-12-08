@@ -44,7 +44,7 @@
                 
                 <?php if ($child->hasChildren()): ?>
                     <?php $response->setData('printingMenuEntry', $child); ?>
-                    <?php $this->printTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NavItemSubmenu'); ?>
+                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu'); ?>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>
