@@ -122,6 +122,24 @@ class DataRequest
     }
     
     /**
+     * Returns true if the request has a filter for the given name
+     *
+     * @access public
+     * @param string $name
+     * @return boolean
+     */
+    public function hasFilter($name)
+    {
+        foreach ($this->_filters as $filter) {
+            if ($filter->getFieldName() === $name) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
+    /**
      * Returns the Filter object for the given key
      * 
      * @access public
