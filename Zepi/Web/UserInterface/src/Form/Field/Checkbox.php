@@ -25,7 +25,7 @@
  */
 
 /**
- * Form Element Submit button
+ * Form Element Checkbox
  * 
  * @package Zepi\Web\UserInterface
  * @subpackage Form\Field
@@ -38,45 +38,54 @@ namespace Zepi\Web\UserInterface\Form\Field;
 use \Zepi\Turbo\Request\RequestAbstract;
 
 /**
- * Form Element Submit button
+ * Form Element Checkbox
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Submit extends Button
+class Checkbox extends FieldAbstract
 {
-    /**
-     * @access protected
-     * @var string
-     */
-    protected $_type = 'submit';
-    
     /**
      * @access protected
      * @var array
      */
-    protected $_classes = array(
-        'btn-primary',
-        'submit-btn',
-    );
+    protected $_availableValues = array();
+    
+    /**
+     * Returns the name of the template to render the field
+     * 
+     * @access public
+     * @return string
+     */
+    public function getTemplateName()
+    {
+        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Checkbox';
+    }
+    
+    /**
+     * Returns true if the label of the field should be displayed
+     *
+     * @access public
+     * @return boolean
+     */
+    public function displayLabel()
+    {
+        return false;
+    }
     
     /**
      * Sets the html form value of the field
-     * 
+     *
      * @access public
-     * @param string $value
+     * @param mixed $value
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
     public function setValue($value, RequestAbstract $request)
     {
-        if ($value == $this->_label) {
-            $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Form');
-            
-            if (is_object($form)) {
-                $form->setIsSubmitted(true);
-            }
+        if (!$request->hasParam($this->getHtmlName() . '_change')) {
+            $this->_value = false;
+        } else if ($request->hasParam($this->getHtmlName() . '_change')) {
+            $this->_value = true;
         }
-        
-        parent::setValue($value, $request);
     }
 }

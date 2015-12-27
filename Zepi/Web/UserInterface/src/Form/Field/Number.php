@@ -35,6 +35,8 @@
 
 namespace Zepi\Web\UserInterface\Form\Field;
 
+use \Zepi\Turbo\Request\RequestAbstract;
+
 /**
  * Form Element Number
  * 
@@ -59,8 +61,9 @@ class Number extends FieldAbstract
      *
      * @access public
      * @param mixed $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
-    public function setValue($value)
+    public function setValue($value, RequestAbstract $request)
     {
         $this->_value = intval($value);
     }

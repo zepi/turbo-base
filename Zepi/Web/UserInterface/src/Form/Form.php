@@ -220,7 +220,7 @@ class Form extends Part
          */
         foreach ($this->getChildrenByType('\\Zepi\\Web\\UserInterface\\Form\\Field\\FieldAbstract') as $field) {
             if ($request->hasParam($field->getHtmlName())) {
-                $field->setValue($request->getParam($field->getHtmlName()));
+                $field->setValue($request->getParam($field->getHtmlName()), $request);
             }
         }
     }

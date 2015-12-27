@@ -36,6 +36,7 @@
 namespace Zepi\Web\UserInterface\Form\Field;
 
 use \Zepi\Web\UserInterface\Form\Field\FieldAbstract;
+use \Zepi\Turbo\Request\RequestAbstract;
 
 /**
  * Form Element Selector
@@ -155,8 +156,9 @@ class Selector extends FieldAbstract
      *
      * @access public
      * @param string $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
-    public function setValue($value)
+    public function setValue($value, RequestAbstract $request)
     {
         $hashs = json_decode($value);
         

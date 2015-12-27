@@ -37,6 +37,7 @@ namespace Zepi\Web\UserInterface\Form\Field;
 
 use \Zepi\Web\UserInterface\Form\Group;
 use \Zepi\Web\UserInterface\Layout\Part;
+use \Zepi\Turbo\Request\RequestAbstract;
 
 /**
  * Form FieldAbstract
@@ -306,8 +307,9 @@ abstract class FieldAbstract extends Part
      * 
      * @access public
      * @param mixed $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
-    public function setValue($value)
+    public function setValue($value, RequestAbstract $request)
     {
         $this->_value = $value;
     }

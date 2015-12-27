@@ -1,0 +1,20 @@
+<?php 
+
+$field = $additionalData['field']; 
+
+$additionalClasses = '';
+if ($field->isMandatory()) {
+    $additionalClasses .= 'required';
+}
+?>
+
+<div class="checkbox">
+    <label class="control-label <?php echo $additionalClasses; ?>">
+        <input type="checkbox" name="<?php echo $field->getHtmlName() . '_change'; ?>" id="<?php echo $field->getHtmlId(); ?>" class="<?php echo $field->getHtmlClasses(); ?>" value="1" 
+                <?php if ($field->getValue()) { echo 'checked="checked"'; } ?>
+                <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+            />
+        <?php echo $field->getLabel(); ?>
+    </label>
+    <input type="hidden" name="<?php echo $field->getHtmlName(); ?>" value="<?php echo $field->getValue(); ?>" />
+</div>
