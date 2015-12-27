@@ -1,0 +1,12 @@
+<?php $field = $additionalData['field']; ?>
+<select name="<?php echo $field->getHtmlName(); ?>" id="<?php echo $field->getHtmlId(); ?>" class="form-control <?php echo $field->getHtmlClasses(); ?>"
+        <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+    >
+    <?php foreach ($field->getAvailableValues() as $value => $label): ?>
+        <option value="<?php echo $value; ?>"
+                <?php if ($field->getValue() === $value) { echo 'selected="selected"'; } ?>
+            >
+            <?php echo $label; ?>
+        </option>
+    <?php endforeach; ?>
+</select>
