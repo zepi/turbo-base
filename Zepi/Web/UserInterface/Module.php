@@ -114,6 +114,7 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Price', $this->_directory . '/templates/Form/Field/price.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Select', $this->_directory . '/templates/Form/Field/select.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Checkbox', $this->_directory . '/templates/Form/Field/checkbox.phtml');
@@ -121,6 +122,7 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Password', $this->_directory . '/templates/Form/Field/password.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Button', $this->_directory . '/templates/Form/Field/button.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Selector', $this->_directory . '/templates/Form/Field/selector.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\DynamicZone', $this->_directory . '/templates/Form/Field/dynamicZone.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Snippet\\SelectorItem', $this->_directory . '/templates/Form/Snippet/selector-item.phtml');
         
         // Table
@@ -143,6 +145,7 @@ class Module extends ModuleAbstract
         $assetsManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         $assetsManager->addAsset(AssetsManager::JS, 'ui-tabs', $this->_directory . '/assets/js/tabs.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-price', $this->_directory . '/assets/js/price.js', array('zt-main'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-dynamic-zone', $this->_directory . '/assets/js/dynamicZone.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-mask', $this->_directory . '/assets/js/jquery.maskMoney.js', array('zt-main'));
         
         $assetsManager->addAsset(AssetsManager::CSS, 'ui-form', $this->_directory . '/assets/css/form.css', array('zt-form'));
@@ -168,6 +171,7 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Price', $this->_directory . '/templates/Form/Field/price.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Select', $this->_directory . '/templates/Form/Field/select.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Checkbox', $this->_directory . '/templates/Form/Field/checkbox.phtml');
@@ -175,6 +179,7 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Password', $this->_directory . '/templates/Form/Field/password.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Button', $this->_directory . '/templates/Form/Field/button.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Selector', $this->_directory . '/templates/Form/Field/selector.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\DynamicZone', $this->_directory . '/templates/Form/Field/dynamicZone.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Snippet\\SelectorItem', $this->_directory . '/templates/Form/Snippet/selector-item.phtml');
         
         // Table
@@ -197,6 +202,7 @@ class Module extends ModuleAbstract
         $assetsManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         $assetsManager->removeAsset(AssetsManager::JS, 'ui-tabs');
         $assetsManager->removeAsset(AssetsManager::JS, 'ui-price');
+        $assetsManager->removeAsset(AssetsManager::JS, 'ui-dynamic-zone');
         $assetsManager->removeAsset(AssetsManager::JS, 'ui-jquery-mask');
 
         $assetsManager->removeAsset(AssetsManager::CSS, 'ui-form');

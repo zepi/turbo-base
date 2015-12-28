@@ -97,6 +97,12 @@ abstract class FieldAbstract extends Part
     
     /**
      * @access protected
+     * @var integer
+     */
+    protected $_tabIndex;
+    
+    /**
+     * @access protected
      * @var string
      */
     protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base';
@@ -111,8 +117,9 @@ abstract class FieldAbstract extends Part
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
+     * @param integer $tabIndex
      */
-    public function __construct($key, $label, $isMandatory = false, $value = '', $helpText = '', $classes = array(), $placeholder = '')
+    public function __construct($key, $label, $isMandatory = false, $value = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
         $this->_key = $key;
         $this->_label = $label;
@@ -120,6 +127,7 @@ abstract class FieldAbstract extends Part
         $this->_value = $value;
         $this->_helpText = $helpText;
         $this->_placeholder = $placeholder;
+        $this->_tabIndex = $tabIndex;
         
         if (count($classes) > 0) {
             $this->_classes = $classes;
@@ -323,6 +331,17 @@ abstract class FieldAbstract extends Part
     public function hasValue()
     {
         return ($this->_value != '');
+    }
+    
+    /**
+     * Returns the tab index
+     * 
+     * @access public
+     * @return integer
+     */
+    public function getTabIndex()
+    {
+        return $this->_tabIndex;
     }
     
     /**

@@ -9,6 +9,10 @@
     name="<?php echo $field->getHtmlName(); ?>" 
     id="<?php echo $field->getHtmlId(); ?>" 
     class="btn <?php echo $field->getHtmlClasses(); ?>"
+    
+    <?php if ($field->getTabIndex() !== null): ?>
+        tabindex="<?php echo $field->getTabIndex(); ?>"
+    <?php endif; ?>
 >
     <?php if ($field->hasIconClass()): ?>
         <span class="<?php echo $field->getIconClass(); ?>"></span>

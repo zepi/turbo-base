@@ -64,6 +64,12 @@ class Price extends FieldAbstract
     protected $_separatorDecimal;
     
     /**
+     * @access protected
+     * @var string
+     */
+    protected $_suffix;
+    
+    /**
      * Constructs the object
      *
      * @access public
@@ -73,17 +79,20 @@ class Price extends FieldAbstract
      * @param stirng $currency
      * @param string $separatorThousands
      * @param string $separatorDecimal
+     * @param string $suffix
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
+     * @param string $tabIndex
      */
-    public function __construct($key, $label, $isMandatory = false, $value = '', $currency = 'USD', $separatorThousands = '.', $separatorDecimal = ',', $helpText = '', $classes = array(), $placeholder = '')
+    public function __construct($key, $label, $isMandatory = false, $value = '', $currency = 'USD', $separatorThousands = '.', $separatorDecimal = ',', $suffix = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
         $this->_currency = $currency;
         $this->_separatorThousands = $separatorThousands;
         $this->_separatorDecimal = $separatorDecimal;
+        $this->_suffix = $suffix;
         
-        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder);
+        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
     
     /**
@@ -140,5 +149,16 @@ class Price extends FieldAbstract
     public function getSeparatorDecimal()
     {
         return $this->_separatorDecimal;
+    }
+    
+    /**
+     * Returns the suffix
+     *
+     * @access public
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->_suffix;
     }
 }

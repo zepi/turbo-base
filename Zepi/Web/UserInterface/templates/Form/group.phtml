@@ -7,7 +7,7 @@
         $classes = 'no-legend';
     }
 ?>
-<fieldset class="<?php echo $classes; ?>">
+<fieldset class="<?php echo $classes; ?>" id="<?php echo $container->getHtmlId(); ?>">
     <?php if ($container->hasLabel()): ?>
         <legend align="center"><?php echo $container->getLabel(); ?></legend>
     <?php endif; ?>

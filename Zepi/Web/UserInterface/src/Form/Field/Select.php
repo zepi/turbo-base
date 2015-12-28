@@ -60,6 +60,7 @@ class Select extends FieldAbstract
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
+     * @param integer $tabIndex
      */
     public function __construct(
             $key,
@@ -69,11 +70,12 @@ class Select extends FieldAbstract
             $availableValues = array(),
             $helpText = '',
             $classes = array(),
-            $placeholder = ''
+            $placeholder = '',
+            $tabIndex = null
     ) {
         $this->_availableValues = $availableValues;
     
-        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder);
+        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
     
     /**

@@ -10,9 +10,17 @@ if ($field->isMandatory()) {
 
 <div class="checkbox">
     <label class="control-label <?php echo $additionalClasses; ?>">
-        <input type="checkbox" name="<?php echo $field->getHtmlName() . '_change'; ?>" id="<?php echo $field->getHtmlId(); ?>" class="<?php echo $field->getHtmlClasses(); ?>" value="1" 
+        <input  type="checkbox" 
+                name="<?php echo $field->getHtmlName() . '_change'; ?>" 
+                id="<?php echo $field->getHtmlId(); ?>" 
+                class="<?php echo $field->getHtmlClasses(); ?>" 
+                value="1" 
                 <?php if ($field->getValue()) { echo 'checked="checked"'; } ?>
                 <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+                
+                <?php if ($field->getTabIndex() !== null): ?>
+                    tabindex="<?php echo $field->getTabIndex(); ?>"
+                <?php endif; ?>
             />
         <?php echo $field->getLabel(); ?>
     </label>

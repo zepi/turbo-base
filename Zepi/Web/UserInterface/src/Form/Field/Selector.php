@@ -96,6 +96,7 @@ class Selector extends FieldAbstract
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
+     * @param integer $tabIndex
      */
     public function __construct(
         $key, 
@@ -108,14 +109,15 @@ class Selector extends FieldAbstract
         $itemTemplate = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Snippet\\SelectorItem', 
         $helpText = '', 
         $classes = array(), 
-        $placeholder = ''
+        $placeholder = '',
+        $tabIndex = null
     ) {
         $this->_items = $items;
         $this->_leftTitle = $leftTitle;
         $this->_rightTitle = $rightTitle;
         $this->_itemTemplate = $itemTemplate;
         
-        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder);
+        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
     
     /**

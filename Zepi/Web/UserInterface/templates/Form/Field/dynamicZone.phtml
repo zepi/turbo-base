@@ -1,0 +1,4 @@
+<?php $field = $additionalData['field']; ?>
+<div class="dynamic-zone" id="<?php echo $field->getHtmlId(); ?>" data-name="<?php echo $field->getHtmlName(); ?>" data-trigger-id="<?php echo $field->getTriggerHtmlId(); ?>">
+    <?php echo $field->renderZone(); ?>
+</div>

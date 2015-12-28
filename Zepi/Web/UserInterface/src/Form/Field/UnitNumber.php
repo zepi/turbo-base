@@ -25,7 +25,7 @@
  */
 
 /**
- * Form Element Textarea
+ * Form Element UnitNumber
  * 
  * @package Zepi\Web\UserInterface
  * @subpackage Form\Field
@@ -35,36 +35,47 @@
 
 namespace Zepi\Web\UserInterface\Form\Field;
 
+use \Zepi\Turbo\Request\RequestAbstract;
+
 /**
- * Form Element Textarea
+ * Form Element UnitNumber
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Textarea extends FieldAbstract
+class UnitNumber extends FieldAbstract
 {
     /**
      * @access protected
-     * @var integer
+     * @var string
      */
-    protected $_rows;
+    protected $_prefix;
+    
+    /**
+     * @access protected
+     * @var string
+     */
+    protected $_suffix;
     
     /**
      * Constructs the object
-     * 
+     *
      * @access public
      * @param string $label
      * @param boolean $isMandatory
-     * @param string $value
+     * @param mixed $value
+     * @param stirng $prefix
+     * @param string $suffix
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
      * @param integer $tabIndex
      */
-    public function __construct($key, $label, $isMandatory = false, $value = '', $rows = 5, $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
+    public function __construct($key, $label, $isMandatory = false, $value = '', $prefix = '', $suffix = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
-        $this->_rows = $rows;
-        
+        $this->_prefix = $prefix;
+        $this->_suffix = $suffix;
+    
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
     
@@ -76,17 +87,40 @@ class Textarea extends FieldAbstract
      */
     public function getTemplateName()
     {
-        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Textarea';
+        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber';
     }
     
     /**
-     * Returns the number of rows
-     * 
+     * Sets the html form value of the field
+     *
      * @access public
-     * @return integer
+     * @param mixed $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
-    public function getRows()
+    public function setValue($value, RequestAbstract $request)
     {
-        return $this->_rows;
+        $this->_value = intval($value);
+    }
+    
+    /**
+     * Returns the prefix
+     *
+     * @access public
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->_prefix;
+    }
+    
+    /**
+     * Returns the suffix
+     *
+     * @access public
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->_suffix;
     }
 }

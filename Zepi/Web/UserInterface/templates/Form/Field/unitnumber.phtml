@@ -1,0 +1,30 @@
+<?php $field = $additionalData['field']; ?>
+
+<?php if ($field->getPrefix() != '' || $field->getSuffix() != ''): ?>
+<div class="input-group">
+<?php endif; ?>
+
+    <?php if ($field->getPrefix() != ''): ?>
+        <div class="input-group-addon"><?php echo $field->getPrefix(); ?></div>
+    <?php endif; ?>
+    
+    <input  type="number" 
+            name="<?php echo $field->getHtmlName(); ?>" 
+            id="<?php echo $field->getHtmlId(); ?>" 
+            placeholder="<?php echo $field->getPlaceholder(); ?>" 
+            class="form-control text-right <?php echo $field->getHtmlClasses(); ?>" 
+            value="<?php echo $field->getValue(); ?>"
+            <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+            
+            <?php if ($field->getTabIndex() !== null): ?>
+                tabindex="<?php echo $field->getTabIndex(); ?>"
+            <?php endif; ?>
+        />
+        
+    <?php if ($field->getSuffix() != ''): ?>
+        <div class="input-group-addon"><?php echo $field->getSuffix(); ?></div>
+    <?php endif; ?>
+    
+<?php if ($field->getPrefix() != '' || $field->getSuffix() != ''): ?>
+</div>
+<?php endif; ?>

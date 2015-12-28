@@ -5,12 +5,16 @@
             name="<?php echo $field->getHtmlName(); ?>"
             id="<?php echo $field->getHtmlId(); ?>" 
             placeholder="<?php echo $field->getPlaceholder(); ?>" 
-            class="form-control <?php echo $field->getHtmlClasses(); ?> price-field" 
-            value="<?php echo $field->getValue(); ?>"
+            class="form-control text-right <?php echo $field->getHtmlClasses(); ?> price-field" 
+            value="<?php echo number_format($field->getValue(), 2, $field->getSeparatorDecimal(), $field->getSeparatorThousands()); ?>"
             data-prefix=""
             data-allowZero="true"
             data-thousands="<?php echo $field->getSeparatorThousands(); ?>"
             data-decimal="<?php echo $field->getSeparatorDecimal(); ?>"
             <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
         />
+    
+    <?php if ($field->getSuffix() != ''): ?>
+        <div class="input-group-addon"><?php echo $field->getSuffix(); ?></div>
+    <?php endif; ?>
 </div>

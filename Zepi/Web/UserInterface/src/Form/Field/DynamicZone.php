@@ -25,7 +25,7 @@
  */
 
 /**
- * Form Element Button button
+ * Form Element Dynamic Zone
  * 
  * @package Zepi\Web\UserInterface
  * @subpackage Form\Field
@@ -35,88 +35,69 @@
 
 namespace Zepi\Web\UserInterface\Form\Field;
 
+use \Zepi\Turbo\Request\RequestAbstract;
+
 /**
- * Form Element Button button
+ * Form Element Dynamic Zone
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Button extends FieldAbstract
+class DynamicZone extends FieldAbstract
 {
     /**
      * @access protected
      * @var string
      */
-    protected $_type = 'button';
-    
-    /**
-     * @access protected
-     * @var array
-     */
-    protected $_classes = array();
+    protected $_key = '';
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank';
+    protected $_triggerKey;
     
     /**
      * @access protected
-     * @var string
+     * @var callable
      */
-    protected $_iconClass = '';
-    
-    /**
-     * @access protected
-     * @var string
-     */
-    protected $_htmlType;
-    
-    /**
-     * @access protected
-     * @var string
-     */
-    protected $_href;
+    protected $_callback;
     
     /**
      * Constructs the object
      * 
      * @access public
      * @param string $key
-     * @param string $label
-     * @param array $classes
-     * @param string $iconClass
-     * @param string $htmlType
-     * @param string $href
-     * @param integer $tabIndex
+     * @param string $triggerKey
+     * @param callable $callback
      */
-    public function __construct($key, $label, $classes = array(), $iconClass = '', $htmlType = 'button', $href = false, $tabIndex = null)
+    public function __construct($key, $triggerKey, $callback)
     {
         $this->_key = $key;
-        $this->_label = $label;
-        $this->_iconClass = $iconClass;
-        $this->_htmlType = $htmlType;
-        $this->_tabIndex = $tabIndex;
-        
-        if ($href !== false) {
-            $this->_href = $href;
-        }
-        
-        if (count($classes) > 0) {
-            $this->_classes = array_merge($this->_classes, $classes);
-        }
+        $this->_triggerKey = $triggerKey;
+        $this->_callback = $callback;
     }
     
     /**
      * Returns true if the label of the field should be displayed
-     * 
+     *
      * @access public
      * @return boolean
      */
     public function displayLabel()
     {
         return false;
+    }
+    
+    /**
+     * Returns true if the field should be displayed full width
+     *
+     * @access public
+     * @return boolean
+     */
+    public function fullWidth()
+    {
+        return true;
     }
     
     /**
@@ -127,61 +108,75 @@ class Button extends FieldAbstract
      */
     public function getTemplateName()
     {
-        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Button';
+        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\DynamicZone';
     }
     
     /**
-     * Returns the type of the button
+     * Returns the trigger key
      * 
      * @access public
      * @return string
      */
-    public function getType()
+    public function getTriggerKey()
     {
-        return $this->_type;
+        return $this->_triggerKey;
     }
     
     /**
-     * Returns the icon class
+     * Returns the html id of the trigger element
      * 
      * @access public
      * @return string
      */
-    public function getIconClass()
+    public function getTriggerHtmlId()
     {
-        return $this->_iconClass;
+        $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\Form');
+        
+        if (is_object($form)) {
+            $part = $form->searchPartByKeyAndType($this->_triggerKey);
+            return $part->getHtmlId();
+        }
+        
+        return '';
     }
     
     /**
-     * Returns true if the icon class isn't empty
+     * Returns the callback
      * 
      * @access public
-     * @return boolean
+     * @return callable
      */
-    public function hasIconClass()
+    public function getCallback()
     {
-        return ($this->_iconClass !== '');
+        return $this->_callback;
     }
     
     /**
-     * Returns the html type of this button
+     * Returns the rendered dynamic zone
      * 
      * @access public
-     * @return string
+     * @return mixed
      */
-    public function getHtmlType()
+    public function renderZone()
     {
-        return $this->_htmlType;
+        return call_user_func($this->_callback, $this);
     }
     
     /**
-     * Returns the href of this button
+     * Sets the html form value of the field
      * 
      * @access public
-     * @return string
+     * @param string $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      */
-    public function getHref()
+    public function setValue($value, RequestAbstract $request)
     {
-        return $this->_href;
+        if ($value == true) {
+            $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Form');
+            
+            if (is_object($form)) {
+                $form->setIsSubmitted(false);
+            }
+        }
     }
 }

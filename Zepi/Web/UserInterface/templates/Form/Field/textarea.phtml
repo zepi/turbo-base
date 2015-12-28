@@ -1,4 +1,13 @@
 <?php $field = $additionalData['field']; ?>
-<textarea name="<?php echo $field->getHtmlName(); ?>" id="<?php echo $field->getHtmlId(); ?>" placeholder="<?php echo $field->getPlaceholder(); ?>" rows="<?php echo $field->getRows(); ?>" class="form-control <?php echo $field->getHtmlClasses(); ?>"
+<textarea 
+        name="<?php echo $field->getHtmlName(); ?>" 
+        id="<?php echo $field->getHtmlId(); ?>" 
+        placeholder="<?php echo $field->getPlaceholder(); ?>" 
+        rows="<?php echo $field->getRows(); ?>" 
+        class="form-control <?php echo $field->getHtmlClasses(); ?>"
         <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+        
+        <?php if ($field->getTabIndex() !== null): ?>
+            tabindex="<?php echo $field->getTabIndex(); ?>"
+        <?php endif; ?>
     ><?php echo $field->getValue(); ?></textarea>
