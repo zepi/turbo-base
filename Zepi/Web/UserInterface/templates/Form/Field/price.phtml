@@ -1,0 +1,16 @@
+<?php $field = $additionalData['field']; ?>
+<div class="input-group">
+    <div class="input-group-addon"><?php echo $field->getCurrency(); ?></div>
+    <input  type="text" 
+            name="<?php echo $field->getHtmlName(); ?>"
+            id="<?php echo $field->getHtmlId(); ?>" 
+            placeholder="<?php echo $field->getPlaceholder(); ?>" 
+            class="form-control <?php echo $field->getHtmlClasses(); ?> price-field" 
+            value="<?php echo $field->getValue(); ?>"
+            data-prefix=""
+            data-allowZero="true"
+            data-thousands="<?php echo $field->getSeparatorThousands(); ?>"
+            data-decimal="<?php echo $field->getSeparatorDecimal(); ?>"
+            <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+        />
+</div>
