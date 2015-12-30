@@ -40,6 +40,7 @@ use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
+use \Zepi\Web\AccessControl\Manager\SessionManager;
 
 /**
  * Starts the session after the initialization of the framework
@@ -50,6 +51,23 @@ use \Zepi\Turbo\Response\Response;
  */
 class StartSession implements WebEventHandlerInterface
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\SessionManager
+     */
+    protected $_sessionManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Web\AccessControl\Manager\SessionManager $sessionManager
+     */
+    public function __construct(SessionManager $sessionManager)
+    {
+        $this->_sessionManager = $sessionManager;
+    }
+    
     /**
      * Starts the session after the initialization of the framework
      * core and is one of the first events which will be executed.
@@ -65,10 +83,7 @@ class StartSession implements WebEventHandlerInterface
             return;
         }
         
-        // Get the session manager
-        $sessionManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager');
-        
         // Reinitialize the session
-        $sessionManager->reinitializeSession($framework, $request, $response);
+        $this->_sessionManager->reinitializeSession($framework, $request, $response);
     }
 }

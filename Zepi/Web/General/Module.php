@@ -151,6 +151,16 @@ class Module extends ModuleAbstract
                 return $this->_metaInformationManager;
             break;
             
+            case '\\Zepi\\Web\\General\\EventHandler\\Administration':
+                return new $className($this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'));
+            break;
+            
+            case '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache':
+            case '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets':
+            case '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent':
+                return new $className($this->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager'));
+            break;
+            
             default: 
                 return new $className();
             break;

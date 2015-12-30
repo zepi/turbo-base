@@ -41,6 +41,9 @@ use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\CliRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\Test\Exception;
+use \Zepi\Web\AccessControl\Manager\UserManager;
+use \Zepi\Core\AccessControl\Manager\AccessControlManager;
+use \Zepi\Core\Utils\Helper\CliHelper;
 
 /**
  * Execute the installation the access control module
@@ -51,6 +54,39 @@ use \Zepi\Web\Test\Exception;
 class ExecuteInstallation implements CliEventHandlerInterface
 {
     /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\UserManager
+     */
+    protected $_userManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
+     */
+    protected $_accessControlManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Core\Utils\Helper\CliHelper
+     */
+    protected $_cliHelper;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\AccessControl\Manager\UserManager $userManager
+     * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
+     * @param \Zepi\Core\Utils\Helper\CliHelper $cliHelper
+     */
+    public function __construct(UserManager $userManager, AccessControlManager $accessControlManager, CliHelper $cliHelper)
+    {
+        $this->_userManager = $userManager;
+        $this->_accessControlManager = $accessControlManager;
+        $this->_cliHelper = $cliHelper;
+    }
+    
+    /**
      * Execute the installation the access control module
      * 
      * @access public
@@ -60,23 +96,20 @@ class ExecuteInstallation implements CliEventHandlerInterface
      */
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
-        $cliHelper = $framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper');
-        $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
-        
         // Execute the installer only if there are no users
         $dataRequest = new \Zepi\Core\Utils\Entity\DataRequest(1, 0, 'name', 'ASC');
-        if ($userManager->countUsers($dataRequest) > 0) {
+        if ($this->_userManager->countUsers($dataRequest) > 0) {
             return;
         }
         
         $username = '';
         while ($username === '') {
-            $username = trim($cliHelper->inputText('Please enter the username for the super-admin user:'));
+            $username = trim($this->_cliHelper->inputText('Please enter the username for the super-admin user:'));
         }
         
         $password = '';
         while ($password === '') {
-            $password = trim($cliHelper->inputText('Please enter the password for the super-admin user:'));
+            $password = trim($this->_cliHelper->inputText('Please enter the password for the super-admin user:'));
         }
         
         // Create the super-admin user
@@ -84,11 +117,10 @@ class ExecuteInstallation implements CliEventHandlerInterface
         $user->setNewPassword($password);
         
         // Save the super-admin user
-        $user = $userManager->addUser($user);
+        $user = $this->_userManager->addUser($user);
         
         // Add the super-admin access level
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
-        $accessControlManager->grantPermission(
+        $this->_accessControlManager->grantPermission(
             $user->getUuid(),
             '\\Global\\*',
             'CLI'

@@ -40,6 +40,7 @@ use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
+use Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 
 /**
  * Displays the administration overview page
@@ -47,7 +48,7 @@ use \Zepi\Turbo\Response\Response;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Administration implements WebEventHandlerInterface
+class Administration extends FrontendEventHandler
 {
     /**
      * Displays the administration overview page
@@ -65,23 +66,15 @@ class Administration implements WebEventHandlerInterface
             return;
         }
         
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        // Prepare the page
+        $this->setTitle($this->translate('Administration', '\\Zepi\\Web\\General'));
+        $menuEntry = $this->activateMenuEntry();
         
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('Administration', '\\Zepi\\Web\\General'));
-
-        // Initialize MenuManager
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'); 
-        $menuManager->activateCorrectMenuEntry();
+        // Generate the overview page
+        $overviewPage = $this->getOverviewPageRenderer()->render($framework, $menuEntry);
         
-        $menuEntry = $menuManager->getActiveMenuEntry();
-        $overviewPageRenderer = new \Zepi\Web\UserInterface\Renderer\OverviewPage();
-        $overviewPage = $overviewPageRenderer->render($framework, $menuEntry);
-        
-        // Display logout message
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\General\\Templates\\Administration', array(
+        // Display the overview page
+        $response->setOutput($this->render('\\Zepi\\Web\\General\\Templates\\Administration', array(
             'overviewPage' => $overviewPage
         )));
     }

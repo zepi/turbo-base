@@ -46,6 +46,12 @@ use \Zepi\Web\General\Manager\AssetsManager;
 class Module extends ModuleAbstract
 {
     /**
+     * @access protected
+     * @var \Zepi\Web\UserInterface\Frontend\FrontendHelper
+     */
+    protected $_frontendHelper;
+    
+    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -75,6 +81,22 @@ class Module extends ModuleAbstract
                 );
                 
                 return $layoutRenderer;
+            break;
+            
+            case '\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper':
+                if ($this->_frontendHelper === null) {
+                    $this->_frontendHelper = new $className(
+                        $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
+                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
+                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'),
+                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout'),
+                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\OverviewPage'),
+                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table')
+                    );
+                }
+            
+                return $this->_frontendHelper;
             break;
             
             default: 

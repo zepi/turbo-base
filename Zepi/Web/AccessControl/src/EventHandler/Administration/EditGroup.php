@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler\Administration;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -60,6 +60,11 @@ use \Zepi\Web\UserInterface\Layout\Tabs;
 use \Zepi\Web\UserInterface\Layout\Tab;
 use \Zepi\Web\UserInterface\Layout\Row;
 use \Zepi\Web\UserInterface\Layout\Column;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\GroupManager;
+use \Zepi\Core\AccessControl\Manager\AccessControlManager;
+use \Zepi\Core\AccessControl\Manager\AccessLevelManager;
+use \Zepi\Web\AccessControl\Helper\AccessLevelHelper;
 
 /**
  * Displays the edit user form and saves the data to the database.
@@ -67,8 +72,56 @@ use \Zepi\Web\UserInterface\Layout\Column;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class EditGroup implements WebEventHandlerInterface
+class EditGroup extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\GroupManager
+     */
+    protected $_groupManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
+     */
+    protected $_accessControlManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
+     */
+    protected $_accessLevelManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Helper\AccessLevelHelper
+     */
+    protected $_accessLevelHelper;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\GroupManager $groupManager
+     * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
+     * @param \Zepi\Core\AccessControl\Manager\AccessLevelManager $accessLevelManager
+     * @param \Zepi\Web\AccessControl\Helper\AccessLevelHelper $accessLevelHelper
+     */
+    public function __construct(
+        FrontendHelper $frontendHelper, 
+        GroupManager $groupManager, 
+        AccessControlManager $accessControlManager, 
+        AccessLevelManager $accessLevelManager, 
+        AccessLevelHelper $accessLevelHelper
+    ) {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_groupManager = $groupManager;
+        $this->_accessControlManager = $accessControlManager;
+        $this->_accessLevelManager = $accessLevelManager;
+        $this->_accessLevelHelper = $accessLevelHelper;
+    }
+    
     /**
      * Displays the edit user form and saves the data to the database.
      * 
@@ -85,34 +138,21 @@ class EditGroup implements WebEventHandlerInterface
             return;
         }
 
-        // Get the translation manager
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-
         // If there is a request parameter we need to edit a user. Otherwise we create a new one.
         if ($request->getRouteParam(0) !== false) {
-            $additionalTitle = $translationManager->translate('Modify group', '\\Zepi\\Web\\AccessControl');
+            $additionalTitle = $this->translate('Modify group', '\\Zepi\\Web\\AccessControl');
             
-            $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-            $group = $groupManager->getGroupForUuid($request->getRouteParam(0));
+            $group = $this->_groupManager->getGroupForUuid($request->getRouteParam(0));
         } else {
-            $additionalTitle = $translationManager->translate('Add group', '\\Zepi\\Web\\AccessControl');
+            $additionalTitle = $this->translate('Add group', '\\Zepi\\Web\\AccessControl');
             
             $group = new EntityGroup('', '', '', '', array());
         }
-        $title = $translationManager->translate('Group management', '\\Zepi\\Web\\AccessControl') . ' - ' . $additionalTitle;
+        $title = $this->translate('Group management', '\\Zepi\\Web\\AccessControl');
         
-        // Activate the correct menu entry and add the breadcrumb function entry
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
-        $menuManager->setActiveMenuEntry($menuManager->getMenuEntryForKey('group-administration'));
-        $menuManager->setBreadcrumbFunction($additionalTitle);
-        
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($title);
-        
-        // Get the Form Renderer
-        $layoutRenderer = $framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout');
+        // Prepare the page
+        $this->activateMenuEntry('group-administration');
+        $this->setTitle($title, $additionalTitle);
         
         // Get the form object
         $editGroupLayout = $this->_getLayout($framework, $request, $response, $group);
@@ -123,15 +163,15 @@ class EditGroup implements WebEventHandlerInterface
         
         // If $result isn't true, display the edit user form
         if (!$editGroupForm->isSubmitted() || $errorBox->hasErrors()) {
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupForm', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupForm', array(
                 'user' => $group,
                 'title' => $title,
                 'layout' => $editGroupLayout,
-                'layoutRenderer' => $layoutRenderer
+                'layoutRenderer' => $this->getLayoutRenderer()
             )));
         } else {
             // Display the successful saved message
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupFinished', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupFinished', array(
                 'title' => $title
             )));
         }
@@ -149,9 +189,6 @@ class EditGroup implements WebEventHandlerInterface
      */
     protected function _processData(Form $editGroupForm, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
-        // Get the translation manager
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         // Process the submitted form data
         $editGroupForm->processFormData($request);
         
@@ -170,13 +207,13 @@ class EditGroup implements WebEventHandlerInterface
         if (($editGroupForm->isSubmitted() && $result !== true) || count($errors) > 0) {
             if (is_string($result)) {
                 $errorBox->addError(new Error(
-                        Error::GENERAL_ERROR,
-                        $result
+                    Error::GENERAL_ERROR,
+                    $result
                 ));
             } else if (count($errors) === 0) {
                 $errorBox->addError(new Error(
-                        Error::GENERAL_ERROR,
-                        $translationManager->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
+                    Error::GENERAL_ERROR,
+                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
                 ));
             } else {
                 foreach ($errors as $error) {
@@ -221,20 +258,17 @@ class EditGroup implements WebEventHandlerInterface
         }
         
         // Save the user
-        $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-        
         if ($group->isNew()) {
-            $group = $groupManager->addGroup($group);
+            $group = $this->_groupManager->addGroup($group);
         } else {
-            $groupManager->updateGroup($group);
+            $this->_groupManager->updateGroup($group);
         }
         
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $this->_cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
 
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
-        $accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
+        $this->_accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
         
         return $result;
     }
@@ -271,15 +305,12 @@ class EditGroup implements WebEventHandlerInterface
      */
     protected function _validateData(Framework $framework, EntityGroup $group, $groupname)
     {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-        
         // Groupname
-        if ($groupManager->hasGroupForName($groupname)) {
-            $foundGroup = $groupManager->getGroupForName($groupname);
+        if ($this->_groupManager->hasGroupForName($groupname)) {
+            $foundGroup = $this->_groupManager->getGroupForName($groupname);
             
             if ($foundGroup->getUuid() != $group->getUuid()) {
-                return $translationManager->translate('The groupname is already in use.', '\\Zepi\\Web\\AccessControl');
+                return $this->translate('The groupname is already in use.', '\\Zepi\\Web\\AccessControl');
             }
         }        
         
@@ -298,13 +329,8 @@ class EditGroup implements WebEventHandlerInterface
      */
     protected function _getLayout(Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
-        $accessLevelManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $accessLevelHelper = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Helper\\AccessLevelHelper');
-        
-        $accessLevelSelectorItems = $accessLevelHelper->transformAccessLevels(
-            $accessLevelManager->getAccessLevels(), 
+        $accessLevelSelectorItems = $this->_accessLevelHelper->transformAccessLevels(
+            $this->_accessLevelManager->getAccessLevels(), 
             $request->getSession()->getUser(), 
             $group
         );
@@ -324,14 +350,14 @@ class EditGroup implements WebEventHandlerInterface
                                             new Column(array(
                                                 new Group(
                                                     'required-data',
-                                                    $translationManager->translate('Required data', '\\Zepi\\Web\\AccessControl'),
+                                                    $this->translate('Required data', '\\Zepi\\Web\\AccessControl'),
                                                     array(
                                                         new Text(
                                                             'groupname',
-                                                            $translationManager->translate('Group name', '\\Zepi\\Web\\AccessControl'),
+                                                            $this->translate('Group name', '\\Zepi\\Web\\AccessControl'),
                                                             true,
                                                             $group->getName(),
-                                                            $translationManager->translate('The group name must be unique. Only one group can use a group name.', '\\Zepi\\Web\\AccessControl')
+                                                            $this->translate('The group name must be unique. Only one group can use a group name.', '\\Zepi\\Web\\AccessControl')
                                                         ),
                                                     ),
                                                     1
@@ -340,11 +366,11 @@ class EditGroup implements WebEventHandlerInterface
                                             new Column(array(
                                                 new Group(
                                                     'optional-data',
-                                                    $translationManager->translate('Optional data', '\\Zepi\\Web\\AccessControl'),
+                                                    $this->translate('Optional data', '\\Zepi\\Web\\AccessControl'),
                                                     array(
                                                         new Textarea(
                                                             'description',
-                                                            $translationManager->translate('Description', '\\Zepi\\Web\\AccessControl'),
+                                                            $this->translate('Description', '\\Zepi\\Web\\AccessControl'),
                                                             false,
                                                             $group->getMetaData('description')
                                                         ),
@@ -357,24 +383,24 @@ class EditGroup implements WebEventHandlerInterface
                                 ),
                                 array(),
                                 'group-tab',
-                                $translationManager->translate('Gruppeninformationen', '\\Zepi\\Web\\AccessControl')
+                                $this->translate('Group informations', '\\Zepi\\Web\\AccessControl')
                             ),
                             new Tab(
                                 array(
                                     new Selector(
                                         'access-levels',
-                                        $translationManager->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
+                                        $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $accessControlManager->getPermissionsRaw($group->getUuid()),
+                                        $this->_accessControlManager->getPermissionsRaw($group->getUuid()),
                                         $accessLevelSelectorItems,
-                                        $translationManager->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
-                                        $translationManager->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),
+                                        $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
+                                        $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         '\\Zepi\\Web\\AccessControl\\Templates\\Form\\Snippet\\AccessLevel'
                                     ),
                                 ),
                                 array(),
                                 'access-tab',
-                                $translationManager->translate('Berechtigungen', '\\Zepi\\Web\\AccessControl')
+                                $this->translate('Permissions', '\\Zepi\\Web\\AccessControl')
                             )
                         )        
                     ),
@@ -386,7 +412,7 @@ class EditGroup implements WebEventHandlerInterface
                                     array(
                                         new Button(
                                             'back',
-                                            $translationManager->translate('Back', '\\Zepi\\Web\\AccessControl'),
+                                            $this->translate('Back', '\\Zepi\\Web\\AccessControl'),
                                             array('btn-default'),
                                             '',
                                             'a',
@@ -403,7 +429,7 @@ class EditGroup implements WebEventHandlerInterface
                                     array(
                                         new Submit(
                                             'submit',
-                                            $translationManager->translate('Save', '\\Zepi\\Web\\AccessControl'), 
+                                            $this->translate('Save', '\\Zepi\\Web\\AccessControl'), 
                                             array('btn-large', 'btn-primary'),
                                             'mdi mdi-floppy'
                                         )

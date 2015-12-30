@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -47,7 +47,7 @@ use \Zepi\Turbo\Response\Response;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Profile implements WebEventHandlerInterface
+class Profile extends FrontendEventHandler
 {
     /**
      * Displays the profile page for an logged in user.
@@ -65,24 +65,14 @@ class Profile implements WebEventHandlerInterface
             return;
         }
         
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        // Prepare the page
+        $this->setTitle($this->translate('Profile', '\\Zepi\\Web\\AccessControl'));
+        $menuEntry = $this->activateMenuEntry();
         
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('Profile', '\\Zepi\\Web\\AccessControl'));
-
-
-        // Initialize MenuManager
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'); 
-        $menuManager->activateCorrectMenuEntry();
-        
-        $menuEntry = $menuManager->getActiveMenuEntry();
-        $overviewPageRenderer = new \Zepi\Web\UserInterface\Renderer\OverviewPage();
-        $overviewPage = $overviewPageRenderer->render($framework, $menuEntry);
+        $overviewPage = $this->getOverviewPageRenderer()->render($framework, $menuEntry);
         
         // Display logout message
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Profile', array(
+        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Profile', array(
             'overviewPage' => $overviewPage
         )));
     }

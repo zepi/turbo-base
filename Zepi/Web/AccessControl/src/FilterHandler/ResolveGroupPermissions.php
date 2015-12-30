@@ -41,6 +41,7 @@ use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\Utils\Entity\DataRequest;
 use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
+use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 
 /**
  * Replaces all group access levels with the permissions of the group
@@ -50,6 +51,23 @@ use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
  */
 class ResolveGroupPermissions implements FilterHandlerInterface
 {
+    /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
+     */
+    protected $_accessControlManager;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
+     */
+    public function __construct(AccessControlManager $accessControlManager)
+    {
+        $this->_accessControlManager = $accessControlManager;
+    }
+    
     /**
      * Replaces all group access levels with the permissions of the group
      * 
@@ -62,8 +80,6 @@ class ResolveGroupPermissions implements FilterHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
-        
         $permissions = array();
         foreach ($value as $accessLevel) {
             $parts = explode('\\', $accessLevel);
@@ -71,7 +87,7 @@ class ResolveGroupPermissions implements FilterHandlerInterface
             if ($parts[1] === 'Group' && count($parts) === 3) {
                 $uuid = $parts[2];
                 
-                $groupPermissions = $accessControlManager->getPermissions($uuid);
+                $groupPermissions = $this->_accessControlManager->getPermissions($uuid);
                 foreach ($groupPermissions as $groupPermission) {
                     $permissions[] = $groupPermission;
                 }

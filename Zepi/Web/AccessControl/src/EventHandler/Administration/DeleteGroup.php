@@ -35,12 +35,14 @@
 
 namespace Zepi\Web\AccessControl\EventHandler\Administration;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\AccessControl\Entity\Group;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\GroupManager;
 
 /**
  * Event handler for the delete group function
@@ -48,8 +50,27 @@ use \Zepi\Web\AccessControl\Entity\Group;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class DeleteGroup implements WebEventHandlerInterface
+class DeleteGroup extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\GroupManager
+     */
+    protected $_groupManager;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\GroupManager $groupManager
+     */
+    public function __construct(FrontendHelper $frontendHelper, GroupManager $groupManager)
+    {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_groupManager = $groupManager;
+    }
+    
     /**
      * Displays the edit user form and saves the data to the database.
      * 
@@ -66,44 +87,33 @@ class DeleteGroup implements WebEventHandlerInterface
             return;
         }
         
-        // Get the translation manager
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        
-        $additionalTitle = $translationManager->translate('Delete group', '\\Zepi\\Web\\AccessControl');
-        $title = $translationManager->translate('Group management', '\\Zepi\\Web\\AccessControl') . ' - ' . $additionalTitle;
-        
-        // Activate the correct menu entry and add the breadcrumb function entry
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
-        $menuManager->setActiveMenuEntry($menuManager->getMenuEntryForKey('group-administration'));
-        $menuManager->setBreadcrumbFunction($additionalTitle);
-        
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($title);
+        // Prepare the page
+        $additionalTitle = $this->translate('Delete group', '\\Zepi\\Web\\AccessControl');
+        $title = $this->translate('Group management', '\\Zepi\\Web\\AccessControl');
+        $this->activateMenuEntry('group-administration');
+        $this->setTitle($title, $additionalTitle);
         
         // Get the user
-        $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if (!$groupManager->hasGroupForUuid($uuid)) {
+        if (!$this->_groupManager->hasGroupForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/groups/'));
             return;
         }
         
-        $group = $groupManager->getGroupForUuid($uuid);
+        $group = $this->_groupManager->getGroupForUuid($uuid);
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam(1) === 'confirmed') {
-            $groupManager->deleteGroup($group->getUuid());
+            $this->_groupManager->deleteGroup($group->getUuid());
             
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroupFinished', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroupFinished', array(
                 'group' => $group
             )));
         } else {
             // Display the delete user confirmation
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroup', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroup', array(
                 'group' => $group
             )));
         }

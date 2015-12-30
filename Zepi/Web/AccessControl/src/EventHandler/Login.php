@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -49,6 +49,9 @@ use \Zepi\Web\UserInterface\Form\Field\Text;
 use \Zepi\Web\UserInterface\Form\Field\Password;
 use \Zepi\Web\UserInterface\Form\Field\Hidden;
 use \Zepi\Web\UserInterface\Form\Field\Submit;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\SessionManager;
+use \Zepi\Web\AccessControl\Manager\UserManager;
 
 /**
  * Authorizes an user with the user credentials.
@@ -56,8 +59,35 @@ use \Zepi\Web\UserInterface\Form\Field\Submit;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Login implements WebEventHandlerInterface
+class Login extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\SessionManager
+     */
+    protected $_sessionManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\UserManager
+     */
+    protected $_userManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\SessionManager $sessionManager
+     * @param \Zepi\Web\AccessControl\Manager\UserManager $userManager
+     */
+    public function __construct(FrontendHelper $frontendHelper, SessionManager $sessionManager, UserManager $userManager)
+    {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_sessionManager = $sessionManager;
+        $this->_userManager = $userManager;
+    }
+    
     /**
      * Filters the given menu entries and removes all protected menu
      * entries for which the sender hasn't the correct permission.
@@ -70,12 +100,7 @@ class Login implements WebEventHandlerInterface
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         // Set the title for the page
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('Login', '\\Zepi\\Web\\AccessControl'));
-        
-        // Get the form Renderer
-        $layoutRenderer = $framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout');
+        $this->setTitle($this->translate('Login', '\\Zepi\\Web\\AccessControl'));
         
         // Get the form object
         $loginForm = $this->_createForm($framework, $request, $response);
@@ -99,7 +124,7 @@ class Login implements WebEventHandlerInterface
             if (count($errors) === 0) {
                 $errorBox->addError(new Error(
                     Error::GENERAL_ERROR,
-                    $translationManager->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
+                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
                 ));
             } else {
                 foreach ($errors as $error) {
@@ -110,12 +135,11 @@ class Login implements WebEventHandlerInterface
         
         // If $result isn't true, display the login form
         if (!$loginForm->isSubmitted() || $errorBox->hasErrors()) {
-            $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-            $renderedOutput = $templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\LoginForm', array(
+            $renderedOutput = $this->render('\\Zepi\\Web\\AccessControl\\Templates\\LoginForm', array(
                 'result' => $result,
                 'errors' => $errors,
                 'form' => $loginForm, 
-                'layoutRenderer' => $layoutRenderer
+                'layoutRenderer' => $this->getLayoutRenderer()
             ));
             
             $response->setOutput($renderedOutput);
@@ -140,11 +164,8 @@ class Login implements WebEventHandlerInterface
             return false;
         }
         
-        // Get the session manager
-        $sessionManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager');
-        
         // Initializes the user session
-        $sessionManager->initializeUserSession($request, $response, $user);
+        $this->_sessionManager->initializeUserSession($request, $response, $user);
         
         // Redirect to the target or to the start page
         $target = '/';
@@ -172,14 +193,12 @@ class Login implements WebEventHandlerInterface
             return false;
         }
         
-        $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
-
         // If the given username doesn't exists
-        if (!$userManager->hasUserForUsername($username)) {
+        if (!$this->_userManager->hasUserForUsername($username)) {
             return false;
         }
         
-        $user = $userManager->getUserForUsername($username);
+        $user = $this->_userManager->getUserForUsername($username);
         
         // If the user not is usable
         if ($user === false) {
@@ -206,8 +225,6 @@ class Login implements WebEventHandlerInterface
      */
     protected function _createForm(Framework $framework, RequestAbstract $request, Response $response)
     {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         // Create the form
         $form = new Form('login', $request->getFullRoute('login'), 'post');
         
@@ -226,16 +243,16 @@ class Login implements WebEventHandlerInterface
         // Add the user data group
         $group = new Group(
             'user-data',
-            $translationManager->translate('User data', '\\Zepi\\Web\\AccessControl'),
+            $this->translate('User data', '\\Zepi\\Web\\AccessControl'),
             array(
                 new Text(
                     'username',
-                    $translationManager->translate('Username', '\\Zepi\\Web\\AccessControl'),
+                    $this->translate('Username', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
                 new Password(
                     'password',
-                    $translationManager->translate('Password', '\\Zepi\\Web\\AccessControl'),
+                    $this->translate('Password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
                 new Hidden(
@@ -253,7 +270,7 @@ class Login implements WebEventHandlerInterface
             array(
                 new Submit(
                     'submit',
-                    $translationManager->translate('Login', '\\Zepi\\Web\\AccessControl')
+                    $this->translate('Login', '\\Zepi\\Web\\AccessControl')
                 )
             ),
             100

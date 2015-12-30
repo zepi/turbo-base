@@ -35,11 +35,12 @@
 
 namespace Zepi\Web\AccessControl\Manager;
 
-use Zepi\Turbo\Framework;
-use Zepi\Turbo\Request\WebRequest;
-use Zepi\Turbo\Response\Response;
-use Zepi\Web\AccessControl\Entity\Session;
-use Zepi\Web\AccessControl\Entity\User;
+use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\WebRequest;
+use \Zepi\Turbo\Response\Response;
+use \Zepi\Web\AccessControl\Entity\Session;
+use \Zepi\Web\AccessControl\Entity\User;
+use \Zepi\Web\AccessControl\Manager\UserManager;
 
 /**
  * Manages the HTTP sessions
@@ -54,6 +55,23 @@ class SessionManager
      * @access protected
      */
     protected $_session;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\UserManager
+     */
+    protected $_userManager;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\AccessControl\Manager\UserManager $userManager
+     */
+    public function __construct(UserManager $userManager)
+    {
+        $this->_userManager = $userManager;
+    }
     
     /**
      * Initializes the user session
@@ -190,11 +208,10 @@ class SessionManager
             $notValid = true;
         }
         
-        $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
         $userUuid = $request->getSessionData('userUuid');        
         
         // If the given uuid doesn't exists, this session can't be valid
-        if (!$notValid && !$userManager->hasUserForUuid($userUuid)) {
+        if (!$notValid && !$this->_userManager->hasUserForUuid($userUuid)) {
             $notValid = true;
         }
 
@@ -209,7 +226,7 @@ class SessionManager
         }
         
         // Load the user
-        $user = $userManager->getUserForUuid($userUuid);
+        $user = $this->_userManager->getUserForUuid($userUuid);
 
         // Generate a new session object
         $session = new Session($user, $token, $lifetime);

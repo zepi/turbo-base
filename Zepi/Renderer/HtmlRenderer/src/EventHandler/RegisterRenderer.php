@@ -40,6 +40,8 @@ use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Renderer\HtmlRenderer\Exception;
+use \Zepi\Web\General\Manager\TemplatesManager;
+use \Zepi\Renderer\HtmlRenderer\Renderer\Renderer;
 
 /**
  * Registers the renderer
@@ -49,6 +51,31 @@ use \Zepi\Renderer\HtmlRenderer\Exception;
  */
 class RegisterRenderer implements EventHandlerInterface
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\General\Manager\TemplatesManager
+     */
+    protected $_templatesManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Renderer\HtmlRenderer\Renderer\Renderer
+     */
+    protected $_htmlRenderer;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\General\Manager\TemplatesManager $templatesManager
+     * @param \Zepi\Renderer\HtmlRenderer\Renderer\Renderer $htmlRenderer
+     */
+    public function __construct(TemplatesManager $templatesManager, Renderer $htmlRenderer)
+    {
+        $this->_templatesManager = $templatesManager;
+        $this->_htmlRenderer = $htmlRenderer;
+    }
+    
     /**
      * Register the html renderer on the templates manager to render
      * the templates.
@@ -60,7 +87,6 @@ class RegisterRenderer implements EventHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->addRenderer($framework->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer'));
+        $this->_templatesManager->addRenderer($this->_htmlRenderer);
     }
 }

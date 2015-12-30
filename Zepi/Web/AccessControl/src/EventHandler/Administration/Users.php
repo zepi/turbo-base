@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler\Administration;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -47,7 +47,7 @@ use \Zepi\Turbo\Response\Response;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Users implements WebEventHandlerInterface
+class Users extends FrontendEventHandler
 {
     /**
      * Displays the profile page for an logged in user.
@@ -65,18 +65,9 @@ class Users implements WebEventHandlerInterface
             return;
         }
         
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('User management', '\\Zepi\\Web\\AccessControl'));
-        
-        // Activate the correct menu entry and add the breadcrumb function entry
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
-        $menuManager->setActiveMenuEntry($menuManager->getMenuEntryForKey('user-administration'));
-        
-        // Get the Table Renderer
-        $tableRenderer = $framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table');
+        // Prepare the page
+        $this->setTitle($this->translate('User management', '\\Zepi\\Web\\AccessControl'));
+        $this->activateMenuEntry('user-administration');
         
         // Generate the Table
         $userTable = new \Zepi\Web\AccessControl\Table\UserTable(
@@ -86,10 +77,9 @@ class Users implements WebEventHandlerInterface
         );
         
         // Display logout message
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Users', array(
+        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Users', array(
             'userTable' => $userTable,
-            'tableRenderer' => $tableRenderer
+            'tableRenderer' => $this->getTableRenderer()
         )));
     }
 }

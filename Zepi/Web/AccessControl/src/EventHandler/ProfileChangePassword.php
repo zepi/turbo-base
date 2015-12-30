@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -49,6 +49,8 @@ use \Zepi\Web\UserInterface\Form\ButtonGroup;
 use \Zepi\Web\UserInterface\Form\Field\Text;
 use \Zepi\Web\UserInterface\Form\Field\Password;
 use \Zepi\Web\UserInterface\Form\Field\Submit;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\UserManager;
 
 /**
  * Displays the change password site for the profile.
@@ -56,8 +58,27 @@ use \Zepi\Web\UserInterface\Form\Field\Submit;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class ProfileChangePassword implements WebEventHandlerInterface
+class ProfileChangePassword extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\UserManager
+     */
+    protected $_userManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\UserManager $userManager
+     */
+    public function __construct(FrontendHelper $frontendHelper, UserManager $userManager)
+    {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_userManager = $userManager;
+    }
+    
     /**
      * Displays the change password site for the profile.
      * 
@@ -74,15 +95,8 @@ class ProfileChangePassword implements WebEventHandlerInterface
             return;
         }
         
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        
         // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('Profile - Change password', '\\Zepi\\Web\\AccessControl'));
-        
-        // Get the Layout Renderer
-        $layoutRenderer = $framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout');
+        $this->setTitle($this->translate('Profile - Change password', '\\Zepi\\Web\\AccessControl'));
         
         // Get the Form object
         $changePasswordForm = $this->_createForm($framework, $request, $response);
@@ -105,7 +119,7 @@ class ProfileChangePassword implements WebEventHandlerInterface
             if (count($errors) === 0) {
                 $errorBox->addError(new Error(
                     Error::GENERAL_ERROR,
-                    $translationManager->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
+                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
                 ));
             } else {
                 foreach ($errors as $error) {
@@ -116,18 +130,17 @@ class ProfileChangePassword implements WebEventHandlerInterface
         
         // If $result isn't true, display the login form
         if (!$changePasswordForm->isSubmitted() || $errorBox->hasErrors()) {
-            $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-            $renderedOutput = $templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordForm', array(
+            $renderedOutput = $this->render('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordForm', array(
                 'result' => $result,
                 'errors' => $errors,
                 'form' => $changePasswordForm, 
-                'layoutRenderer' => $layoutRenderer
+                'layoutRenderer' => $this->getLayoutRenderer()
             ));
             
             $response->setOutput($renderedOutput);
         } else {
             // Display the successful changed message
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished', $framework, $request, $response));
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished', $framework, $request, $response));
         }
     }
 
@@ -162,8 +175,7 @@ class ProfileChangePassword implements WebEventHandlerInterface
         $user->setNewPassword($newPassword);
         
         // Get the UserManager to update the user
-        $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
-        $result = $userManager->updateUser($user);
+        $result = $this->_userManager->updateUser($user);
         
         return $result;
     }
@@ -180,20 +192,18 @@ class ProfileChangePassword implements WebEventHandlerInterface
      */
     protected function _validateData(Framework $framework, User $user, $oldPassword, $newPassword, $newPasswordConfirmed)
     {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         // Old password
         if (!$user->comparePasswords($oldPassword)) {
-            return $translationManager->translate('The old password is not valid.', '\\Zepi\\Web\\AccessControl');
+            return $this->translate('The old password is not valid.', '\\Zepi\\Web\\AccessControl');
         }
         
         // New password
         if (strlen($newPassword) < 8) {
-            return $translationManager->translate('The new password needs at least 8 characters.', '\\Zepi\\Web\\AccessControl');
+            return $this->translate('The new password needs at least 8 characters.', '\\Zepi\\Web\\AccessControl');
         }
         
         if ($newPassword != $newPasswordConfirmed) {
-            return $translationManager->translate('The new password are not equal.', '\\Zepi\\Web\\AccessControl');
+            return $this->translate('The new password are not equal.', '\\Zepi\\Web\\AccessControl');
         }
 
         return true;
@@ -210,8 +220,6 @@ class ProfileChangePassword implements WebEventHandlerInterface
      */
     protected function _createForm(Framework $framework, WebRequest $request, Response $response)
     {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         // Create the form
         $form = new Form('change-password', $request->getFullRoute('profile/change-password'), 'post');
         
@@ -225,21 +233,21 @@ class ProfileChangePassword implements WebEventHandlerInterface
         // Add the user data group
         $group = new Group(
             'change-password',
-            $translationManager->translate('Please insert your old and your new password', '\\Zepi\\Web\\AccessControl'),
+            $this->translate('Please insert your old and your new password', '\\Zepi\\Web\\AccessControl'),
             array(
                 new Password(
                     'old-password',
-                    $translationManager->translate('Old password', '\\Zepi\\Web\\AccessControl'),
+                    $this->translate('Old password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
                 new Password(
                     'new-password',
-                    $translationManager->translate('New password', '\\Zepi\\Web\\AccessControl'),
+                    $this->translate('New password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
                 new Password(
                     'new-password-confirmed',
-                    $translationManager->translate('Confirm new password', '\\Zepi\\Web\\AccessControl'),
+                    $this->translate('Confirm new password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
             )
@@ -252,7 +260,7 @@ class ProfileChangePassword implements WebEventHandlerInterface
             array(
                 new Submit(
                     'submit',
-                    $translationManager->translate('Change password', '\\Zepi\\Web\\AccessControl')
+                    $this->translate('Change password', '\\Zepi\\Web\\AccessControl')
                 )
             ),
             100

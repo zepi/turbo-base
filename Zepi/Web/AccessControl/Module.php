@@ -94,7 +94,100 @@ class Module extends ModuleAbstract
                 $translationManager = $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
 
                 return new $className($translationManager);
-                break;
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Login':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword':
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteUser':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditUser':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Helper\\AccessLevelHelper')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\EditGroup':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Helper\\AccessLevelHelper')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries':
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile':
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users':
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Groups':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\Manager\\SessionManager':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\ExecuteInstallation':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager'),
+                    $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper')
+                );
+            break;
+            
+            case '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager')
+                );
+            break;
             
             default: 
                 return new $className();

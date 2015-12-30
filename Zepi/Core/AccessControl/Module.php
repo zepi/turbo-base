@@ -116,6 +116,10 @@ class Module extends ModuleAbstract
                 return $dataSource;
             break;
             
+            case '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel':
+                return new $className($this->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager'));
+            break;
+            
             default: 
                 return new $className();
             break;

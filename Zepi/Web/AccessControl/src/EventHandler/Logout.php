@@ -35,11 +35,13 @@
 
 namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\SessionManager;
 
 /**
  * Authorizes an user with the user credentials.
@@ -47,8 +49,27 @@ use \Zepi\Turbo\Response\Response;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Logout implements WebEventHandlerInterface
+class Logout extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\SessionManager
+     */
+    protected $_sessionManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\SessionManager $sessionManager
+     */
+    public function __construct(FrontendHelper $frontendHelper, SessionManager $sessionManager)
+    {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_sessionManager = $sessionManager;
+    }
+    
     /**
      * Filters the given menu entries and removes all protected menu
      * entries for which the sender hasn't the correct permission.
@@ -60,26 +81,19 @@ class Logout implements WebEventHandlerInterface
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         // Redirect if the user hasn't a valid session
         if (!$request->hasSession()) {
             $response->redirectTo('/');
             return;
         }
         
-        // Get the session manager
-        $sessionManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\SessionManager');
-        
         // Initializes the user session
-        $sessionManager->logoutUser($request, $response);
+        $this->_sessionManager->logoutUser($request, $response);
         
         // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($translationManager->translate('Successfully logged out', '\\Zepi\\Web\\AccessControl'));
+        $this->setTitle($this->translate('Successfully logged out', '\\Zepi\\Web\\AccessControl'));
         
         // Display logout message
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Logout', $framework, $request, $response));
+        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Logout', $framework, $request, $response));
     }
 }

@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\AccessControl\EventHandler\Administration;
 
-use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
@@ -56,6 +56,8 @@ use \Zepi\Web\UserInterface\Layout\Part;
 use \Zepi\Web\UserInterface\Layout\Tab;
 use \Zepi\Web\UserInterface\Layout\Row;
 use \Zepi\Web\UserInterface\Layout\Column;
+use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
+use \Zepi\Web\AccessControl\Manager\UserManager;
 
 /**
  * Event handler for the delete user function
@@ -63,8 +65,27 @@ use \Zepi\Web\UserInterface\Layout\Column;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class DeleteUser implements WebEventHandlerInterface
+class DeleteUser extends FrontendEventHandler
 {
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\UserManager
+     */
+    protected $_userManager;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
+     * @param \Zepi\Web\AccessControl\Manager\UserManager $userManager
+     */
+    public function __construct(FrontendHelper $frontendHelper, UserManager $userManager)
+    {
+        $this->_frontendHelper = $frontendHelper;
+        $this->_userManager = $userManager;
+    }
+    
     /**
      * Displays the edit user form and saves the data to the database.
      * 
@@ -81,44 +102,33 @@ class DeleteUser implements WebEventHandlerInterface
             return;
         }
         
-        // Get the translation manager
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        
-        $additionalTitle = $translationManager->translate('Delete user', '\\Zepi\\Web\\AccessControl');
-        $title = $translationManager->translate('User management', '\\Zepi\\Web\\AccessControl') . ' - ' . $additionalTitle;
-        
-        // Activate the correct menu entry and add the breadcrumb function entry
-        $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
-        $menuManager->setActiveMenuEntry($menuManager->getMenuEntryForKey('user-administration'));
-        $menuManager->setBreadcrumbFunction($additionalTitle);
-        
-        // Set the title for the page
-        $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-        $metaInformationManager->setTitle($title);
+        // Prepare the page
+        $additionalTitle = $this->translate('Delete user', '\\Zepi\\Web\\AccessControl');
+        $title = $this->translate('User management', '\\Zepi\\Web\\AccessControl') . ' - ' . $additionalTitle;
+        $this->setTitle($title, $additionalTitle);
+        $this->activateMenuEntry('user-administration');
         
         // Get the user
-        $userManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager');
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if (!$userManager->hasUserForUuid($uuid)) {
+        if (!$this->_userManager->hasUserForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/users/'));
             return;
         }
         
-        $user = $userManager->getUserForUuid($request->getRouteParam(0));
+        $user = $this->_userManager->getUserForUuid($request->getRouteParam(0));
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam(1) === 'confirmed') {
-            $userManager->deleteUser($user->getUuid());
+            $this->_userManager->deleteUser($user->getUuid());
             
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUserFinished', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUserFinished', array(
                 'user' => $user
             )));
         } else {
             // Display the delete user confirmation
-            $response->setOutput($templatesManager->renderTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUser', array(
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUser', array(
                 'user' => $user
             )));
         }

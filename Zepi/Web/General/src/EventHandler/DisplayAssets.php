@@ -52,6 +52,23 @@ use \Zepi\Web\General\Manager\AssetsManager;
 class DisplayAssets implements WebEventHandlerInterface
 {
     /**
+     * @access protected
+     * @var \Zepi\Web\General\Manager\AssetsManager
+     */
+    protected $_assetsManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Web\General\Manager\AssetsManager $assetsManager
+     */
+    public function __construct(AssetsManager $assetsManager)
+    {
+        $this->_assetsManager = $assetsManager;
+    }
+    
+    /**
      * This event handler lists all activated modules with the description
      * of each module.
      * 
@@ -62,12 +79,10 @@ class DisplayAssets implements WebEventHandlerInterface
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        $assetsManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        
         // Display the main css group
-        $assetsManager->displayAssetType(AssetsManager::CSS);
+        $this->_assetsManager->displayAssetType(AssetsManager::CSS);
         
         // Display the main js group
-        $assetsManager->displayAssetType(AssetsManager::JS);
+        $this->_assetsManager->displayAssetType(AssetsManager::JS);
     }
 }

@@ -53,7 +53,18 @@ class Module extends ModuleAbstract
      */
     public function getInstance($className)
     {
+        switch ($className) {
+            case '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation':
+                $cliHelper = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper');
+                $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         
+                return new $className($cliHelper, $configurationManager);
+                break;
+        
+            default:
+                return new $className();
+                break;
+        }
     }
     
     /**

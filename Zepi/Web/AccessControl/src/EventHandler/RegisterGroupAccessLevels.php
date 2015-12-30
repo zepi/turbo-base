@@ -41,6 +41,9 @@ use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\Utils\Entity\DataRequest;
 use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
+use \Zepi\Core\AccessControl\Manager\AccessLevelManager;
+use \Zepi\Web\AccessControl\Manager\GroupManager;
+use \Zepi\Core\Language\Manager\TranslationManager;
 
 /**
  * Registers the groups as access levels.
@@ -51,6 +54,39 @@ use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
 class RegisterGroupAccessLevels implements EventHandlerInterface
 {
     /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
+     */
+    protected $_accessLevelManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Web\AccessControl\Manager\GroupManager
+     */
+    protected $_groupManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Core\Language\Manager\TranslationManager
+     */
+    protected $_translationManager;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param \Zepi\Core\AccessControl\Manager\AccessLevelManager $accessLevelManager
+     * @param \Zepi\Web\AccessControl\Manager\GroupManager $groupManager
+     * @param \Zepi\Core\Language\Manager\TranslationManager $translationManager
+     */
+    public function __construct(AccessLevelManager $accessLevelManager, GroupManager $groupManager, TranslationManager $translationManager)
+    {
+        $this->_accessLevelManager = $accessLevelManager;
+        $this->_groupManager = $groupManager;
+        $this->_translationManager = $translationManager;
+    }
+    
+    /**
      * Registers the groups as access levels.
      * 
      * @access public
@@ -60,17 +96,13 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
-        $groupManager = $framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-        $accessLevelManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-        
         $dataRequest = new DataRequest(1, 0, 'name', 'ASC');
         
-        foreach ($groupManager->getGroups($dataRequest) as $group) {
-            $accessLevelManager->addAccessLevel(new GroupAccessLevel(
+        foreach ($this->_groupManager->getGroups($dataRequest) as $group) {
+            $this->_accessLevelManager->addAccessLevel(new GroupAccessLevel(
                 '\\Group\\' . $group->getUuid(),
-                $translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),
-                $translationManager->translate('Inherits all permissions from this group.', '\\Zepi\\Web\\AccessControl'),
+                $this->_translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),
+                $this->_translationManager->translate('Inherits all permissions from this group.', '\\Zepi\\Web\\AccessControl'),
                 '\\Group'
             ));
         }

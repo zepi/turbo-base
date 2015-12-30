@@ -71,6 +71,17 @@ class Module extends ModuleAbstract
                 return $this->_htmlRenderer;
             break;
             
+            case '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer':
+                if ($this->_htmlRenderer === null) {
+                    $this->_htmlRenderer = new $className(
+                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                        $this->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer')
+                    );
+                }
+            
+                return $this->_htmlRenderer;
+            break;
+            
             default: 
                 return new $className();
             break;

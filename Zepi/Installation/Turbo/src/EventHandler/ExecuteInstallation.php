@@ -41,6 +41,8 @@ use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\CliRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\Test\Exception;
+use \Zepi\Core\Utils\Helper\CliHelper;
+use \Zepi\Core\Utils\Manager\ConfigurationManager;
 
 /**
  * Execute the installation of Turbo
@@ -58,10 +60,22 @@ class ExecuteInstallation implements CliEventHandlerInterface
     
     /**
      * @access protected
-     * @var \Zepi\Core\Utils\Manager\ConfigurationManager;
+     * @var \Zepi\Core\Utils\Manager\ConfigurationManager
      */
     protected $_configurationManager;
     
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Core\Utils\Helper\CliHelper $cliHelper
+     * @param \Zepi\Core\Utils\Manager\ConfigurationManager $configurationManager
+     */
+    public function __construct(CliHelper $cliHelper, ConfigurationManager $configurationManager)
+    {
+        $this->_cliHelper = $cliHelper;
+        $this->_configurationManager = $configurationManager;
+    }
     
     /**
      * Execute the installation of Turbo
@@ -73,9 +87,6 @@ class ExecuteInstallation implements CliEventHandlerInterface
      */
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
-        $this->_cliHelper = $framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper');
-        $this->_configurationManager = $framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        
         // Configure turbo
         foreach ($this->_configurationManager->getSettings() as $settingGroupKey => $groupSettings) {
             $this->_configureGroup($settingGroupKey, $groupSettings);

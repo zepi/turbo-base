@@ -40,6 +40,7 @@ use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
+use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 
 /**
  * Starts the session after the initialization of the framework
@@ -50,6 +51,23 @@ use \Zepi\Turbo\Response\Response;
  */
 class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
 {
+    /**
+     * @access protected
+     * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
+     */
+    protected $_accessControlManager;
+    
+    /**
+     * Constructs the object
+     * 
+     * @access public
+     * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
+     */
+    public function __construct(AccessControlManager $accessControlManager)
+    {
+        $this->_accessControlManager = $accessControlManager;
+    }
+    
     /**
      * Starts the session after the initialization of the framework
      * core and is one of the first events which will be executed.
@@ -63,11 +81,8 @@ class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
-        // Get the access control manager
-        $accessControlManager = $framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
-        
         // Revoke all permissions for the given access level key
-        $accessControlManager->revokePermissions($value);
+        $this->_accessControlManager->revokePermissions($value);
         
         return $value;
     }
