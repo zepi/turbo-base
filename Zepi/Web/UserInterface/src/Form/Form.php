@@ -248,7 +248,7 @@ class Form extends Part
                 );
             }
             
-            $result = $field->validate();
+            $result = $field->validate($framework);
             
             if ($result !== true) {
                 $errors[] = $result;

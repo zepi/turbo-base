@@ -110,9 +110,11 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup', $this->_directory . '/templates/Form/button-group.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ErrorBox', $this->_directory . '/templates/Form/error-box.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base', $this->_directory . '/templates/Form/Field/base.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace', $this->_directory . '/templates/Form/Field/noSpace.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank', $this->_directory . '/templates/Form/Field/blank.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden', $this->_directory . '/templates/Form/Field/hidden.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Price', $this->_directory . '/templates/Form/Field/price.phtml');
@@ -167,9 +169,11 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup', $this->_directory . '/templates/Form/button-group.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ErrorBox', $this->_directory . '/templates/Form/error-box.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base', $this->_directory . '/templates/Form/Field/base.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace', $this->_directory . '/templates/Form/Field/noSpace.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank', $this->_directory . '/templates/Form/Field/blank.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden', $this->_directory . '/templates/Form/Field/hidden.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Price', $this->_directory . '/templates/Form/Field/price.phtml');

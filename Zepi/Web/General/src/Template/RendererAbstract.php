@@ -140,10 +140,11 @@ abstract class RendererAbstract
      * @access public
      * @param string $string
      * @param string $namespace
+     * @param array $arguments
      * @return string
      */
-    public function translate($string, $namespace)
+    public function translate($string, $namespace, $arguments = array())
     {
-        return $this->_translationManager->translate($string, $namespace);
+        return $this->_translationManager->translate($string, $namespace, $arguments);
     }
 }

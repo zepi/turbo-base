@@ -36,6 +36,8 @@
 namespace Zepi\Web\UserInterface\Form\Field;
 
 use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Web\UserInterface\Form\Error;
+use \Zepi\Turbo\Framework;
 
 /**
  * Form Element Number
@@ -45,6 +47,40 @@ use \Zepi\Turbo\Request\RequestAbstract;
  */
 class Number extends FieldAbstract
 {
+    /**
+     * @access protected
+     * @var integer
+     */
+    protected $_minValue;
+    
+    /**
+     * @access protected
+     * @var integer
+     */
+    protected $_maxValue;
+    
+    /**
+     * Constructs the object
+     *
+     * @access public
+     * @param string $label
+     * @param boolean $isMandatory
+     * @param mixed $value
+     * @param integer $minValue
+     * @param integer $maxValue
+     * @param string $helpText
+     * @param array $classes
+     * @param string $placeholder
+     * @param integer $tabIndex
+     */
+    public function __construct($key, $label, $isMandatory = false, $value = '', $minValue = null, $maxValue = null, $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
+    {
+        $this->_minValue = $minValue;
+        $this->_maxValue = $maxValue;
+    
+        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
+    }
+    
     /**
      * Returns the name of the template to render the field
      * 
@@ -66,5 +102,70 @@ class Number extends FieldAbstract
     public function setValue($value, RequestAbstract $request)
     {
         $this->_value = intval($value);
+    }
+    
+    /**
+     * Returns the min value
+     *
+     * @access public
+     * @return integer
+     */
+    public function getMinValue()
+    {
+        return $this->_minValue;
+    }
+    
+    /**
+     * Returns the max value
+     *
+     * @access public
+     * @return integer
+     */
+    public function getMaxValue()
+    {
+        return $this->_maxValue;
+    }
+    
+    /**
+     * Validates the value. Returns true if everything is okey or an Error
+     * object if there was an error.
+     *
+     * @access public
+     * @param \Zepi\Turbo\Framework $framework
+     * @return true|\Zepi\Web\UserInterface\Form\Error
+     */
+    public function validate(Framework $framework)
+    {
+        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        
+        if ($this->_minValue !== null && $this->_value < $this->_minValue) {
+            return new Error(
+                Error::INVALID_VALUE,
+                $translationManager->translate(
+                    'The value for the field %field% is lower than the allowed minimum (%min%).', 
+                    '\\Zepi\\Web\\UserInterface', 
+                    array(
+                        'field' => $this->_label,
+                        'min' => $this->_minValue
+                    )
+                )
+            );
+        }
+        
+        if ($this->_maxValue !== null && $this->_value > $this->_maxValue) {
+            return new Error(
+                Error::INVALID_VALUE,
+                $translationManager->translate(
+                    'The value for the field %field% is higher than the allowed maximum (%max%).', 
+                    '\\Zepi\\Web\\UserInterface', 
+                    array(
+                        'field' => $this->_label,
+                        'max' => $this->_maxValue
+                    )
+                )
+            );
+        }
+        
+        return true;
     }
 }

@@ -47,6 +47,7 @@ use \Zepi\Web\UserInterface\Form\Error;
 use \Zepi\Web\UserInterface\Form\ButtonGroup;
 use \Zepi\Web\UserInterface\Form\Field\Text;
 use \Zepi\Web\UserInterface\Form\Field\Password;
+use \Zepi\Web\UserInterface\Form\Field\Hidden;
 use \Zepi\Web\UserInterface\Form\Field\Submit;
 
 /**
@@ -147,8 +148,9 @@ class Login implements WebEventHandlerInterface
         
         // Redirect to the target or to the start page
         $target = '/';
-        if ($request->hasParam('redirect-target') && $request->getParam('redirect-target') !== '') {
-            $target = $request->getParam('redirect-target');
+        $origin = $loginForm->getField('user-data', 'origin')->getValue();
+        if ($origin !== '') {
+            $target = base64_decode($origin);
         }
         $response->redirectTo($target);
         
@@ -216,6 +218,11 @@ class Login implements WebEventHandlerInterface
         );
         $form->addPart($errorBox);
         
+        $origin = '';
+        if ($request->hasParam('_origin')) {
+            $origin = $request->getParam('_origin');
+        }
+        
         // Add the user data group
         $group = new Group(
             'user-data',
@@ -231,6 +238,10 @@ class Login implements WebEventHandlerInterface
                     $translationManager->translate('Password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
+                new Hidden(
+                    'origin',
+                    $origin
+                )
             ),
             10
         );

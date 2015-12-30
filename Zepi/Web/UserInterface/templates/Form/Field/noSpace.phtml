@@ -1,0 +1,7 @@
+<?php
+    $layoutRenderer = $additionalData['layoutRenderer']; 
+    $container = $additionalData['container'];
+?>
+<div class="no-space">
+    <?php echo $this->_templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
+</div>

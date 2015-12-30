@@ -25,107 +25,73 @@
  */
 
 /**
- * Form Error
+ * Form Element Hidden
  * 
  * @package Zepi\Web\UserInterface
- * @subpackage Form
+ * @subpackage Form\Field
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\UserInterface\Form;
-
-use \Zepi\Web\UserInterface\Form\Field\FieldAbstract;
-use \Zepi\Web\UserInterface\Layout\Part;
+namespace Zepi\Web\UserInterface\Form\Field;
 
 /**
- * Form Error
+ *Form Element Hidden
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Error extends Part
+class Hidden extends FieldAbstract
 {
-    const GENERAL_ERROR = 1;
-    const MANDATORY_FIELD = 2;
-    const WRONG_INPUT = 3;
-    const WRONG_FORMAT = 4;
-    const INVALID_VALUE = 5;
-    
-    /**
-     * @access protected
-     * @var integer
-     */
-    protected $_errorCode;
-    
     /**
      * @access protected
      * @var string
      */
-    protected $_errorMessage;
-
-    /**
-     * @access protected
-     * @var \Zepi\Web\UserInterface\Form\Field\FieldAbstract
-     */    
-    protected $_field;
+    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace';
     
     /**
      * Constructs the object
-     * 
+     *
      * @access public
-     * @param integer $errorCode
-     * @param string $errorMessage
-     * @param \Zepi\Web\UserInterface\Form\Field\FieldAbstract $field
+     * @param string $key
+     * @param string $value
      */
-    public function __construct($errorCode, $errorMessage, FieldAbstract $field = null)
+    public function __construct($key, $value)
     {
-        $this->_errorCode = $errorCode;
-        $this->_errorMessage = $errorMessage;
-        $this->_field = $field;
+        $this->_key = $key;
+        $this->_value = $value;
     }
     
     /**
-     * Returns the error code of the error
-     * 
+     * Returns true if the label of the field should be displayed
+     *
      * @access public
-     * @return integer
+     * @return boolean
      */
-    public function getErrorCode()
+    public function displayLabel()
     {
-        return $this->_errorCode;
+        return false;
     }
     
     /**
-     * Returns the error message of the error
+     * Returns true if the field should be displayed full width
+     *
+     * @access public
+     * @return boolean
+     */
+    public function fullWidth()
+    {
+        return true;
+    }
+    
+    /**
+     * Returns the name of the template to render the field
      * 
      * @access public
      * @return string
      */
-    public function getErrorMessage()
+    public function getTemplateName()
     {
-        return $this->_errorMessage;
-    }
-    
-    /**
-     * Returns the field of the error
-     * 
-     * @access public
-     * @return \Zepi\Web\UserInterface\Form\Field\FieldAbstract
-     */
-    public function getField()
-    {
-        return $this->_field;
-    }
-    
-    /**
-     * Returns true if the error has a field assigned
-     * 
-     * @access public
-     * @return boolean
-     */
-    public function hasField()
-    {
-        return ($this->_field !== null);
+        return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden';
     }
 }

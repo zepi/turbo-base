@@ -38,6 +38,7 @@ namespace Zepi\Web\UserInterface\Form\Field;
 use \Zepi\Web\UserInterface\Form\Group;
 use \Zepi\Web\UserInterface\Layout\Part;
 use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Framework;
 
 /**
  * Form FieldAbstract
@@ -349,9 +350,10 @@ abstract class FieldAbstract extends Part
      * object if there was an error.
      * 
      * @access public
+     * @param \Zepi\Turbo\Framework $framework
      * @return true|\Zepi\Web\UserInterface\Form\Error
      */
-    public function validate()
+    public function validate(Framework $framework)
     {
         return true;
     }

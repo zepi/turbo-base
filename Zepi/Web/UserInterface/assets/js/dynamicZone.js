@@ -13,6 +13,11 @@ jQuery(document).ready(function () {
 			dataArray[dynamicZone.data('name')] = true;
 			
 			jQuery.post(form.prop('action'), dataArray, function (response) {
+				if (jQuery(response).find('#login-user-data')) {
+					window.location.reload();
+					return;
+				}
+				
 				var htmlContent = jQuery(response).find('#' + dynamicZone.prop('id')).html();
 				jQuery('#' + dynamicZone.prop('id')).html(htmlContent);
 				

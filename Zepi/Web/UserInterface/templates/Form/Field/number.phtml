@@ -7,6 +7,14 @@
         value="<?php echo $field->getValue(); ?>"
         <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
         
+        <?php if ($field->getMinValue() !== null): ?>
+            min="<?php echo $field->getMinValue(); ?>"
+        <?php endif; ?>
+        
+        <?php if ($field->getMaxValue() !== null): ?>
+            max="<?php echo $field->getMaxValue(); ?>"
+        <?php endif; ?>
+        
         <?php if ($field->getTabIndex() !== null): ?>
             tabindex="<?php echo $field->getTabIndex(); ?>"
         <?php endif; ?>

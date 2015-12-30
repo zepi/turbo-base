@@ -90,9 +90,10 @@ class TranslationManager
      * @access public
      * @param string $string
      * @param string $namespace
+     * @param array $arguments
      * @return string
      */
-    public function translate($string, $namespace)
+    public function translate($string, $namespace, $arguments = array())
     {
         // If the domain not is loaded already load the translation file for the given namespace
         if (!isset($this->_translatedStrings[$namespace]) || !is_array($this->_translatedStrings[$namespace])) {
@@ -102,10 +103,37 @@ class TranslationManager
         // If no translation for the original string is available or the string is not translated 
         // return the original string back to the caller.
         if (!isset($this->_translatedStrings[$namespace][$string]) || $this->_translatedStrings[$namespace][$string] == '') {
+            if (count($arguments) > 0) {
+                $string = $this->_replacePlaceholders($string, $arguments);
+            }
+            
             return $string;
         }
         
-        return $this->_translatedStrings[$namespace][$string];
+        $translatedString = $this->_replacePlaceholders($this->_translatedStrings[$namespace][$string], $arguments);
+        
+        if (count($arguments) > 0) {
+            $translatedString = $this->_replacePlaceholders($translatedString, $arguments);
+        }
+        
+        return $translatedString;
+    }
+    
+    /**
+     * Replaces the placeholders in the string with the correct values
+     * 
+     * @access protected
+     * @param string $string
+     * @param array $arguments
+     * @return string
+     */
+    protected function _replacePlaceholders($string, $arguments)
+    {
+        foreach ($arguments as $key => $value) {
+            $string = str_replace('%' . $key . '%', $value, $string);
+        }
+        
+        return $string;
     }
     
     /**
