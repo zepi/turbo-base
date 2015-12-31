@@ -29,7 +29,8 @@ a.btn .mdi { margin-right: 5px; }
 /**
  * Overview navigation boxes
  */
-ul.overview-navigation { margin: 0 -15px 0 -15px; padding: 0; list-style-type: none; }
+ul.overview-navigation { margin: 0 -10px 40px -10px; padding: 0; list-style-type: none; }
+ul.overview-navigation:after { display: table; clear: both; content: ''; }
 ul.overview-navigation li { display: table; }
 ul.overview-navigation li .overview-navigation-box { height: 140px; background: #F6F6F6; border: 1px solid #AAAAAA; padding: 20px; display: table-cell; vertical-align: middle; text-align: center; }
 ul.overview-navigation li .overview-navigation-icon { font-size: 50px; text-align: center; }
