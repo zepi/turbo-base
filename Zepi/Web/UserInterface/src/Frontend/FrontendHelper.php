@@ -96,6 +96,12 @@ class FrontendHelper
     protected $_tableRenderer;
     
     /**
+     * @access protected
+     * @var string
+     */
+    protected $_completeTitle;
+    
+    /**
      * Constructs the object
      * 
      * @access public
@@ -161,14 +167,25 @@ class FrontendHelper
      */
     public function setTitle($title, $function = '')
     {
-        $completeTitle = $title;
+        $this->_completeTitle = $title;
         
         if ($function != '') {
-            $completeTitle .= ' - ' . $function;
+            $this->_completeTitle .= ' - ' . $function;
             $this->_menuManager->setBreadcrumbFunction($function);
         }
         
-        $this->_metaInformationManager->setTitle($completeTitle);
+        $this->_metaInformationManager->setTitle($this->_completeTitle);
+    }
+    
+    /**
+     * Returns the the title of the page
+     *
+     * @access public
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->_completeTitle;
     }
     
     /**

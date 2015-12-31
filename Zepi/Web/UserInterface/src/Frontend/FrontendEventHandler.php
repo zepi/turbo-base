@@ -116,6 +116,17 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
     }
     
     /**
+     * Returns the the title of the page
+     * 
+     * @access public
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->_frontendHelper->getTitle();
+    }
+    
+    /**
      * Activates the correct menu entry and returns the activated
      * menu entry
      *

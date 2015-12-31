@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
 			dataArray[dynamicZone.data('name')] = true;
 			
 			jQuery.post(form.prop('action'), dataArray, function (response) {
-				if (jQuery(response).find('#login-user-data')) {
+				if (jQuery(response).find('#login-user-data').length > 0) {
 					window.location.reload();
 					return;
 				}

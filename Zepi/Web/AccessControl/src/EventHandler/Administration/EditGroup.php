@@ -165,14 +165,14 @@ class EditGroup extends FrontendEventHandler
         if (!$editGroupForm->isSubmitted() || $errorBox->hasErrors()) {
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupForm', array(
                 'user' => $group,
-                'title' => $title,
+                'title' => $this->getTitle(),
                 'layout' => $editGroupLayout,
                 'layoutRenderer' => $this->getLayoutRenderer()
             )));
         } else {
             // Display the successful saved message
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupFinished', array(
-                'title' => $title
+                'title' => $this->getTitle()
             )));
         }
     }

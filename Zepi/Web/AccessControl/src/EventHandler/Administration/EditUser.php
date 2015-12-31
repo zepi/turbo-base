@@ -164,14 +164,14 @@ class EditUser extends FrontendEventHandler
         if (!$editUserForm->isSubmitted() || $errorBox->hasErrors()) {
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditUserForm', array(
                 'user' => $user,
-                'title' => $title,
+                'title' => $this->getTitle(),
                 'layout' => $editUserLayout,
                 'layoutRenderer' => $this->getLayoutRenderer()
             )));
         } else {
             // Display the successful saved message
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditUserFinished', array(
-                'title' => $title
+                'title' => $this->getTitle()
             )));
         }
     }
