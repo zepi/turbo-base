@@ -120,7 +120,7 @@ class MenuEntry
         $name,
         $target = '#', 
         $iconClass = '',
-        $class = '', 
+        $class = '',
         $window = 'self',
         $hideWhenEmpty = false
     ) {

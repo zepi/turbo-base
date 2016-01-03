@@ -68,7 +68,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'profile',
                 'mdi-account'
             );
-            $this->getMenuManager()->addMenuEntry('menu-right', $profileMenuEntry);
+            $this->getMenuManager()->addMenuEntry('menu-right', $profileMenuEntry, 90);
             
             // Add the hidden user settings menu entry
             $userSettingsSubMenuEntry = new \Zepi\Web\General\Entity\HiddenMenuEntry(
@@ -91,7 +91,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'logout',
                 'mdi-logout'
             );
-            $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry);
+            $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry, 100);
         } else {
             $menuEntry = new \Zepi\Web\General\Entity\MenuEntry(
                 'login',
@@ -99,7 +99,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'login',
                 'mdi-login'
             );
-            $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry);
+            $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry, 100);
         }
     }
 }

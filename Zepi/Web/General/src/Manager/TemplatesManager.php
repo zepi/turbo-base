@@ -145,18 +145,11 @@ class TemplatesManager
             $this->_templates[$key] = array();
         }
         
-        if (!isset($this->_templates[$key][$priority]) || !is_array($this->_templates[$key][$priority])) {
-            $this->_templates[$key][$priority] = array();
-        }
+        $this->_templates[$key][$priority] = $file;
         
-        // If the file isn't in the templates array, we add it.
-        if (!in_array($file, $this->_templates[$key][$priority])) {
-            $this->_templates[$key][$priority][] = $file;
-            
-            ksort($this->_templates[$key][$priority]);
-            
-            $this->_saveTemplates();
-        }
+        ksort($this->_templates[$key]);
+        
+        $this->_saveTemplates();
         
         return true;
     }
@@ -171,16 +164,13 @@ class TemplatesManager
      */
     public function removeTemplate($key, $file, $priority = 10)
     {
-        // Search the template file in the array.
-        $foundAtIndex = array_search($file, $this->_templates[$key][$priority]);
-        
         // If we can't find the template file we do not have to remove anything.
-        if ($foundAtIndex === false) {
+        if (!isset($this->_templates[$key][$priority])) {
             return false;
         }
         
         // Remove the template file.
-        unset($this->_templates[$key][$priority][$foundAtIndex]);
+        unset($this->_templates[$key][$priority]);
     }
     
     /**
@@ -219,10 +209,8 @@ class TemplatesManager
         $output = '';
         
         // Render the template files
-        foreach ($this->_templates[$key] as $priority => $templateFiles) {
-            foreach ($templateFiles as $templateFile) {
-                $output .= $this->_searchRendererAndRenderTemplate($templateFile, $additionalData);
-            }
+        foreach ($this->_templates[$key] as $priority => $templateFile) {
+            $output .= $this->_searchRendererAndRenderTemplate($templateFile, $additionalData);
         }
         
         return $output;

@@ -61,6 +61,6 @@ class DefaultRouteNotFound implements EventHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
-        $response->setOutputPart('404', 'The requested route is not available. We can\'t execute the request.');
+        $response->setOutputPart('404', 'The requested route is not available. We can\'t execute the request. Route: "' . $request->getRoute() . '"');
     }
 }

@@ -16,7 +16,20 @@
                         <?php if ($row instanceof FilterRow && $cell->getValue() !== null): ?>
                             <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>" value="<?php echo $cell->getValue(); ?>" />
+                                    <?php $fieldType = $cell->getColumn()->getFieldType(); ?>
+                                    <?php if ($fieldType === 'select'): ?>
+                                        <select class="form-control" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>">
+                                            <?php foreach ($preparedTable->getTable()->getFilterValues($cell->getColumn()->getKey()) as $value => $label): ?>
+                                                <option value="<?php echo $value; ?>"
+                                                    <?php if ($cell->getValue() == $value) { echo 'selected="selected"'; } ?>
+                                                    >
+                                                    <?php echo $label; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    <?php else: ?>
+                                        <input type="text" class="form-control" placeholder="" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>" value="<?php echo $cell->getValue(); ?>" />
+                                    <?php endif; ?>
                                     <span class="input-group-btn input-group-btn-mdi">
                                         <button class="btn btn-default" type="submit"><span class="mdi mdi-magnify"></span></button>
                                     </span>

@@ -68,8 +68,8 @@ class Module extends ModuleAbstract
     {
         // Add the assets
         $assetsManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.2/css/bootstrap.css');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap-theme', $this->_directory . '/assets/vendor/bootstrap-3.3.2/css/bootstrap-theme.css', array('bootstrap'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap.css');
+        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap-theme', $this->_directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap-theme.css', array('bootstrap'));
         $assetsManager->addAsset(AssetsManager::CSS, 'materialdesignicons', $this->_directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
         $assetsManager->addAsset(AssetsManager::CSS, 'zt-base', $this->_directory . '/assets/css/base.css', array('bootstrap-theme'));
         $assetsManager->addAsset(AssetsManager::CSS, 'zt-theme', $this->_directory . '/assets/css/theme.css', array('zt-base'));
@@ -79,7 +79,7 @@ class Module extends ModuleAbstract
         
         $assetsManager->addAsset(AssetsManager::JS, 'modernizr', $this->_directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
         $assetsManager->addAsset(AssetsManager::JS, 'jquery', $this->_directory . '/assets/js/vendor/jquery-1.10.1.min.js');
-        $assetsManager->addAsset(AssetsManager::JS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.2/js/bootstrap.min.js', array('jquery'));
+        $assetsManager->addAsset(AssetsManager::JS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.6/js/bootstrap.min.js', array('jquery'));
         $assetsManager->addAsset(AssetsManager::JS, 'zt-main', $this->_directory . '/assets/js/main.js', array('jquery'));
         
         $assetsManager->addAsset(AssetsManager::IMAGE, 'logo', $this->_directory . '/assets/images/logo.svg');

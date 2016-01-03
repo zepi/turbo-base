@@ -101,6 +101,17 @@ class MetaInformationManager
     }
     
     /**
+     * Returns the name of the framework instance
+     * 
+     * @access public
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
+    
+    /**
      * Returns the title for the request
      * 
      * @access public

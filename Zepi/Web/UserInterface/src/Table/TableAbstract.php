@@ -161,4 +161,17 @@ abstract class TableAbstract
      * @return mixed
      */
     abstract public function getDataForRow($key, $object);
+    
+    /**
+     * Returns an array with all filter values for the column
+     *
+     * @access public
+     * @param string $key
+     * @param mixed $object
+     * @return array
+     */
+    public function getFilterValues($key)
+    {
+        return array();
+    }
 }

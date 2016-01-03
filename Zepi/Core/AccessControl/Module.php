@@ -153,10 +153,17 @@ class Module extends ModuleAbstract
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
-                '\\Global\\*',
-                'Global Super User',
-                'Super user privileges. Can do everything.',
-                '\\Zepi\\Core\\AccessControl'
+            '\\Global\\*',
+            'Global Super User',
+            'Super user privileges. Can do everything.',
+            '\\Zepi\\Core\\AccessControl'
+        ));
+        
+        $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
+            '\\Global\\Disabled',
+            'Disabled User',
+            'A disabled user. Can do nothing, not even login.',
+            '\\Zepi\\Core\\AccessControl'
         ));
     }
     
@@ -173,6 +180,7 @@ class Module extends ModuleAbstract
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->removeAccessLevel('\\Global\\*');
+        $accessLevelsManager->removeAccessLevel('\\Global\\Disabled');
         
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();

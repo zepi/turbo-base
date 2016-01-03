@@ -217,16 +217,16 @@ td .message { margin: 20px; }
 /**
  * Message icons
  */
-.message:before { font-family: MaterialDesignIcons; font-style: normal; font-weight: normal; line-height: 1; font-size: 36px; content: ""; padding: 13px; position: absolute; top: 0; left: 0; bottom: 0; width: 61px; background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
+.message:before { font-family: "Material Design Icons"; font-style: normal; font-weight: normal; line-height: 1; font-size: 36px; content: ""; padding: 13px; position: absolute; top: 0; left: 0; bottom: 0; width: 61px; background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
     -webkit-border-radius: 5px 0 0 5px;
     -moz-border-radius:  5px 0 0 5px;
     border-radius:  5px 0 0 5px;
 }
-.message.success:before { content: "\f1e1";  }
-.message.error:before { content: "\f201"; }
-.message.warning:before { content: "\f120"; }
-.message.question:before { content: "\f31c"; }
-.message.info:before { content: "\f339"; }
+.message.success:before { content: "\f20d";  }
+.message.error:before { content: "\f22e"; }
+.message.warning:before { content: "\f124"; }
+.message.question:before { content: "\f396"; }
+.message.info:before { content: "\f3b7"; }
 
 /**
  * Tabs

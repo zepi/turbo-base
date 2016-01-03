@@ -227,6 +227,11 @@ class SessionManager
         
         // Load the user
         $user = $this->_userManager->getUserForUuid($userUuid);
+        
+        // If the user is disabled we cannot initialize the session
+        if (!$user->hasAccess('\\Global\\*') && $user->hasAccess('\\Global\\Disabled')) {
+            return false;
+        }
 
         // Generate a new session object
         $session = new Session($user, $token, $lifetime);

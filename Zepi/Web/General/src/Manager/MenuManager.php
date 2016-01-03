@@ -103,21 +103,48 @@ class MenuManager
      * @access public
      * @param string $location
      * @param \Zepi\Web\General\Entity\MenuEntry $menuEntry
+     * @param integer $priority
      * @return boolean
      */
-    public function addMenuEntry($location, MenuEntry $menuEntry)
+    public function addMenuEntry($location, MenuEntry $menuEntry, $priority = 50)
     {
         if (!isset($this->_menuEntries[$location])) {
             $this->_menuEntries[$location] = array();
         }
         
-        if (isset($this->_menuEntries[$location][$menuEntry->getKey()])) {
+        if (!isset($this->_menuEntries[$location][$priority])) {
+            $this->_menuEntries[$location][$priority] = array();
+        }
+
+        if (isset($this->_menuEntries[$location][$priority][$menuEntry->getKey()])) {
             return false;
         }
         
-        $this->_menuEntries[$location][$menuEntry->getKey()] = $menuEntry;
+        $this->_menuEntries[$location][$priority][$menuEntry->getKey()] = $menuEntry;
+        
+        ksort($this->_menuEntries[$location]);
+        uasort($this->_menuEntries[$location][$priority], array($this, 'sortMenuEntries'));
         
         return true;
+    }
+    
+    /**
+     * Sorts two menu entries
+     * 
+     * @access public
+     * @param Zepi\Web\General\Entity\MenuEntry $a
+     * @param Zepi\Web\General\Entity\MenuEntry $b
+     * @return integer
+     */
+    public function sortMenuEntries($a, $b)
+    {
+       if ($a->getName() > $b->getName()) {
+           return 1;
+       } else if ($a->getName() < $b->getName()) {
+           return -1;
+       } else {
+           return 0;
+       }
     }
     
     /**
@@ -155,11 +182,13 @@ class MenuManager
      */
     public function getMenuEntryForKey($key)
     {
-        foreach ($this->_menuEntries as $location => $menuEntries) {
-            $result = $this->searchMenuEntryForKey($menuEntries, $key);
-        
-            if ($result !== false) {
-                return $result;
+        foreach ($this->_menuEntries as $location => $priorities) {
+            foreach ($priorities as $priority=> $menuEntries) {
+                $result = $this->searchMenuEntryForKey($menuEntries, $key);
+            
+                if ($result !== false) {
+                    return $result;
+                }
             }
         }
         
@@ -303,11 +332,13 @@ class MenuManager
      */
     protected function _searchCorrectMenuEntry()
     {
-        foreach ($this->_menuEntries as $location => $menuEntries) {
-            $menuEntry = $this->_searchCorrectMenuEntryInArray($menuEntries);
-
-            if ($menuEntry !== false) {
-                return $menuEntry;
+        foreach ($this->_menuEntries as $location => $priorities) {
+            foreach ($priorities as $priority => $menuEntries) {
+                $menuEntry = $this->_searchCorrectMenuEntryInArray($menuEntries);
+    
+                if ($menuEntry !== false) {
+                    return $menuEntry;
+                }
             }
         }
         

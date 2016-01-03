@@ -71,7 +71,24 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
         }
         
         // Verify the entries
-        return $this->_verifyEntries($value, $request);
+        return $this->_verifyMainEntries($value, $request);
+    }
+    
+    /**
+     * Verifies the main access levels for the given entries.
+     *
+     * @access protected
+     * @param array $priorities
+     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @return array
+     */
+    protected function _verifyMainEntries($priorities, WebRequest $request)
+    {
+        foreach ($priorities as $priority => $entries) {
+            $priorities[$priority] = $this->_verifyEntries($entries, $request);
+        }
+    
+        return $priorities;
     }
     
     /**
@@ -88,17 +105,17 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
             // If the entry is a ProtectedMenuEntry, verify the entry
             if ($entry instanceof \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry) {
                 $result = $this->_verifyProtectedEntry($entry, $request);
-                
+        
                 // If the entry isn't allowed remove it from the array
                 if (!$result) {
                     unset($entries[$key]);
                 }
             }
-            
+        
             // If the entry has children, verify all children
             if ($entry->hasChildren()) {
                 $children = $this->_verifyEntries($entry->getChildren(), $request);
-                
+        
                 $entry->setChildren($children);
             }
         }

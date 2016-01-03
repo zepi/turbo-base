@@ -44,9 +44,11 @@
                     <div class="header-navigation-left">
                         <ul class="root">
                             <?php if ($menuManager != false): ?>
-                                <?php foreach ($menuManager->getMenuEntries('menu-left') as $menuEntry): ?>
-                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                <?php foreach ($menuManager->getMenuEntries('menu-left') as $priority => $menuEntries): ?>
+                                    <?php foreach ($menuEntries as $menuEntry): ?>
+                                        <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                        <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                    <?php endforeach; ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>
@@ -54,9 +56,11 @@
                     <div class="header-navigation-right">
                         <ul class="root">
                             <?php if ($menuManager != false): ?>
-                                <?php foreach ($menuManager->getMenuEntries('menu-right') as $menuEntry): ?>
-                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                <?php foreach ($menuManager->getMenuEntries('menu-right') as $priority => $menuEntries): ?>
+                                    <?php foreach ($menuEntries as $menuEntry): ?>
+                                        <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                        <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                    <?php endforeach; ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>

@@ -101,7 +101,7 @@ class UserManager
             throw new Exception('Cannot add the user. Internal softeware error.');
         }
         
-        return $this->_accessControlManager->getAccessEntityForUuid($uuid);
+        return $this->getUserForUuid($uuid);
     }
     
     /**
