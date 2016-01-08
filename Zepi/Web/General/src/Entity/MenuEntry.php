@@ -252,6 +252,27 @@ class MenuEntry
     }
     
     /**
+     * Returns true if the menu entry should be hidden
+     * 
+     * @access public
+     * @return boolean
+     */
+    public function shouldHide()
+    {
+        if (!$this->_hideWhenEmpty) {
+            return false;
+        }
+        
+        foreach ($this->_children as $child) {
+            if (!$child->shouldHide()) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
      * Sets the children of the menu entry.
      * 
      * @access public

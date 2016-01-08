@@ -7,7 +7,7 @@
     }
     
     // If the menu entry is empty we continue
-    if ($menuEntry->hideWhenEmpty() && !$menuEntry->hasChildren()) {
+    if ($menuEntry->hideWhenEmpty() && $menuEntry->shouldHide()) {
         return;
     }
 
