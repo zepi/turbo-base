@@ -131,8 +131,10 @@ class MailHelper
      * Sends a email
      *
      * @access public
-     * @param \Zepi\Web\AccessControl\Entity\User $user
-     * @param string $activationLink
+     * @param string $recipient
+     * @param string $subject
+     * @param string $htmlBody
+     * @param string $textBody
      * @return number
      */
     public function sendMail($recipient, $subject, $htmlBody, $textBody = false)
@@ -175,39 +177,5 @@ class MailHelper
         $text = \Html2Text\Html2Text::convert($html);
         
         return $text;
-    }
-    
-    /**
-     * Sends the registration mail to the new user
-     * 
-     * @access public
-     * @param \Zepi\Web\AccessControl\Entity\User $user
-     * @param string $activationLink
-     * @return number
-     */
-    public function sendRegistrationMail(User $user, $activationLink)
-    {
-        $message = \Swift_Message::newInstance();
-        
-        // Subject
-        $message->setSubject($this->translate('Your registration', '\\Pmx\\Autopilot\\AccessControl'));
-        
-        // From
-        $fromEmail = $this->_configurationManager->getSetting('mailer', 'sendFrom');
-        $fromName = $this->_configurationManager->getSetting('mailer', 'sendFromName');
-        $message->setFrom(array($fromEmail => $fromName));
-        
-        // To
-        $message->setTo($user->getMetaData('email'));
-        
-        // Body
-        $htmlBody = $this->_templatesManager->renderTemplate('\\Pmx\\Autopilot\\AccessControl\\Mail\\Registration', array(
-            'user' => $user,
-            'activationLink' => $activationLink,
-        ));
-        $message->setBody($htmlBody, 'text/html');
-
-        $mailer = $this->_getMailer();
-        return $mailer->send($message);
     }
 }

@@ -372,7 +372,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
             
             return $uuid;
         } catch (\Exception $e) {
-            throw new Exception('Cannot add the new access entitiy "' . $name .'".', 0, $e);
+            throw new Exception('Cannot add the new access entitiy "' . $name . '".', 0, $e);
         }
     }
     

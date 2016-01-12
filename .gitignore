@@ -1,4 +1,4 @@
 .buildpath
 .project
 .settings/
-Zepi/Web/General/cache/
+Zepi/Web/General/cache/*

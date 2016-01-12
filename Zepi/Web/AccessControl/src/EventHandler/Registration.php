@@ -149,7 +149,7 @@ class Registration extends FrontendEventHandler
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @return boolean
+     * @return string|boolean
      */
     protected function _createUser(Form $registrationForm, Framework $framework, RequestAbstract $request, Response $response)
     {
@@ -200,8 +200,12 @@ class Registration extends FrontendEventHandler
      * 
      * @param \Zepi\Turbo\Framework $framework
      * @param string $username
+     * @param string $email
+     * @param string $emailConfirmed
      * @param string $password
-     * @return boolean|\Zepi\Web\AccessControl\Entity\User
+     * @param string $passwordConfirmed
+     * @param boolean $tos
+     * @return boolean|string
      */
     protected function _validateData(Framework $framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos)
     {

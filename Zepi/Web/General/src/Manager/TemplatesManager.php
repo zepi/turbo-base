@@ -129,7 +129,7 @@ class TemplatesManager
      * @access public
      * @param string $key
      * @param string $file
-     * @param string $priority
+     * @param integer $priority
      * @return boolean
      */
     public function addTemplate($key, $file, $priority = 10)

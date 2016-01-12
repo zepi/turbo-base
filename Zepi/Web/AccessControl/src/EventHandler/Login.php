@@ -160,7 +160,7 @@ class Login extends FrontendEventHandler
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
-     * @return boolean
+     * @return string|boolean
      */
     protected function _authorizeUser(Form $loginForm, Framework $framework, WebRequest $request, Response $response)
     {

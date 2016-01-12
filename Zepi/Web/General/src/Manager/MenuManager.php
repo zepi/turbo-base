@@ -138,13 +138,13 @@ class MenuManager
      */
     public function sortMenuEntries($a, $b)
     {
-       if ($a->getName() > $b->getName()) {
-           return 1;
-       } else if ($a->getName() < $b->getName()) {
-           return -1;
-       } else {
-           return 0;
-       }
+        if ($a->getName() > $b->getName()) {
+            return 1;
+        } else if ($a->getName() < $b->getName()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
     
     /**
