@@ -138,6 +138,12 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
             return false;
         }
         
+        // If the access level key is empty but the user has a
+        // session everything is fine with this entry.
+        if ($request->hasSession() && $protectedEntry->getAccessLevelKey() === '') {
+            return true;
+        }
+        
         // Check the database
         if ($request->getSession()->hasAccess($protectedEntry->getAccessLevelKey())) {
             return true;
