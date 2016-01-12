@@ -144,7 +144,9 @@ class Login extends FrontendEventHandler
                 'result' => $result,
                 'errors' => $errors,
                 'form' => $loginForm, 
-                'layoutRenderer' => $this->getLayoutRenderer()
+                'layoutRenderer' => $this->getLayoutRenderer(),
+                'allowRegistration' => $this->getSetting('accesscontrol', 'allowRegistration'),
+                'allowRenewPassword' => $this->getSetting('accesscontrol', 'allowRenewPassword'),
             ));
             
             $response->setOutput($renderedOutput);
@@ -250,6 +252,13 @@ class Login extends FrontendEventHandler
             $origin = $request->getParam('_origin');
         }
         
+        $helpText = '';
+        if ($this->getSetting('accesscontrol', 'allowRenewPassword')) {
+            $helpText = $this->translate('Lost your password? <a href="%link%">Renew it here.</a>', '\\Zepi\\Web\\AccessControl', array(
+                'link' => $request->getFullRoute('request-new-password')
+            ));
+        }
+        
         // Add the user data group
         $group = new Group(
             'user-data',
@@ -263,7 +272,9 @@ class Login extends FrontendEventHandler
                 new Password(
                     'password',
                     $this->translate('Password', '\\Zepi\\Web\\AccessControl'),
-                    true
+                    true,
+                    '',
+                    $helpText
                 ),
                 new Hidden(
                     'origin',

@@ -77,6 +77,19 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
     abstract public function execute(Framework $framework, WebRequest $request, Response $response);
 
     /**
+     * Returns the setting for the given group and key
+     *
+     * @access public
+     * @param string $group
+     * @param string $key
+     * @return mixed
+     */
+    public function getSetting($group, $key)
+    {
+        return $this->_frontendHelper->getSetting($group, $key);
+    }
+    
+    /**
      * Translates a string
      *
      * @access public

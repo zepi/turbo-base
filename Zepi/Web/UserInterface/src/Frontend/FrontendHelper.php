@@ -36,6 +36,7 @@
 
 namespace Zepi\Web\UserInterface\Frontend;
 
+use \Zepi\Core\Utils\Manager\ConfigurationManager;
 use \Zepi\Core\Language\Manager\TranslationManager;
 use \Zepi\Web\General\Manager\TemplatesManager;
 use \Zepi\Web\General\Manager\MetaInformationManager;
@@ -53,6 +54,12 @@ use Zepi\Web\UserInterface\Renderer\OverviewPage;
  */
 class FrontendHelper
 {
+    /**
+     * @access protected
+     * @var \Zepi\Core\Utils\Manager\ConfigurationManager
+     */
+    protected $_configurationManager;
+    
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
@@ -105,6 +112,7 @@ class FrontendHelper
      * Constructs the object
      * 
      * @access public
+     * @param \Zepi\Core\Utils\Manager\ConfigurationManager $configurationManager
      * @param \Zepi\Core\Language\Manager\TranslationManager $translationManager
      * @param \Zepi\Web\General\Manager\TemplatesManager $templatesManager
      * @param \Zepi\Web\General\Manager\MetaInformationManager $metaInformationManager
@@ -114,6 +122,7 @@ class FrontendHelper
      * @param \Zepi\Web\UserInterface\Renderer\Table $tableRenderer
      */
     public function __construct(
+        ConfigurationManager $configurationManager,
         TranslationManager $translationManager,
         TemplatesManager $templatesManager,
         MetaInformationManager $metaInformationManager,
@@ -122,6 +131,7 @@ class FrontendHelper
         OverviewPage $overviewPageRenderer,
         Table $tableRenderer
     ) {
+        $this->_configurationManager = $configurationManager;
         $this->_translationManager = $translationManager;
         $this->_templatesManager = $templatesManager;
         $this->_metaInformationManager = $metaInformationManager;
@@ -129,6 +139,19 @@ class FrontendHelper
         $this->_layoutRenderer = $layoutRenderer;
         $this->_overviewPageRenderer = $overviewPageRenderer;
         $this->_tableRenderer = $tableRenderer;
+    }
+    
+    /**
+     * Returns the setting for the given group and key
+     * 
+     * @access public
+     * @param string $group
+     * @param string $key
+     * @return mixed
+     */
+    public function getSetting($group, $key)
+    {
+        return $this->_configurationManager->getSetting($group, $key);
     }
     
     /**

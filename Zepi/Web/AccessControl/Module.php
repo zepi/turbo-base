@@ -198,6 +198,15 @@ class Module extends ModuleAbstract
                 );
             break;
             
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\RequestNewPassword':
+            case '\\Zepi\\Web\\AccessControl\\EventHandler\\GenerateNewPassword':
+                return new $className(
+                    $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\UserManager'),
+                    $this->_framework->getInstance('\\Zepi\\Web\\Mail\\Helper\\MailHelper')
+                );
+            break;
+            
             case '\\Zepi\\Web\\AccessControl\\EventHandler\\Activation':
                 return new $className(
                     $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'),
@@ -263,6 +272,8 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Web\\AccessControl\\EventHandler\\ExecuteInstallation', 100);
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Registration', '\\Zepi\\Web\\AccessControl\\EventHandler\\Registration');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Activation', '\\Zepi\\Web\\AccessControl\\EventHandler\\Activation');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\RequestNewPassword');
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\GenerateNewPassword');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
@@ -290,6 +301,8 @@ class Module extends ModuleAbstract
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->addRoute('register', '\\Zepi\\Web\\AccessControl\\Event\\Registration');
         $routeManager->addRoute('activate|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Activation');
+        $routeManager->addRoute('request-new-password', '\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword');
+        $routeManager->addRoute('generate-new-password|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword');
         $routeManager->addRoute('login', '\\Zepi\\Web\\AccessControl\\Event\\Login');
         $routeManager->addRoute('logout', '\\Zepi\\Web\\AccessControl\\Event\\Logout');
         $routeManager->addRoute('profile', '\\Zepi\\Web\\AccessControl\\Event\\Profile');
@@ -315,6 +328,9 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationForm', $this->_directory . '/templates/Registration.Form.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationFinished', $this->_directory . '/templates/Registration.Finished.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Activation', $this->_directory . '/templates/Activation.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RequestNewPasswordForm', $this->_directory . '/templates/RequestNewPassword.Form.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RequestNewPasswordFinished', $this->_directory . '/templates/RequestNewPassword.Finished.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\GenerateNewPasswordFinished', $this->_directory . '/templates/GenerateNewPassword.Finished.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\LoginForm', $this->_directory . '/templates/Login.Form.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Logout', $this->_directory . '/templates/Logout.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Profile', $this->_directory . '/templates/Profile.phtml');
@@ -322,6 +338,8 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished', $this->_directory . '/templates/ProfileChangePassword.Finished.phtml');
         
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Mail\\Registration', $this->_directory . '/templates/Mail/Registration.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Mail\\RequestNewPassword', $this->_directory . '/templates/Mail/RequestNewPassword.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Mail\\GenerateNewPassword', $this->_directory . '/templates/Mail/GenerateNewPassword.phtml');
         
         // Administration
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Users', $this->_directory . '/templates/Administration/Users.phtml');
@@ -346,6 +364,12 @@ class Module extends ModuleAbstract
             'Can create, modify and delete users and groups.', 
             '\\Zepi\\Web\\AccessControl'
         ));
+        
+        // Configuration
+        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->addSettingIfNotSet('accesscontrol', 'allowRegistration', true);
+        $configurationManager->addSettingIfNotSet('accesscontrol', 'allowRenewPassword', true);
+        $configurationManager->saveConfigurationFile();
     }
     
     /**
@@ -360,6 +384,8 @@ class Module extends ModuleAbstract
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\EventHandler\\FilterMenuEntriesForProtectedEntries');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Registration', '\\Zepi\\Web\\AccessControl\\EventHandler\\Registration');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Activation', '\\Zepi\\Web\\AccessControl\\EventHandler\\Activation');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\RequestNewPassword');
+        $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\GenerateNewPassword');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Login', '\\Zepi\\Web\\AccessControl\\EventHandler\\Login');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
@@ -385,6 +411,8 @@ class Module extends ModuleAbstract
         $routeManager = $this->_framework->getRouteManager();
         $routeManager->removeRoute('register', '\\Zepi\\Web\\AccessControl\\Event\\Registration');
         $routeManager->removeRoute('activate|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Activation');
+        $routeManager->removeRoute('request-new-password', '\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword');
+        $routeManager->removeRoute('generate-new-password|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword');
         $routeManager->removeRoute('login', '\\Zepi\\Web\\AccessControl\\Event\\Login');
         $routeManager->removeRoute('logout', '\\Zepi\\Web\\AccessControl\\Event\\Logout');
         $routeManager->removeRoute('profile', '\\Zepi\\Web\\AccessControl\\Event\\Profile');
@@ -410,6 +438,9 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationForm', $this->_directory . '/templates/Registration.Form.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationFinished', $this->_directory . '/templates/Registration.Finished.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Activation', $this->_directory . '/templates/Activation.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RequestNewPasswordForm', $this->_directory . '/templates/RequestNewPassword.Form.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RequestNewPasswordFinished', $this->_directory . '/templates/RequestNewPassword.Finished.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\GenerateNewPasswordFinished', $this->_directory . '/templates/GenerateNewPassword.Finished.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\LoginForm', $this->_directory . '/templates/Login.Form.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Logout', $this->_directory . '/templates/Logout.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Profile', $this->_directory . '/templates/Profile.phtml');
@@ -417,6 +448,9 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished', $this->_directory . '/templates/ProfileChangePassword.Finished.phtml');
         
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Mail\\Registration', $this->_directory . '/templates/Mail/Registration.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Mail\\RequestNewPassword', $this->_directory . '/templates/Mail/RequestNewPassword.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Mail\\GenerateNewPassword', $this->_directory . '/templates/Mail/GenerateNewPassword.phtml');
+        
         
         // Administration
         $templatesManager->removeTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Users', $this->_directory . '/templates/Administration/Users.phtml');
@@ -436,5 +470,10 @@ class Module extends ModuleAbstract
         // Access Levels
         $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->removeAccessLevel('\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        
+        // Configuration
+        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->removeSettingGroup('accesscontrol');
+        $configurationManager->saveConfigurationFile();
     }
 }

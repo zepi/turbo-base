@@ -86,6 +86,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper':
                 if ($this->_frontendHelper === null) {
                     $this->_frontendHelper = new $className(
+                        $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
                         $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
                         $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
                         $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
