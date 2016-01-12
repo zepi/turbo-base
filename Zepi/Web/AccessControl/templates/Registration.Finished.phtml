@@ -1,0 +1,25 @@
+<?php
+    $title = $additionalData['title'];
+?>
+
+<?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-24">
+            <h1><?php echo $this->translate('Registration finished', '\\Pmx\\Autopilot\\AccessControl'); ?></h1>
+            
+            <div class="message success">
+                <?php echo $this->translate('Your user was created successfully. We\'ve sent you an email to your email address. Please activate your user with a click on the activation link in the email.', '\\Zepi\\Web\\AccessControl'); ?>
+            </div>
+            
+            <div class="button-list">
+                <div class="secondary-buttons align-left">
+                    <a href="<?php echo $request->getFullRoute('/login/'); ?>" class="btn btn-default">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer'); ?>

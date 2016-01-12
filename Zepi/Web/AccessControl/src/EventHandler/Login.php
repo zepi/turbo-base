@@ -158,11 +158,11 @@ class Login extends FrontendEventHandler
      * @access protected
      * @param \Zepi\Web\UserInterface\Form\Form $loginForm
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @return boolean
      */
-    protected function _authorizeUser(Form $loginForm, Framework $framework, RequestAbstract $request, Response $response)
+    protected function _authorizeUser(Form $loginForm, Framework $framework, WebRequest $request, Response $response)
     {
         $user = $this->_validateUserData($framework, $loginForm->getField('user-data', 'username')->getValue(), $loginForm->getField('user-data', 'password')->getValue());
         if ($user === false) {
@@ -229,11 +229,11 @@ class Login extends FrontendEventHandler
      * 
      * @access protected
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, RequestAbstract $request, Response $response)
+    protected function _createForm(Framework $framework, WebRequest $request, Response $response)
     {
         // Create the form
         $form = new Form('login', $request->getFullRoute('login'), 'post');

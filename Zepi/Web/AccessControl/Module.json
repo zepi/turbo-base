@@ -14,7 +14,8 @@
             "\\Zepi\\Core\\AccessControl": "*",
             "\\Zepi\\Core\\Language": "*",
             "\\Zepi\\Web\\General": "*",
-            "\\Zepi\\Renderer\\HtmlRenderer": "*"
+            "\\Zepi\\Renderer\\HtmlRenderer": "*",
+            "\\Zepi\\Web\\Mail": "*"
         }
     }
 }

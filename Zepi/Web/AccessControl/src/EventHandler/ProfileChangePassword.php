@@ -140,7 +140,7 @@ class ProfileChangePassword extends FrontendEventHandler
             $response->setOutput($renderedOutput);
         } else {
             // Display the successful changed message
-            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished', $framework, $request, $response));
+            $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\ProfileChangePasswordFinished'));
         }
     }
 

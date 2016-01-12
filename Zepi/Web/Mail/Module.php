@@ -25,19 +25,19 @@
  */
 
 /**
- * This module delivers an easy to use template system.
+ * This module delivers the mail core for zepi Turbo.
  * 
- * @package Zepi\Renderer\HtmlRenderer
+ * @package Zepi\Web\Mail
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Renderer\HtmlRenderer;
+namespace Zepi\Web\Mail;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
 
 /**
- * This module delivers an easy to use template system.
+ * This module delivers the mail core for zepi Turbo.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
@@ -46,9 +46,9 @@ class Module extends ModuleAbstract
 {
     /**
      * @access protected
-     * @var \Zepi\Renderer\HtmlRenderer\Renderer\Renderer
+     * @var \Zepi\Core\Mail\Helper\MailHelper
      */
-    protected $_htmlRenderer;
+    protected $_mailHelper;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -60,38 +60,22 @@ class Module extends ModuleAbstract
     public function getInstance($className)
     {
         switch ($className) {
-            case '\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer':
-                if ($this->_htmlRenderer === null) {
-                    $this->_htmlRenderer = new $className(
+            case '\\Zepi\\Web\\Mail\\Helper\\MailHelper':
+                if ($this->_mailHelper === null) {
+                    $this->_mailHelper = new $className(
+                        $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
                         $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
                         $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
                     );
                 }
                 
-                return $this->_htmlRenderer;
-            break;
-            
-            case '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer':
-                return new $className(
-                    $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                    $this->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer')
-                );
+                return $this->_mailHelper;
             break;
             
             default: 
                 return new $className();
             break;
         }
-    }
-    
-    /**
-     * Initializes the module
-     * 
-     * @access public
-     */
-    public function initialize()
-    {
-        
     }
     
     /**
@@ -103,8 +87,17 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
-        $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
+        // Configuration
+        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->addSettingIfNotSet('mailer', 'type', 'sendmail');
+        $configurationManager->addSettingIfNotSet('mailer', 'sendmailCommand', '/usr/sbin/sendmail -bs');
+        $configurationManager->addSettingIfNotSet('mailer', 'smtpHost', '');
+        $configurationManager->addSettingIfNotSet('mailer', 'smtpPort', 25);
+        $configurationManager->addSettingIfNotSet('mailer', 'smtpUsername', '');
+        $configurationManager->addSettingIfNotSet('mailer', 'smtpPassword', '');
+        $configurationManager->addSettingIfNotSet('mailer', 'sendFrom', 'info@turbo.local');
+        $configurationManager->addSettingIfNotSet('mailer', 'sendFromName', 'zepi Turbo');
+        $configurationManager->saveConfigurationFile();
     }
     
     /**
@@ -114,7 +107,9 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
+        // Configuration
+        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->removeSettingGroup('mailer');
+        $configurationManager->saveConfigurationFile();
     }
 }

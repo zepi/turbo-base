@@ -78,7 +78,7 @@ class UnitNumber extends FieldAbstract
      * @param string $label
      * @param boolean $isMandatory
      * @param mixed $value
-     * @param stirng $prefix
+     * @param string $prefix
      * @param string $suffix
      * @param integer $minValue
      * @param integer $maxValue

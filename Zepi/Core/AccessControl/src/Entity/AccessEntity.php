@@ -265,7 +265,7 @@ class AccessEntity
             // the star is equal with the access level, the user has access
             // to the given access level.
             $posStar = strpos($permission, '*');
-            if ($posStar !== '') {
+            if ($posStar !== false) {
                 $startPermission = substr($permission, 0, $posStar);
                 $startAccessLevel = substr($accessLevel, 0, $posStar);
                 

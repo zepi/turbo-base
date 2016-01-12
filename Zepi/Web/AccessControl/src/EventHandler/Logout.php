@@ -94,6 +94,6 @@ class Logout extends FrontendEventHandler
         $this->setTitle($this->translate('Successfully logged out', '\\Zepi\\Web\\AccessControl'));
         
         // Display logout message
-        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Logout', $framework, $request, $response));
+        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Logout'));
     }
 }

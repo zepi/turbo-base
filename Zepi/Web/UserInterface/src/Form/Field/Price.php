@@ -76,7 +76,7 @@ class Price extends FieldAbstract
      * @param string $label
      * @param boolean $isMandatory
      * @param mixed $value
-     * @param stirng $currency
+     * @param string $currency
      * @param string $separatorThousands
      * @param string $separatorDecimal
      * @param string $suffix

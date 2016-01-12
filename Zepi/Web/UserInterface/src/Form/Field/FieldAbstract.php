@@ -104,6 +104,12 @@ abstract class FieldAbstract extends Part
     
     /**
      * @access protected
+     * @var boolean
+     */
+    protected $_autocomplete;
+    
+    /**
+     * @access protected
      * @var string
      */
     protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base';
@@ -119,8 +125,9 @@ abstract class FieldAbstract extends Part
      * @param array $classes
      * @param string $placeholder
      * @param integer $tabIndex
+     * @param boolean $autocomplete
      */
-    public function __construct($key, $label, $isMandatory = false, $value = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
+    public function __construct($key, $label, $isMandatory = false, $value = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null, $autocomplete = true)
     {
         $this->_key = $key;
         $this->_label = $label;
@@ -129,6 +136,7 @@ abstract class FieldAbstract extends Part
         $this->_helpText = $helpText;
         $this->_placeholder = $placeholder;
         $this->_tabIndex = $tabIndex;
+        $this->_autocomplete = $autocomplete;
         
         if (count($classes) > 0) {
             $this->_classes = $classes;
@@ -343,6 +351,17 @@ abstract class FieldAbstract extends Part
     public function getTabIndex()
     {
         return $this->_tabIndex;
+    }
+    
+    /**
+     * Returns true if the field has autocomplete
+     * 
+     * @access public
+     * @return boolean
+     */
+    public function hasAutocomplete()
+    {
+        return ($this->_autocomplete);
     }
     
     /**

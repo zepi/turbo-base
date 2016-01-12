@@ -171,7 +171,7 @@ class DynamicZone extends FieldAbstract
      */
     public function setValue($value, RequestAbstract $request)
     {
-        if ($value == true) {
+        if ($value !== '') {
             $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Form');
             
             if (is_object($form)) {

@@ -6,6 +6,7 @@
         class="form-control <?php echo $field->getHtmlClasses(); ?>" 
         value="<?php echo $field->getValue(); ?>"
         <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+        <?php if (!$field->hasAutocomplete()) { echo 'autocomplete="off"'; } ?>
         
         <?php if ($field->getTabIndex() !== null): ?>
             tabindex="<?php echo $field->getTabIndex(); ?>"

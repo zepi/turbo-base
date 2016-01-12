@@ -1,0 +1,18 @@
+{
+    "module": {
+        "name": "Zepi Web Mail",
+        "description": "This module delivers a mail helper for zepi Turbo.",
+        "namespace": "\\Zepi\\Web\\Mail",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2016 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Core\\Utils": "*",
+            "\\Zepi\\Core\\Language": "*",
+            "\\Zepi\\Web\\General": "*"
+        }
+    }
+}
