@@ -65,11 +65,20 @@ class OverviewPage
         $templatesManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $htmlString = '';
 
+        $emptyChilds = array();
         foreach ($menuEntry->getChildren() as $child) {
-            $htmlString .= $templatesManager->renderTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPage', array(
-                'menuEntry' => $child
-            ));
+            if (!$child->hasChildren()) {
+                $emptyChilds[] = $child;
+            } else {
+                $htmlString .= $templatesManager->renderTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageSection', array(
+                    'menuEntry' => $child
+                ));
+            }
         }
+        
+        $htmlString = $templatesManager->renderTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageItems', array(
+            'children' => $emptyChilds
+        )) . $htmlString;
         
         return $htmlString;
     }

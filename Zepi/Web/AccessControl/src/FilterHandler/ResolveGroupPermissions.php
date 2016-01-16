@@ -87,7 +87,7 @@ class ResolveGroupPermissions implements FilterHandlerInterface
             if ($parts[1] === 'Group' && count($parts) === 3) {
                 $uuid = $parts[2];
                 
-                $groupPermissions = $this->_accessControlManager->getPermissions($uuid);
+                $groupPermissions = $this->_accessControlManager->getPermissionsForUuid($uuid);
                 foreach ($groupPermissions as $groupPermission) {
                     $permissions[] = $groupPermission;
                 }

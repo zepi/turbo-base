@@ -40,6 +40,8 @@ use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
 use \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend;
 use \Zepi\Turbo\Manager\RuntimeManager;
+use \Zepi\Core\AccessControl\Entity\Permission;
+use \Zepi\Core\Utils\Entity\DataRequest;
 
 /**
  * The PermissionsDataSourceMysql communicates with the MySQL Database and 
@@ -97,6 +99,91 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     }
     
     /**
+     * Returns an array with all found permissions for the given DataRequest
+     * object.
+     *
+     * @access public
+     * @param \Zepi\Core\Utils\DataRequest $dataRequest
+     * @return array
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the permissions for the given data request.
+     */
+    public function getPermissions(DataRequest $dataRequest)
+    {
+        try {
+            $dataRequest->setSelectedFields(array('*'));
+            $sql = $this->_databaseBackend->buildDataRequestQuery($dataRequest, 'permissions', 'permission');
+
+            $data = $this->_databaseBackend->query($sql)->fetchAll();
+        
+            if ($data === false) {
+                return array();
+            }
+        
+            $permissions = array();
+            foreach ($data as $row) {
+                $permissions[] = $this->_generatePermissionObject($row);
+            }
+        
+            return $permissions;
+        } catch (\Exception $e) {
+            throw new Exception('Cannot load the permissions for the given data request from the database.', 0, $e);
+        }
+    }
+    
+    /**
+     * Returns the number of all found permissions for the given DataRequest
+     * object.
+     *
+     * @access public
+     * @param \Zepi\Core\Utils\DataRequest $dataRequest
+     * @return false|integer
+     * 
+     * @throws \Zepi\Core\AccessControl\Exception Cannot count the permissions for the given data request.
+     */
+    public function countPermissions(DataRequest $dataRequest)
+    {
+        try {
+            $request = clone $dataRequest;
+        
+            $request->setSelectedFields(array('COUNT(*) AS countEntries'));
+            $request->setPage(0);
+            $request->setNumberOfEntries(0);
+        
+            $sql = $this->_databaseBackend->buildDataRequestQuery($request, 'permissions', 'permission');
+            $data = $this->_databaseBackend->query($sql)->fetch();
+        
+            if ($data === false) {
+                return 0;
+            }
+        
+            return intval($data['countEntries']);
+        } catch (\Exception $e) {
+            throw new Exception('Cannot count the permissions for the given data request.', 0, $e);
+        }
+    }
+    
+    /**
+     * Generates the permission object
+     *
+     * @access protected
+     * @param array $data
+     * @return \Zepi\Core\AccessControl\Entity\Permission
+     */
+    protected function _generatePermissionObject(array $data)
+    {
+        // Initialize the permission object
+        $permission = new Permission(
+                intval($data['permission_id']),
+                $data['permission_access_entity_uuid'],
+                $data['permission_access_level_key'],
+                $data['permission_granted_by']
+        );
+    
+        return $permission;
+    }
+    
+    /**
      * Returns true if the given access entity uuid has already access to the 
      * access level
      * 
@@ -141,7 +228,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the permission for the given uuid "{uuid}".
      */
-    public function getPermissionsRaw($accessEntityUuid)
+    public function getPermissionsRawForUuid($accessEntityUuid)
     {
         // Do not check the database if we haven't all data
         if ($accessEntityUuid == '') {
@@ -175,7 +262,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the permission for the given uuid "{uuid}".
      */
-    public function getPermissions($accessEntityUuid)
+    public function getPermissionsForUuid($accessEntityUuid)
     {
         // Do not check the database if we haven't all data
         if ($accessEntityUuid == '') {
@@ -183,7 +270,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
     
         try {
-            $accessLevels = $this->getPermissionsRaw($accessEntityUuid);
+            $accessLevels = $this->getPermissionsRawForUuid($accessEntityUuid);
     
             $accessLevels = $this->_runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', $accessLevels);
 

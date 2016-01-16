@@ -174,4 +174,17 @@ abstract class TableAbstract
     {
         return array();
     }
+    
+    /**
+     * Prepares the filter value for the column
+     * 
+     * @access public
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
+     */
+    public function prepareFilterValue($key, $value)
+    {
+        return $value;
+    }
 }

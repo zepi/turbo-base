@@ -1,0 +1,10 @@
+<?php
+    $menuEntry = $additionalData['menuEntry'];
+?>
+
+<h2><?php echo $menuEntry->getName(); ?></h2>
+<?php 
+    $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageItems', array(
+        'children' => $menuEntry->getChildren()
+    ));
+?>

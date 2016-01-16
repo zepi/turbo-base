@@ -391,7 +391,7 @@ class EditGroup extends FrontendEventHandler
                                         'access-levels',
                                         $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $this->_accessControlManager->getPermissionsRaw($group->getUuid()),
+                                        $this->_accessControlManager->getPermissionsRawForUuid($group->getUuid()),
                                         $accessLevelSelectorItems,
                                         $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),

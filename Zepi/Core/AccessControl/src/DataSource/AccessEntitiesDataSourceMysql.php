@@ -332,7 +332,7 @@ class AccessEntitiesDataSourceMysql implements DataSourceInterface, AccessEntiti
         );
         
         // Load the permissions for the entity
-        $permissions = $this->_permissionsDataSource->getPermissions($accessEntity->getUuid());
+        $permissions = $this->_permissionsDataSource->getPermissionsForUuid($accessEntity->getUuid());
         
         if ($permissions !== false) {
             $accessEntity->setPermissions($permissions);

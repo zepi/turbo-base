@@ -36,6 +36,8 @@
 
 namespace Zepi\Core\AccessControl\DataSource;
 
+use \Zepi\Core\Utils\Entity\DataRequest;
+
 /**
  * The PermissionsBackend communicates with the database and 
  * loads and saves the permissions.
@@ -45,6 +47,26 @@ namespace Zepi\Core\AccessControl\DataSource;
  */
 interface PermissionsDataSourceInterface
 {
+    /**
+     * Returns an array with all found permissions for the given DataRequest
+     * object.
+     *
+     * @access public
+     * @param \Zepi\Core\Utils\DataRequest $dataRequest
+     * @return array
+     */
+    public function getPermissions(DataRequest $dataRequest);
+    
+    /**
+     * Returns the number of all found permissions for the given DataRequest
+     * object.
+     *
+     * @access public
+     * @param \Zepi\Core\Utils\DataRequest $dataRequest
+     * @return false|integer
+     */
+    public function countPermissions(DataRequest $dataRequest);
+    
     /**
      * Returns true if the given access entity uuid has already access to the 
      * access level
@@ -64,7 +86,7 @@ interface PermissionsDataSourceInterface
      * @param string $accessEntityUuid
      * @return array|false
      */
-    public function getPermissionsRaw($accessEntityUuid);
+    public function getPermissionsRawForUuid($accessEntityUuid);
     
     /**
      * Returns an array with all granted access levels for the given
@@ -74,7 +96,7 @@ interface PermissionsDataSourceInterface
      * @param string $accessEntityUuid
      * @return array|false
      */
-    public function getPermissions($accessEntityUuid);
+    public function getPermissionsForUuid($accessEntityUuid);
     
     /**
      * Adds the permission for the given access entity uuid and access level.

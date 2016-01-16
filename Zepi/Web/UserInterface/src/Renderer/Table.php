@@ -180,9 +180,11 @@ class Table
                 $key = 'table-filter-' . $column->getKey();
 
                 if ($column->isFilterable() && $request->hasParam($key) && $request->getParam($key) != '') {
+                    $value = $table->prepareFilterValue($column->getKey(), $request->getParam($key));
+                    
                     $dataRequest->addFilter(new Filter(
                         $column->getKey(),
-                        $request->getParam('table-filter-' . $column->getKey()),
+                        $value,
                         'LIKE'
                     ));
                 }

@@ -99,6 +99,12 @@ class Login extends FrontendEventHandler
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
+        // Redirect if the user already has a valid session
+        if ($request->hasSession()) {
+            $response->redirectTo('/', 307);
+            return;
+        }
+        
         // Set the title for the page
         $this->setTitle($this->translate('Login', '\\Zepi\\Web\\AccessControl'));
         

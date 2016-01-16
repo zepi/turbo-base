@@ -154,12 +154,16 @@ class MenuManager
      * @param string $location
      * @return array
      */
-    public function getMenuEntries($location)
+    public function getMenuEntries($location = null)
     {
         $runtimeManager = $this->_framework->getRuntimeManager();
-        
+
         // Give the modules the opportunity to add additional menu entries
         $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
+        
+        if ($location === null) {
+            return $this->_menuEntries;
+        }
         
         // If this location does not exists, return an empty array
         if (!isset($this->_menuEntries[$location])) {
@@ -254,7 +258,7 @@ class MenuManager
         $runtimeManager = $this->_framework->getRuntimeManager();
         
         // Execute the pre search correct menu entry event.
-        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PreSearchCorrectMenuEntry');
+        $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
         
         // Search the correct menu entry, if no menu entry is set
         if ($this->_activeMenuEntry == null) {

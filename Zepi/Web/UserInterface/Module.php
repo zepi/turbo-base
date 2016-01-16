@@ -154,7 +154,8 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', $this->_directory . '/templates/table.phtml');
         
         // Overview page
-        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPage', $this->_directory . '/templates/overviewpage.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageSection', $this->_directory . '/templates/overviewpage.section.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageItems', $this->_directory . '/templates/overviewpage.items.phtml');
         
         // Pagination
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Pagination', $this->_directory . '/templates/pagination.phtml');
@@ -213,7 +214,8 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', $this->_directory . '/templates/table.phtml');
         
         // Overview page
-        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPage', $this->_directory . '/templates/overviewpage.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageSection', $this->_directory . '/templates/overviewpage.section.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\OverviewPageItems', $this->_directory . '/templates/overviewpage.items.phtml');
         
         // Pagination
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Pagination', $this->_directory . '/templates/pagination.phtml');

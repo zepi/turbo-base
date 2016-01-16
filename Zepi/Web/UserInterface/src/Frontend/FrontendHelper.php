@@ -224,7 +224,10 @@ class FrontendHelper
         $menuEntry = null;
         if ($key != '') {
             $menuEntry = $this->_menuManager->getMenuEntryForKey($key);
-            $this->_menuManager->setActiveMenuEntry($menuEntry);
+            
+            if ($menuEntry !== false) {
+                $this->_menuManager->setActiveMenuEntry($menuEntry);
+            }
         } else {
             $this->_menuManager->activateCorrectMenuEntry();
         }

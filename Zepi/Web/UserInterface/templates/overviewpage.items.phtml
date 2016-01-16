@@ -1,10 +1,9 @@
 <?php
-    $menuEntry = $additionalData['menuEntry'];
+    $children = $additionalData['children'];
 ?>
 
-<h2><?php echo $menuEntry->getName(); ?></h2>
 <ul class="overview-navigation">
-    <?php foreach ($menuEntry->getChildren() as $child): ?>
+    <?php foreach ($children as $child): ?>
         <?php
             $iconClass = '';
                                         
