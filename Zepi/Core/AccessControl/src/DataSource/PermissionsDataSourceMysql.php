@@ -164,6 +164,60 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     }
     
     /**
+     * Returns true if there is a permission for the given id
+     *
+     * @access public
+     * @param integer $id
+     * @return boolean
+     *
+     * @throws \Zepi\Core\AccessControl\Exception Cannot check if there is a permission for the given id "{id}".
+     */
+    public function hasPermissionForId($id)
+    {
+        try {
+            $sql = 'SELECT permission_id FROM permissions '
+                 . 'WHERE permission_id = ' . $this->_databaseBackend->escape($id);
+    
+            $data = $this->_databaseBackend->query($sql)->fetch();
+    
+            if (isset($data['permission_id'])) {
+                return true;
+            }
+    
+            return false;
+        } catch (\Exception $e) {
+            throw new Exception('Cannot check if there is a permission for the given id "' . $id . '".', 0, $e);
+        }
+    }
+    
+    /**
+     * Returns the permission object for the given id
+     *
+     * @access public
+     * @param string $id
+     * @return false|\Zepi\Core\AccessControl\Entity\Permission
+     *
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the permission from the database for the given id "{id}".
+     */
+    public function getPermissionForId($id)
+    {
+        try {
+            $sql = 'SELECT * FROM permissions '
+                 . 'WHERE permission_id = ' . $this->_databaseBackend->escape($id);
+    
+            $data = $this->_databaseBackend->query($sql)->fetch();
+    
+            if (!isset($data['permission_id'])) {
+                return false;
+            }
+    
+            return $this->_generatePermissionObject($data);
+        } catch (\Exception $e) {
+            throw new Exception('Cannot load the permission from the database for the given id "' . $id . '".', 0, $e);
+        }
+    }
+    
+    /**
      * Generates the permission object
      *
      * @access protected

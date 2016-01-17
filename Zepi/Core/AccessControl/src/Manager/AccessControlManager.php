@@ -233,6 +233,37 @@ class AccessControlManager
     }
     
     /**
+     * Returns true if there is a permission object for the given id
+     *
+     * @access public
+     * @param integer $id
+     * @return boolean
+     */
+    public function hasPermissionForId($id)
+    {
+        return $this->_permissionsDataSource->hasPermissionForId($id);
+    }
+    
+    /**
+     * Returns the permission object for the given id
+     *
+     * @access public
+     * @param integer $id
+     * @return false|\Zepi\Core\AccessControl\Entity\Permission
+     */
+    public function getPermissionForId($id)
+    {
+        $permission = $this->_permissionsDataSource->getPermissionForId($id);
+        
+        if ($permission instanceof \Zepi\Core\AccessControl\Entity\Permission) {
+            $accessEntity = $this->getAccessEntityForUuid($permission->getAccessEntityUuid());
+            $permission->setAccessEntity($accessEntity);
+        }
+        
+        return $permission;
+    }
+    
+    /**
      * Returns true if the given access entity uuid has already access to the 
      * access level
      * 

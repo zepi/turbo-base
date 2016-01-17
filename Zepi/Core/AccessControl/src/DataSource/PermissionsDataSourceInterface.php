@@ -68,6 +68,24 @@ interface PermissionsDataSourceInterface
     public function countPermissions(DataRequest $dataRequest);
     
     /**
+     * Returns true if there is a permission for the given id
+     *
+     * @access public
+     * @param integer $id
+     * @return boolean
+     */
+    public function hasPermissionForId($id);
+    
+    /**
+     * Returns the permission object for the given id
+     *
+     * @access public
+     * @param string $id
+     * @return false|\Zepi\Core\AccessControl\Entity\Permission
+     */
+    public function getPermissionForId($id);
+    
+    /**
      * Returns true if the given access entity uuid has already access to the 
      * access level
      * 
