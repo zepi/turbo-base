@@ -137,6 +137,7 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank', $this->_directory . '/templates/Form/Field/blank.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Email', $this->_directory . '/templates/Form/Field/email.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden', $this->_directory . '/templates/Form/Field/hidden.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
@@ -176,6 +177,12 @@ class Module extends ModuleAbstract
         
         $assetsManager->addAsset(AssetsManager::CSS, 'ui-form', $this->_directory . '/assets/css/form.css', array('zt-form'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-selector', $this->_directory . '/assets/js/selector.js', array('zt-main'));
+        
+        $assetsManager->addAsset(AssetsManager::CSS, 'ui-spin', $this->_directory . '/assets/css/spin.css', array('zt-form'));
+
+        $assetsManager->addAsset(AssetsManager::CSS, 'ui-jquery-is-loading-css', $this->_directory . '/assets/css/is-loading.css', array('zt-form'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-is-loading', $this->_directory . '/assets/js/is-loading/jquery.isloading.js', array('zt-main'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-loading-helper', $this->_directory . '/assets/js/loadingHelper.js', array('ui-jquery-is-loading'));
     }
     
     /**
@@ -197,6 +204,7 @@ class Module extends ModuleAbstract
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank', $this->_directory . '/templates/Form/Field/blank.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->_directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->_directory . '/templates/Form/Field/text.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Email', $this->_directory . '/templates/Form/Field/email.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden', $this->_directory . '/templates/Form/Field/hidden.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->_directory . '/templates/Form/Field/number.phtml');
         $templatesManager->removeTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->_directory . '/templates/Form/Field/unitnumber.phtml');
@@ -236,5 +244,11 @@ class Module extends ModuleAbstract
 
         $assetsManager->removeAsset(AssetsManager::CSS, 'ui-form');
         $assetsManager->removeAsset(AssetsManager::JS, 'ui-selector');
+        
+        $assetsManager->removeAsset(AssetsManager::CSS, 'ui-spin');
+        
+        $assetsManager->removeAsset(AssetsManager::CSS, 'ui-jquery-is-loading-css');
+        $assetsManager->removeAsset(AssetsManager::JS, 'ui-jquery-is-loading');
+        $assetsManager->removeAsset(AssetsManager::JS, 'ui-loading-helper');
     }
 }
