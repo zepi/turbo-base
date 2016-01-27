@@ -23,7 +23,12 @@
             
             <?php
                 $renderedTable = $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', array(
-                    'preparedTable' => $tableRenderer->prepareTable($request, $userTable, 10),
+                    'preparedTable' => $tableRenderer->prepareTable(
+                        $request, 
+                        $userTable,
+                        $request->getFullRoute('administration/users/page/{page}'),
+                        10
+                    ),
                 ));
             ?>
         </div>

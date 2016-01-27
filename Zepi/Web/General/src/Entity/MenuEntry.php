@@ -121,7 +121,7 @@ class MenuEntry
         $target = '#', 
         $iconClass = '',
         $class = '',
-        $window = 'self',
+        $window = '_self',
         $hideWhenEmpty = false
     ) {
         $this->_key = $key;

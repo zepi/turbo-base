@@ -13,6 +13,10 @@
     text-shadow: none;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 hr {
     display: block;
     height: 1px;

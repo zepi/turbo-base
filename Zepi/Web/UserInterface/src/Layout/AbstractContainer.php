@@ -92,6 +92,10 @@ abstract class AbstractContainer
     {
         if (is_array($parts)) {
             foreach ($parts as $part) {
+                if ($part === null) {
+                    continue;
+                }
+                
                 $this->addPart($part);
             }
         }

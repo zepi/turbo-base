@@ -64,6 +64,12 @@ class Table
     protected $_paginationRenderer;
     
     /**
+     * @access protected
+     * @var integer
+     */
+    protected $_routeParamIndex = 0;
+    
+    /**
      * Constructs the object
      * 
      * @access public
@@ -75,15 +81,27 @@ class Table
     }
     
     /**
+     * Sets the route param index
+     * 
+     * @access public
+     * @param integer $index
+     */
+    public function setRouteParamIndexForPage($index)
+    {
+        $this->_routeParamIndex = $index;
+    }
+    
+    /**
      * Renders the whole table
      * 
      * @access public
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
+     * @param string $paginationUrl
      * @param integer $numberOfEntries
      * @return \Zepi\Web\UserInterface\Table\PreparedTable
      */
-    public function prepareTable(WebRequest $request, TableAbstract $table, $numberOfEntries = 10)
+    public function prepareTable(WebRequest $request, TableAbstract $table, $paginationUrl, $numberOfEntries = 10)
     {
         // If the table has no pagination we do not limit the number of entries 
         // which will be displayed
@@ -117,7 +135,7 @@ class Table
         
         // Add the pagination
         if ($table->hasPagination() && $numberOfEntries !== false) {
-            $preparedTable->setPagination($this->_paginationRenderer->prepare($dataRequest, $table->countData($dataRequest), $numberOfEntries));
+            $preparedTable->setPagination($this->_paginationRenderer->prepare($dataRequest, $paginationUrl, $table->countData($dataRequest), $numberOfEntries));
         }
         
         return $preparedTable;
@@ -139,13 +157,13 @@ class Table
             $updateRequired = true;
         }
         
-        $page = $request->getRouteParam(0);
+        $page = $request->getRouteParam($this->_routeParamIndex);
         $pageNotSet = false;
         if ($page == '') {
             $page = 1;
             $pageNotSet = true;
         }
-        
+
         $sortBy = 'name';
         $sortByDirection = 'ASC';
         
@@ -190,7 +208,7 @@ class Table
                 }
             }
         }
-
+        
         // Save the data request to the session if needed
         if ($table->shouldSaveDataRequest()) {
             $request->setSessionData($savedDataRequestKey, serialize($dataRequest));

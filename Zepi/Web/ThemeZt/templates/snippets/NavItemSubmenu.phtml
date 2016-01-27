@@ -22,6 +22,10 @@
                 }
                 
                 $targetUrl = $child->getBestTarget();
+                
+                if (!preg_match('/^http(?:s)\:\/\//', $targetUrl)) {
+                    $targetUrl = $request->getFullRoute($targetUrl);
+                }
             ?>
             <li class="<?php echo $itemClass; ?>">
                 <?php 
@@ -34,7 +38,10 @@
                         $iconClass = 'icon ' . $child->getIconClass();
                     }
                 ?>
-                <a href="<?php echo $request->getFullRoute($targetUrl); ?>">
+                <a 
+                    href="<?php echo $targetUrl; ?>"
+                    target="<?php echo $child->getWindow(); ?>"
+                >
                     <?php if ($iconClass !== ''): ?>
                         <span class="<?php echo $iconClass; ?>"></span>
                     <?php endif; ?>

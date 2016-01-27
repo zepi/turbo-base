@@ -13,7 +13,7 @@
                 <?php elseif ($entry instanceof ActivePage): ?>
                     <span class="active"><?php echo $entry->getLabel(); ?></span>
                 <?php else: ?>
-                    <a href="<?php echo $request->getFullRoute('administration/users') . $entry->getUrl(); ?>">
+                    <a href="<?php echo $entry->getUrl(); ?>">
                         <?php echo $entry->getLabel(); ?>
                     </a>
                 <?php endif; ?>

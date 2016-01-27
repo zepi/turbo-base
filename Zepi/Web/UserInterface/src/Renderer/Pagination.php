@@ -53,15 +53,24 @@ use \Zepi\Core\Utils\Entity\DataRequest;
 class Pagination
 {
     /**
+     * @access protected
+     * @var string
+     */
+    protected $_paginationUrl;
+    
+    /**
      * Prepares the Pagination object for the given DataRequest and number of entries per page
      * 
      * @access public
      * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param string $paginationUrl
+     * @param integer $numberOfEntries
      * @param integer $numberOfEntriesPerPage
      * @return string
      */
-    public function prepare(DataRequest $dataRequest, $numberOfEntries, $numberOfEntriesPerPage = 10)
+    public function prepare(DataRequest $dataRequest, $paginationUrl, $numberOfEntries, $numberOfEntriesPerPage = 10)
     {
+        $this->_paginationUrl = $paginationUrl;
         $neededPages = ceil($numberOfEntries / $numberOfEntriesPerPage);
         $activePage = $dataRequest->getPage();
 
@@ -69,22 +78,22 @@ class Pagination
         
         if ($activePage > 1) {
             // Add the first page button
-            $button = new Button('&laquo;', '/page/1');
+            $button = new Button('&laquo;', $this->_buildUrl(1));
             $pagination->addEntry($button); 
             
             
             // Add the prev page button
-            $button = new Button('&lsaquo;', '/page/' . ($activePage - 1));
+            $button = new Button('&lsaquo;', $this->_buildUrl(($activePage - 1)));
             $pagination->addEntry($button);
         }
         
         // Add the pages
         for ($i = 1; $i <= $neededPages; $i++) {
             if ($i == $activePage) {
-                $page = new ActivePage($i, '/page/' . $i);
+                $page = new ActivePage($i, $this->_buildUrl($i));
                 $pagination->addEntry($page);
             } else if ($i < 4 || $i > ($neededPages - 3) || ($i > ($activePage - 3) && $i < ($activePage + 3))) {
-                $page = new Page($i, '/page/' . $i);
+                $page = new Page($i, $this->_buildUrl($i));
                 $pagination->addEntry($page);
             } else if (!($pagination->getLatestEntry() instanceof Dots)) {
                 $dots = new Dots();
@@ -94,14 +103,26 @@ class Pagination
         
         if ($activePage < $neededPages) {
             // Add the next page button
-            $button = new Button('&rsaquo;', '/page/' . ($activePage + 1));
+            $button = new Button('&rsaquo;', $this->_buildUrl(($activePage + 1)));
             $pagination->addEntry($button);
             
             // Add the last page button
-            $button = new Button('&raquo;', '/page/' . $neededPages);
+            $button = new Button('&raquo;', $this->_buildUrl($neededPages));
             $pagination->addEntry($button);
         }
         
         return $pagination;
+    }
+    
+    /**
+     * Returns the correct url for the page
+     * 
+     * @access protected
+     * @param integer $page
+     * @return string
+     */
+    protected function _buildUrl($page)
+    {
+        return str_replace('{page}', $page, $this->_paginationUrl);
     }
 }

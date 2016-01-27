@@ -71,6 +71,12 @@ class Pagination
         return $this->_entries;
     }
     
+    /**
+     * Returns the latest entry
+     * 
+     * @access public
+     * @return mixed
+     */
     public function getLatestEntry()
     {
         return end($this->_entries);

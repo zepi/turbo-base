@@ -23,7 +23,12 @@
             
             <?php
                 $renderedTable = $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', array(
-                    'preparedTable' => $tableRenderer->prepareTable($request, $groupTable, 20),
+                    'preparedTable' => $tableRenderer->prepareTable(
+                        $request, 
+                        $groupTable,
+                        $request->getFullRoute('administration/groups/page/{page}'),
+                        20
+                    ),
                 ));
             ?>
         </div>
