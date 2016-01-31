@@ -42,8 +42,8 @@ use \Zepi\Web\General\Manager\TemplatesManager;
 use \Zepi\Web\General\Manager\MetaInformationManager;
 use \Zepi\Web\General\Manager\MenuManager;
 use \Zepi\Web\UserInterface\Renderer\Layout;
-use Zepi\Web\UserInterface\Renderer\Table;
-use Zepi\Web\UserInterface\Renderer\OverviewPage;
+use \Zepi\Web\UserInterface\Renderer\Table;
+use \Zepi\Web\UserInterface\Renderer\OverviewPage;
 
 /**
  * Frontend helper to deliver a global api to the main

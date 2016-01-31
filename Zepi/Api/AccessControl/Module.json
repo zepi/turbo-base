@@ -1,0 +1,16 @@
+{
+    "module": {
+        "name": "Zepi Api Access Control",
+        "description": "This module delivers the access control functionality for the API.",
+        "namespace": "\\Zepi\\Api\\AccessControl",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2016 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Core\\AccessControl": "*"
+        }
+    }
+}

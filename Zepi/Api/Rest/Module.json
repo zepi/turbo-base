@@ -1,0 +1,16 @@
+{
+    "module": {
+        "name": "Zepi Rest Api Helper",
+        "description": "This module delivers the API helper for REST api's.",
+        "namespace": "\\Zepi\\Api\\Rest",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2016 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    },
+    "dependencies": {
+        "required": {
+            "\\Zepi\\Api\\AccessControl": "*"
+        }
+    }
+}
