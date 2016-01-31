@@ -72,7 +72,7 @@ class ProtectedMenuEntry extends MenuEntry
         $target = '#', 
         $iconClass = '',
         $class = '', 
-        $window = 'self'
+        $window = '_self'
     ) {
         parent::__construct($key, $name, $target, $iconClass, $class, $window);
         
