@@ -195,7 +195,7 @@ class ThreadHelper
         foreach ($this->_processes as $pid => $process) {
             unset($this->_processes[$pid]);
     
-            posix_kill($pid, SIGKILL);
+            posix_kill($pid, SIGUSR1);
         }
     
         exit;
@@ -233,7 +233,7 @@ class ThreadHelper
     public function restartProcess(Process $oldProcess)
     {
         unset($this->_processes[$oldProcess->getPid()]);
-        posix_kill($oldProcess->getPid(), SIGTERM);
+        posix_kill($oldProcess->getPid(), SIGUSR1);
     
         $pid = pcntl_fork();
     
@@ -293,6 +293,6 @@ class ThreadHelper
      */
     protected function _executeTask(Task $task)
     {
-        call_user_func($task->getCallback());
+        call_user_func($task->getCallback(), $task);
     }
 }

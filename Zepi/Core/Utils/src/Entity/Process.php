@@ -80,7 +80,7 @@ class Process
         $this->_pid = $pid;
         
         $this->_startTime = time();
-        $this->_restartTime = time() + $task->getResetTime() + rand(30, 900);
+        $this->_restartTime = time() + $task->getResetTime() + rand(1, 5);
     }
     
     /**
