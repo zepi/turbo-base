@@ -72,6 +72,10 @@ class Module extends ModuleAbstract
                 return $this->_configurationManager;
             break;
             
+            case '\\Zepi\\Core\\Utils\\Helper\\ThreadHelper':
+                return new $className($this->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper'));
+            break;
+            
             default: 
                 return new $className();
             break;

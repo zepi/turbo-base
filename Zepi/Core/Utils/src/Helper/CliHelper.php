@@ -113,4 +113,15 @@ class CliHelper
     {
         echo PHP_EOL;
     }
+    
+    /**
+     * Writes a message to the stdout
+     *
+     * @access public
+     * @param string $message
+     */
+    public function writeLine($message)
+    {
+        echo $message . PHP_EOL;
+    }
 }
