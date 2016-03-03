@@ -160,7 +160,6 @@ class ThreadHelper
         /**
          * Starting processes
          */
-        $this->_cliHelper->newLine();
         $this->_cliHelper->writeTimeLine('Starting processes...');
         foreach ($this->_tasks as $task) {
             for ($i = 0; $i < $task->getInstances(); $i++) {
@@ -171,7 +170,6 @@ class ThreadHelper
         /**
          * Monitoring processes and restart after the specified time
          */
-        $this->_cliHelper->newLine();
         $this->_cliHelper->writeTimeLine('Monitoring processes...');
         while (true) {
             foreach ($this->_processes as $process) {
