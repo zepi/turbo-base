@@ -124,4 +124,15 @@ class CliHelper
     {
         echo $message . PHP_EOL;
     }
+    
+    /**
+     * Writes a message to the stdout
+     *
+     * @access public
+     * @param string $message
+     */
+    public function writeTimeLine($message)
+    {
+        echo '[' . date('Y-m-d H:i:s') . '] ' . $message . PHP_EOL;
+    }
 }

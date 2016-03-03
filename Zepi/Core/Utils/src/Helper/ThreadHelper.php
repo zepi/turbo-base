@@ -147,7 +147,7 @@ class ThreadHelper
         /**
          * Installing signal handlers
          */
-        $this->_cliHelper->writeLine('Setting up signal handlers...');
+        $this->_cliHelper->writeTimeLine('Setting up signal handlers...');
         declare(ticks = 1);
     
         pcntl_signal(SIGTERM, array($this, 'shutdownProcesses'));
@@ -161,7 +161,7 @@ class ThreadHelper
          * Starting processes
          */
         $this->_cliHelper->newLine();
-        $this->_cliHelper->writeLine('Starting processes...');
+        $this->_cliHelper->writeTimeLine('Starting processes...');
         foreach ($this->_tasks as $task) {
             for ($i = 0; $i < $task->getInstances(); $i++) {
                 $this->startProcess($task);
@@ -172,7 +172,7 @@ class ThreadHelper
          * Monitoring processes and restart after the specified time
          */
         $this->_cliHelper->newLine();
-        $this->_cliHelper->writeLine('Monitoring processes...');
+        $this->_cliHelper->writeTimeLine('Monitoring processes...');
         while (true) {
             foreach ($this->_processes as $process) {
                 /**
@@ -211,7 +211,7 @@ class ThreadHelper
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeLine('Could not fork!');
+            $this->_cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $process = new Process($task, $pid);
@@ -238,7 +238,7 @@ class ThreadHelper
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeLine('Could not fork!');
+            $this->_cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $newProcess = new Process($oldProcess->getTask(), $pid);
@@ -271,7 +271,7 @@ class ThreadHelper
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeLine('Could not fork!');
+            $this->_cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $newProcess = new Process($oldProcess->getTask(), $pid);
