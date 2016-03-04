@@ -260,7 +260,9 @@ class SessionManager
         $request->setSessionData('ipAddress', $_SERVER['REMOTE_ADDR']);
         
         // Save the user agent on the session
-        $request->setSessionData('userAgent', $_SERVER['HTTP_USER_AGENT']);
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $request->setSessionData('userAgent', $_SERVER['HTTP_USER_AGENT']);
+        }
         
         // Save the boolean that we started the session
         $request->setSessionData('sessionStarted', true);
