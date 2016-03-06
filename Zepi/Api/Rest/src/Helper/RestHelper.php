@@ -39,8 +39,12 @@ namespace Zepi\Api\Rest\Helper;
 use \Zepi\Api\AccessControl\Manager\TokenManager;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
+use \Zepi\Api\Rest\Exception;
 use \Zepi\Api\Rest\Entity\Request as RestRequest;
 use \Zepi\Api\Rest\Entity\Response as RestResponse;
+use \Zepi\Api\AccessControl\Entity\ApiKey;
+use \GuzzleHttp\Client;
+use \GuzzleHttp\Exception\RequestException;
 
 /**
  * This helpers delivers all functionality to encode and validate
@@ -68,74 +72,53 @@ class RestHelper
         $this->_tokenManager = $tokenManager;
     }
 
-    /*public function sendRequest(RestRequest $request)
+    public function sendRequest(ApiKey $apiKey, RestRequest $request)
     {
-        $headers = array(
-            'Accept: ' . $request->getAcceptedMimeType(),
-            'Content-Type: application/json',
-        );
-        $data = $request->getRequestData();
-        $publicKey = 'fd4121d2621445fae6dce853362545e9';
-        $privateKey = '5d18a7b9016db1cf307201e7a3ca7ef09fe06b7635d604d3ae2dd10f2001ef4f';
-        $auth = $publicKey . ':' . $this->_generateHmac($privateKey, $request->getEndpoint(), $data);
-        var_dump($auth);
-        $host = 'http://autopilot.local';
+        $hmac = $this->_generateHmac($apiKey->getPrivateKey(), $request->getEndpoint(), array_merge($request->getQueryData(), $request->getPostData()));
+        $base = 'http://autopilot.local';
         
-        $handle = curl_init();
-        curl_setopt($handle, CURLOPT_URL, $host . $request->getEndpoint());
-        curl_setopt($handle, CURLOPT_USERPWD, $auth);
-        curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handle, CURLOPT_HEADER, true);
+        $client = new Client([
+            'base_uri' => $base
+        ]);
+        
+        $args = [
+            'auth' => [$apiKey->getPublicKey(), $hmac],
+            'headers' => [
+                'Accept' => 'application/json'
+            ]
+        ];
         
         switch($request->getRequestMethod()) {
             case 'GET':
-                break;
-            case 'POST':
-                curl_setopt($handle, CURLOPT_POST, true);
-                curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
-                break;
             case 'PUT':
-                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'PUT');
-                curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
-                break;
             case 'DELETE':
-                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                $args['query'] = $request->getQueryData();
+            case 'POST':
+                $args['form_params'] = $request->getPostData();
                 break;
         }
         
-        $result = curl_exec($handle);
-        $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-        
-        $headerSize = curl_getinfo($handle, CURLINFO_HEADER_SIZE);
-        $headers = $this->_parseHeaders(substr($result, 0, $headerSize));
-        $body = substr($result, $headerSize);
-        var_dump($code);
-        var_dump($headers);
-        var_dump($body);
-        //if 
-        
-        $response = new RestResponse($code, $result, $parsedResult, $request);
-        
-        return $response;
-    }
-    
-    protected function _parseHeaders($headersRaw)
-    {
-        $lines = explode(PHP_EOL, $headersRaw);
-        $headers = array();
-        foreach ($lines as $line) {
-            if (strpos($line, ':') === false) {
-                continue;
+        try {
+            $responseRaw = $client->request($request->getRequestMethod(), $request->getEndpoint(), $args);
+        } catch (RequestException $e) {
+            if (!$e->hasResponse()) {
+                throw new Exception('Cannot send REST request.', 0, $e);
             }
             
-            list($key, $value) = explode(':', $line);
-            
-            $headers[$key] = trim($value);
+            $responseRaw = $e->getResponse();
         }
         
-        return $headers;
-    }*/
+        $body = (string) $responseRaw->getBody();
+        $parsedResult = json_decode($body);
+        if ($parsedResult == false) {
+            $parsedResult = new \stdClass();
+        }
+
+        $response = new RestResponse($responseRaw->getStatusCode(), $body, $parsedResult, $request);
+
+        return $response;
+    }
+
     
     /**
      * Send the api result to the client
@@ -145,7 +128,7 @@ class RestHelper
      * @param \Zepi\Turbo\Response\Response $response
      * @param array $result
      */
-    public function sendApiResult(RequestAbstract $request, Response $response, $result)
+    public function sendResponse(RequestAbstract $request, Response $response, $result)
     {
         $dataType = $request->getHeader('Accept');
         
@@ -198,57 +181,17 @@ class RestHelper
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @return false|\Zepi\Api\AccessControl\Entity\Token
      */
-    public function validate(RequestAbstract $request)
+    public function validateRequest(ApiKey $apiKey, $hmac, $route, $data)
     {
-        // Parse the authorization information
-        $authorization = $this->_parseAuthorizationString($request->getHeader('Authorization'));
-        $publicKey = $authorization['publicKey'];
-        $hmac = $authorization['hmac'];
-
-        // Verify the public key
-        if (!$this->_tokenManager->hasTokenForPublicKey($publicKey)) {
-            return false;
-        }
-        
-        // Load the token
-        $token = $this->_tokenManager->getTokenForPublicKey($publicKey);
-        
-        // Get the needed data
-        $requestedRoute = $request->getRoute();
-        $data = $request->getParams();
-
         // Regenerate the hmac
-        $regeneratedHmac = $this->_generateHmac($token->getKey(), $requestedRoute, $data);
+        $regeneratedHmac = $this->_generateHmac($apiKey->getPrivateKey(), $route, $data);
         
         // Verify the hmac and the time
         if ($hmac === $regeneratedHmac) {
-            return $token;
+            return true;
         }
         
         return false;
-    }
-    
-    /**
-     * Parses the authorization string and returns an array with
-     * the public key and the hmac
-     * 
-     * @access protected
-     * @param string $authorizationString
-     * @return array
-     */
-    protected function _parseAuthorizationString($authorizationString)
-    {
-        if (strpos($authorizationString, 'Basic') !== false) {
-            $authorizationString = trim(substr($authorizationString, 6));
-        }
-        
-        $decoded = base64_decode($authorizationString);
-        $delimiterPos = strpos($decoded, ':');
-        
-        return array(
-            'publicKey' => substr($decoded, 0, $delimiterPos),
-            'hmac' => substr($decoded, $delimiterPos + 1)
-        );
     }
     
     /**

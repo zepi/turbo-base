@@ -27,12 +27,12 @@
 /**
  * The exception
  * 
- * @package Zepi\Web\Rest
+ * @package Zepi\Api\Rest
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\Rest;
+namespace Zepi\Api\Rest;
 
 /**
  * The exception

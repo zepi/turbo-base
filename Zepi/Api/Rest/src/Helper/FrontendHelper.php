@@ -46,6 +46,7 @@ use \Zepi\Web\UserInterface\Renderer\Table;
 use \Zepi\Web\UserInterface\Renderer\OverviewPage;
 use \Zepi\Turbo\Framework;
 use \Zepi\Web\UserInterface\Frontend\FrontendHelper as UserInterfaceFrontendHelper;
+use Zepi\Api\AccessControl\Manager\TokenManager;
 use \Zepi\Api\Rest\Helper\RestHelper;
 
 /**
@@ -62,6 +63,12 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      * @var \Zepi\Turbo\Framework
      */
     protected $_framework;
+
+    /**
+     * @access protected
+     * @var \Zepi\Api\AccessControl\Manager\TokenManager
+     */
+    protected $_tokenManager;
     
     /**
      * @access protected
@@ -83,6 +90,7 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      * @param \Zepi\Web\UserInterface\Renderer\OverviewPage $overviewPageRenderer
      * @param \Zepi\Web\UserInterface\Renderer\Table $tableRenderer
      * @param \Zepi\Api\Rest\Helper\RestHelper $restHelper
+     * @param \Zepi\Api\AccessControl\Manager\TokenManager $tokenManager
      */
     public function __construct(
         Framework $framework,
@@ -94,7 +102,8 @@ class FrontendHelper extends UserInterfaceFrontendHelper
         Layout $layoutRenderer,
         OverviewPage $overviewPageRenderer,
         Table $tableRenderer,
-        RestHelper $restHelper
+        RestHelper $restHelper,
+        TokenManager $tokenManager
     ) {
         parent::__construct(
             $configurationManager, 
@@ -109,40 +118,76 @@ class FrontendHelper extends UserInterfaceFrontendHelper
         
         $this->_framework = $framework;
         $this->_restHelper = $restHelper;
+        $this->_tokenManager = $tokenManager;
     }
     
     /**
      * Validates the request and returns the access entity
      * if everything is correct or false if the request is wrong
-     * 
+     *
      * @access public
      * @return false|\Zepi\Api\AccessControl\Entity\Token
      */
-    public function validate()
+    public function validateRequest()
     {
-        return $this->_restHelper->validate($this->_framework->getRequest());
+        $request = $this->_framework->getRequest();
+        
+        // Parse the authorization information
+        $authorization = $this->_parseAuthorizationString($request->getHeader('Authorization'));
+        $publicKey = $authorization['publicKey'];
+        $hmac = $authorization['hmac'];
+        
+        // Verify the public key
+        if (!$this->_tokenManager->hasTokenForPublicKey($publicKey)) {
+            return false;
+        }
+        
+        // Load the token
+        $token = $this->_tokenManager->getTokenForPublicKey($publicKey);
+        
+        // Get the needed data
+        $route = $request->getRoute();
+        $data = $request->getParams();
+        
+        $result = $this->_restHelper->validateRequest($token->getApiKey(), $hmac, $route, $data);
+        
+        if ($result) {
+            return $token;
+        }
+        
+        return false;
     }
     
     /**
-     * Returns an array with all needed data
-     * 
-     * @access public
-     * @param string $privateKey
-     * @param array $data
+     * Parses the authorization string and returns an array with
+     * the public key and the hmac
+     *
+     * @access protected
+     * @param string $authorizationString
      * @return array
      */
-    public function encode($privateKey, $data)
+    protected function _parseAuthorizationString($authorizationString)
     {
-        return $this->_restHelper->encode($privateKey, $data);
+        if (strpos($authorizationString, 'Basic') !== false) {
+            $authorizationString = trim(substr($authorizationString, 6));
+        }
+    
+        $decoded = base64_decode($authorizationString);
+        $delimiterPos = strpos($decoded, ':');
+    
+        return array(
+            'publicKey' => substr($decoded, 0, $delimiterPos),
+            'hmac' => substr($decoded, $delimiterPos + 1)
+        );
     }
     
     /**
      * Send the api result to the client
-     * 
+     *
      * @param array $result
      */
-    public function sendApiResult($result)
+    public function sendResponse($result)
     {
-        return $this->_restHelper->sendApiResult($this->_framework->getRequest(), $this->_framework->getResponse(), $result);
+        return $this->_restHelper->sendResponse($this->_framework->getRequest(), $this->_framework->getResponse(), $result);
     }
 }

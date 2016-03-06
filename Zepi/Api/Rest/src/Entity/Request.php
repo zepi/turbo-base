@@ -58,30 +58,38 @@ class Request
      * @access protected
      * @var string
      */
+    protected $_host;
+    
+    /**
+     * @access protected
+     * @var string
+     */
     protected $_endpoint;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_requestData = array();
+    protected $_queryData = array();
     
     /**
      * @access protected
-     * @var string
+     * @var array
      */
-    protected $_acceptedMimeType = 'application/json';
+    protected $_postData = array();
     
     /**
      * Constructs the object
      * 
      * @access public
      * @param string $requestMethod
+     * @param string $host
      * @param string $endpoint
      */
-    public function __construct($requestMethod, $endpoint)
+    public function __construct($requestMethod, $host, $endpoint)
     {
         $this->_requestMethod = $requestMethod;
+        $this->_host = $host;
         $this->_endpoint = $endpoint;
     }
     
@@ -108,47 +116,48 @@ class Request
     }
     
     /**
-     * Returns the accepted mime type
-     * 
-     * @access public
-     * @return string
-     */
-    public function getAcceptedMimeType()
-    {
-        return $this->_acceptedMimeType;
-    }
-    
-    /**
-     * Sets the accepted mime type
-     * 
-     * @access public
-     * @param string $mimeType
-     */
-    public function setAcceptedMimeType($mimeType)
-    {
-        $this->_acceptedMimeType = $mimeType;
-    }
-    
-    /**
-     * Add the key data value pair
+     * Add key value pair to the query data array
      * 
      * @access public
      * @param string $key
      * @param string $value
      */
-    public function addData($key, $value)
+    public function addQueryData($key, $value)
     {
-        $this->_requestData[$key] = $value;
+        $this->_queryData[$key] = $value;
     }
     
     /**
-     * Returns the whole request data array
+     * Returns the whole query data array
      * 
      * @access public
      * @return array
      */
-    public function getRequestData()
+    public function getQueryData()
     {
-        return $this->_requestData;
+        return $this->_queryData;
+    }
+    
+    /**
+     * Add key value pair to the query post array
+     *
+     * @access public
+     * @param string $key
+     * @param string $value
+     */
+    public function addPostData($key, $value)
+    {
+        $this->_postData[$key] = $value;
+    }
+    
+    /**
+     * Returns the whole query post array
+     *
+     * @access public
+     * @return array
+     */
+    public function getPostData()
+    {
+        return $this->_postData;
     }
 }

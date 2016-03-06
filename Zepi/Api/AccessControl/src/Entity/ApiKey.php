@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,55 +25,67 @@
  */
 
 /**
- * The Token object representates the access entitiy "token"
+ * The ApiKey representates the key pair.
  * 
  * @package Zepi\Web\AccessControl
  * @subpackage Entity
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
 namespace Zepi\Api\AccessControl\Entity;
 
-use \Zepi\Core\AccessControl\Entity\AccessEntity;
-
 /**
- * The Token object representates the access entitiy "token"
+ * The ApiKey representates the key pair.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
-class Token extends AccessEntity
+class ApiKey
 {
+    /**
+     * @access protected
+     * @var string
+     */
+    protected $_publicKey;
+    
+    /**
+     * @access protected
+     * @var string
+     */
+    protected $_privateKey;
+    
     /**
      * Constructs the object
      * 
-     * @param integer $id
-     * @param string $uuid
-     * @param string $name
-     * @param string $key
-     * @param array $metaData
+     * @param string $publicKey
+     * @param string $privateKey
      */
-    public function __construct($id, $uuid, $name, $key, array $metaData)
+    public function __construct($publicKey, $privateKey)
     {
-        parent::__construct(
-            $id,
-            $uuid,
-            get_class($this),
-            $name,
-            $key,
-            $metaData
-        );
+        $this->_publicKey = $publicKey;
+        $this->_privateKey = $privateKey;
     }
     
     /**
-     * Returns the ApiKey object for the token
+     * Returns the public key
      * 
      * @access public
-     * @return \Zepi\Api\AccessControl\Entity\ApiKey
+     * @return string
      */
-    public function getApiKey()
+    public function getPublicKey()
     {
-        return new ApiKey($this->_name, $this->_key);
+        return $this->_publicKey;
+    }
+    
+    /**
+     * Returns the private key
+     * 
+     * @access public
+     * @return string
+     */
+    public function getPrivateKey()
+    {
+        return $this->_privateKey;
     }
 }
