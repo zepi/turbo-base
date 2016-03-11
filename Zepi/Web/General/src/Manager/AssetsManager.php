@@ -605,24 +605,13 @@ class AssetsManager
      */
     protected function _minifyContent($type, $content)
     {
-        $content = preg_replace("/((?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\s*\/\/\s.*))|(?:\s{1,}\/\/.*)/", "", $content);
-        $content = str_replace(array("\r\n", "\r", "\t", "\n", '  ', '    ', '     '), '', $content);
-        $content = preg_replace(array('(( )+\))', '(\)( )+)'), ')', $content);
-        
-        // Use these minifing rules only for css
         if ($type === self::CSS) {
-            $content = str_replace('{ ', '{', $content);
-            $content = str_replace(' }', '}', $content);
-            $content = str_replace('; ', ';', $content);
-            $content = str_replace(', ', ',', $content);
-            $content = str_replace(' {', '{', $content);
-            $content = str_replace('} ', '}', $content);
-            $content = str_replace(': ', ':', $content);
-            $content = str_replace(' ,', ',', $content);
-            $content = str_replace(' ;', ';', $content);
+            $minifier = new \MatthiasMullie\Minify\CSS($content);
+        } else if ($type === self::JS) {
+            $minifier = new \MatthiasMullie\Minify\JS($content);
         }
-
-        return $content;
+        
+        return $minifier->minify();
     }
     
     /**

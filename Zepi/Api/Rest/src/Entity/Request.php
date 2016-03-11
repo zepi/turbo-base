@@ -105,6 +105,17 @@ class Request
     }
     
     /**
+     * Returns the host
+     * 
+     * @access public
+     * @return string
+     */
+    public function getHost()
+    {
+        return $this->_host;
+    }
+    
+    /**
      * Returns the endpoint
      * 
      * @access public

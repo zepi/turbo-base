@@ -65,7 +65,7 @@ class VerifyEventName implements FilterHandlerInterface
     public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
         if (!($request instanceof WebRequest)) {
-            return;
+            return $value;
         }
         
         $fullUrl = $request->getRequestedUrl();

@@ -72,13 +72,22 @@ class RestHelper
         $this->_tokenManager = $tokenManager;
     }
 
+    /**
+     * Sends the RestRequest to the endpoint
+     * 
+     * @access public
+     * @param \Zepi\Api\AccessControl\Entity\ApiKey $apiKey
+     * @param \Zepi\Api\Rest\Entity\Request $request
+     * @return \Zepi\Api\Rest\Entity\Response
+     * 
+     * @throws \Zepi\Api\Rest\Exception Cannot send REST request.
+     */
     public function sendRequest(ApiKey $apiKey, RestRequest $request)
     {
         $hmac = $this->_generateHmac($apiKey->getPrivateKey(), $request->getEndpoint(), array_merge($request->getQueryData(), $request->getPostData()));
-        $base = 'http://autopilot.local';
-        
+
         $client = new Client([
-            'base_uri' => $base
+            'base_uri' => $request->getHost()
         ]);
         
         $args = [
@@ -206,7 +215,7 @@ class RestHelper
     protected function _generateHmac($privateKey, $requestedRoute, $data)
     {
         $completeString = $requestedRoute . json_encode($data);
-        
+
         return hash_hmac('sha256', $completeString, $privateKey);
     }
 }
