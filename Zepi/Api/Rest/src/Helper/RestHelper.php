@@ -118,6 +118,7 @@ class RestHelper
         }
         
         $body = (string) $responseRaw->getBody();
+
         $parsedResult = json_decode($body);
         if ($parsedResult == false) {
             $parsedResult = new \stdClass();
