@@ -99,20 +99,20 @@ class Module extends ModuleAbstract
                 return $this->_accessLevelManager;
                 break;
             
-            case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql':
+            case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine':
                 $dataSourceManager = $this->_framework->getDataSourceManager();
                 
-                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Mysql\\Backend\\DatabaseBackend');
+                $entityManager = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
                 $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
                 
-                $dataSource = new $className($databaseMysqlBackend, $permissionDataSource);
+                $dataSource = new $className($entityManager, $permissionDataSource);
                 return $dataSource;
             break;
             
-            case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql':
-                $databaseMysqlBackend = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Mysql\\Backend\\DatabaseBackend');
+            case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine':
+                $entityManager = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
                 
-                $dataSource = new $className($databaseMysqlBackend, $this->_framework->getRuntimeManager());
+                $dataSource = new $className($entityManager, $this->_framework->getRuntimeManager());
                 return $dataSource;
             break;
             
@@ -141,13 +141,13 @@ class Module extends ModuleAbstract
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();
         $dataSourceManager->addDataSource(
-            '\\Zepi\\DataSourceDriver\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
+            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'
         );
         
         $dataSourceManager->addDataSource(
-            '\\Zepi\\DataSourceDriver\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
+            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine'
         );
         
         // Access Levels
@@ -185,13 +185,13 @@ class Module extends ModuleAbstract
         // Data Sources
         $dataSourceManager = $this->_framework->getDataSourceManager();
         $dataSourceManager->removeDataSource(
-            '\\Zepi\\DataSourceDriver\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceMysql'
+            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'
         );
         
         $dataSourceManager->removeDataSource(
-            '\\Zepi\\DataSourceDriver\\Mysql',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceMysql'
+            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine'
         );
     }
 }

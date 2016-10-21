@@ -106,7 +106,7 @@ class DeleteGroup extends FrontendEventHandler
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam(1) === 'confirmed') {
-            $this->_groupManager->deleteGroup($group->getUuid());
+            $this->_groupManager->deleteGroup($group);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroupFinished', array(
                 'group' => $group

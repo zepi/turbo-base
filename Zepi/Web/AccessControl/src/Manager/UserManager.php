@@ -80,7 +80,8 @@ class UserManager
      * @param \Zepi\Web\AccessControl\Entity\User $user
      * @return false|\Zepi\Web\AccessControl\Entity\User
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot add the user. Username is already in use.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot add the user. Username is already in use.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot add the user. Internal software error.
      */
     public function addUser(User $user)
     {
@@ -90,18 +91,13 @@ class UserManager
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity(
-            self::ACCESS_ENTITY_TYPE, 
-            $user->getName(),
-            $user->getKey(),
-            $user->getMetaDataArray()
-        );
+        $uuid = $this->_accessControlManager->addAccessEntity($user);
         
         if ($uuid === false) {
-            throw new Exception('Cannot add the user. Internal softeware error.');
+            throw new Exception('Cannot add the user. Internal software error.');
         }
         
-        return $this->getUserForUuid($uuid);
+        return $user;
     }
     
     /**
@@ -115,23 +111,18 @@ class UserManager
     public function updateUser(User $user)
     {
         // If the uuid does not exists we cannot update the user
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($user->getUuid())) {
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
             throw new Exception('Cannot update the user. User does not exist.');
         }
         
         // Add the access entity
-        return $this->_accessControlManager->updateAccessEntity(
-            $user->getUuid(), 
-            $user->getName(),
-            $user->getKey(),
-            $user->getMetaDataArray()
-        );
+        return $this->_accessControlManager->updateAccessEntity($user);
     }
     
     /**
      * Deletes the user with the given uuid
      * 
-     * @param string $uuid
+     * @param \Zepi\Web\AccessControl\Entity\User $user
      * @return boolean
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot delete the user. User does not exist.
@@ -139,12 +130,12 @@ class UserManager
     public function deleteUser($uuid)
     {
         // If the uuid does not exists we cannot delete the user
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
-            throw new Exception('Cannot update the user. User does not exist.');
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
+            throw new Exception('Cannot delete the user. User does not exist.');
         }
         
         // Delete the access entity
-        return $this->_accessControlManager->deleteAccessEntity($uuid);
+        return $this->_accessControlManager->deleteAccessEntity($user);
     }
     
     /**
@@ -156,7 +147,7 @@ class UserManager
      */
     public function hasUserForUuid($uuid)
     {
-        if ($this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if ($this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return true;
         }
         
@@ -188,12 +179,12 @@ class UserManager
      */
     public function getUserForUuid($uuid)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid($uuid);
+        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
 
         if ($accessEntity === false) {
             return false;
@@ -256,10 +247,8 @@ class UserManager
      */
     public function getUsers(DataRequest $dataRequest)
     {
-        $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
-        
         $users = array();
-        $accessEntities = $this->_accessControlManager->getAccessEntities($dataRequest);
+        $accessEntities = $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
         foreach ($accessEntities as $accessEntity) {
             $user = new User(
                 $accessEntity->getId(),
@@ -286,8 +275,6 @@ class UserManager
      */
     public function countUsers(DataRequest $dataRequest)
     {
-        $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
-        
-        return $this->_accessControlManager->countAccessEntities($dataRequest);
+        return $this->_accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
 }

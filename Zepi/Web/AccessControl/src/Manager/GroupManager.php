@@ -80,7 +80,8 @@ class GroupManager
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @return false|\Zepi\Web\AccessControl\Entity\Group
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot add the group. The name of the group is already in use.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot add the group. The name of the group is already in use.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot add the group. Internal software error.
      */
     public function addGroup(Group $group)
     {
@@ -90,18 +91,13 @@ class GroupManager
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity(
-            self::ACCESS_ENTITY_TYPE, 
-            $group->getName(),
-            $group->getKey(),
-            $group->getMetaDataArray()
-        );
+        $uuid = $this->_accessControlManager->addAccessEntity($group);
         
         if ($uuid === false) {
-            throw new Exception('Cannot add the group. Internal softeware error.');
+            throw new Exception('Cannot add the group. Internal software error.');
         }
         
-        return $this->_accessControlManager->getAccessEntityForUuid($uuid);
+        return $group;
     }
     
     /**
@@ -115,36 +111,31 @@ class GroupManager
     public function updateGroup(Group $group)
     {
         // If the uuid does not exists we cannot update the group
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($group->getUuid())) {
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. The group does not exist.');
         }
         
         // Update the access entity
-        return $this->_accessControlManager->updateAccessEntity(
-            $group->getUuid(), 
-            $group->getName(),
-            $group->getKey(),
-            $group->getMetaDataArray()
-        );
+        return $this->_accessControlManager->updateAccessEntity($group);
     }
     
     /**
      * Deletes the group with the given uuid
      *
-     * @param string $uuid
+     * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @return boolean
      *
      * @throws \Zepi\Core\AccessControl\Exception Cannot delete the group. Group does not exist.
      */
-    public function deleteGroup($uuid)
+    public function deleteGroup($group)
     {
         // If the uuid does not exists we cannot delete the group
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. Group does not exist.');
         }
     
         // Delete the access entity
-        return $this->_accessControlManager->deleteAccessEntity($uuid);
+        return $this->_accessControlManager->deleteAccessEntity($group);
     }
     
     /**
@@ -156,7 +147,7 @@ class GroupManager
      */
     public function hasGroupForUuid($uuid)
     {
-        if ($this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if ($this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return true;
         }
         
@@ -188,27 +179,18 @@ class GroupManager
      */
     public function getGroupForUuid($uuid)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid($uuid);
+        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
 
         if ($accessEntity === false) {
             return false;
         }
         
-        // Create the group object
-        $group = new Group(
-            $accessEntity->getId(),
-            $accessEntity->getUuid(),
-            $accessEntity->getName(),
-            $accessEntity->getKey(),
-            $accessEntity->getMetaDataArray()
-        );
-        
-        return $group;
+        return $accessEntity;
     }
     
     /**
@@ -231,16 +213,7 @@ class GroupManager
             return false;
         }
         
-        // Create the Group object
-        $group = new Group(
-            $accessEntity->getId(),
-            $accessEntity->getUuid(),
-            $accessEntity->getName(),
-            $accessEntity->getKey(),
-            $accessEntity->getMetaDataArray()
-        );
-        
-        return $group;
+        return $accessEntity;
     }
     
     /**
@@ -252,9 +225,7 @@ class GroupManager
      */
     public function getGroups(DataRequest $dataRequest)
     {
-        $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
-        
-        return $this->_accessControlManager->getAccessEntities($dataRequest);
+        return $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
     
     /**
@@ -266,8 +237,6 @@ class GroupManager
      */
     public function countGroups(DataRequest $dataRequest)
     {
-        $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
-    
-        return $this->_accessControlManager->countAccessEntities($dataRequest);
+        return $this->_accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
 }

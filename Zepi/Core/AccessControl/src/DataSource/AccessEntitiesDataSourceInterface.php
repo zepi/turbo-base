@@ -37,6 +37,7 @@
 namespace Zepi\Core\AccessControl\DataSource;
 
 use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\Core\AccessControl\Entity\AccessEntity;
 
 /**
  * The AccessEntities DataSource Interface defines the 
@@ -52,91 +53,89 @@ interface AccessEntitiesDataSourceInterface
      * object. 
      *
      * @access public 
+     * @param string $class
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return array
      */
-    public function getAccessEntities(DataRequest $dataRequest);
+    public function getAccessEntities($class, DataRequest $dataRequest);
 
     /**
      * Returns the number of all found access entities for the given DataRequest
      * object.
      *
      * @access public 
+     * @param string $class
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return false|integer
      */
-    public function countAccessEntities(DataRequest $dataRequest);
+    public function countAccessEntities($class, DataRequest $dataRequest);
     
     /**
      * Returns true if there is a access entity for the given uuid
      * 
      * @access public
+     * @param string $class
      * @param string $uuid
      * @return boolean
      */
-    public function hasAccessEntityForUuid($uuid);
+    public function hasAccessEntityForUuid($class, $uuid);
     
     /**
      * Returns true if there is a access entity for the given type and name
      * 
      * @access public
-     * @param string $type
+     * @param string $class
      * @param string $name
      * @return boolean
      */
-    public function hasAccessEntityForName($type, $name);
+    public function hasAccessEntityForName($class, $name);
     
     /**
      * Returns the access entity object for the given uuid
      *
      * @access public 
+     * @param string $class
      * @param string $uuid
      * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      */
-    public function getAccessEntityForUuid($uuid);
+    public function getAccessEntityForUuid($class, $uuid);
     
     /**
      * Returns the access entity object for the given type and name
      * 
      * @access public
-     * @param string $type
+     * @param string $class
      * @param string $name
      * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      */
-    public function getAccessEntityForName($type, $name);
+    public function getAccessEntityForName($class, $name);
 
     /**
      * Adds an access entity. Returns the uuid of the access entity
      * or false, if the access entity can not inserted.
      * 
      * @access public
-     * @param string $type
-     * @param string $name
-     * @param string $key
-     * @param array $metaData
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return string|false
      */
-    public function addAccessEntity($type, $name, $key, $metaData = array());
+    public function addAccessEntity(AccessEntity $accessEntity);
     
     /**
      * Updates the access entity. Returns true if everything worked as excepted or 
      * false if the update didn't worked.
      * 
      * @access public
-     * @param string $uuid
-     * @param string $name
-     * @param string $key
-     * @param array $metaData
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return boolean
      */
-    public function updateAccessEntity($uuid, $name, $key, $metaData);
+    public function updateAccessEntity(AccessEntity $accessEntity);
     
     /**
      * Deletes the given access entity in the database.
      * 
      * @access public
-     * @param string $uuid
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return boolean
      */
-    public function deleteAccessEntity($uuid);
+    public function deleteAccessEntity(AccessEntity $accessEntity);
 }

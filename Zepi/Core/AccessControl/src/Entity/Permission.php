@@ -36,44 +36,45 @@
 
 namespace Zepi\Core\AccessControl\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Representats one row in the permissions table as
  * object.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
+ * 
+ * @Entity 
+ * @Table(name="permissions")
  */
 class Permission
 {
     /**
-     * @access protected
+     * @ID
+     * @Column(type="integer")
+     * @GeneratedValue
      * @var integer
      */
-    protected $_id;
+    protected $id;
     
     /**
-     * @access protected
+     * @Column(type="string", name="access_entity_uuid")
      * @var string
      */
-    protected $_accessEntityUuid;
+    protected $accessEntityUuid;
     
     /**
-     * @access protected
+     * @Column(type="string", name="access_level_key")
      * @var string
      */
-    protected $_accessLevelKey;
+    protected $accessLevelKey;
     
     /**
-     * @access protected
+     * @Column(type="string", name="granted_by")
      * @var string
      */
-    protected $_grantedBy;
-    
-    /**
-     * @access protected
-     * @var \Zepi\Core\AccessControl\Entity\AccessEntity
-     */
-    protected $_accessEntity;
+    protected $grantedBy;
     
     /**
      * Constructs the object
@@ -86,10 +87,10 @@ class Permission
      */
     public function __construct($id, $accessEntityUuid, $accessLevelKey, $grantedBy)
     {
-        $this->_id = $id;
-        $this->_accessEntityUuid = $accessEntityUuid;
-        $this->_accessLevelKey = $accessLevelKey;
-        $this->_grantedBy = $grantedBy;
+        $this->id = $id;
+        $this->accessEntityUuid = $accessEntityUuid;
+        $this->accessLevelKey = $accessLevelKey;
+        $this->grantedBy = $grantedBy;
     }
     
     /**
@@ -100,7 +101,7 @@ class Permission
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
     
     /**
@@ -111,7 +112,7 @@ class Permission
      */
     public function getAccessEntityUuid()
     {
-        return $this->_accessEntityUuid;
+        return $this->accessEntityUuid;
     }
     
     /**
@@ -122,7 +123,7 @@ class Permission
      */
     public function getAccessLevelKey()
     {
-        return $this->_accessLevelKey;
+        return $this->accessLevelKey;
     }
     
     /**
@@ -133,7 +134,7 @@ class Permission
      */
     public function getGrantedBy()
     {
-        return $this->_grantedBy;
+        return $this->grantedBy;
     }
     
     /**
@@ -144,7 +145,7 @@ class Permission
      */
     public function getAccessEntity()
     {
-        return $this->_accessEntity;
+        return $this->accessEntity;
     }
     
     /**
@@ -155,6 +156,6 @@ class Permission
      */
     public function setAccessEntity(AccessEntity $accessEntity)
     {
-        $this->_accessEntity = $accessEntity;
+        $this->accessEntity = $accessEntity;
     }
 }

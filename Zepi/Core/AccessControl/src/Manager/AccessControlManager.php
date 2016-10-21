@@ -80,12 +80,13 @@ class AccessControlManager
      * object.
      * 
      * @access public
+     * @param string $class
      * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
      * @return array
      */
-    public function getAccessEntities(DataRequest $dataRequest)
+    public function getAccessEntities($class, DataRequest $dataRequest)
     {
-        return $this->_accessEntitiesDataSource->getAccessEntities($dataRequest);
+        return $this->_accessEntitiesDataSource->getAccessEntities($class, $dataRequest);
     }
     
     /**
@@ -93,12 +94,13 @@ class AccessControlManager
      * object.
      * 
      * @access public
+     * @param string $class
      * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
      * @return integer
      */
-    public function countAccessEntities(DataRequest $dataRequest)
+    public function countAccessEntities($class, DataRequest $dataRequest)
     {
-        return $this->_accessEntitiesDataSource->countAccessEntities($dataRequest);
+        return $this->_accessEntitiesDataSource->countAccessEntities($class, $dataRequest);
     }
     
     /**
@@ -106,15 +108,12 @@ class AccessControlManager
      * or false, if the access entity can not be inserted.
      * 
      * @access public
-     * @param string $type
-     * @param string $name
-     * @param string $key
-     * @param array $metaData
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return string|false
      */
-    public function addAccessEntity($type, $name, $key, $metaData)
+    public function addAccessEntity(AccessEntity $accessEntity)
     {
-        return $this->_accessEntitiesDataSource->addAccessEntity($type, $name, $key, $metaData);
+        return $this->_accessEntitiesDataSource->addAccessEntity($accessEntity);
     }
     
     /**
@@ -122,76 +121,75 @@ class AccessControlManager
      * or false if the access entity can not be updated.
      * 
      * @access public
-     * @param string $uuid
-     * @param string $name
-     * @param string $key
-     * @param array $metaData
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return boolean
      */
-    public function updateAccessEntity($uuid, $name, $key, $metaData)
+    public function updateAccessEntity(AccessEntity $accessEntity)
     {
-        return $this->_accessEntitiesDataSource->updateAccessEntity($uuid, $name, $key, $metaData);
+        return $this->_accessEntitiesDataSource->updateAccessEntity($accessEntity);
     }
     
     /**
      * Deletes the given access entity in the database.
      * 
      * @access public
-     * @param string $uuid
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @return boolean
      */
-    public function deleteAccessEntity($uuid)
+    public function deleteAccessEntity(AccessEntity $accessEntity)
     {
-        return $this->_accessEntitiesDataSource->deleteAccessEntity($uuid);
+        return $this->_accessEntitiesDataSource->deleteAccessEntity($accessEntity);
     }
     
     /**
      * Returns true if there is a access entity for the given uuid
      * 
      * @access public
+     * @param string $class
      * @param string $uuid
      * @return boolean
      */
-    public function hasAccessEntityForUuid($uuid)
+    public function hasAccessEntityForUuid($class, $uuid)
     {
-        return $this->_accessEntitiesDataSource->hasAccessEntityForUuid($uuid);
+        return $this->_accessEntitiesDataSource->hasAccessEntityForUuid($class, $uuid);
     }
     
     /**
      * Returns true if there is a access entity for the given type and name
      * 
      * @access public
-     * @param string $type
+     * @param string $class
      * @param string $name
      * @return boolean
      */
-    public function hasAccessEntityForName($type, $name)
+    public function hasAccessEntityForName($class, $name)
     {
-        return $this->_accessEntitiesDataSource->hasAccessEntityForName($type, $name);
+        return $this->_accessEntitiesDataSource->hasAccessEntityForName($class, $name);
     }
     
     /**
      * Returns the access entity object for the given uuid
      *
      * @access public 
+     * @param string $class
      * @param string $uuid
      * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
      */
-    public function getAccessEntityForUuid($uuid)
+    public function getAccessEntityForUuid($class, $uuid)
     {
-        return $this->_accessEntitiesDataSource->getAccessEntityForUuid($uuid);
+        return $this->_accessEntitiesDataSource->getAccessEntityForUuid($class, $uuid);
     }
     
     /**
      * Returns the access entity for the given type and name
      * 
-     * @param string $type
+     * @param string $class
      * @param string $name
      * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
      */
-    public function getAccessEntityForName($type, $name)
+    public function getAccessEntityForName($class, $name)
     {
-        return $this->_accessEntitiesDataSource->getAccessEntityForName($type, $name);
+        return $this->_accessEntitiesDataSource->getAccessEntityForName($class, $name);
     }
     
     /**

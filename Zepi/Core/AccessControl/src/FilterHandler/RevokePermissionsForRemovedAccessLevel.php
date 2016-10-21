@@ -25,8 +25,7 @@
  */
 
 /**
- * Starts the session after the initialization of the framework
- * core and is one of the first events which will be executed.
+ * Revokes all permissions for the given access level key
  * 
  * @package Zepi\Core\AccessControl
  * @subpackage FilterHandler
@@ -43,8 +42,7 @@ use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 
 /**
- * Starts the session after the initialization of the framework
- * core and is one of the first events which will be executed.
+ * Revokes all permissions for the given access level keyed.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
@@ -69,8 +67,7 @@ class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
     }
     
     /**
-     * Starts the session after the initialization of the framework
-     * core and is one of the first events which will be executed.
+     * Revokes all permissions for the given access level key
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework

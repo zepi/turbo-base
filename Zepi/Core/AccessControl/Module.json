@@ -11,7 +11,7 @@
     "dependencies": {
         "required": {
             "\\Zepi\\Core\\Utils": "*",
-            "\\Zepi\\DataSourceDriver\\Mysql": "*"
+            "\\Zepi\\DataSourceDriver\\Doctrine": "*"
         }
     }
 }

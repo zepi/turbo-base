@@ -36,68 +36,77 @@
 
 namespace Zepi\Core\AccessControl\Entity;
 
+use \Zepi\Core\AccessControl\Entity\Permission;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Representats one row in the access_entities table as
  * object.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
+ * 
+ * @MappedSuperclass
  */
 class AccessEntity
 {
     /**
+     * @ID
+     * @Column(type="integer")
+     * @GeneratedValue
      * @var integer
      */
-    protected $_id;
+    protected $id;
     
     /**
+     * @Column(type="string", unique=true)
      * @var string
      */
-    protected $_uuid;
+    protected $uuid;
     
     /**
+     * @Column(type="string", unique=true)
      * @var string
      */
-    protected $_type;
+    protected $name;
     
     /**
+     * @Column(type="string", name="private_key")
      * @var string
      */
-    protected $_name;
+    protected $privateKey;
     
     /**
-     * @var string
+     * @Column(type="array", name="meta_data")
+     * @var array
      */
-    protected $_key;
+    protected $metaData;
     
     /**
      * @var array
      */
-    protected $_metaData;
-    
-    /**
-     * @var array
-     */
-    protected $_permissions = array();
+    protected $permissions;
     
     /**
      * Constructs the object
      * 
      * @param integer $id
      * @param string $uuid
-     * @param string $type
      * @param string $name
-     * @param string $key
+     * @param string $privateKey
      * @param array $metaData
      */
-    public function __construct($id, $uuid, $type, $name, $key, array $metaData)
+    public function __construct($id, $uuid, $name, $privateKey, array $metaData)
     {
-        $this->_id = $id;
-        $this->_uuid = $uuid;
-        $this->_type = $type;
-        $this->_name = $name;
-        $this->_key = $key;
-        $this->_metaData = $metaData;
+        if ($uuid == '') {
+            $uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        }
+        
+        $this->id = $id;
+        $this->uuid = $uuid;
+        $this->name = $name;
+        $this->privateKey = $privateKey;
+        $this->metaData = $metaData;
     }
     
     /**
@@ -108,7 +117,7 @@ class AccessEntity
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
     
     /**
@@ -119,7 +128,7 @@ class AccessEntity
      */
     public function isNew()
     {
-        return ($this->_id == '');
+        return ($this->id == '');
     }
     
     /**
@@ -130,7 +139,7 @@ class AccessEntity
      */
     public function getUuid()
     {
-        return $this->_uuid;
+        return $this->uuid;
     }
     
     /**
@@ -141,7 +150,7 @@ class AccessEntity
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
     
     /**
@@ -152,7 +161,7 @@ class AccessEntity
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -163,7 +172,7 @@ class AccessEntity
      */
     public function setName($name)
     {
-        $this->_name = $name;
+        $this->name = $name;
     }
 
     /**
@@ -174,7 +183,7 @@ class AccessEntity
      */    
     public function getKey()
     {
-        return $this->_key;
+        return $this->privateKey;
     }
     
     /**
@@ -186,11 +195,11 @@ class AccessEntity
      */
     public function getMetaData($key)
     {
-        if (!isset($this->_metaData[$key])) {
+        if (!isset($this->metaData[$key])) {
             return false;
         }
         
-        return $this->_metaData[$key];
+        return $this->metaData[$key];
     }
     
     /**
@@ -202,7 +211,7 @@ class AccessEntity
      */
     public function setMetaData($key, $value)
     {
-        $this->_metaData[$key] = $value;
+        $this->metaData[$key] = $value;
     }
     
     /**
@@ -213,7 +222,7 @@ class AccessEntity
      */
     public function getMetaDataArray()
     {
-        return $this->_metaData;
+        return $this->metaData;
     }
     
     /**
@@ -224,7 +233,7 @@ class AccessEntity
      */
     public function getPermissions()
     {
-        return $this->_permissions;
+        return $this->permissions;
     }
     
     /**
@@ -235,7 +244,7 @@ class AccessEntity
      */
     public function setPermissions($permissions)
     {
-        $this->_permissions = $permissions;
+        $this->permissions = $permissions;
     }
     
     /**
@@ -248,7 +257,7 @@ class AccessEntity
      */
     public function hasAccess($accessLevel)
     {
-        foreach ($this->_permissions as $permission) {
+        foreach ($this->permissions as $permission) {
             /**
              * If the user has the \Globa\* access level he can
              * do everything
@@ -264,9 +273,9 @@ class AccessEntity
             // If there is a star in the permission and everything before 
             // the star is equal with the access level, the user has access
             // to the given access level.
-            $posStar = strpos($permission, '*');
+            $posStar = strpos($permission->getAccessLevelKey(), '*');
             if ($posStar !== false) {
-                $startPermission = substr($permission, 0, $posStar);
+                $startPermission = substr($permission->getAccessLevelKey(), 0, $posStar);
                 $startAccessLevel = substr($accessLevel, 0, $posStar);
                 
                 if ($startPermission == $startAccessLevel) {

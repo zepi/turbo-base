@@ -89,18 +89,13 @@ class TokenManager
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity(
-            self::ACCESS_ENTITY_TYPE, 
-            $token->getName(),
-            $token->getKey(),
-            $token->getMetaDataArray()
-        );
+        $uuid = $this->_accessControlManager->addAccessEntity($token);
         
         if ($uuid === false) {
-            throw new Exception('Cannot add the token. Internal softeware error.');
+            throw new Exception('Cannot add the token. Internal software error.');
         }
         
-        return $this->getTokenForUuid($uuid);
+        return $token;
     }
     
     /**

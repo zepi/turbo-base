@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,50 +25,22 @@
  */
 
 /**
- * The Group object representatses the access entity "group". Access levels can be 
- * assigned to a group and the group can be assigned to a user. The user inherits
- * all the access levels of a group.
+ * The exception
  * 
- * @package Zepi\Web\AccessControl
- * @subpackage Entity
+ * @package Zepi\DataSourceDriver\Doctrine
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\Web\AccessControl\Entity;
-
-use \Zepi\Core\AccessControl\Entity\AccessEntity;
+namespace Zepi\DataSourceDriver\Doctrine;
 
 /**
- * The Group object representatses the access entity "group". Access levels can be 
- * assigned to a group and the group can be assigned to a user. The user inherits
- * all the access levels of a group.
+ * The exception
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
- * 
- * @Entity 
- * @Table(name="groups")
+ * @copyright Copyright (c) 2016 zepi
  */
-class Group extends AccessEntity
+class Exception extends \Zepi\Turbo\Exception
 {
-    /**
-     * Constructs the object
-     * 
-     * @param integer $id
-     * @param string $uuid
-     * @param string $name
-     * @param string $privateKey
-     * @param array $metaData
-     */
-    public function __construct($id, $uuid, $name, $privateKey, array $metaData)
-    {
-        parent::__construct(
-            $id,
-            $uuid,
-            $name,
-            $privateKey,
-            $metaData
-        );
-    }
+    
 }

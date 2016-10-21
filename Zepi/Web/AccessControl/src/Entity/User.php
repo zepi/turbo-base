@@ -42,6 +42,9 @@ use \Zepi\Core\AccessControl\Entity\AccessEntity;
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
+ * 
+ * @Entity 
+ * @Table(name="users")
  */
 class User extends AccessEntity
 {
@@ -51,17 +54,16 @@ class User extends AccessEntity
      * @param integer $id
      * @param string $uuid
      * @param string $name
-     * @param string $key
+     * @param string $privateKey
      * @param array $metaData
      */
-    public function __construct($id, $uuid, $name, $key, array $metaData)
+    public function __construct($id, $uuid, $name, $privateKey, array $metaData)
     {
         parent::__construct(
             $id,
             $uuid,
-            get_class($this),
             $name,
-            $key,
+            $privateKey,
             $metaData
         );
     }
@@ -76,8 +78,8 @@ class User extends AccessEntity
      */
     public function comparePasswords($password)
     {
-        $passwordSalted = $this->_saltPassword($password);
-        if (password_verify($passwordSalted, $this->_key)) {
+        $passwordSalted = $this->saltPassword($password);
+        if (password_verify($passwordSalted, $this->privateKey)) {
             return true;
         }
         
@@ -92,9 +94,9 @@ class User extends AccessEntity
      */
     public function setNewPassword($password)
     {
-        $this->_generateSalt();
+        $this->generateSalt();
         
-        $this->_key = $this->_encodePassword($password);
+        $this->privateKey = $this->encodePassword($password);
     }
     
     /**
@@ -104,9 +106,9 @@ class User extends AccessEntity
      * @param string $password
      * @return string
      */
-    protected function _encodePassword($password)
+    protected function encodePassword($password)
     {
-        $passwordSalted = $this->_saltPassword($password);
+        $passwordSalted = $this->saltPassword($password);
         $passwordEncoded = password_hash($passwordSalted, PASSWORD_DEFAULT);
         
         return $passwordEncoded;
@@ -119,12 +121,12 @@ class User extends AccessEntity
      * @param string $password
      * @return string
      */
-    protected function _saltPassword($password)
+    protected function saltPassword($password)
     {
-        if (isset($this->_metaData['salt'])) {
-            $salt = $this->_metaData['salt'];
+        if (isset($this->metaData['salt'])) {
+            $salt = $this->metaData['salt'];
         } else {
-            $salt = $this->_generateSalt();
+            $salt = $this->generateSalt();
         }
         
         return $salt . $password;
@@ -136,10 +138,10 @@ class User extends AccessEntity
      * @access protected
      * @return string
      */
-    protected function _generateSalt()
+    protected function generateSalt()
     {
-        $this->_metaData['salt'] = uniqid('', true);
+        $this->metaData['salt'] = uniqid('', true);
         
-        return $this->_metaData['salt'];
+        return $this->metaData['salt'];
     }
 }

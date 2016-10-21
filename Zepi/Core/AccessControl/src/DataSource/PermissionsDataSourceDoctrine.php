@@ -25,7 +25,7 @@
  */
 
 /**
- * The PermissionsDataSourceMysql communicates with the MySQL Database and 
+ * The PermissionsDataSourceDoctrine communicates with the MySQL Database and 
  * loads and saves the permissions.
  * 
  * @package Zepi\Core\AccessControl
@@ -38,25 +38,25 @@ namespace Zepi\Core\AccessControl\DataSource;
 
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
-use \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend;
+use \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager;
 use \Zepi\Turbo\Manager\RuntimeManager;
 use \Zepi\Core\AccessControl\Entity\Permission;
 use \Zepi\Core\Utils\Entity\DataRequest;
 
 /**
- * The PermissionsDataSourceMysql communicates with the MySQL Database and 
+ * The PermissionsDataSourceDoctrine communicates with the MySQL Database and 
  * loads and saves the permissions.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsDataSourceInterface
+class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsDataSourceInterface
 {
     /**
      * @access protected
-     * @var \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend
+     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
      */
-    protected $_databaseBackend;
+    protected $_entityManager;
     
     /**
      * @access protected
@@ -68,12 +68,12 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSourceDriver\Mysql\Backend\DatabaseBackend $databaseBackend
+     * @param \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager $entityManager
      * @param \Zepi\Turbo\Manager\RuntimeManager $runtimeManager
      */
-    public function __construct(DatabaseBackend $databaseBackend, RuntimeManager $runtimeManager)
+    public function __construct(EntityManager $entityManager, RuntimeManager $runtimeManager)
     {
-        $this->_databaseBackend = $databaseBackend;
+        $this->_entityManager = $entityManager;
         $this->_runtimeManager = $runtimeManager;
     }
     
@@ -86,16 +86,7 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
      */
     public function setup()
     {
-        $sql = 'CREATE TABLE IF NOT EXISTS `permissions` (' 
-             . '  `permission_id` int(11) NOT NULL AUTO_INCREMENT,'
-             . '  `permission_access_entity_uuid` varchar(40) NOT NULL,'
-             . '  `permission_access_level_key` varchar(255) NOT NULL,'
-             . '  `permission_granted_by` varchar(40) NOT NULL,'
-             . '  PRIMARY KEY (`permission_id`),'
-             . '  UNIQUE KEY `permission` (`permission_access_entity_uuid`,`permission_access_level_key`)'
-             . ') ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;';
-        
-        $this->_databaseBackend->execute($sql);
+        return true;
     }
     
     /**
@@ -112,19 +103,15 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     {
         try {
             $dataRequest->setSelectedFields(array('*'));
-            $sql = $this->_databaseBackend->buildDataRequestQuery($dataRequest, 'permissions', 'permission');
-
-            $data = $this->_databaseBackend->query($sql)->fetchAll();
-        
-            if ($data === false) {
-                return array();
+            
+            $queryBuilder = $this->_entityManager->getQueryBuilder();
+            $this->_entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
+            
+            $permissions = $queryBuilder->getQuery()->getResult();
+            if ($permissions == null) {
+                return false;
             }
-        
-            $permissions = array();
-            foreach ($data as $row) {
-                $permissions[] = $this->_generatePermissionObject($row);
-            }
-        
+            
             return $permissions;
         } catch (\Exception $e) {
             throw new Exception('Cannot load the permissions for the given data request from the database.', 0, $e);
@@ -146,18 +133,21 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         try {
             $request = clone $dataRequest;
         
-            $request->setSelectedFields(array('COUNT(*) AS countEntries'));
             $request->setPage(0);
             $request->setNumberOfEntries(0);
         
-            $sql = $this->_databaseBackend->buildDataRequestQuery($request, 'permissions', 'permission');
-            $data = $this->_databaseBackend->query($sql)->fetch();
-        
+            $queryBuilder = $this->_entityManager->getQueryBuilder();
+            $this->_entityManager->buildDataRequestQuery($request, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
+            
+            // Count
+            $queryBuilder->select($queryBuilder->expr()->count('p.id'));
+            
+            $data = $queryBuilder->getQuery();
             if ($data === false) {
                 return 0;
             }
-        
-            return intval($data['countEntries']);
+            
+            return $data->getSingleScalarResult();
         } catch (\Exception $e) {
             throw new Exception('Cannot count the permissions for the given data request.', 0, $e);
         }
@@ -175,15 +165,13 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     public function hasPermissionForId($id)
     {
         try {
-            $sql = 'SELECT permission_id FROM permissions '
-                 . 'WHERE permission_id = ' . $this->_databaseBackend->escape($id);
-    
-            $data = $this->_databaseBackend->query($sql)->fetch();
-    
-            if (isset($data['permission_id'])) {
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $permission = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->find($id);
+            
+            if ($permission !== null) {
                 return true;
             }
-    
+            
             return false;
         } catch (\Exception $e) {
             throw new Exception('Cannot check if there is a permission for the given id "' . $id . '".', 0, $e);
@@ -202,39 +190,17 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
     public function getPermissionForId($id)
     {
         try {
-            $sql = 'SELECT * FROM permissions '
-                 . 'WHERE permission_id = ' . $this->_databaseBackend->escape($id);
-    
-            $data = $this->_databaseBackend->query($sql)->fetch();
-    
-            if (!isset($data['permission_id'])) {
-                return false;
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $permission = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->find($id);
+            
+            if ($permission !== null) {
+                return $permission;
             }
-    
-            return $this->_generatePermissionObject($data);
+            
+            return false;
         } catch (\Exception $e) {
             throw new Exception('Cannot load the permission from the database for the given id "' . $id . '".', 0, $e);
         }
-    }
-    
-    /**
-     * Generates the permission object
-     *
-     * @access protected
-     * @param array $data
-     * @return \Zepi\Core\AccessControl\Entity\Permission
-     */
-    protected function _generatePermissionObject(array $data)
-    {
-        // Initialize the permission object
-        $permission = new Permission(
-                intval($data['permission_id']),
-                $data['permission_access_entity_uuid'],
-                $data['permission_access_level_key'],
-                $data['permission_granted_by']
-        );
-    
-        return $permission;
     }
     
     /**
@@ -256,18 +222,22 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
         
         try {
-            $sql = 'SELECT COUNT(permission_id) AS count FROM permissions '
-                 . 'WHERE permission_access_entity_uuid = ' . $this->_databaseBackend->escape($accessEntityUuid) . ' '
-                 . 'AND permission_access_level_key = ' . $this->_databaseBackend->escape($accessLevel);
-                 
-            $result = $this->_databaseBackend->query($sql)->fetch();
- 
-            if (isset($result['count']) && $result['count'] > 0) {
-                return true;
+            $queryBuilder = $this->_entityManager->getQueryBuilder();
+            $queryBuilder->select($queryBuilder->expr()->count('p.id'))
+                         ->from('\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p')
+                         ->where('p.accessEntityUuid = :accessEntityUuid')
+                         ->andWhere('p.accessLevelKey = :accessLevel')
+                         ->setParameter('accessEntityUuid', $accessEntityUuid)
+                         ->setParameter('accessLevel', $accessLevel);
+            
+            $data = $queryBuilder->getQuery();
+            if ($data === false) {
+                return 0;
             }
             
-            return false;                        
+            return ($data->getSingleScalarResult() > 0);
         } catch (\Exception $e) {
+            var_dump($e);
             throw new Exception('Cannot verify the permission for uuid "' . $accessEntityUuid . '" and access level "' . $accessLevel . '".', 0, $e);
         }
     }
@@ -290,14 +260,14 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
     
         try {
-            $sql = 'SELECT permission_access_level_key FROM permissions '
-                 . 'WHERE permission_access_entity_uuid = ' . $this->_databaseBackend->escape($accessEntityUuid);
-             
-            $permissions = $this->_databaseBackend->query($sql)->fetchAll();
-
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $permissions = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->findBy(array(
+                'accessEntityUuid' => $accessEntityUuid
+            ));
+            
             $accessLevels = array();
             foreach ($permissions as $permission) {
-                $accessLevels[] = $permission['permission_access_level_key'];
+                $accessLevels[] = $permission->getAccessLevelKey();
             }
 
             return $accessLevels;
@@ -358,13 +328,11 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
         
         try {
-            $sql = 'INSERT INTO permissions VALUES ('
-                 . 'NULL, '
-                 . $this->_databaseBackend->escape($accessEntityUuid) . ', '
-                 . $this->_databaseBackend->escape($accessLevel) . ', '
-                 . $this->_databaseBackend->escape($grantedBy) . ')';
-                 
-            $this->_databaseBackend->execute($sql);
+            $permission = new Permission(null, $accessEntityUuid, $accessLevel, $grantedBy);
+            
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em->persist($permission);
+            $em->flush();
             
             return true;
         } catch (\Exception $e) {
@@ -395,13 +363,17 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
         
         try {
-            $sql = 'DELETE FROM permissions '
-                 . 'WHERE permission_access_entity_uuid = ' . $this->_databaseBackend->escape($accessEntityUuid) . ' '
-                 . 'AND permission_access_level_key = ' . $this->_databaseBackend->escape($accessLevel);
-                 
-            $this->_databaseBackend->execute($sql);
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $permissions = $em->getRepository($class)->findBy(array(
+                'accessEntityUuid' => $accessEntityUuid,
+                'accessLevelKey' => $accessLevel
+            ));
             
-            return true;
+            $accessLevels = array();
+            foreach ($permissions as $permission) {
+                $em->remove($permission);
+            }
+            $em->flush();
         } catch (\Exception $e) {
             throw new Exception('Cannot revoke the access level "' . $accessLevel . '" from the given uuid "' . $accessEntityUuid . '".', 0, $e);
         }
@@ -424,12 +396,16 @@ class PermissionsDataSourceMysql implements DataSourceInterface, PermissionsData
         }
     
         try {
-            $sql = 'DELETE FROM permissions '
-                 . 'WHERE permission_access_level_key = ' . $this->_databaseBackend->escape($accessLevel);
-             
-            $this->_databaseBackend->execute($sql);
-    
-            return true;
+            $em = $this->_entityManager->getDoctrineEntityManager();
+            $permissions = $em->getRepository($class)->findBy(array(
+                'accessLevelKey' => $accessLevel
+            ));
+            
+            $accessLevels = array();
+            foreach ($permissions as $permission) {
+                $em->remove($permission);
+            }
+            $em->flush();
         } catch (\Exception $e) {
             throw new Exception('Cannot revoke the access levels "' . $accessLevel . '".', 0, $e);
         }

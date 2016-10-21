@@ -107,7 +107,7 @@ class SessionManager
         $request->setSessionData('userUuid', $user->getUuid());
         $request->setSessionData('userSessionToken', $sessionToken);
         $request->setSessionData('userSessionTokenLifetime', $sessionTokenLifeTime);
-        
+
         setcookie($sessionToken, $sessionTokenLifeTime, 0, '/', '', $request->isSsl());
     }
     
@@ -280,7 +280,9 @@ class SessionManager
         setcookie($sessionToken, 0, time() - 60, '/', '', $request->isSsl());
         
         $oldSessionToken = $request->getSessionData('oldUserSessionToken');
-        setcookie($oldSessionToken, 0, time() - 60, '/', '', $request->isSsl());
+        if ($oldSessionToken != '') {
+            setcookie($oldSessionToken, 0, time() - 60, '/', '', $request->isSsl());
+        }
     
         $request->deleteSessionData('userUuid');
         $request->deleteSessionData('userSessionToken');
