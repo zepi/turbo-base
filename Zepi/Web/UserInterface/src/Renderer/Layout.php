@@ -56,7 +56,7 @@ class Layout
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * Constructs the object
@@ -66,7 +66,7 @@ class Layout
      */
     public function __construct(TemplatesManager $templatesManager)
     {
-        $this->_templatesManager = $templatesManager;
+        $this->templatesManager = $templatesManager;
     }
     
     /**
@@ -81,7 +81,7 @@ class Layout
     {
         $template = $container->getTemplateKey();
 
-        return $this->_templatesManager->renderTemplate($template, array(
+        return $this->templatesManager->renderTemplate($template, array(
             'layoutRenderer' => $this,
             'container' => $container
         ));

@@ -47,7 +47,7 @@ class Textarea extends FieldAbstract
      * @access protected
      * @var integer
      */
-    protected $_rows;
+    protected $rows;
     
     /**
      * Constructs the object
@@ -63,7 +63,7 @@ class Textarea extends FieldAbstract
      */
     public function __construct($key, $label, $isMandatory = false, $value = '', $rows = 5, $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
-        $this->_rows = $rows;
+        $this->rows = $rows;
         
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -87,6 +87,6 @@ class Textarea extends FieldAbstract
      */
     public function getRows()
     {
-        return $this->_rows;
+        return $this->rows;
     }
 }

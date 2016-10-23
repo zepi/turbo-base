@@ -56,19 +56,19 @@ class Error extends Part
      * @access protected
      * @var integer
      */
-    protected $_errorCode;
+    protected $errorCode;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_errorMessage;
+    protected $errorMessage;
 
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Form\Field\FieldAbstract
      */    
-    protected $_field;
+    protected $field;
     
     /**
      * Constructs the object
@@ -80,9 +80,9 @@ class Error extends Part
      */
     public function __construct($errorCode, $errorMessage, FieldAbstract $field = null)
     {
-        $this->_errorCode = $errorCode;
-        $this->_errorMessage = $errorMessage;
-        $this->_field = $field;
+        $this->errorCode = $errorCode;
+        $this->errorMessage = $errorMessage;
+        $this->field = $field;
     }
     
     /**
@@ -93,7 +93,7 @@ class Error extends Part
      */
     public function getErrorCode()
     {
-        return $this->_errorCode;
+        return $this->errorCode;
     }
     
     /**
@@ -104,7 +104,7 @@ class Error extends Part
      */
     public function getErrorMessage()
     {
-        return $this->_errorMessage;
+        return $this->errorMessage;
     }
     
     /**
@@ -115,7 +115,7 @@ class Error extends Part
      */
     public function getField()
     {
-        return $this->_field;
+        return $this->field;
     }
     
     /**
@@ -126,6 +126,6 @@ class Error extends Part
      */
     public function hasField()
     {
-        return ($this->_field !== null);
+        return ($this->field !== null);
     }
 }

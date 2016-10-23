@@ -47,5 +47,5 @@ class Row extends Part
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Row';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Row';
 }

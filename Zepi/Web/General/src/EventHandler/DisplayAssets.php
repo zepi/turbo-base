@@ -55,7 +55,7 @@ class DisplayAssets implements WebEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\General\Manager\AssetsManager
      */
-    protected $_assetsManager;
+    protected $assetsManager;
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class DisplayAssets implements WebEventHandlerInterface
      */
     public function __construct(AssetsManager $assetsManager)
     {
-        $this->_assetsManager = $assetsManager;
+        $this->assetsManager = $assetsManager;
     }
     
     /**
@@ -80,9 +80,9 @@ class DisplayAssets implements WebEventHandlerInterface
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         // Display the main css group
-        $this->_assetsManager->displayAssetType(AssetsManager::CSS);
+        $this->assetsManager->displayAssetType(AssetsManager::CSS);
         
         // Display the main js group
-        $this->_assetsManager->displayAssetType(AssetsManager::JS);
+        $this->assetsManager->displayAssetType(AssetsManager::JS);
     }
 }

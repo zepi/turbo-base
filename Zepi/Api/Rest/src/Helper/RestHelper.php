@@ -59,7 +59,7 @@ class RestHelper
      * @access protected
      * @var \Zepi\Api\AccessControl\Manager\TokenManager
      */
-    protected $_tokenManager;
+    protected $tokenManager;
     
     /**
      * Constructs the object
@@ -69,7 +69,7 @@ class RestHelper
      */
     public function __construct(TokenManager $tokenManager)
     {
-        $this->_tokenManager = $tokenManager;
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -84,7 +84,7 @@ class RestHelper
      */
     public function sendRequest(ApiKey $apiKey, RestRequest $request)
     {
-        $hmac = $this->_generateHmac($apiKey->getPrivateKey(), $request->getEndpoint(), array_merge($request->getQueryData(), $request->getPostData()));
+        $hmac = $this->generateHmac($apiKey->getPrivateKey(), $request->getEndpoint(), array_merge($request->getQueryData(), $request->getPostData()));
 
         $client = new Client([
             'base_uri' => $request->getHost()
@@ -145,7 +145,7 @@ class RestHelper
         switch ($dataType) {
             case 'text/xml':
                 $xml = new \SimpleXMLElement('<root/>');
-                $this->_fillXml($xml, $result);
+                $this->fillXml($xml, $result);
                 
                 $response->sendHeader('Content-Type: text/xml');
                 $response->setOutput($xml->asXML());
@@ -166,7 +166,7 @@ class RestHelper
      * @param \SimpleXMLElement $element
      * @param array $data
      */
-    protected function _fillXml(\SimpleXMLElement $element, $data)
+    protected function fillXml(\SimpleXMLElement $element, $data)
     {
         foreach ($data as $key => $value) {
             if (is_array($value) || is_object($value)) {
@@ -176,7 +176,7 @@ class RestHelper
                     $child = $element;
                 }
                 
-                $this->_fillXml($child, $value);
+                $this->fillXml($child, $value);
             } else {
                 $element->addChild($key, $value);
             }
@@ -194,7 +194,7 @@ class RestHelper
     public function validateRequest(ApiKey $apiKey, $hmac, $route, $data)
     {
         // Regenerate the hmac
-        $regeneratedHmac = $this->_generateHmac($apiKey->getPrivateKey(), $route, $data);
+        $regeneratedHmac = $this->generateHmac($apiKey->getPrivateKey(), $route, $data);
         
         // Verify the hmac and the time
         if ($hmac === $regeneratedHmac) {
@@ -213,7 +213,7 @@ class RestHelper
      * @param array $data
      * @return string
      */
-    protected function _generateHmac($privateKey, $requestedRoute, $data)
+    protected function generateHmac($privateKey, $requestedRoute, $data)
     {
         $completeString = $requestedRoute . json_encode($data);
 

@@ -55,31 +55,31 @@ class Form extends Part
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_url;
+    protected $url;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_method;
+    protected $method;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_isSubmitted = false;
+    protected $isSubmitted = false;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Form';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Form';
     
     /**
      * Constructs the object
@@ -92,9 +92,9 @@ class Form extends Part
      */
     public function __construct($key, $url, $method, $parts = array())
     {
-        $this->_key = $key;
-        $this->_url = $url;
-        $this->_method = $method;
+        $this->key = $key;
+        $this->url = $url;
+        $this->method = $method;
         
         foreach ($parts as $part) {
             $this->addPart($part);
@@ -109,7 +109,7 @@ class Form extends Part
      */
     public function getHtmlId()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -120,7 +120,7 @@ class Form extends Part
      */
     public function getUrl()
     {
-        return $this->_url;
+        return $this->url;
     }
     
     /**
@@ -131,7 +131,7 @@ class Form extends Part
      */
     public function getMethod()
     {
-        return $this->_method;
+        return $this->method;
     }
     
     /**
@@ -143,7 +143,7 @@ class Form extends Part
     public function getFields()
     {
         $fields = array();
-        foreach ($this->_parts as $part) {
+        foreach ($this->parts as $part) {
             $fields = array_merge($fields, $part->getParts());
         }
         
@@ -161,7 +161,7 @@ class Form extends Part
      */
     public function getField($groupKey, $fieldKey)
     {
-        foreach ($this->_parts as $part) {
+        foreach ($this->parts as $part) {
             if ($part->getKey() !== $groupKey) {
                 continue;
             }
@@ -266,7 +266,7 @@ class Form extends Part
      */
     public function isSubmitted()
     {
-        return ($this->_isSubmitted);
+        return ($this->isSubmitted);
     }
     
     /**
@@ -277,7 +277,7 @@ class Form extends Part
      */
     public function setIsSubmitted($isSubmitted)
     {
-        $this->_isSubmitted = $isSubmitted;
+        $this->isSubmitted = $isSubmitted;
     }
     
     /**
@@ -290,8 +290,8 @@ class Form extends Part
      */
     public function generateCsrfToken(WebRequest $request)
     {
-        $key = 'csrf-' . $this->_generateHash(32);
-        $token = $this->_generateHash(128);
+        $key = 'csrf-' . $this->generateHash(32);
+        $token = $this->generateHash(128);
         
         $request->setSessionData($key, $token);
         
@@ -304,7 +304,7 @@ class Form extends Part
      * @param integer $length
      * @return string
      */
-    protected function _generateHash($length)
+    protected function generateHash($length)
     {
         $token = '';
         for ($i = 0; $i < $length; ++ $i) {

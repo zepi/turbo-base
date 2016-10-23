@@ -47,25 +47,25 @@ class AccessLevel
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_description;
+    protected $description;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_namespace;
+    protected $namespace;
     
     /**
      * Constructs the object
@@ -78,10 +78,10 @@ class AccessLevel
      */
     public function __construct($key, $name, $description, $namespace)
     {
-        $this->_key = $key;
-        $this->_name = $name;
-        $this->_description = $description;
-        $this->_namespace = $namespace;
+        $this->key = $key;
+        $this->name = $name;
+        $this->description = $description;
+        $this->namespace = $namespace;
     }
     
     /**
@@ -92,7 +92,7 @@ class AccessLevel
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -103,7 +103,7 @@ class AccessLevel
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -114,7 +114,7 @@ class AccessLevel
      */
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
     
     /**
@@ -125,7 +125,7 @@ class AccessLevel
      */
     public function getNamespace()
     {
-        return $this->_namespace;
+        return $this->namespace;
     }
     
     /**
@@ -136,6 +136,6 @@ class AccessLevel
      */
     public function getHash()
     {
-        return md5($this->_namespace) . '-' . md5($this->_key);
+        return md5($this->namespace) . '-' . md5($this->key);
     }
 }

@@ -51,13 +51,13 @@ class LanguageFileManager
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_languageFiles = array();
+    protected $languageFiles = array();
     
     /**
      * Constructs the object.
@@ -67,7 +67,7 @@ class LanguageFileManager
      */
     public function __construct(Framework $framework)
     {
-        $this->_framework = $framework;
+        $this->framework = $framework;
     }
     
     /**
@@ -81,7 +81,7 @@ class LanguageFileManager
      */
     public function loadTranslationFileContent($namespace, $specificLocale)
     {
-        $path = $this->_buildPathFromNamespace($namespace);
+        $path = $this->buildPathFromNamespace($namespace);
         if ($path === false) {
             return false;
         }
@@ -118,13 +118,13 @@ class LanguageFileManager
      * @param string $namespace
      * @return false|string
      */
-    protected function _buildPathFromNamespace($namespace)
+    protected function buildPathFromNamespace($namespace)
     {
         // Prepare the namespace
         $namespace = Framework::prepareNamespace($namespace);
         
         // Load the module
-        $moduleManager = $this->_framework->getModuleManager();
+        $moduleManager = $this->framework->getModuleManager();
         $module = $moduleManager->getModule($namespace);
         if ($module === false) {
             return false;

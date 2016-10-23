@@ -47,19 +47,19 @@ class Tab extends Part
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_active = false;
+    protected $active = false;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Tab';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Tab';
     
     /**
      * Construct the object
@@ -75,7 +75,7 @@ class Tab extends Part
     {
         parent::__construct($parts, $classes, $key, $priority);
         
-        $this->_name = $name;
+        $this->name = $name;
     }
     
     /**
@@ -86,7 +86,7 @@ class Tab extends Part
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -97,7 +97,7 @@ class Tab extends Part
      */
     public function isActive()
     {
-        return ($this->_active);
+        return ($this->active);
     }
     
     /**
@@ -108,6 +108,6 @@ class Tab extends Part
      */
     public function setActive($active)
     {
-        $this->_active = $active;
+        $this->active = $active;
     }
 }

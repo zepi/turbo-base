@@ -32,13 +32,13 @@ class GenerateNewPassword extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\Mail\Helper\MailHelper
      */
-    protected $_mailHelper;
+    protected $mailHelper;
     
     /**
      * Constructs the object
@@ -50,9 +50,9 @@ class GenerateNewPassword extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager, MailHelper $mailHelper)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
-        $this->_mailHelper = $mailHelper;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
+        $this->mailHelper = $mailHelper;
     }
     
     /**
@@ -69,7 +69,7 @@ class GenerateNewPassword extends FrontendEventHandler
         $this->setTitle($this->translate('Generate a new password', '\\Zepi\\Web\\AccessControl'));
         
         // Generate a new password
-        $result = $this->_generateNewPassword($framework, $request, $response);
+        $result = $this->generateNewPassword($framework, $request, $response);
         
         // Display the successful saved message
         $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\GenerateNewPasswordFinished', array(
@@ -89,13 +89,13 @@ class GenerateNewPassword extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return string|boolean
      */
-    protected function _generateNewPassword(Framework $framework, RequestAbstract $request, Response $response)
+    protected function generateNewPassword(Framework $framework, RequestAbstract $request, Response $response)
     {
         $uuid = $request->getRouteParam(0);
         $token = $request->getRouteParam(1);
         
         // Load the user
-        $user = $this->_userManager->getUserForUuid($uuid);
+        $user = $this->userManager->getUserForUuid($uuid);
         
         if ($user->getMetaData('passwordRequestToken') == '') {
             return array(
@@ -113,7 +113,7 @@ class GenerateNewPassword extends FrontendEventHandler
         }
         
         // Generate a new password
-        $password = $this->_generateRandomPassword();
+        $password = $this->generateRandomPassword();
         
         // Save the new password
         $user->setNewPassword($password);
@@ -123,10 +123,10 @@ class GenerateNewPassword extends FrontendEventHandler
         $user->setMetaData('passwordRequestTokenLifetime', 0);
         
         // Update the user
-        $this->_userManager->updateUser($user);
+        $this->userManager->updateUser($user);
         
         // Send the request mail
-        $this->_mailHelper->sendMail(
+        $this->mailHelper->sendMail(
             $user->getMetaData('email'),
             $this->translate('New password generated', '\\Zepi\\Web\\AccessControl'),
             $this->render('\\Zepi\\Web\\AccessControl\\Mail\\GenerateNewPassword', array(
@@ -147,7 +147,7 @@ class GenerateNewPassword extends FrontendEventHandler
      * @access protected
      * @return string
      */
-    protected function _generateRandomPassword()
+    protected function generateRandomPassword()
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+*=-_/()!?[]{}';
         $password = array();

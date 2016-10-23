@@ -49,7 +49,7 @@ class ConfigurationFileBackend
      * @access protected
      * @var string
      */
-    protected $_path;
+    protected $path;
     
     /**
      * Constructs the object
@@ -59,7 +59,7 @@ class ConfigurationFileBackend
      */
     public function __construct($path)
     {
-        $this->_path = $path;
+        $this->path = $path;
     }
     
     /**
@@ -73,8 +73,8 @@ class ConfigurationFileBackend
      */
     public function saveConfiguration($settings)
     {
-        if (file_exists($this->_path) && !is_writable($this->_path)) {
-            throw new Exception('The file "' . $this->_path . '" isn\'t writable!');
+        if (file_exists($this->path) && !is_writable($this->path)) {
+            throw new Exception('The file "' . $this->path . '" isn\'t writable!');
         }
         
         $content = '';
@@ -87,7 +87,7 @@ class ConfigurationFileBackend
             }
         }
         
-        return file_put_contents($this->_path, $content);
+        return file_put_contents($this->path, $content);
     }
     
     /**
@@ -100,16 +100,16 @@ class ConfigurationFileBackend
      */
     public function loadConfiguration()
     {
-        if (!file_exists($this->_path)) {
+        if (!file_exists($this->path)) {
             return array();
         }
         
-        if (!is_readable($this->_path)) {
-            throw new Exception('The file "' . $this->_path . '" isn\'t readable!');
+        if (!is_readable($this->path)) {
+            throw new Exception('The file "' . $this->path . '" isn\'t readable!');
         }
         
         // Parse the ini file
-        $settings = parse_ini_file($this->_path, true);
+        $settings = parse_ini_file($this->path, true);
         if ($settings === false) {
             $settings = array();
         }

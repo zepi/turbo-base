@@ -52,25 +52,25 @@ abstract class TableAbstract
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_hasPagination;
+    protected $hasPagination;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_hasFilters;
+    protected $hasFilters;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_saveDataRequest;
+    protected $saveDataRequest;
     
     /**
      * Constructs the object
@@ -83,10 +83,10 @@ abstract class TableAbstract
      */
     public function __construct(Framework $framework, $hasPagination = true, $hasFilters = false, $saveDataRequest = true)
     {
-        $this->_framework = $framework;
-        $this->_hasPagination = $hasPagination;
-        $this->_hasFilters = $hasFilters;
-        $this->_saveDataRequest = $saveDataRequest;
+        $this->framework = $framework;
+        $this->hasPagination = $hasPagination;
+        $this->hasFilters = $hasFilters;
+        $this->saveDataRequest = $saveDataRequest;
     }
     
     /**
@@ -97,7 +97,7 @@ abstract class TableAbstract
      */
     public function hasPagination()
     {
-        return ($this->_hasPagination);
+        return ($this->hasPagination);
     }
     
     /**
@@ -108,7 +108,7 @@ abstract class TableAbstract
      */
     public function hasFilters()
     {
-        return ($this->_hasFilters);
+        return ($this->hasFilters);
     }
     
     /**
@@ -120,7 +120,7 @@ abstract class TableAbstract
      */
     public function shouldSaveDataRequest()
     {
-        return ($this->_saveDataRequest);
+        return ($this->saveDataRequest);
     }
     
     /**

@@ -47,7 +47,7 @@ class Hidden extends FieldAbstract
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace';
     
     /**
      * Constructs the object
@@ -58,8 +58,8 @@ class Hidden extends FieldAbstract
      */
     public function __construct($key, $value)
     {
-        $this->_key = $key;
-        $this->_value = $value;
+        $this->key = $key;
+        $this->value = $value;
     }
     
     /**

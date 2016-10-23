@@ -50,13 +50,13 @@ class Row
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Part
      */
-    protected $_parentPart;
+    protected $parentPart;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_cells = array();
+    protected $cells = array();
     
     /**
      * Constructs the object
@@ -66,7 +66,7 @@ class Row
      */
     public function __construct(Part $part)
     {
-        $this->_parentPart = $part;
+        $this->parentPart = $part;
     }
     
     /**
@@ -77,7 +77,7 @@ class Row
      */
     public function getParentPart()
     {
-        return $this->_parentPart;
+        return $this->parentPart;
     }
     
     /**
@@ -88,7 +88,7 @@ class Row
      */
     public function addCell(Cell $cell)
     {
-        $this->_cells[] = $cell;
+        $this->cells[] = $cell;
     }
     
     /**
@@ -99,6 +99,6 @@ class Row
      */
     public function getCells()
     {
-        return $this->_cells;
+        return $this->cells;
     }
 }

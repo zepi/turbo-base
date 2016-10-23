@@ -48,31 +48,31 @@ class SelectorItem
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_description;
+    protected $description;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_icon;
+    protected $icon;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_disabled = false;
+    protected $disabled = false;
     
     /**
      * Constructs the object
@@ -86,11 +86,11 @@ class SelectorItem
      */
     public function __construct($key, $name, $description, $icon, $disabled)
     {
-        $this->_key = $key;
-        $this->_name = $name;
-        $this->_description = $description;
-        $this->_icon = $icon;
-        $this->_disabled = $disabled;
+        $this->key = $key;
+        $this->name = $name;
+        $this->description = $description;
+        $this->icon = $icon;
+        $this->disabled = $disabled;
     }
     
     /**
@@ -101,7 +101,7 @@ class SelectorItem
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -112,7 +112,7 @@ class SelectorItem
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -123,7 +123,7 @@ class SelectorItem
      */
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
     
     /**
@@ -134,7 +134,7 @@ class SelectorItem
      */
     public function getHash()
     {
-        return md5($this->_name) . '-' . md5($this->_key);
+        return md5($this->name) . '-' . md5($this->key);
     }
     
     /**
@@ -145,7 +145,7 @@ class SelectorItem
      */
     public function getIcon()
     {
-        return $this->_icon;
+        return $this->icon;
     }
     
     /**
@@ -156,6 +156,6 @@ class SelectorItem
      */
     public function isDisabled()
     {
-        return ($this->_disabled);
+        return ($this->disabled);
     }
 }

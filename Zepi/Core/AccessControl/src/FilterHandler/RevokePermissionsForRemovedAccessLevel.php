@@ -53,7 +53,7 @@ class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -63,7 +63,7 @@ class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
      */
     public function __construct(AccessControlManager $accessControlManager)
     {
-        $this->_accessControlManager = $accessControlManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -79,7 +79,7 @@ class RevokePermissionsForRemovedAccessLevel implements FilterHandlerInterface
     public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
         // Revoke all permissions for the given access level key
-        $this->_accessControlManager->revokePermissions($value);
+        $this->accessControlManager->revokePermissions($value);
         
         return $value;
     }

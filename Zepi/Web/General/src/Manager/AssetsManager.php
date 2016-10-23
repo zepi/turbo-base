@@ -58,7 +58,7 @@ class AssetsManager
      * @access protected
      * @param array
      */
-    protected $_assetTypes = array(
+    protected $assetTypes = array(
         self::CSS => array('minify' => true),
         self::JS => array('minify' => true),
         self::IMAGE => array('minify' => false),
@@ -69,55 +69,55 @@ class AssetsManager
      * @access protected
      * @var array
      */
-    protected $_assets = array();
+    protected $assets = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_cachedFiles = array();
+    protected $cachedFiles = array();
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
      */
-    protected $_assetsObjectBackend;
+    protected $assetsObjectBackend;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
      */
-    protected $_cachedFilesObjectBackend;
+    protected $cachedFilesObjectBackend;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Backend\FileBackend
      */
-    protected $_fileBackend;
+    protected $fileBackend;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Helper\CssHelper
      */
-    protected $_cssHelper;
+    protected $cssHelper;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_minifyAssets;
+    protected $minifyAssets;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_combineAssets;
+    protected $combineAssets;
     
     /**
      * Constructs the object
@@ -140,14 +140,14 @@ class AssetsManager
         $minifyAssets,
         $combineAssets
     ) {
-        $this->_framework = $framework;
-        $this->_assetsObjectBackend = $assetsObjectBackend;
-        $this->_cachedFilesObjectBackend = $cachedFilesObjectBackend;
-        $this->_fileBackend = $fileBackend;
-        $this->_cssHelper = $cssHelper;
+        $this->framework = $framework;
+        $this->assetsObjectBackend = $assetsObjectBackend;
+        $this->cachedFilesObjectBackend = $cachedFilesObjectBackend;
+        $this->fileBackend = $fileBackend;
+        $this->cssHelper = $cssHelper;
         
-        $this->_minifyAssets = $minifyAssets;
-        $this->_combineAssets = $combineAssets;
+        $this->minifyAssets = $minifyAssets;
+        $this->combineAssets = $combineAssets;
     }
     
     /**
@@ -157,8 +157,8 @@ class AssetsManager
      */
     public function initializeAssetManager()
     {
-        $this->_loadAssets();
-        $this->_loadAssetsCache();
+        $this->loadAssets();
+        $this->loadAssetsCache();
     }
     
     /**
@@ -166,14 +166,14 @@ class AssetsManager
      * 
      * @access public
      */
-    protected function _loadAssets()
+    protected function loadAssets()
     {
-        $assets = $this->_assetsObjectBackend->loadObject();
+        $assets = $this->assetsObjectBackend->loadObject();
         if (!is_array($assets)) {
             $assets = array();
         }
         
-        $this->_assets = $assets;
+        $this->assets = $assets;
     }
     
     /**
@@ -181,9 +181,9 @@ class AssetsManager
      * 
      * @access public
      */
-    protected function _saveAssets()
+    protected function saveAssets()
     {
-        $this->_assetsObjectBackend->saveObject($this->_assets);
+        $this->assetsObjectBackend->saveObject($this->assets);
     }
     
     /**
@@ -191,14 +191,14 @@ class AssetsManager
      * 
      * @access public
      */
-    protected function _loadAssetsCache()
+    protected function loadAssetsCache()
     {
-        $cachedFiles = $this->_cachedFilesObjectBackend->loadObject();
+        $cachedFiles = $this->cachedFilesObjectBackend->loadObject();
         if (!is_array($cachedFiles)) {
             $cachedFiles = array();
         }
         
-        $this->_cachedFiles = $cachedFiles;
+        $this->cachedFiles = $cachedFiles;
     }
     
     /**
@@ -206,9 +206,9 @@ class AssetsManager
      * 
      * @access public
      */
-    protected function _saveAssetsCache()
+    protected function saveAssetsCache()
     {
-        $this->_cachedFilesObjectBackend->saveObject($this->_cachedFiles);
+        $this->cachedFilesObjectBackend->saveObject($this->cachedFiles);
     }
     
     /**
@@ -220,7 +220,7 @@ class AssetsManager
      * @param string $version
      * @return string
      */
-    protected function _buildFilePath($type, $hash, $version)
+    protected function buildFilePath($type, $hash, $version)
     {
         return $type . '/' . $hash . '/' . $version;
     }
@@ -237,12 +237,12 @@ class AssetsManager
     public function isCached($type, $hash, $version)
     {
         // If the base file isn't cached we do not need to check the file names
-        if (!isset($this->_cachedFiles[$hash])) {
+        if (!isset($this->cachedFiles[$hash])) {
             return false;
         }
         
-        $searchedFile = $this->_buildFilePath($type, $hash, $version);
-        foreach ($this->_cachedFiles as $baseFileHash => $cachedFile) {
+        $searchedFile = $this->buildFilePath($type, $hash, $version);
+        foreach ($this->cachedFiles as $baseFileHash => $cachedFile) {
             if ($cachedFile['file'] === $searchedFile) {
                 return true;
             }
@@ -266,8 +266,8 @@ class AssetsManager
             return '';
         }
         
-        $targetFile = $this->_buildFilePath($type, $hash, $version);
-        return $this->_fileBackend->loadFromFile($targetFile);
+        $targetFile = $this->buildFilePath($type, $hash, $version);
+        return $this->fileBackend->loadFromFile($targetFile);
     }
     
     /**
@@ -284,7 +284,7 @@ class AssetsManager
             return 0;
         }
 
-        return $this->_cachedFiles[$hash]['timestamp'];
+        return $this->cachedFiles[$hash]['timestamp'];
     }
     
     /**
@@ -298,8 +298,8 @@ class AssetsManager
      */
     public function addAsset($type, $assetName, $fileName, $dependencies = array())
     {
-        if (!isset($this->_assets[$type]) || !is_array($this->_assets[$type])) {
-            $this->_assets[$type] = array();
+        if (!isset($this->assets[$type]) || !is_array($this->assets[$type])) {
+            $this->assets[$type] = array();
         }
         
         $asset = new Asset(
@@ -309,8 +309,8 @@ class AssetsManager
             $dependencies
         );
         
-        $this->_assets[$type][$assetName] = $asset;
-        $this->_saveAssets();
+        $this->assets[$type][$assetName] = $asset;
+        $this->saveAssets();
     }
     
     /**
@@ -324,7 +324,7 @@ class AssetsManager
      */
     public function hasAsset($type, $fileName)
     {
-        return (isset($this->_assets[$type][$fileName]));
+        return (isset($this->assets[$type][$fileName]));
     }
     
     /**
@@ -342,7 +342,7 @@ class AssetsManager
         }
         
         // If the file was found remove the index
-        unset($this->_assets[$type][$fileName]);
+        unset($this->assets[$type][$fileName]);
         
         return true;
     }
@@ -357,35 +357,35 @@ class AssetsManager
      */
     public function displayAssetType($type)
     {
-        $files = $this->_getAssetFiles($type);
+        $files = $this->getAssetFiles($type);
 
         // If there are no files for the given type return here.
         if ($files === false) {
             return;
         }
         
-        if ($this->_combineAssets) {
-            $isValid = $this->_validateTypeCache($type, $files);
+        if ($this->combineAssets) {
+            $isValid = $this->validateTypeCache($type, $files);
 
             // If the cache isn't valid, we build the cache
             $result = $isValid;
             if (!$isValid) {
-                $result = $this->_buildTypeCache($type, $files);
+                $result = $this->buildTypeCache($type, $files);
             }
             
             // If the cache is valid, load the file
             if ($result) {
-                $hash = $this->_getTypeHash($type);
-                $cachedFile = $this->_cachedFiles[$hash]['file'];
+                $hash = $this->getTypeHash($type);
+                $cachedFile = $this->cachedFiles[$hash]['file'];
                 
-                echo $this->_generateHtmlCode($type, $cachedFile);
+                echo $this->generateHtmlCode($type, $cachedFile);
             }
         } else {
             foreach ($files as $file) {
                 $cachedFile = $this->generateCachedFile($type, $file->getFileName());
                 
                 if ($cachedFile !== false) {
-                    echo $this->_generateHtmlCode($type, $cachedFile['file']);
+                    echo $this->generateHtmlCode($type, $cachedFile['file']);
                 }
             }
         }
@@ -401,7 +401,7 @@ class AssetsManager
      */
     public function getAssetUrl($type, $assetName)
     {
-        $file = $this->_getAssetFile($type, $assetName);
+        $file = $this->getAssetFile($type, $assetName);
         
         if ($file === false) {
             return;
@@ -422,18 +422,18 @@ class AssetsManager
      */
     public function generateCachedFile($type, $fileName)
     {
-        $isValid = $this->_validateCache($fileName);
+        $isValid = $this->validateCache($fileName);
                 
         // If the cache isn't valid, we build the cache
         $result = $isValid;
         if (!$isValid) {
-            $result = $this->_buildFileCache($type, $fileName);
+            $result = $this->buildFileCache($type, $fileName);
         }
         
         // If the cache is valid, load the file
         if ($result) {
-            $hash = $this->_getHash($fileName);
-            return $this->_cachedFiles[$hash];
+            $hash = $this->getHash($fileName);
+            return $this->cachedFiles[$hash];
         }
         
         return false;
@@ -450,7 +450,7 @@ class AssetsManager
      */
     public function getUrlToTheAssetLoader($file)
     {
-        return $this->_framework->getRequest()->getFullRoute('/assets/' . $file);
+        return $this->framework->getRequest()->getFullRoute('/assets/' . $file);
     }
     
     /**
@@ -460,16 +460,16 @@ class AssetsManager
      */
     public function clearAssetCache()
     {
-        foreach ($this->_cachedFiles as $hash => $fileData) {
-            if (!$this->_fileBackend->isWritable($fileData['file'])) {
+        foreach ($this->cachedFiles as $hash => $fileData) {
+            if (!$this->fileBackend->isWritable($fileData['file'])) {
                 continue;
             }
         
-            $this->_fileBackend->deleteFile($fileData['file']);
+            $this->fileBackend->deleteFile($fileData['file']);
         }
         
-        $this->_cachedFiles = array();
-        $this->_saveAssetsCache();
+        $this->cachedFiles = array();
+        $this->saveAssetsCache();
     }
 
     /**
@@ -480,7 +480,7 @@ class AssetsManager
      * @param array $files
      * @return string
      */
-    protected function _buildTypeCache($type, $files)
+    protected function buildTypeCache($type, $files)
     {
         $typeContent = '';
         $fileHashs = array();
@@ -493,37 +493,37 @@ class AssetsManager
             }
 
             // Load the content
-            $content = $this->_fileBackend->loadFromFile($fileName);
+            $content = $this->fileBackend->loadFromFile($fileName);
             
             // Optimze the content
-            $content = $this->_optimizeContent($type, $fileName, $content);
+            $content = $this->optimizeContent($type, $fileName, $content);
             
             // Add the content and save the file hash
             $typeContent .= $content;
-            $fileHashs[$this->_getHash($fileName)] = md5_file($fileName);
+            $fileHashs[$this->getHash($fileName)] = md5_file($fileName);
         }
 
         // Minify the content, if possible and activated
-        if (($type === self::CSS || $type === self::JS) && $this->_minifyAssets) {
-            $typeContent = $this->_minifyContent($type, $typeContent);
+        if (($type === self::CSS || $type === self::JS) && $this->minifyAssets) {
+            $typeContent = $this->minifyContent($type, $typeContent);
         }
         
         // Generate the hash and the new file name
-        $hash = $this->_getTypeHash($type);
-        $version = $type . '-' . uniqid() . '.' . $this->_getExtensionForType($type);
-        $targetFile = $this->_buildFilePath($type, $hash, $version);
+        $hash = $this->getTypeHash($type);
+        $version = $type . '-' . uniqid() . '.' . $this->getExtensionForType($type);
+        $targetFile = $this->buildFilePath($type, $hash, $version);
 
         // Save the cached file
-        $this->_removeOldTypeCacheFile($type);
-        $this->_fileBackend->saveToFile($typeContent, $targetFile);
+        $this->removeOldTypeCacheFile($type);
+        $this->fileBackend->saveToFile($typeContent, $targetFile);
 
         // Save the cached files in the data array
-        $this->_cachedFiles[$hash] = array(
+        $this->cachedFiles[$hash] = array(
             'file' => $targetFile, 
             'checksums' => $fileHashs,
             'timestamp' => time()
         );
-        $this->_saveAssetsCache();
+        $this->saveAssetsCache();
         
         return $targetFile;
     }
@@ -536,40 +536,40 @@ class AssetsManager
      * @param string $fileName
      * @return false|string
      */
-    protected function _buildFileCache($type, $fileName)
+    protected function buildFileCache($type, $fileName)
     {
         if (!file_exists($fileName)) {
             return false;
         }
         
         // Load the content
-        $content = $this->_fileBackend->loadFromFile($fileName);
+        $content = $this->fileBackend->loadFromFile($fileName);
         
         // Optimze the content
-        $content = $this->_optimizeContent($type, $fileName, $content);
+        $content = $this->optimizeContent($type, $fileName, $content);
         
         // Minify the content, if possible and activated
-        if (($type === self::CSS || $type === self::JS) && $this->_minifyAssets) {
-            $content = $this->_minifyContent($type, $content);
+        if (($type === self::CSS || $type === self::JS) && $this->minifyAssets) {
+            $content = $this->minifyContent($type, $content);
         }
         
         // Generate the new file name
         $fileInfo = pathinfo($fileName);
-        $hash = $this->_getHash($fileName);
+        $hash = $this->getHash($fileName);
         $version = $fileInfo['filename'] . '-' . uniqid() . '.' . $fileInfo['extension'];
-        $targetFile = $this->_buildFilePath($type, $hash, $version);
+        $targetFile = $this->buildFilePath($type, $hash, $version);
 
         // Save the cached file
-        $this->_removeOldCacheFile($fileName);
-        $this->_fileBackend->saveToFile($content, $targetFile);
+        $this->removeOldCacheFile($fileName);
+        $this->fileBackend->saveToFile($content, $targetFile);
 
         // Save the cached files in the data array
-        $this->_cachedFiles[$hash] = array(
+        $this->cachedFiles[$hash] = array(
             'file' => $targetFile, 
             'checksum' => md5_file($fileName),
             'timestamp' => time()
         );
-        $this->_saveAssetsCache();
+        $this->saveAssetsCache();
         
         return $targetFile;
     }
@@ -585,10 +585,10 @@ class AssetsManager
      * @param string $content
      * @return string
      */
-    protected function _optimizeContent($type, $file, $content)
+    protected function optimizeContent($type, $file, $content)
     {
         if ($type === self::CSS) {
-            $content = $this->_cssHelper->optimizeCssContent($this, $content, $file);
+            $content = $this->cssHelper->optimizeCssContent($this, $content, $file);
         }
         
         return $content;
@@ -603,7 +603,7 @@ class AssetsManager
      * @param string $content
      * @return string
      */
-    protected function _minifyContent($type, $content)
+    protected function minifyContent($type, $content)
     {
         if ($type === self::CSS) {
             $minifier = new \MatthiasMullie\Minify\CSS($content);
@@ -620,16 +620,16 @@ class AssetsManager
      * @access protected
      * @param string $type
      */
-    protected function _removeOldTypeCacheFile($type)
+    protected function removeOldTypeCacheFile($type)
     {
-        $hash = $this->_getTypeHash($type);
+        $hash = $this->getTypeHash($type);
 
-        if (!$this->_hasCachedFile($hash)) {
+        if (!$this->hasCachedFile($hash)) {
             return false;
         }
 
-        $fileData = $this->_cachedFiles[$hash];
-        $this->_fileBackend->deleteFile($fileData['file']);
+        $fileData = $this->cachedFiles[$hash];
+        $this->fileBackend->deleteFile($fileData['file']);
     }
     
     /**
@@ -640,9 +640,9 @@ class AssetsManager
      * @param string $hash
      * @return boolean
      */
-    protected function _hasCachedFile($hash)
+    protected function hasCachedFile($hash)
     {
-        return (isset($this->_cachedFiles[$hash]));
+        return (isset($this->cachedFiles[$hash]));
     }
     
     /**
@@ -651,15 +651,15 @@ class AssetsManager
      * @access protected
      * @param string $file
      */
-    protected function _removeOldCacheFile($file)
+    protected function removeOldCacheFile($file)
     {
-        $hash = $this->_getHash($file);
-        if (!$this->_hasCachedFile($hash)) {
+        $hash = $this->getHash($file);
+        if (!$this->hasCachedFile($hash)) {
             return false;
         }
 
-        $fileData = $this->_cachedFiles[$hash];
-        $this->_fileBackend->deleteFile($fileData['file']);
+        $fileData = $this->cachedFiles[$hash];
+        $this->fileBackend->deleteFile($fileData['file']);
     }
     
     /**
@@ -670,15 +670,15 @@ class AssetsManager
      * @param string $fileName
      * @return boolean
      */
-    protected function _validateCache($fileName)
+    protected function validateCache($fileName)
     {
-        $hash = $this->_getHash($fileName);
-        if (!file_exists($fileName) || !isset($this->_cachedFiles[$hash])) {
+        $hash = $this->getHash($fileName);
+        if (!file_exists($fileName) || !isset($this->cachedFiles[$hash])) {
             return false;
         }
         
         $fileChecksum = md5_file($fileName);
-        $cachedChecksum = $this->_cachedFiles[$hash]['checksum'];
+        $cachedChecksum = $this->cachedFiles[$hash]['checksum'];
         
         if ($fileChecksum != $cachedChecksum) {
             return false;
@@ -696,15 +696,15 @@ class AssetsManager
      * @param array $files
      * @return boolean
      */
-    protected function _validateTypeCache($type, $files)
+    protected function validateTypeCache($type, $files)
     {
         // If the files isn't cached we have to cache the file
-        $hash = $this->_getTypeHash($type);
-        if (!isset($this->_cachedFiles[$hash])) {
+        $hash = $this->getTypeHash($type);
+        if (!isset($this->cachedFiles[$hash])) {
             return false;
         } 
         
-        $data = $this->_cachedFiles[$hash];
+        $data = $this->cachedFiles[$hash];
         $checksums = $data['checksums'];
 
         // Are all files existing?
@@ -713,7 +713,7 @@ class AssetsManager
                 return false;
             }
             
-            $fileHash = $this->_getHash($file->getFileName());
+            $fileHash = $this->getHash($file->getFileName());
             $contentHash = md5_file($file->getFileName());
             if (!isset($checksums[$fileHash]) || $contentHash !== $checksums[$fileHash]) {
                 return false;
@@ -730,12 +730,12 @@ class AssetsManager
      * @param array $assets
      * @return array
      */
-    protected function _sortFilesByDependencies($assets)
+    protected function sortFilesByDependencies($assets)
     {
         $sortedAssets = array();
         foreach ($assets as $asset) {
             if ($asset->hasDependencies()) {
-                $sortedAssets = $this->_resolveDependencies($sortedAssets, $assets, $asset);
+                $sortedAssets = $this->resolveDependencies($sortedAssets, $assets, $asset);
             } else {
                 $sortedAssets[$asset->getAssetName()] = $asset;
             }
@@ -753,12 +753,12 @@ class AssetsManager
      * @param \Zepi\Web\General\Entity\Asset $asset
      * @return array
      */
-    protected function _resolveDependencies($sortedAssets, $assets, $asset)
+    protected function resolveDependencies($sortedAssets, $assets, $asset)
     {
         if ($asset->hasDependencies()) {
             foreach ($asset->getDependencies() as $dependency) {
                 if (!isset($sortedAssets[$dependency]) && isset($assets[$dependency])) {
-                    $sortedAssets = $this->_resolveDependencies($sortedAssets, $assets, $assets[$dependency]);
+                    $sortedAssets = $this->resolveDependencies($sortedAssets, $assets, $assets[$dependency]);
                 }
             }
         }
@@ -776,14 +776,14 @@ class AssetsManager
      * @param string $type
      * @return boolean|array
      */
-    protected function _getAssetFiles($type)
+    protected function getAssetFiles($type)
     {
-        if (!isset($this->_assets[$type])) {
+        if (!isset($this->assets[$type])) {
             return false;
         }
         
         // Sort the files by dependnecies
-        $files = $this->_sortFilesByDependencies($this->_assets[$type]);
+        $files = $this->sortFilesByDependencies($this->assets[$type]);
 
         return $files;
     }
@@ -797,14 +797,14 @@ class AssetsManager
      * @param string $assetName
      * @return false|\Zepi\Web\General\Entity\Asset
      */
-    protected function _getAssetFile($type, $assetName)
+    protected function getAssetFile($type, $assetName)
     {
         if (!$this->hasAsset($type, $assetName)) {
             return false;
         }
     
         // Sort the files by dependnecies
-        $file = $this->_assets[$type][$assetName];
+        $file = $this->assets[$type][$assetName];
     
         return $file;
     }
@@ -816,7 +816,7 @@ class AssetsManager
      * @param string $type
      * @return string
      */
-    protected function _getExtensionForType($type)
+    protected function getExtensionForType($type)
     {
         if ($type === self::CSS) {
             return 'css';
@@ -833,7 +833,7 @@ class AssetsManager
      * @param string $file
      * @return string
      */
-    protected function _generateHtmlCode($type, $file)
+    protected function generateHtmlCode($type, $file)
     {
         // Generate the url
         $url = $this->getUrlToTheAssetLoader($file);
@@ -853,7 +853,7 @@ class AssetsManager
      * @param string $type
      * @return string
      */
-    protected function _getTypeHash($type)
+    protected function getTypeHash($type)
     {
         return md5($type);
     }
@@ -865,7 +865,7 @@ class AssetsManager
      * @param string $fileName
      * @return string
      */
-    protected function _getHash($fileName)
+    protected function getHash($fileName)
     {
         return md5($fileName);
     }

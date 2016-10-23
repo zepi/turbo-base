@@ -48,13 +48,13 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Core\Language\Manager\ConfigurationManager
      */
-    protected $_languageFileManager;
+    protected $languageFileManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -67,24 +67,24 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Core\\Language\\Manager\\LanguageFileManager':
-                if ($this->_languageFileManager === null) {
-                    $this->_languageFileManager = new $className($this->_framework);
+                if ($this->languageFileManager === null) {
+                    $this->languageFileManager = new $className($this->framework);
                 }
                 
-                return $this->_languageFileManager;
+                return $this->languageFileManager;
             break;
             
             case '\\Zepi\\Core\\Language\\Manager\\TranslationManager':
-                if ($this->_translationManager === null) {
+                if ($this->translationManager === null) {
                     $languageFileManager = $this->getInstance('\\Zepi\\Core\\Language\\Manager\\LanguageFileManager');
                     
-                    $this->_translationManager = new $className(
+                    $this->translationManager = new $className(
                         $languageFileManager,
-                        $this->_framework->getRequest()
+                        $this->framework->getRequest()
                     );
                 }
                 
-                return $this->_translationManager;
+                return $this->translationManager;
             break;
             
             default: 

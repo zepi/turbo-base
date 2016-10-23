@@ -55,13 +55,13 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      * @access protected
      * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
      */
-    protected $_entityManager;
+    protected $entityManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface
      */
-    protected $_permissionsDataSource;
+    protected $permissionsDataSource;
     
     /**
      * Constructs the object
@@ -72,8 +72,8 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      */
     public function __construct(EntityManager $entityManager, PermissionsDataSourceInterface $permissionsDataSource)
     {
-        $this->_entityManager = $entityManager;
-        $this->_permissionsDataSource = $permissionsDataSource;
+        $this->entityManager = $entityManager;
+        $this->permissionsDataSource = $permissionsDataSource;
     }
     
     /**
@@ -104,8 +104,8 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
         try {
             $dataRequest->setSelectedFields(array('*'));
             
-            $queryBuilder = $this->_entityManager->getQueryBuilder();
-            $this->_entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, $class, 'a');
+            $queryBuilder = $this->entityManager->getQueryBuilder();
+            $this->entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, $class, 'a');
             
             $accessEntities = $queryBuilder->getQuery()->getResult();
             if ($accessEntities == null) {
@@ -141,8 +141,8 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
             $request->setPage(0);
             $request->setNumberOfEntries(0);
             
-            $queryBuilder = $this->_entityManager->getQueryBuilder();
-            $this->_entityManager->buildDataRequestQuery($request, $queryBuilder, $class, 'a');
+            $queryBuilder = $this->entityManager->getQueryBuilder();
+            $this->entityManager->buildDataRequestQuery($request, $queryBuilder, $class, 'a');
             
             // Count
             $queryBuilder->select($queryBuilder->expr()->count('a.id'));
@@ -171,7 +171,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function hasAccessEntityForUuid($class, $uuid)
     {
         try {
-             $em = $this->_entityManager->getDoctrineEntityManager();
+             $em = $this->entityManager->getDoctrineEntityManager();
              $data = $em->getRepository($class)->findOneBy(array(
                  'uuid' => $uuid,
              ));
@@ -199,7 +199,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function hasAccessEntityForName($class, $name)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $data = $em->getRepository($class)->findOneBy(array(
                 'name' => $name,
             ));
@@ -227,7 +227,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function getAccessEntityForUuid($class, $uuid)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $accessEntity = $em->getRepository($class)->findOneBy(array(
                 'uuid' => $uuid,
             ));
@@ -257,7 +257,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function getAccessEntityForName($class, $name)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $accessEntity = $em->getRepository($class)->findOneBy(array(
                 'name' => $name,
             ));
@@ -287,7 +287,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function addAccessEntity(AccessEntity $accessEntity)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $em->persist($accessEntity);
             $em->flush();
             
@@ -310,7 +310,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function updateAccessEntity(AccessEntity $accessEntity)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $em->flush();
             
             return true;
@@ -329,7 +329,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     public function deleteAccessEntity(AccessEntity $accessEntity)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $em->remove($accessEntity);
             $em->flush();
             
@@ -346,7 +346,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      */
     protected function loadPermissions(AccessEntity $accessEntity) 
     {
-        $permissions = $this->_permissionsDataSource->getPermissionsForUuid($accessEntity->getUuid());
+        $permissions = $this->permissionsDataSource->getPermissionsForUuid($accessEntity->getUuid());
         $accessEntity->setPermissions($permissions);
     }
 }

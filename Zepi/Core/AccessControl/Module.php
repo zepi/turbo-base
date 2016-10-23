@@ -52,13 +52,13 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
-    protected $_accessLevelManager;
+    protected $accessLevelManager;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -71,38 +71,38 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager':
-                if ($this->_accessControlManager === null) {
-                    $dataSourceManager = $this->_framework->getDataSourceManager();
+                if ($this->accessControlManager === null) {
+                    $dataSourceManager = $this->framework->getDataSourceManager();
                     
                     $accessEntitiesDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface');
                     $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
                     
-                    $this->_accessControlManager = new $className($accessEntitiesDataSource, $permissionDataSource);
+                    $this->accessControlManager = new $className($accessEntitiesDataSource, $permissionDataSource);
                 }
                 
-                return $this->_accessControlManager;
+                return $this->accessControlManager;
             break;
             
             case '\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager':
-                if ($this->_accessLevelManager === null) {
+                if ($this->accessLevelManager === null) {
                     // Get the templates backend
-                    $path = $this->_framework->getRootDirectory() . '/data/access-levels.data';
+                    $path = $this->framework->getRootDirectory() . '/data/access-levels.data';
                     $accessLevelsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
             
-                    $this->_accessLevelManager = new $className(
-                            $this->_framework,
+                    $this->accessLevelManager = new $className(
+                            $this->framework,
                             $accessLevelsObjectBackend
                     );
-                    $this->_accessLevelManager->initializeAccessLevelManager();
+                    $this->accessLevelManager->initializeAccessLevelManager();
                 }
             
-                return $this->_accessLevelManager;
+                return $this->accessLevelManager;
                 break;
             
             case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine':
-                $dataSourceManager = $this->_framework->getDataSourceManager();
+                $dataSourceManager = $this->framework->getDataSourceManager();
                 
-                $entityManager = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
+                $entityManager = $this->framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
                 $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
                 
                 $dataSource = new $className($entityManager, $permissionDataSource);
@@ -110,9 +110,9 @@ class Module extends ModuleAbstract
             break;
             
             case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine':
-                $entityManager = $this->_framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
+                $entityManager = $this->framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
                 
-                $dataSource = new $className($entityManager, $this->_framework->getRuntimeManager());
+                $dataSource = new $className($entityManager, $this->framework->getRuntimeManager());
                 return $dataSource;
             break;
             
@@ -135,11 +135,11 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
         
         // Data Sources
-        $dataSourceManager = $this->_framework->getDataSourceManager();
+        $dataSourceManager = $this->framework->getDataSourceManager();
         $dataSourceManager->addDataSource(
             '\\Zepi\\DataSourceDriver\\Doctrine',
             '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'
@@ -151,7 +151,7 @@ class Module extends ModuleAbstract
         );
         
         // Access Levels
-        $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
+        $accessLevelsManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
             '\\Global\\*',
             'Global Super User',
@@ -174,16 +174,16 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->removeFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
         
         // Access Levels
-        $accessLevelsManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
+        $accessLevelsManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
         $accessLevelsManager->removeAccessLevel('\\Global\\*');
         $accessLevelsManager->removeAccessLevel('\\Global\\Disabled');
         
         // Data Sources
-        $dataSourceManager = $this->_framework->getDataSourceManager();
+        $dataSourceManager = $this->framework->getDataSourceManager();
         $dataSourceManager->removeDataSource(
             '\\Zepi\\DataSourceDriver\\Doctrine',
             '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'

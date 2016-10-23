@@ -47,25 +47,25 @@ class Asset
      * @access protected
      * @var string
      */
-    protected $_type;
+    protected $type;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_assetName;
+    protected $assetName;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_fileName;
+    protected $fileName;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_dependencies = array();
+    protected $dependencies = array();
     
     /**
      * Constructs the object
@@ -78,10 +78,10 @@ class Asset
      */
     public function __construct($type, $assetName, $fileName, $dependencies = array())
     {
-        $this->_type = $type;
-        $this->_assetName = $assetName;
-        $this->_fileName = $fileName;
-        $this->_dependencies = $dependencies;
+        $this->type = $type;
+        $this->assetName = $assetName;
+        $this->fileName = $fileName;
+        $this->dependencies = $dependencies;
     }
     
     /**
@@ -92,7 +92,7 @@ class Asset
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
     
     /**
@@ -103,7 +103,7 @@ class Asset
      */
     public function getAssetName()
     {
-        return $this->_assetName;
+        return $this->assetName;
     }
     
     /**
@@ -114,7 +114,7 @@ class Asset
      */
     public function getFileName()
     {
-        return $this->_fileName;
+        return $this->fileName;
     }
     
     /**
@@ -125,7 +125,7 @@ class Asset
      */
     public function getDependencies()
     {
-        return $this->_dependencies;
+        return $this->dependencies;
     }
     
     /**
@@ -136,6 +136,6 @@ class Asset
      */
     public function hasDependencies()
     {
-        return (count($this->_dependencies) > 0);
+        return (count($this->dependencies) > 0);
     }
 }

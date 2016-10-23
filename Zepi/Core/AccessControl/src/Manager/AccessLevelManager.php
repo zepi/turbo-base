@@ -53,19 +53,19 @@ class AccessLevelManager
      * @access protected
      * @var array
      */
-    protected $_accessLevels = array();
+    protected $accessLevels = array();
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
      */
-    protected $_accessLevelsObjectBackend;
+    protected $accessLevelsObjectBackend;
     
     /**
      * Constructs the object
@@ -78,8 +78,8 @@ class AccessLevelManager
         Framework $framework,
         ObjectBackendAbstract $accessLevelObjectBackend
     ) {
-        $this->_framework = $framework;
-        $this->_accessLevelsObjectBackend = $accessLevelObjectBackend;
+        $this->framework = $framework;
+        $this->accessLevelsObjectBackend = $accessLevelObjectBackend;
     }
     
     /**
@@ -89,7 +89,7 @@ class AccessLevelManager
      */
     public function initializeAccessLevelManager()
     {
-        $this->_loadAccessLevels();
+        $this->loadAccessLevels();
     }
     
     /**
@@ -97,14 +97,14 @@ class AccessLevelManager
      * 
      * @access public
      */
-    protected function _loadAccessLevels()
+    protected function loadAccessLevels()
     {
-        $accessLevels = $this->_accessLevelsObjectBackend->loadObject();
+        $accessLevels = $this->accessLevelsObjectBackend->loadObject();
         if (!is_array($accessLevels)) {
             $accessLevels = array();
         }
         
-        $this->_accessLevels = $accessLevels;
+        $this->accessLevels = $accessLevels;
     }
     
     /**
@@ -112,9 +112,9 @@ class AccessLevelManager
      * 
      * @access public
      */
-    protected function _saveAccessLevels()
+    protected function saveAccessLevels()
     {
-        $this->_accessLevelsObjectBackend->saveObject($this->_accessLevels);
+        $this->accessLevelsObjectBackend->saveObject($this->accessLevels);
     }
     
     /**
@@ -127,10 +127,10 @@ class AccessLevelManager
     public function addAccessLevel(AccessLevel $accessLevel)
     {
         // Add the access level
-        $this->_accessLevels[$accessLevel->getKey()] = $accessLevel;
+        $this->accessLevels[$accessLevel->getKey()] = $accessLevel;
         
         // Save the access levels
-        $this->_saveAccessLevels();
+        $this->saveAccessLevels();
     }
     
     /**
@@ -141,18 +141,18 @@ class AccessLevelManager
      */
     public function removeAccessLevel($key)
     {
-        if (!isset($this->_accessLevels[$key])) {
+        if (!isset($this->accessLevels[$key])) {
             return false;
         }
         
         // Remove the access level
-        unset($this->_accessLevels[$key]);
+        unset($this->accessLevels[$key]);
         
         // Save the access levels
-        $this->_saveAccessLevels();
+        $this->saveAccessLevels();
         
         // Revoke all permissions for the given access level key
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', $key);
     }
     
@@ -165,9 +165,9 @@ class AccessLevelManager
     public function getAccessLevels()
     {
         // Give the modules the opportunity to add additional access levels
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->executeEvent('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels');
         
-        return $this->_accessLevels;
+        return $this->accessLevels;
     }
 }

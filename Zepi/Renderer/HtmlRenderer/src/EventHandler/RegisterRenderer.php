@@ -55,13 +55,13 @@ class RegisterRenderer implements EventHandlerInterface
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * @access protected
      * @var \Zepi\Renderer\HtmlRenderer\Renderer\Renderer
      */
-    protected $_htmlRenderer;
+    protected $htmlRenderer;
     
     /**
      * Constructs the object
@@ -72,8 +72,8 @@ class RegisterRenderer implements EventHandlerInterface
      */
     public function __construct(TemplatesManager $templatesManager, Renderer $htmlRenderer)
     {
-        $this->_templatesManager = $templatesManager;
-        $this->_htmlRenderer = $htmlRenderer;
+        $this->templatesManager = $templatesManager;
+        $this->htmlRenderer = $htmlRenderer;
     }
     
     /**
@@ -87,6 +87,6 @@ class RegisterRenderer implements EventHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
-        $this->_templatesManager->addRenderer($this->_htmlRenderer);
+        $this->templatesManager->addRenderer($this->htmlRenderer);
     }
 }

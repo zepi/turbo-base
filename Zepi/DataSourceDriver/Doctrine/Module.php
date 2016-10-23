@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $_entityManager;
+    protected $entityManager;
     
     /**
      * Initializes the module
@@ -57,7 +57,7 @@ class Module extends ModuleAbstract
      */
     public function initialize()
     {
-        $this->_framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Doctrine');
+        $this->framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Doctrine');
     }
     
     
@@ -72,8 +72,8 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager':
-                if ($this->_entityManager === null) {
-                    $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+                if ($this->entityManager === null) {
+                    $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                     
                     $params = array(
                         'driver' => $configurationManager->getSetting('doctrine', 'databaseDriver'),
@@ -84,7 +84,7 @@ class Module extends ModuleAbstract
                     );
                     
                     $paths = array();
-                    foreach ($this->_framework->getModuleManager()->getModules() as $module) {
+                    foreach ($this->framework->getModuleManager()->getModules() as $module) {
                         $paths[] = $module->getDirectory() . '/src/';
                     }
                     
@@ -93,10 +93,10 @@ class Module extends ModuleAbstract
                     $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
                     $doctrineEntityManager = \Doctrine\ORM\EntityManager::create($params, $config);
                     
-                    $this->_entityManager = new \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager($doctrineEntityManager);
+                    $this->entityManager = new \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager($doctrineEntityManager);
                 }
                 
-                return $this->_entityManager;
+                return $this->entityManager;
             break;
             
             default: 
@@ -114,7 +114,7 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->addSettingIfNotSet('doctrine', 'databaseDriver', 'pdo_mysql');
         $configurationManager->addSettingIfNotSet('doctrine', 'databaseHost', 'localhost');
         $configurationManager->addSettingIfNotSet('doctrine', 'databaseName', '');
@@ -130,7 +130,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->removeSettingGroup('doctrine');
         $configurationManager->saveConfigurationFile();
     }

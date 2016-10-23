@@ -47,25 +47,25 @@ class Process
      * @access protected
      * @var \Zepi\Core\Utils\Task
      */
-    protected $_task;
+    protected $task;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_pid;
+    protected $pid;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_startTime;
+    protected $startTime;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_restartTime;
+    protected $restartTime;
     
     /**
      * Constructs the entity
@@ -76,11 +76,11 @@ class Process
      */
     public function __construct(Task $task, $pid)
     {
-        $this->_task = $task;
-        $this->_pid = $pid;
+        $this->task = $task;
+        $this->pid = $pid;
         
-        $this->_startTime = time();
-        $this->_restartTime = time() + $task->getResetTime() + rand(1, 5);
+        $this->startTime = time();
+        $this->restartTime = time() + $task->getResetTime() + rand(1, 5);
     }
     
     /**
@@ -91,7 +91,7 @@ class Process
      */
     public function getTask()
     {
-        return $this->_task;
+        return $this->task;
     }
     
     /**
@@ -102,7 +102,7 @@ class Process
      */
     public function getPid()
     {
-        return $this->_pid;
+        return $this->pid;
     }
     
     /**
@@ -113,7 +113,7 @@ class Process
      */
     public function getStartTime()
     {
-        return $this->_startTime;
+        return $this->startTime;
     }
     
     /**
@@ -124,6 +124,6 @@ class Process
      */
     public function getRestartTime()
     {
-        return $this->_restartTime;
+        return $this->restartTime;
     }
 }

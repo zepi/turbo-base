@@ -57,19 +57,19 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
-    protected $_accessLevelManager;
+    protected $accessLevelManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\GroupManager
      */
-    protected $_groupManager;
+    protected $groupManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * Constructs the object
@@ -81,9 +81,9 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
      */
     public function __construct(AccessLevelManager $accessLevelManager, GroupManager $groupManager, TranslationManager $translationManager)
     {
-        $this->_accessLevelManager = $accessLevelManager;
-        $this->_groupManager = $groupManager;
-        $this->_translationManager = $translationManager;
+        $this->accessLevelManager = $accessLevelManager;
+        $this->groupManager = $groupManager;
+        $this->translationManager = $translationManager;
     }
     
     /**
@@ -98,11 +98,11 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
     {
         $dataRequest = new DataRequest(1, 0, 'name', 'ASC');
         
-        foreach ($this->_groupManager->getGroups($dataRequest) as $group) {
-            $this->_accessLevelManager->addAccessLevel(new GroupAccessLevel(
+        foreach ($this->groupManager->getGroups($dataRequest) as $group) {
+            $this->accessLevelManager->addAccessLevel(new GroupAccessLevel(
                 '\\Group\\' . $group->getUuid(),
-                $this->_translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),
-                $this->_translationManager->translate('Inherits all permissions from this group.', '\\Zepi\\Web\\AccessControl'),
+                $this->translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),
+                $this->translationManager->translate('Inherits all permissions from this group.', '\\Zepi\\Web\\AccessControl'),
                 '\\Group'
             ));
         }

@@ -67,32 +67,32 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         // Add the assets
-        $assetsManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap.css');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap-theme', $this->_directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap-theme.css', array('bootstrap'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'materialdesignicons', $this->_directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-base', $this->_directory . '/assets/css/base.css', array('bootstrap-theme'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-theme', $this->_directory . '/assets/css/theme.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-elements', $this->_directory . '/assets/css/elements.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-form', $this->_directory . '/assets/css/form.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-print', $this->_directory . '/assets/css/print.css', array('zt-base'));
+        $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
+        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap.css');
+        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap-theme', $this->directory . '/assets/vendor/bootstrap-3.3.6/css/bootstrap-theme.css', array('bootstrap'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'materialdesignicons', $this->directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
+        $assetsManager->addAsset(AssetsManager::CSS, 'zt-base', $this->directory . '/assets/css/base.css', array('bootstrap-theme'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'zt-theme', $this->directory . '/assets/css/theme.css', array('zt-base'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'zt-elements', $this->directory . '/assets/css/elements.css', array('zt-base'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'zt-form', $this->directory . '/assets/css/form.css', array('zt-base'));
+        $assetsManager->addAsset(AssetsManager::CSS, 'zt-print', $this->directory . '/assets/css/print.css', array('zt-base'));
         
-        $assetsManager->addAsset(AssetsManager::JS, 'modernizr', $this->_directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
-        $assetsManager->addAsset(AssetsManager::JS, 'jquery', $this->_directory . '/assets/js/vendor/jquery-1.10.1.min.js');
-        $assetsManager->addAsset(AssetsManager::JS, 'bootstrap', $this->_directory . '/assets/vendor/bootstrap-3.3.6/js/bootstrap.min.js', array('jquery'));
-        $assetsManager->addAsset(AssetsManager::JS, 'zt-main', $this->_directory . '/assets/js/main.js', array('jquery'));
+        $assetsManager->addAsset(AssetsManager::JS, 'modernizr', $this->directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
+        $assetsManager->addAsset(AssetsManager::JS, 'jquery', $this->directory . '/assets/js/vendor/jquery-1.10.1.min.js');
+        $assetsManager->addAsset(AssetsManager::JS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.6/js/bootstrap.min.js', array('jquery'));
+        $assetsManager->addAsset(AssetsManager::JS, 'zt-main', $this->directory . '/assets/js/main.js', array('jquery'));
         
-        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo', $this->_directory . '/assets/images/logo.svg');
-        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo-mail', $this->_directory . '/assets/images/logo-mail.jpg');
+        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo', $this->directory . '/assets/images/logo.svg');
+        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo-mail', $this->directory . '/assets/images/logo-mail.jpg');
         
         // Add the templates
-        $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->_directory . '/templates/mail/Header.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->_directory . '/templates/mail/Footer.phtml');
+        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->directory . '/templates/overall/Header.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->directory . '/templates/overall/Footer.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->directory . '/templates/snippets/NavItemRoot.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->directory . '/templates/snippets/NavItemSubmenu.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->directory . '/templates/mail/Header.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->directory . '/templates/mail/Footer.phtml');
     }
     
     /**
@@ -103,7 +103,7 @@ class Module extends ModuleAbstract
     public function deactivate()
     {
         // Remove the assets
-        $assetsManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
+        $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         $assetsManager->removeAsset(AssetsManager::CSS, 'bootstrap');
         $assetsManager->removeAsset(AssetsManager::CSS, 'bootstrap-theme');
         $assetsManager->removeAsset(AssetsManager::CSS, 'materialdesignicons');
@@ -122,12 +122,12 @@ class Module extends ModuleAbstract
         $assetsManager->removeAsset(AssetsManager::IMAGE, 'logo-mail');
         
         // Remove the templates
-        $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->_directory . '/templates/overall/Header.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->_directory . '/templates/overall/Footer.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->_directory . '/templates/snippets/NavItemRoot.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->_directory . '/templates/snippets/NavItemSubmenu.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->_directory . '/templates/mail/Header.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->_directory . '/templates/mail/Footer.phtml');
+        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->directory . '/templates/overall/Header.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->directory . '/templates/overall/Footer.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->directory . '/templates/snippets/NavItemRoot.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->directory . '/templates/snippets/NavItemSubmenu.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->directory . '/templates/mail/Header.phtml');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->directory . '/templates/mail/Footer.phtml');
     }
 }

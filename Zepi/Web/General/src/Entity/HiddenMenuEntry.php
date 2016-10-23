@@ -55,8 +55,8 @@ class HiddenMenuEntry extends MenuEntry
      */
     public function __construct($name, $target = '#', $iconClass = '')
     {
-        $this->_name = $name;
-        $this->_target = $target;
-        $this->_iconClass = $iconClass;
+        $this->name = $name;
+        $this->target = $target;
+        $this->iconClass = $iconClass;
     }
 }

@@ -47,7 +47,7 @@ class Page extends Entry
      * @access protected
      * @var string
      */
-    protected $_url;
+    protected $url;
     
     /**
      * Constructs the object
@@ -58,7 +58,7 @@ class Page extends Entry
     {
         parent::__construct($label);
         
-        $this->_url = $url;
+        $this->url = $url;
     }
     
     /**
@@ -69,6 +69,6 @@ class Page extends Entry
      */
     public function getUrl()
     {
-        return $this->_url;
+        return $this->url;
     }
 }

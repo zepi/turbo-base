@@ -47,25 +47,25 @@ class Response
      * @access protected
      * @var integer
      */
-    protected $_code;
+    protected $code;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_result = array();
+    protected $result = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_data;
+    protected $data;
     
     /**
      * @access protected
      * @var \Zepi\Api\Rest\Entity\Request
      */
-    protected $_request;
+    protected $request;
     
     /**
      * Constructs the object
@@ -78,10 +78,10 @@ class Response
      */
     public function __construct($code, $result, \stdClass $data, Request $request)
     {
-        $this->_code = $code;
-        $this->_result = $result;
-        $this->_data = $data;
-        $this->_request = $request;
+        $this->code = $code;
+        $this->result = $result;
+        $this->data = $data;
+        $this->request = $request;
     }
     
     /**
@@ -92,7 +92,7 @@ class Response
      */
     public function getCode()
     {
-        return $this->_code;
+        return $this->code;
     }
     
     /**
@@ -103,7 +103,7 @@ class Response
      */
     public function isOk()
     {
-        return ($this->_code === 200);
+        return ($this->code === 200);
     }
     
     /**
@@ -114,7 +114,7 @@ class Response
      */
     public function getResult()
     {
-        return $this->_result;
+        return $this->result;
     }
     
     /**
@@ -125,7 +125,7 @@ class Response
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
     
     /**
@@ -136,6 +136,6 @@ class Response
      */
     public function getRequest()
     {
-        return $this->_request;
+        return $this->request;
     }
 }

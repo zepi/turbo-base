@@ -51,7 +51,7 @@ class EntityManager
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $_doctrineEntityManager;
+    protected $doctrineEntityManager;
     
     /**
      * Constructs the object.
@@ -60,7 +60,7 @@ class EntityManager
      */
     public function __construct(DoctrineEntityManager $entityManager)
     {
-        $this->_doctrineEntityManager = $entityManager;
+        $this->doctrineEntityManager = $entityManager;
     }
     
     /**
@@ -116,7 +116,7 @@ class EntityManager
      */
     public function getDoctrineEntityManager()
     {
-        return $this->_doctrineEntityManager;
+        return $this->doctrineEntityManager;
     }
     
     /**
@@ -126,6 +126,6 @@ class EntityManager
      */
     public function getQueryBuilder()
     {
-        return $this->_doctrineEntityManager->createQueryBuilder();
+        return $this->doctrineEntityManager->createQueryBuilder();
     }
 }

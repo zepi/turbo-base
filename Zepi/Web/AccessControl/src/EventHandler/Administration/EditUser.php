@@ -77,25 +77,25 @@ class EditUser extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
-    protected $_accessLevelManager;
+    protected $accessLevelManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\AccessControl\Helper\AccessLevelHelper
      */
-    protected $_accessLevelHelper;
+    protected $accessLevelHelper;
     
     /**
      * Constructs the object
@@ -114,11 +114,11 @@ class EditUser extends FrontendEventHandler
         AccessLevelManager $accessLevelManager,
         AccessLevelHelper $accessLevelHelper
     ) {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
-        $this->_accessControlManager = $accessControlManager;
-        $this->_accessLevelManager = $accessLevelManager;
-        $this->_accessLevelHelper = $accessLevelHelper;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
+        $this->accessControlManager = $accessControlManager;
+        $this->accessLevelManager = $accessLevelManager;
+        $this->accessLevelHelper = $accessLevelHelper;
     }
     
     /**
@@ -141,7 +141,7 @@ class EditUser extends FrontendEventHandler
         if ($request->getRouteParam(0) !== false) {
             $additionalTitle = $this->translate('Modify user', '\\Zepi\\Web\\AccessControl');
             
-            $user = $this->_userManager->getUserForUuid($request->getRouteParam(0));
+            $user = $this->userManager->getUserForUuid($request->getRouteParam(0));
         } else {
             $additionalTitle = $this->translate('Add user', '\\Zepi\\Web\\AccessControl');
             
@@ -154,11 +154,11 @@ class EditUser extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Get the form object
-        $editUserLayout = $this->_getLayout($framework, $request, $response, $user);
+        $editUserLayout = $this->getLayout($framework, $request, $response, $user);
         $editUserForm = $editUserLayout->searchPartByKeyAndType('edit-user', '\\Zepi\\Web\\UserInterface\\Form\\Form');
         
         // Process the data
-        $errorBox = $this->_processData($editUserForm, $framework, $request, $response, $user);
+        $errorBox = $this->processData($editUserForm, $framework, $request, $response, $user);
         
         // If $result isn't true, display the edit user form
         if (!$editUserForm->isSubmitted() || $errorBox->hasErrors()) {
@@ -186,7 +186,7 @@ class EditUser extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      */
-    protected function _processData(Form $editUserForm, Framework $framework, WebRequest $request, Response $response, User $user)
+    protected function processData(Form $editUserForm, Framework $framework, WebRequest $request, Response $response, User $user)
     {
         // Process the submitted form data
         $editUserForm->processFormData($request);
@@ -197,7 +197,7 @@ class EditUser extends FrontendEventHandler
         if ($editUserForm->isSubmitted()) {
             $errors = $editUserForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_saveUser($editUserForm, $framework, $request, $response, $user);
+                $result = $this->saveUser($editUserForm, $framework, $request, $response, $user);
             } 
         }
         
@@ -234,7 +234,7 @@ class EditUser extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      */
-    protected function _saveUser(Form $form, Framework $framework, WebRequest $request, Response $response, User $user)
+    protected function saveUser(Form $form, Framework $framework, WebRequest $request, Response $response, User $user)
     {
         // Get the password data
         $group = $form->searchPartByKeyAndType('required-data');
@@ -242,7 +242,7 @@ class EditUser extends FrontendEventHandler
         $password = trim($group->getPart('password')->getValue());
         $passwordConfirmed = trim($group->getPart('password-confirmed')->getValue());
         
-        $result = $this->_validateData($framework, $user, $username, $password, $passwordConfirmed);
+        $result = $this->validateData($framework, $user, $username, $password, $passwordConfirmed);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -265,16 +265,16 @@ class EditUser extends FrontendEventHandler
 
         // Save the user
         if ($user->isNew()) {
-            $user = $this->_userManager->addUser($user);
+            $user = $this->userManager->addUser($user);
         } else {
-            $this->_userManager->updateUser($user);
+            $this->userManager->updateUser($user);
         }
         
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $accessLevelsElement->getValue();
         
-        $this->_accessControlManager->updatePermissions($user->getUuid(), $accessLevels, $request->getSession()->getUser());
+        $this->accessControlManager->updatePermissions($user->getUuid(), $accessLevels, $request->getSession()->getUser());
         
         return $result;
     }
@@ -289,11 +289,11 @@ class EditUser extends FrontendEventHandler
      * @param string $password
      * @param string $passwordConfirmed
      */
-    protected function _validateData(Framework $framework, User $user, $username, $password, $passwordConfirmed)
+    protected function validateData(Framework $framework, User $user, $username, $password, $passwordConfirmed)
     {
         // Username
-        if ($this->_userManager->hasUserForUsername($username)) {
-            $foundUser = $this->_userManager->getUserForUsername($username);
+        if ($this->userManager->hasUserForUsername($username)) {
+            $foundUser = $this->userManager->getUserForUsername($username);
             
             if ($foundUser->getUuid() != $user->getUuid()) {
                 return $this->translate('The username is already in use.', '\\Zepi\\Web\\AccessControl');
@@ -328,10 +328,10 @@ class EditUser extends FrontendEventHandler
      * @param \Zepi\Web\AccessControl\Entity\User $user
      * @return \Zepi\Web\UserInterface\Layout\Page
      */
-    public function _getLayout(Framework $framework, WebRequest $request, Response $response, User $user)
+    public function getLayout(Framework $framework, WebRequest $request, Response $response, User $user)
     {
-        $accessLevelSelectorItems = $this->_accessLevelHelper->transformAccessLevels(
-            $this->_accessLevelManager->getAccessLevels(),
+        $accessLevelSelectorItems = $this->accessLevelHelper->transformAccessLevels(
+            $this->accessLevelManager->getAccessLevels(),
             $request->getSession()->getUser()
         );
         
@@ -425,7 +425,7 @@ class EditUser extends FrontendEventHandler
                                         'access-levels',
                                         $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $this->_accessControlManager->getPermissionsRawForUuid($user->getUuid()),
+                                        $this->accessControlManager->getPermissionsRawForUuid($user->getUuid()),
                                         $accessLevelSelectorItems,
                                         $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),

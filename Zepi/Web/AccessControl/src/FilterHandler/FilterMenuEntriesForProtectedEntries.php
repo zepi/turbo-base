@@ -71,7 +71,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
         }
         
         // Verify the entries
-        return $this->_verifyMainEntries($value, $request);
+        return $this->verifyMainEntries($value, $request);
     }
     
     /**
@@ -82,10 +82,10 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return array
      */
-    protected function _verifyMainEntries($priorities, WebRequest $request)
+    protected function verifyMainEntries($priorities, WebRequest $request)
     {
         foreach ($priorities as $priority => $entries) {
-            $priorities[$priority] = $this->_verifyEntries($entries, $request);
+            $priorities[$priority] = $this->verifyEntries($entries, $request);
         }
     
         return $priorities;
@@ -99,12 +99,12 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return array
      */
-    protected function _verifyEntries($entries, WebRequest $request)
+    protected function verifyEntries($entries, WebRequest $request)
     {
         foreach ($entries as $key => $entry) {
             // If the entry is a ProtectedMenuEntry, verify the entry
             if ($entry instanceof \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry) {
-                $result = $this->_verifyProtectedEntry($entry, $request);
+                $result = $this->verifyProtectedEntry($entry, $request);
         
                 // If the entry isn't allowed remove it from the array
                 if (!$result) {
@@ -114,7 +114,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
         
             // If the entry has children, verify all children
             if ($entry->hasChildren()) {
-                $children = $this->_verifyEntries($entry->getChildren(), $request);
+                $children = $this->verifyEntries($entry->getChildren(), $request);
         
                 $entry->setChildren($children);
             }
@@ -131,7 +131,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
-    protected function _verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, WebRequest $request)
+    protected function verifyProtectedEntry(ProtectedMenuEntry $protectedEntry, WebRequest $request)
     {
         // If the user has no session we do not have to check the permissions
         if (!$request->hasSession()) {

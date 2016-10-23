@@ -60,7 +60,7 @@ class UserManager
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -71,7 +71,7 @@ class UserManager
     public function __construct(
         AccessControlManager $accessControlManager
     ) {
-        $this->_accessControlManager = $accessControlManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -86,12 +86,12 @@ class UserManager
     public function addUser(User $user)
     {
         // If the username already is used we cannot add a new user
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $user->getName())) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $user->getName())) {
             throw new Exception('Cannot add the user. Username is already in use.');
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity($user);
+        $uuid = $this->accessControlManager->addAccessEntity($user);
         
         if ($uuid === false) {
             throw new Exception('Cannot add the user. Internal software error.');
@@ -111,12 +111,12 @@ class UserManager
     public function updateUser(User $user)
     {
         // If the uuid does not exists we cannot update the user
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
             throw new Exception('Cannot update the user. User does not exist.');
         }
         
         // Add the access entity
-        return $this->_accessControlManager->updateAccessEntity($user);
+        return $this->accessControlManager->updateAccessEntity($user);
     }
     
     /**
@@ -130,12 +130,12 @@ class UserManager
     public function deleteUser($uuid)
     {
         // If the uuid does not exists we cannot delete the user
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
             throw new Exception('Cannot delete the user. User does not exist.');
         }
         
         // Delete the access entity
-        return $this->_accessControlManager->deleteAccessEntity($user);
+        return $this->accessControlManager->deleteAccessEntity($user);
     }
     
     /**
@@ -147,7 +147,7 @@ class UserManager
      */
     public function hasUserForUuid($uuid)
     {
-        if ($this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
+        if ($this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return true;
         }
         
@@ -163,7 +163,7 @@ class UserManager
      */
     public function hasUserForUsername($username)
     {
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username)) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username)) {
             return true;
         }
         
@@ -179,12 +179,12 @@ class UserManager
      */
     public function getUserForUuid($uuid)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
+        $accessEntity = $this->accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
 
         if ($accessEntity === false) {
             return false;
@@ -202,12 +202,12 @@ class UserManager
      */
     public function getUserForUsername($username)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username)) {
+        if (!$this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username);
+        $accessEntity = $this->accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $username);
 
         if ($accessEntity === false) {
             return false;
@@ -225,7 +225,7 @@ class UserManager
      */
     public function getUsers(DataRequest $dataRequest)
     {
-        return $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
     
     /**
@@ -237,6 +237,6 @@ class UserManager
      */
     public function countUsers(DataRequest $dataRequest)
     {
-        return $this->_accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
 }

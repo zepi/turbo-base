@@ -47,19 +47,19 @@ class Filter
      * @access protected
      * @var string
      */
-    protected $_fieldName;
+    protected $fieldName;
     
     /**
      * @access protected
      * @var mixed
      */
-    protected $_neededValue;
+    protected $neededValue;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_mode;
+    protected $mode;
     
     /**
      * Constructs the object
@@ -71,9 +71,9 @@ class Filter
      */
     public function __construct($fieldName, $neededValue, $mode = '=')
     {
-        $this->_fieldName = $fieldName;
-        $this->_neededValue = $neededValue;
-        $this->_mode = $mode;
+        $this->fieldName = $fieldName;
+        $this->neededValue = $neededValue;
+        $this->mode = $mode;
     }
     
     /**
@@ -84,7 +84,7 @@ class Filter
      */
     public function getFieldName()
     {
-        return $this->_fieldName;
+        return $this->fieldName;
     }
     
     /**
@@ -95,7 +95,7 @@ class Filter
      */
     public function getNeededValue()
     {
-        return $this->_neededValue;
+        return $this->neededValue;
     }
     
     /**
@@ -106,7 +106,7 @@ class Filter
      */
     public function getMode()
     {
-        return $this->_mode;
+        return $this->mode;
     }
     
     /**
@@ -117,6 +117,6 @@ class Filter
      */
     public function getKey()
     {
-        return $this->_fieldName . $this->_mode . $this->_neededValue;
+        return $this->fieldName . $this->mode . $this->neededValue;
     }
 }

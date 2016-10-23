@@ -52,67 +52,67 @@ abstract class FieldAbstract extends Part
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_label;
+    protected $label;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_isMandatory;
+    protected $isMandatory;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_helpText;
+    protected $helpText;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_classes = array();
+    protected $classes = array();
     
     /**
      * @access protected
      * @var string
      */
-    protected $_placeholder;
+    protected $placeholder;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Form\Group
      */
-    protected $_formGroup;
+    protected $formGroup;
     
     /**
      * @access protected
      * @var mixed
      */
-    protected $_value;
+    protected $value;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_tabIndex;
+    protected $tabIndex;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_autocomplete;
+    protected $autocomplete;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base';
     
     /**
      * Constructs the object
@@ -129,17 +129,17 @@ abstract class FieldAbstract extends Part
      */
     public function __construct($key, $label, $isMandatory = false, $value = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null, $autocomplete = true)
     {
-        $this->_key = $key;
-        $this->_label = $label;
-        $this->_isMandatory = $isMandatory;
-        $this->_value = $value;
-        $this->_helpText = $helpText;
-        $this->_placeholder = $placeholder;
-        $this->_tabIndex = $tabIndex;
-        $this->_autocomplete = $autocomplete;
+        $this->key = $key;
+        $this->label = $label;
+        $this->isMandatory = $isMandatory;
+        $this->value = $value;
+        $this->helpText = $helpText;
+        $this->placeholder = $placeholder;
+        $this->tabIndex = $tabIndex;
+        $this->autocomplete = $autocomplete;
         
         if (count($classes) > 0) {
-            $this->_classes = $classes;
+            $this->classes = $classes;
         }
     }
     
@@ -196,7 +196,7 @@ abstract class FieldAbstract extends Part
             $id = $form->getHtmlId() . '-';
         }
         
-        return $id . $this->_key;
+        return $id . $this->key;
     }
     
     /**
@@ -217,7 +217,7 @@ abstract class FieldAbstract extends Part
             $name = $group->getKey() . '-';
         }
         
-        return $name . $this->_key;
+        return $name . $this->key;
     }
     
     /**
@@ -228,7 +228,7 @@ abstract class FieldAbstract extends Part
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -239,7 +239,7 @@ abstract class FieldAbstract extends Part
      */
     public function getLabel()
     {
-        return $this->_label;
+        return $this->label;
     }
     
     /**
@@ -250,7 +250,7 @@ abstract class FieldAbstract extends Part
      */
     public function isMandatory()
     {
-        return ($this->_isMandatory);
+        return ($this->isMandatory);
     }
     
     /**
@@ -261,7 +261,7 @@ abstract class FieldAbstract extends Part
      */
     public function hasLabel()
     {
-        return (trim($this->_label) != '');
+        return (trim($this->label) != '');
     }
 
     /**
@@ -272,7 +272,7 @@ abstract class FieldAbstract extends Part
      */
     public function getHelpText()
     {
-        return $this->_helpText;
+        return $this->helpText;
     }
     
     /**
@@ -283,7 +283,7 @@ abstract class FieldAbstract extends Part
      */
     public function getPlaceholder()
     {
-        return $this->_placeholder;
+        return $this->placeholder;
     }
       
     /** 
@@ -294,7 +294,7 @@ abstract class FieldAbstract extends Part
      */
     public function getClasses()
     {
-        return $this->_classes;
+        return $this->classes;
     }
     
     /**
@@ -305,7 +305,7 @@ abstract class FieldAbstract extends Part
      */
     public function getHtmlClasses()
     {
-        return implode(' ', $this->_classes);
+        return implode(' ', $this->classes);
     }
     
     /**
@@ -316,7 +316,7 @@ abstract class FieldAbstract extends Part
      */
     public function getValue()
     {
-        return $this->_value;
+        return $this->value;
     }
     
     /**
@@ -328,7 +328,7 @@ abstract class FieldAbstract extends Part
      */
     public function setValue($value, RequestAbstract $request)
     {
-        $this->_value = $value;
+        $this->value = $value;
     }
     
     /**
@@ -339,7 +339,7 @@ abstract class FieldAbstract extends Part
      */
     public function hasValue()
     {
-        return ($this->_value != '');
+        return ($this->value != '');
     }
     
     /**
@@ -350,7 +350,7 @@ abstract class FieldAbstract extends Part
      */
     public function getTabIndex()
     {
-        return $this->_tabIndex;
+        return $this->tabIndex;
     }
     
     /**
@@ -361,7 +361,7 @@ abstract class FieldAbstract extends Part
      */
     public function hasAutocomplete()
     {
-        return ($this->_autocomplete);
+        return ($this->autocomplete);
     }
     
     /**

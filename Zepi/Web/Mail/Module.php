@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Core\Mail\Helper\MailHelper
      */
-    protected $_mailHelper;
+    protected $mailHelper;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -61,15 +61,15 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Web\\Mail\\Helper\\MailHelper':
-                if ($this->_mailHelper === null) {
-                    $this->_mailHelper = new $className(
-                        $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
+                if ($this->mailHelper === null) {
+                    $this->mailHelper = new $className(
+                        $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
+                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
                     );
                 }
                 
-                return $this->_mailHelper;
+                return $this->mailHelper;
             break;
             
             default: 
@@ -88,7 +88,7 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         // Configuration
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->addSettingIfNotSet('mailer', 'type', 'sendmail');
         $configurationManager->addSettingIfNotSet('mailer', 'sendmailCommand', '/usr/sbin/sendmail -bs');
         $configurationManager->addSettingIfNotSet('mailer', 'smtpHost', '');
@@ -108,7 +108,7 @@ class Module extends ModuleAbstract
     public function deactivate()
     {
         // Configuration
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->removeSettingGroup('mailer');
         $configurationManager->saveConfigurationFile();
     }

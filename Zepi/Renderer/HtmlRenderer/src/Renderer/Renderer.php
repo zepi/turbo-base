@@ -52,7 +52,7 @@ class Renderer extends RendererAbstract
      * @access protected
      * @var string
      */
-    protected $_extension = 'phtml';
+    protected $extension = 'phtml';
     
     /**
      * Renders a template file. This function renders the given 

@@ -61,13 +61,13 @@ class Table
      * @access protected
      * @var \Zepi\Web\UserInterface\Renderer\Pagination
      */
-    protected $_paginationRenderer;
+    protected $paginationRenderer;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_routeParamIndex = 0;
+    protected $routeParamIndex = 0;
     
     /**
      * Constructs the object
@@ -77,7 +77,7 @@ class Table
      */
     public function __construct(Pagination $paginationRenderer)
     {
-        $this->_paginationRenderer = $paginationRenderer;
+        $this->paginationRenderer = $paginationRenderer;
     }
     
     /**
@@ -88,7 +88,7 @@ class Table
      */
     public function setRouteParamIndexForPage($index)
     {
-        $this->_routeParamIndex = $index;
+        $this->routeParamIndex = $index;
     }
     
     /**
@@ -110,7 +110,7 @@ class Table
         }
         
         // Generate the data request
-        $dataRequest = $this->_generateDataRequest($request, $table, $numberOfEntries);
+        $dataRequest = $this->generateDataRequest($request, $table, $numberOfEntries);
         
         // Get the data
         $data = $table->getData($dataRequest);
@@ -121,21 +121,21 @@ class Table
         $preparedTable = new PreparedTable($table, $table->getColumns());
         
         // Add the table head
-        $preparedTable->setHead($this->_renderHead($table, $dataRequest));
+        $preparedTable->setHead($this->renderHead($table, $dataRequest));
         
         // Render the body and add it to the rendered table
         $body = new Body();
         foreach ($data as $object) {
-            $body->addRow($this->_renderRow($table, $body, $object));
+            $body->addRow($this->renderRow($table, $body, $object));
         }
         $preparedTable->setBody($body);
         
         // Add the table foot
-        $preparedTable->setFoot($this->_renderFoot($table));
+        $preparedTable->setFoot($this->renderFoot($table));
         
         // Add the pagination
         if ($table->hasPagination() && $numberOfEntries !== false) {
-            $preparedTable->setPagination($this->_paginationRenderer->prepare($dataRequest, $paginationUrl, $table->countData($dataRequest), $numberOfEntries));
+            $preparedTable->setPagination($this->paginationRenderer->prepare($dataRequest, $paginationUrl, $table->countData($dataRequest), $numberOfEntries));
         }
         
         return $preparedTable;
@@ -150,14 +150,14 @@ class Table
      * @param false|integer $numberOfEntries
      * @return \Zepi\Web\UserInterface\Table\DataRequest
      */
-    protected function _generateDataRequest(WebRequest $request, TableAbstract $table, $numberOfEntries)
+    protected function generateDataRequest(WebRequest $request, TableAbstract $table, $numberOfEntries)
     {
         $updateRequired = false;
         if ($request->hasParam('table-filter-update')) {
             $updateRequired = true;
         }
         
-        $page = $request->getRouteParam($this->_routeParamIndex);
+        $page = $request->getRouteParam($this->routeParamIndex);
         $pageNotSet = false;
         if ($page == '') {
             $page = 1;
@@ -225,7 +225,7 @@ class Table
      * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
      * @return \Zepi\Web\UserInterface\Table\Head
      */
-    protected function _renderHead(TableAbstract $table, DataRequest $dataRequest)
+    protected function renderHead(TableAbstract $table, DataRequest $dataRequest)
     {
         $head = new Head();
 
@@ -273,7 +273,7 @@ class Table
      * @param mixed $object
      * @return \Zepi\Web\UserInterface\Table\Row
      */
-    public function _renderRow(TableAbstract $table, Body $body, $object)
+    public function renderRow(TableAbstract $table, Body $body, $object)
     {
         $row = new Row($body);
         foreach ($table->getColumns() as $column) {
@@ -294,7 +294,7 @@ class Table
      * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
      * @return \Zepi\Web\UserInterface\Table\Foot
      */
-    protected function _renderFoot(TableAbstract $table)
+    protected function renderFoot(TableAbstract $table)
     {
         $foot = new Foot();
         

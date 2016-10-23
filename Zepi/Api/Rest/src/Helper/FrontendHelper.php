@@ -62,19 +62,19 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
 
     /**
      * @access protected
      * @var \Zepi\Api\AccessControl\Manager\TokenManager
      */
-    protected $_tokenManager;
+    protected $tokenManager;
     
     /**
      * @access protected
      * @var \Zepi\Api\Rest\Helper\RestHelper
      */
-    protected $_restHelper;
+    protected $restHelper;
     
     /**
      * Constructs the object
@@ -116,9 +116,9 @@ class FrontendHelper extends UserInterfaceFrontendHelper
             $tableRenderer
         );
         
-        $this->_framework = $framework;
-        $this->_restHelper = $restHelper;
-        $this->_tokenManager = $tokenManager;
+        $this->framework = $framework;
+        $this->restHelper = $restHelper;
+        $this->tokenManager = $tokenManager;
     }
     
     /**
@@ -130,26 +130,26 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      */
     public function validateRequest()
     {
-        $request = $this->_framework->getRequest();
+        $request = $this->framework->getRequest();
         
         // Parse the authorization information
-        $authorization = $this->_parseAuthorizationString($request->getHeader('Authorization'));
+        $authorization = $this->parseAuthorizationString($request->getHeader('Authorization'));
         $publicKey = $authorization['publicKey'];
         $hmac = $authorization['hmac'];
         
         // Verify the public key
-        if (!$this->_tokenManager->hasTokenForPublicKey($publicKey)) {
+        if (!$this->tokenManager->hasTokenForPublicKey($publicKey)) {
             return false;
         }
         
         // Load the token
-        $token = $this->_tokenManager->getTokenForPublicKey($publicKey);
+        $token = $this->tokenManager->getTokenForPublicKey($publicKey);
         
         // Get the needed data
         $route = $request->getRoute();
         $data = $request->getParams();
         
-        $result = $this->_restHelper->validateRequest($token->getApiKey(), $hmac, $route, $data);
+        $result = $this->restHelper->validateRequest($token->getApiKey(), $hmac, $route, $data);
         
         if ($result) {
             return $token;
@@ -166,7 +166,7 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      * @param string $authorizationString
      * @return array
      */
-    protected function _parseAuthorizationString($authorizationString)
+    protected function parseAuthorizationString($authorizationString)
     {
         if (strpos($authorizationString, 'Basic') !== false) {
             $authorizationString = trim(substr($authorizationString, 6));
@@ -188,6 +188,6 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      */
     public function sendResponse($result)
     {
-        return $this->_restHelper->sendResponse($this->_framework->getRequest(), $this->_framework->getResponse(), $result);
+        return $this->restHelper->sendResponse($this->framework->getRequest(), $this->framework->getResponse(), $result);
     }
 }

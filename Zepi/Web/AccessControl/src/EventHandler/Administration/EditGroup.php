@@ -78,25 +78,25 @@ class EditGroup extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\GroupManager
      */
-    protected $_groupManager;
+    protected $groupManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
-    protected $_accessLevelManager;
+    protected $accessLevelManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\AccessControl\Helper\AccessLevelHelper
      */
-    protected $_accessLevelHelper;
+    protected $accessLevelHelper;
     
     /**
      * Constructs the object
@@ -115,11 +115,11 @@ class EditGroup extends FrontendEventHandler
         AccessLevelManager $accessLevelManager, 
         AccessLevelHelper $accessLevelHelper
     ) {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_groupManager = $groupManager;
-        $this->_accessControlManager = $accessControlManager;
-        $this->_accessLevelManager = $accessLevelManager;
-        $this->_accessLevelHelper = $accessLevelHelper;
+        $this->frontendHelper = $frontendHelper;
+        $this->groupManager = $groupManager;
+        $this->accessControlManager = $accessControlManager;
+        $this->accessLevelManager = $accessLevelManager;
+        $this->accessLevelHelper = $accessLevelHelper;
     }
     
     /**
@@ -142,7 +142,7 @@ class EditGroup extends FrontendEventHandler
         if ($request->getRouteParam(0) !== false) {
             $additionalTitle = $this->translate('Modify group', '\\Zepi\\Web\\AccessControl');
             
-            $group = $this->_groupManager->getGroupForUuid($request->getRouteParam(0));
+            $group = $this->groupManager->getGroupForUuid($request->getRouteParam(0));
         } else {
             $additionalTitle = $this->translate('Add group', '\\Zepi\\Web\\AccessControl');
             
@@ -155,11 +155,11 @@ class EditGroup extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Get the form object
-        $editGroupLayout = $this->_getLayout($framework, $request, $response, $group);
+        $editGroupLayout = $this->getLayout($framework, $request, $response, $group);
         $editGroupForm = $editGroupLayout->searchPartByKeyAndType('edit-group', '\\Zepi\\Web\\UserInterface\\Form\\Form');
         
         // Process the data
-        $errorBox = $this->_processData($editGroupForm, $framework, $request, $response, $group);
+        $errorBox = $this->processData($editGroupForm, $framework, $request, $response, $group);
         
         // If $result isn't true, display the edit user form
         if (!$editGroupForm->isSubmitted() || $errorBox->hasErrors()) {
@@ -187,7 +187,7 @@ class EditGroup extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      */
-    protected function _processData(Form $editGroupForm, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
+    protected function processData(Form $editGroupForm, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
         // Process the submitted form data
         $editGroupForm->processFormData($request);
@@ -198,7 +198,7 @@ class EditGroup extends FrontendEventHandler
         if ($editGroupForm->isSubmitted()) {
             $errors = $editGroupForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_saveGroup($editGroupForm, $framework, $request, $response, $group);
+                $result = $this->saveGroup($editGroupForm, $framework, $request, $response, $group);
             }
         }
         
@@ -235,13 +235,13 @@ class EditGroup extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      */
-    protected function _saveGroup(Form $form, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
+    protected function saveGroup(Form $form, Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
         // Get the password data
         $formGroup = $form->searchPartByKeyAndType('required-data');
         $groupname = trim($formGroup->getPart('groupname')->getValue());
         
-        $result = $this->_validateData($framework, $group, $groupname);
+        $result = $this->validateData($framework, $group, $groupname);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -259,16 +259,16 @@ class EditGroup extends FrontendEventHandler
         
         // Save the user
         if ($group->isNew()) {
-            $group = $this->_groupManager->addGroup($group);
+            $group = $this->groupManager->addGroup($group);
         } else {
-            $this->_groupManager->updateGroup($group);
+            $this->groupManager->updateGroup($group);
         }
         
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
-        $accessLevels = $this->_cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
+        $accessLevels = $this->cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
 
-        $this->_accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
+        $this->accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
         
         return $result;
     }
@@ -282,7 +282,7 @@ class EditGroup extends FrontendEventHandler
      * @param array $accessLevels
      * @return array
      */
-    protected function _cleanAccessLevels($uuid, $accessLevels)
+    protected function cleanAccessLevels($uuid, $accessLevels)
     {
         foreach ($accessLevels as $key => $accessLevel) {
             $parts = explode('\\', $accessLevel);
@@ -303,11 +303,11 @@ class EditGroup extends FrontendEventHandler
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @param string $groupname
      */
-    protected function _validateData(Framework $framework, EntityGroup $group, $groupname)
+    protected function validateData(Framework $framework, EntityGroup $group, $groupname)
     {
         // Groupname
-        if ($this->_groupManager->hasGroupForName($groupname)) {
-            $foundGroup = $this->_groupManager->getGroupForName($groupname);
+        if ($this->groupManager->hasGroupForName($groupname)) {
+            $foundGroup = $this->groupManager->getGroupForName($groupname);
             
             if ($foundGroup->getUuid() != $group->getUuid()) {
                 return $this->translate('The groupname is already in use.', '\\Zepi\\Web\\AccessControl');
@@ -327,10 +327,10 @@ class EditGroup extends FrontendEventHandler
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @return \Zepi\Web\UserInterface\Layout\Page
      */
-    protected function _getLayout(Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
+    protected function getLayout(Framework $framework, WebRequest $request, Response $response, EntityGroup $group)
     {
-        $accessLevelSelectorItems = $this->_accessLevelHelper->transformAccessLevels(
-            $this->_accessLevelManager->getAccessLevels(), 
+        $accessLevelSelectorItems = $this->accessLevelHelper->transformAccessLevels(
+            $this->accessLevelManager->getAccessLevels(), 
             $request->getSession()->getUser(), 
             $group
         );
@@ -391,7 +391,7 @@ class EditGroup extends FrontendEventHandler
                                         'access-levels',
                                         $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $this->_accessControlManager->getPermissionsRawForUuid($group->getUuid()),
+                                        $this->accessControlManager->getPermissionsRawForUuid($group->getUuid()),
                                         $accessLevelSelectorItems,
                                         $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),

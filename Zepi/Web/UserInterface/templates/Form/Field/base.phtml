@@ -24,7 +24,7 @@
     <?php endif; ?>
 
     <div class="<?php echo $classes . ' ' . $additionalClasses; ?>">
-        <?php echo $this->_templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
+        <?php echo $this->templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
         <p class="help-block"><?php echo $container->getHelpText(); ?></p>
     </div>
 </div>

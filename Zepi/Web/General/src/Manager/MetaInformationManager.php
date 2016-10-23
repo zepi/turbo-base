@@ -53,19 +53,19 @@ class MetaInformationManager
      * @access protected
      * @var string
      */
-    protected $_title;
+    protected $title;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_delimiter = ' - ';
+    protected $delimiter = ' - ';
     
     /**
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * Sets the title for the request
@@ -75,7 +75,7 @@ class MetaInformationManager
      */
     public function setTitle($title)
     {
-        $this->_title = $title;
+        $this->title = $title;
     }
     
     /**
@@ -86,7 +86,7 @@ class MetaInformationManager
      */
     public function setDelimiter($delimiter)
     {
-        $this->_delimiter = $delimiter;
+        $this->delimiter = $delimiter;
     }
     
     /**
@@ -97,7 +97,7 @@ class MetaInformationManager
      */
     public function setName($name)
     {
-        $this->_name = $name;
+        $this->name = $name;
     }
     
     /**
@@ -108,7 +108,7 @@ class MetaInformationManager
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -124,20 +124,20 @@ class MetaInformationManager
         /**
          * If there is a title, add it to the returned title
          */
-        if (trim($this->_title) != '') {
-            $title = trim($this->_title);
+        if (trim($this->title) != '') {
+            $title = trim($this->title);
         }
         
         /**
          * If there is a name of the framework instance, add it to 
          * the returned title
          */
-        if (trim($this->_name) != '') {
+        if (trim($this->name) != '') {
             if (trim($title) != '') {
-                $title .= $this->_delimiter;
+                $title .= $this->delimiter;
             }
             
-            $title .= trim($this->_name);
+            $title .= trim($this->name);
         }
         
         /**

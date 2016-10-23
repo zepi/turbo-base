@@ -58,7 +58,7 @@ class GroupTable extends TableAbstract
      */
     public function getData(DataRequest $request)
     {
-        $groupManager = $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
+        $groupManager = $this->framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
         $groups = $groupManager->getGroups($request);
         
         return $groups;
@@ -74,7 +74,7 @@ class GroupTable extends TableAbstract
      */
     public function countData(DataRequest $request)
     {
-        $groupManager = $this->_framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
+        $groupManager = $this->framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
         $numberOfGroups = $groupManager->countGroups($request);
     
         return $numberOfGroups;
@@ -88,7 +88,7 @@ class GroupTable extends TableAbstract
      */
     public function getColumns()
     {
-        $translationManager = $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        $translationManager = $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
         return array(
             new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, 'text'),
@@ -107,7 +107,7 @@ class GroupTable extends TableAbstract
      */
     public function getDataForRow($key, $object)
     {
-        $translationManager = $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+        $translationManager = $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
         switch ($key) {
             case 'name':
@@ -119,7 +119,7 @@ class GroupTable extends TableAbstract
             break;
             
             case 'actions':
-                $request = $this->_framework->getRequest();
+                $request = $this->framework->getRequest();
                 return '<a href="' . $request->getFullRoute('administration/groups/modify/' . $object->getUuid()) . '" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>'
                      .     $translationManager->translate('Modify', '\\Zepi\\Web\\AccessControl')
                      . '</a>'

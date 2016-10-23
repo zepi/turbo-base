@@ -49,7 +49,7 @@ class Part
      * @access protected
      * @var array
      */
-    protected $_rows = array();
+    protected $rows = array();
     
     /**
      * Adds a row
@@ -59,7 +59,7 @@ class Part
      */
     public function addRow(Row $row)
     {
-        $this->_rows[] = $row;
+        $this->rows[] = $row;
     }
     
     /**
@@ -70,7 +70,7 @@ class Part
      */
     public function getRows()
     {
-        return $this->_rows;
+        return $this->rows;
     }
     
     /**
@@ -81,6 +81,6 @@ class Part
      */
     public function hasRows()
     {
-        return (count($this->_rows) > 0);
+        return (count($this->rows) > 0);
     }
 }

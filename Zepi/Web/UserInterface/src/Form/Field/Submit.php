@@ -49,13 +49,13 @@ class Submit extends Button
      * @access protected
      * @var string
      */
-    protected $_type = 'submit';
+    protected $type = 'submit';
     
     /**
      * @access protected
      * @var array
      */
-    protected $_classes = array(
+    protected $classes = array(
         'btn-primary',
         'submit-btn',
     );
@@ -69,7 +69,7 @@ class Submit extends Button
      */
     public function setValue($value, RequestAbstract $request)
     {
-        if ($value == $this->_label) {
+        if ($value == $this->label) {
             $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Form');
             
             if (is_object($form)) {

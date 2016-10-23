@@ -47,37 +47,37 @@ class Button extends FieldAbstract
      * @access protected
      * @var string
      */
-    protected $_type = 'button';
+    protected $type = 'button';
     
     /**
      * @access protected
      * @var array
      */
-    protected $_classes = array();
+    protected $classes = array();
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank';
     
     /**
      * @access protected
      * @var string
      */
-    protected $_iconClass = '';
+    protected $iconClass = '';
     
     /**
      * @access protected
      * @var string
      */
-    protected $_htmlType;
+    protected $htmlType;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_href;
+    protected $href;
     
     /**
      * Constructs the object
@@ -93,18 +93,18 @@ class Button extends FieldAbstract
      */
     public function __construct($key, $label, $classes = array(), $iconClass = '', $htmlType = 'button', $href = false, $tabIndex = null)
     {
-        $this->_key = $key;
-        $this->_label = $label;
-        $this->_iconClass = $iconClass;
-        $this->_htmlType = $htmlType;
-        $this->_tabIndex = $tabIndex;
+        $this->key = $key;
+        $this->label = $label;
+        $this->iconClass = $iconClass;
+        $this->htmlType = $htmlType;
+        $this->tabIndex = $tabIndex;
         
         if ($href !== false) {
-            $this->_href = $href;
+            $this->href = $href;
         }
         
         if (count($classes) > 0) {
-            $this->_classes = array_merge($this->_classes, $classes);
+            $this->classes = array_merge($this->classes, $classes);
         }
     }
     
@@ -138,7 +138,7 @@ class Button extends FieldAbstract
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
     
     /**
@@ -149,7 +149,7 @@ class Button extends FieldAbstract
      */
     public function getIconClass()
     {
-        return $this->_iconClass;
+        return $this->iconClass;
     }
     
     /**
@@ -160,7 +160,7 @@ class Button extends FieldAbstract
      */
     public function hasIconClass()
     {
-        return ($this->_iconClass !== '');
+        return ($this->iconClass !== '');
     }
     
     /**
@@ -171,7 +171,7 @@ class Button extends FieldAbstract
      */
     public function getHtmlType()
     {
-        return $this->_htmlType;
+        return $this->htmlType;
     }
     
     /**
@@ -182,6 +182,6 @@ class Button extends FieldAbstract
      */
     public function getHref()
     {
-        return $this->_href;
+        return $this->href;
     }
 }

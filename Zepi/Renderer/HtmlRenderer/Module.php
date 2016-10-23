@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Renderer\HtmlRenderer\Renderer\Renderer
      */
-    protected $_htmlRenderer;
+    protected $htmlRenderer;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -61,19 +61,19 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer':
-                if ($this->_htmlRenderer === null) {
-                    $this->_htmlRenderer = new $className(
-                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
+                if ($this->htmlRenderer === null) {
+                    $this->htmlRenderer = new $className(
+                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
                     );
                 }
                 
-                return $this->_htmlRenderer;
+                return $this->htmlRenderer;
             break;
             
             case '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer':
                 return new $className(
-                    $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                    $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
                     $this->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer')
                 );
             break;
@@ -103,7 +103,7 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
     }
     
@@ -114,7 +114,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
     }
 }

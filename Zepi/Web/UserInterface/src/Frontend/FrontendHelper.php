@@ -58,55 +58,55 @@ class FrontendHelper
      * @access protected
      * @var \Zepi\Core\Utils\Manager\ConfigurationManager
      */
-    protected $_configurationManager;
+    protected $configurationManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\MetaInformationManager
      */
-    protected $_metaInformationManager;
+    protected $metaInformationManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\MenuManager
      */
-    protected $_menuManager;
+    protected $menuManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Renderer\Layout
      */
-    protected $_layoutRenderer;
+    protected $layoutRenderer;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Renderer\OverviewPage
      */
-    protected $_overviewPageRenderer;
+    protected $overviewPageRenderer;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Renderer\Table
      */
-    protected $_tableRenderer;
+    protected $tableRenderer;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_completeTitle;
+    protected $completeTitle;
     
     /**
      * Constructs the object
@@ -131,14 +131,14 @@ class FrontendHelper
         OverviewPage $overviewPageRenderer,
         Table $tableRenderer
     ) {
-        $this->_configurationManager = $configurationManager;
-        $this->_translationManager = $translationManager;
-        $this->_templatesManager = $templatesManager;
-        $this->_metaInformationManager = $metaInformationManager;
-        $this->_menuManager = $menuManager;
-        $this->_layoutRenderer = $layoutRenderer;
-        $this->_overviewPageRenderer = $overviewPageRenderer;
-        $this->_tableRenderer = $tableRenderer;
+        $this->configurationManager = $configurationManager;
+        $this->translationManager = $translationManager;
+        $this->templatesManager = $templatesManager;
+        $this->metaInformationManager = $metaInformationManager;
+        $this->menuManager = $menuManager;
+        $this->layoutRenderer = $layoutRenderer;
+        $this->overviewPageRenderer = $overviewPageRenderer;
+        $this->tableRenderer = $tableRenderer;
     }
     
     /**
@@ -151,7 +151,7 @@ class FrontendHelper
      */
     public function getSetting($group, $key)
     {
-        return $this->_configurationManager->getSetting($group, $key);
+        return $this->configurationManager->getSetting($group, $key);
     }
     
     /**
@@ -165,7 +165,7 @@ class FrontendHelper
      */
     public function translate($string, $namespace = null, $arguments = array())
     {
-        return $this->_translationManager->translate($string, $namespace, $arguments);
+        return $this->translationManager->translate($string, $namespace, $arguments);
     }
     
     /**
@@ -178,7 +178,7 @@ class FrontendHelper
      */
     public function render($key, $additionalData = array())
     {
-        return $this->_templatesManager->renderTemplate($key, $additionalData);
+        return $this->templatesManager->renderTemplate($key, $additionalData);
     }
     
     /**
@@ -190,14 +190,14 @@ class FrontendHelper
      */
     public function setTitle($title, $function = '')
     {
-        $this->_completeTitle = $title;
+        $this->completeTitle = $title;
         
         if ($function != '') {
-            $this->_completeTitle .= ' - ' . $function;
-            $this->_menuManager->setBreadcrumbFunction($function);
+            $this->completeTitle .= ' - ' . $function;
+            $this->menuManager->setBreadcrumbFunction($function);
         }
         
-        $this->_metaInformationManager->setTitle($this->_completeTitle);
+        $this->metaInformationManager->setTitle($this->completeTitle);
     }
     
     /**
@@ -208,7 +208,7 @@ class FrontendHelper
      */
     public function getTitle()
     {
-        return $this->_completeTitle;
+        return $this->completeTitle;
     }
     
     /**
@@ -223,16 +223,16 @@ class FrontendHelper
     {
         $menuEntry = null;
         if ($key != '') {
-            $menuEntry = $this->_menuManager->getMenuEntryForKey($key);
+            $menuEntry = $this->menuManager->getMenuEntryForKey($key);
             
             if ($menuEntry !== false) {
-                $this->_menuManager->setActiveMenuEntry($menuEntry);
+                $this->menuManager->setActiveMenuEntry($menuEntry);
             }
         } else {
-            $this->_menuManager->activateCorrectMenuEntry();
+            $this->menuManager->activateCorrectMenuEntry();
         }
         
-        return $this->_menuManager->getActiveMenuEntry();
+        return $this->menuManager->getActiveMenuEntry();
     }
     
     /**
@@ -243,7 +243,7 @@ class FrontendHelper
      */
     public function getMenuManager()
     {
-        return $this->_menuManager;
+        return $this->menuManager;
     }
     
     /**
@@ -254,7 +254,7 @@ class FrontendHelper
      */
     public function getLayoutRenderer()
     {
-        return $this->_layoutRenderer;
+        return $this->layoutRenderer;
     }
     
     /**
@@ -265,7 +265,7 @@ class FrontendHelper
      */
     public function getOverviewPageRenderer()
     {
-        return $this->_overviewPageRenderer;
+        return $this->overviewPageRenderer;
     }
     
     /**
@@ -276,6 +276,6 @@ class FrontendHelper
      */
     public function getTableRenderer()
     {
-        return $this->_tableRenderer;
+        return $this->tableRenderer;
     }
 }

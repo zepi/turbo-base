@@ -53,7 +53,7 @@ class AccessLevelHelper
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * Constructs the object
@@ -63,7 +63,7 @@ class AccessLevelHelper
      */
     public function __construct(TranslationManager $translationManager)
     {
-        $this->_translationManager = $translationManager;
+        $this->translationManager = $translationManager;
     }
     
     /**
@@ -81,7 +81,7 @@ class AccessLevelHelper
         
         foreach ($accessLevels as $accessLevel) {
             $disabled = false;
-            if (!$user->hasAccess($accessLevel->getKey()) || ($editedGroup !== null && $this->_isEditedGroup($accessLevel->getKey(), $editedGroup))) {
+            if (!$user->hasAccess($accessLevel->getKey()) || ($editedGroup !== null && $this->isEditedGroup($accessLevel->getKey(), $editedGroup))) {
                 $disabled = true;
             }
             
@@ -93,8 +93,8 @@ class AccessLevelHelper
             } else {
                 $icon = 'mdi mdi-code-array';
 
-                $name = $this->_translationManager->translate($name, $accessLevel->getNamespace());
-                $description = $this->_translationManager->translate($description, $accessLevel->getNamespace());
+                $name = $this->translationManager->translate($name, $accessLevel->getNamespace());
+                $description = $this->translationManager->translate($description, $accessLevel->getNamespace());
             }
 
             $selectorItems[] = new SelectorItem(
@@ -117,7 +117,7 @@ class AccessLevelHelper
      * @param \Zepi\Web\AccessControl\Entity\Group $editedGroup
      * @return boolean
      */
-    protected function _isEditedGroup($accessLevel, Group $editedGroup)
+    protected function isEditedGroup($accessLevel, Group $editedGroup)
     {
         $parts = explode('\\', $accessLevel);
     

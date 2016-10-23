@@ -55,25 +55,25 @@ class MenuManager
      * @access protected
      * @var array
      */
-    protected $_menuEntries = array();
+    protected $menuEntries = array();
     
     /**
      * @access protected
      * @var MenuEntry
      */
-    protected $_activeMenuEntry = null;
+    protected $activeMenuEntry = null;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_breadcrumbFunction = '';
+    protected $breadcrumbFunction = '';
     
     /**
      * Constructs the object
@@ -83,7 +83,7 @@ class MenuManager
      */
     public function __construct(Framework $framework)
     {
-        $this->_framework = $framework;
+        $this->framework = $framework;
     }
     
     /**
@@ -94,7 +94,7 @@ class MenuManager
      */
     public function setBreadcrumbFunction($breadcrumbFunction)
     {
-        $this->_breadcrumbFunction = $breadcrumbFunction;
+        $this->breadcrumbFunction = $breadcrumbFunction;
     }
     
     /**
@@ -108,22 +108,22 @@ class MenuManager
      */
     public function addMenuEntry($location, MenuEntry $menuEntry, $priority = 50)
     {
-        if (!isset($this->_menuEntries[$location])) {
-            $this->_menuEntries[$location] = array();
+        if (!isset($this->menuEntries[$location])) {
+            $this->menuEntries[$location] = array();
         }
         
-        if (!isset($this->_menuEntries[$location][$priority])) {
-            $this->_menuEntries[$location][$priority] = array();
+        if (!isset($this->menuEntries[$location][$priority])) {
+            $this->menuEntries[$location][$priority] = array();
         }
 
-        if (isset($this->_menuEntries[$location][$priority][$menuEntry->getKey()])) {
+        if (isset($this->menuEntries[$location][$priority][$menuEntry->getKey()])) {
             return false;
         }
         
-        $this->_menuEntries[$location][$priority][$menuEntry->getKey()] = $menuEntry;
+        $this->menuEntries[$location][$priority][$menuEntry->getKey()] = $menuEntry;
         
-        ksort($this->_menuEntries[$location]);
-        uasort($this->_menuEntries[$location][$priority], array($this, 'sortMenuEntries'));
+        ksort($this->menuEntries[$location]);
+        uasort($this->menuEntries[$location][$priority], array($this, 'sortMenuEntries'));
         
         return true;
     }
@@ -156,22 +156,22 @@ class MenuManager
      */
     public function getMenuEntries($location = null)
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
 
         // Give the modules the opportunity to add additional menu entries
         $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
         
         if ($location === null) {
-            return $this->_menuEntries;
+            return $this->menuEntries;
         }
         
         // If this location does not exists, return an empty array
-        if (!isset($this->_menuEntries[$location])) {
+        if (!isset($this->menuEntries[$location])) {
             return array();
         }
         
         // Execute the event
-        $menuEntries = $runtimeManager->executeFilter('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', $this->_menuEntries[$location]);
+        $menuEntries = $runtimeManager->executeFilter('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', $this->menuEntries[$location]);
         
         return $menuEntries;
     }
@@ -186,7 +186,7 @@ class MenuManager
      */
     public function getMenuEntryForKey($key)
     {
-        foreach ($this->_menuEntries as $location => $priorities) {
+        foreach ($this->menuEntries as $location => $priorities) {
             foreach ($priorities as $priority=> $menuEntries) {
                 $result = $this->searchMenuEntryForKey($menuEntries, $key);
             
@@ -234,7 +234,7 @@ class MenuManager
      */
     public function setActiveMenuEntry(MenuEntry $menuEntry)
     {
-        $this->_activeMenuEntry = $menuEntry;
+        $this->activeMenuEntry = $menuEntry;
     }
     
     /**
@@ -245,7 +245,7 @@ class MenuManager
      */
     public function getActiveMenuEntry()
     {
-        return $this->_activeMenuEntry;
+        return $this->activeMenuEntry;
     }
     
     /**
@@ -255,17 +255,17 @@ class MenuManager
      */
     public function activateCorrectMenuEntry()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         
         // Execute the pre search correct menu entry event.
         $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\RegisterAdditionalMenuEntries');
         
         // Search the correct menu entry, if no menu entry is set
-        if ($this->_activeMenuEntry == null) {
-            $menuEntry = $this->_searchCorrectMenuEntry();
+        if ($this->activeMenuEntry == null) {
+            $menuEntry = $this->searchCorrectMenuEntry();
             
             if ($menuEntry !== false) {
-                $this->_activeMenuEntry = $menuEntry;
+                $this->activeMenuEntry = $menuEntry;
             }
         }
         
@@ -273,8 +273,8 @@ class MenuManager
         $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\MenuManager\\PostSearchCorrectMenuEntry');
 
         // Activate the menu entry
-        if ($this->_activeMenuEntry !== null) {
-            $this->_activeMenuEntry->setActive(true);
+        if ($this->activeMenuEntry !== null) {
+            $this->activeMenuEntry->setActive(true);
         }
     }
     
@@ -292,7 +292,7 @@ class MenuManager
         $startEntry = false;
         if ($entry === null) {
             $startEntry = true;
-            $entry = $this->_activeMenuEntry;
+            $entry = $this->activeMenuEntry;
             
             if ($entry == null) {
                 return array();
@@ -317,10 +317,10 @@ class MenuManager
             
             // If we have additional breadcrumb function for the breadcrumb navigation
             // we add the function here to the entries array
-            if ($this->_breadcrumbFunction != '') {
+            if ($this->breadcrumbFunction != '') {
                 array_push($entries, new HiddenMenuEntry(
-                    $this->_breadcrumbFunction,
-                    $this->_framework->getRequest()->getRoute()
+                    $this->breadcrumbFunction,
+                    $this->framework->getRequest()->getRoute()
                 ));
             }
         }
@@ -334,11 +334,11 @@ class MenuManager
      * @access protected
      * @return false|\Zepi\Web\General\Entity\MenuEntry
      */
-    protected function _searchCorrectMenuEntry()
+    protected function searchCorrectMenuEntry()
     {
-        foreach ($this->_menuEntries as $location => $priorities) {
+        foreach ($this->menuEntries as $location => $priorities) {
             foreach ($priorities as $priority => $menuEntries) {
-                $menuEntry = $this->_searchCorrectMenuEntryInArray($menuEntries);
+                $menuEntry = $this->searchCorrectMenuEntryInArray($menuEntries);
     
                 if ($menuEntry !== false) {
                     return $menuEntry;
@@ -357,15 +357,15 @@ class MenuManager
      * @param array $menuEntries
      * @return false|\Zepi\Web\General\Entity\MenuEntry
      */
-    protected function _searchCorrectMenuEntryInArray($menuEntries)
+    protected function searchCorrectMenuEntryInArray($menuEntries)
     {
         foreach ($menuEntries as $key => $menuEntry) {
-            if (trim($menuEntry->getTarget(), '/') === trim($this->_framework->getRequest()->getRoute(), '/')) {
+            if (trim($menuEntry->getTarget(), '/') === trim($this->framework->getRequest()->getRoute(), '/')) {
                 return $menuEntry;
             }
             
             if ($menuEntry->hasChildren()) {
-                $menuEntry = $this->_searchCorrectMenuEntryInArray($menuEntry->getChildren());
+                $menuEntry = $this->searchCorrectMenuEntryInArray($menuEntry->getChildren());
                 
                 if ($menuEntry !== false) {
                     return $menuEntry;

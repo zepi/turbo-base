@@ -50,13 +50,13 @@ class CssHelper
      * @access protected
      * @var AssetsManager
      */
-    protected $_assetsManager;
+    protected $assetsManager;
     
     /**
      * @access protected
      * @var FileBackend
      */
-    protected $_fileBackend;
+    protected $fileBackend;
     
     /**
      * Constructs the object
@@ -66,7 +66,7 @@ class CssHelper
      */
     public function __construct(FileBackend $fileBackend)
     {
-        $this->_fileBackend = $fileBackend;
+        $this->fileBackend = $fileBackend;
     }
     
     /**
@@ -80,9 +80,9 @@ class CssHelper
      */
     public function optimizeCssContent(AssetsManager $assetsManager, $content, $file)
     {
-        $this->_assetsManager = $assetsManager;
+        $this->assetsManager = $assetsManager;
         
-        $content = $this->_optimizeUrls($content, $file);
+        $content = $this->optimizeUrls($content, $file);
         
         return $content;
     }
@@ -95,7 +95,7 @@ class CssHelper
      * @param string $file
      * @return string
      */
-    protected function _optimizeUrls($content, $file)
+    protected function optimizeUrls($content, $file)
     {
         preg_match_all('/url\((.[^\)]*)\)/is', $content, $matches, PREG_SET_ORDER);
 
@@ -112,8 +112,8 @@ class CssHelper
                 continue;
             }
             
-            $additionalData = $this->_getAdditionalUriData($uri);
-            $uri = $this->_removeAdditionalUriData($uri);
+            $additionalData = $this->getAdditionalUriData($uri);
+            $uri = $this->removeAdditionalUriData($uri);
 
             $path = dirname($file);
             $fullFilePath = realpath($path . '/' . $uri);
@@ -123,7 +123,7 @@ class CssHelper
 
             if (in_array($fileInformation['extension'], $imageExtensions)) {
                 // Load the file content
-                $fileContent = $this->_fileBackend->loadFromFile($fullFilePath);
+                $fileContent = $this->fileBackend->loadFromFile($fullFilePath);
                 
                 // Encode the file content
                 $encodedContent = base64_encode($fileContent);
@@ -135,8 +135,8 @@ class CssHelper
                 $type = AssetsManager::BINARY;
                 
                 // Cache the file
-                $cachedFile = $this->_assetsManager->generateCachedFile($type, $fullFilePath);
-                $url = $this->_assetsManager->getUrlToTheAssetLoader($cachedFile['file']);
+                $cachedFile = $this->assetsManager->generateCachedFile($type, $fullFilePath);
+                $url = $this->assetsManager->getUrlToTheAssetLoader($cachedFile['file']);
     
                 // Add the additional data
                 if ($additionalData !== '') {
@@ -158,7 +158,7 @@ class CssHelper
      * @param string $uri
      * @return string
      */
-    protected function _getAdditionalUriData($uri)
+    protected function getAdditionalUriData($uri)
     {
         if (strpos($uri, '?') !== false) {
             return substr($uri, strpos($uri, '?'));
@@ -176,7 +176,7 @@ class CssHelper
      * @param string $uri
      * @return string
      */
-    protected function _removeAdditionalUriData($uri)
+    protected function removeAdditionalUriData($uri)
     {
         if (strpos($uri, '?') !== false) {
             return substr($uri, 0, strpos($uri, '?'));

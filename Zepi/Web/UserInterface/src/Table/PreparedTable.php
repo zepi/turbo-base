@@ -52,37 +52,37 @@ class PreparedTable
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\TableAbstract
      */
-    protected $_table;
+    protected $table;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_columns = array();
+    protected $columns = array();
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Head
      */
-    protected $_head;
+    protected $head;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Body
      */
-    protected $_body;
+    protected $body;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Foot
      */
-    protected $_foot;
+    protected $foot;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Pagination\Pagination
      */
-    protected $_pagination;
+    protected $pagination;
     
     /**
      * Constructs the object
@@ -93,8 +93,8 @@ class PreparedTable
      */
     public function __construct(TableAbstract $table, $columns)
     {
-        $this->_table = $table;
-        $this->_columns = $columns;
+        $this->table = $table;
+        $this->columns = $columns;
     }
     
     /**
@@ -105,7 +105,7 @@ class PreparedTable
      */
     public function getTable()
     {
-        return $this->_table;
+        return $this->table;
     }
     
     /**
@@ -116,7 +116,7 @@ class PreparedTable
      */
     public function getHead()
     {
-        return $this->_head;
+        return $this->head;
     }
     
     /**
@@ -127,7 +127,7 @@ class PreparedTable
      */
     public function setHead(Head $head)
     {
-        $this->_head = $head;
+        $this->head = $head;
     }
     
     /**
@@ -138,7 +138,7 @@ class PreparedTable
      */
     public function hasHead()
     {
-        return ($this->_head instanceof Head);
+        return ($this->head instanceof Head);
     }
 
     /**
@@ -149,7 +149,7 @@ class PreparedTable
      */
     public function getBody()
     {
-        return $this->_body;
+        return $this->body;
     }
     
     /**
@@ -160,7 +160,7 @@ class PreparedTable
      */
     public function setBody(Body $body)
     {
-        $this->_body = $body;
+        $this->body = $body;
     }
     
     /**
@@ -171,7 +171,7 @@ class PreparedTable
      */
     public function hasBody()
     {
-        return ($this->_body != '');
+        return ($this->body != '');
     }
     
     /**
@@ -182,7 +182,7 @@ class PreparedTable
      */
     public function getFoot()
     {
-        return $this->_foot;
+        return $this->foot;
     }
     
     /**
@@ -193,7 +193,7 @@ class PreparedTable
      */
     public function setFoot(Foot $foot)
     {
-        $this->_foot = $foot;
+        $this->foot = $foot;
     }
     
     /**
@@ -204,7 +204,7 @@ class PreparedTable
      */
     public function hasFoot()
     {
-        return ($this->_foot != '');
+        return ($this->foot != '');
     }
     
     /**
@@ -215,7 +215,7 @@ class PreparedTable
      */
     public function getNumberOfColumns()
     {
-        return count($this->_columns);
+        return count($this->columns);
     }
     
     /**
@@ -226,7 +226,7 @@ class PreparedTable
      */
     public function getPagination()
     {
-        return $this->_pagination;
+        return $this->pagination;
     }
 
     /**
@@ -237,6 +237,6 @@ class PreparedTable
      */
     public function setPagination(Pagination $pagination)
     {
-        $this->_pagination = $pagination;
+        $this->pagination = $pagination;
     }
 }

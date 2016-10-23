@@ -50,37 +50,37 @@ class ThreadHelper
      * @access protected
      * @var array
      */
-    protected $_tasks = array();
+    protected $tasks = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_processes = array();
+    protected $processes = array();
     
     /**
      * @access protected
      * @var callable
      */
-    protected $_onStart;
+    protected $onStart;
     
     /**
      * @access protected
      * @var callable
      */
-    protected $_onRestart;
+    protected $onRestart;
     
     /**
      * @access protected
      * @var callable
      */
-    protected $_onCrash;
+    protected $onCrash;
     
     /**
      * @access protected
      * @var \Zepi\Core\Utils\Helper\CliHelper
      */
-    protected $_cliHelper;
+    protected $cliHelper;
     
     /**
      * Constructs the object
@@ -90,7 +90,7 @@ class ThreadHelper
      */
     public function __construct(CliHelper $cliHelper)
     {
-        $this->_cliHelper = $cliHelper;
+        $this->cliHelper = $cliHelper;
     }
     
     /**
@@ -101,7 +101,7 @@ class ThreadHelper
      */
     public function onStart(callable $callback)
     {
-        $this->_onStart = $callback;
+        $this->onStart = $callback;
     }
     
     /**
@@ -112,7 +112,7 @@ class ThreadHelper
      */
     public function onRestart(callable $callback)
     {
-        $this->_onRestart = $callback;
+        $this->onRestart = $callback;
     }
     
     /**
@@ -123,7 +123,7 @@ class ThreadHelper
      */
     public function onCrash(callable $callback)
     {
-        $this->_onCrash = $callback;
+        $this->onCrash = $callback;
     }
     
     /**
@@ -134,7 +134,7 @@ class ThreadHelper
      */
     public function addTask(Task $task)
     {
-        $this->_tasks[] = $task;
+        $this->tasks[] = $task;
     }
     
     /**
@@ -147,7 +147,7 @@ class ThreadHelper
         /**
          * Installing signal handlers
          */
-        $this->_cliHelper->writeTimeLine('Setting up signal handlers...');
+        $this->cliHelper->writeTimeLine('Setting up signal handlers...');
         declare(ticks = 1);
     
         pcntl_signal(SIGTERM, array($this, 'shutdownProcesses'));
@@ -160,8 +160,8 @@ class ThreadHelper
         /**
          * Starting processes
          */
-        $this->_cliHelper->writeTimeLine('Starting processes...');
-        foreach ($this->_tasks as $task) {
+        $this->cliHelper->writeTimeLine('Starting processes...');
+        foreach ($this->tasks as $task) {
             for ($i = 0; $i < $task->getInstances(); $i++) {
                 $this->startProcess($task);
             }
@@ -170,9 +170,9 @@ class ThreadHelper
         /**
          * Monitoring processes and restart after the specified time
          */
-        $this->_cliHelper->writeTimeLine('Monitoring processes...');
+        $this->cliHelper->writeTimeLine('Monitoring processes...');
         while (true) {
-            foreach ($this->_processes as $process) {
+            foreach ($this->processes as $process) {
                 /**
                  * If runtime for one process is reached, kill him and restart
                  */
@@ -190,8 +190,8 @@ class ThreadHelper
      */
     public function shutdownProcesses()
     {
-        foreach ($this->_processes as $pid => $process) {
-            unset($this->_processes[$pid]);
+        foreach ($this->processes as $pid => $process) {
+            unset($this->processes[$pid]);
     
             posix_kill($pid, SIGUSR1);
         }
@@ -209,17 +209,17 @@ class ThreadHelper
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeTimeLine('Could not fork!');
+            $this->cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $process = new Process($task, $pid);
-            $this->_processes[$pid] = $process;
+            $this->processes[$pid] = $process;
     
-            if ($this->_onStart !== null) {
-                call_user_func($this->_onStart, $process);
+            if ($this->onStart !== null) {
+                call_user_func($this->onStart, $process);
             }
         } else {
-            $this->_executeTask($task);
+            $this->executeTask($task);
         }
     }
     
@@ -230,23 +230,23 @@ class ThreadHelper
      */
     public function restartProcess(Process $oldProcess)
     {
-        unset($this->_processes[$oldProcess->getPid()]);
+        unset($this->processes[$oldProcess->getPid()]);
         posix_kill($oldProcess->getPid(), SIGUSR1);
     
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeTimeLine('Could not fork!');
+            $this->cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $newProcess = new Process($oldProcess->getTask(), $pid);
-            $this->_processes[$pid] = $newProcess;
+            $this->processes[$pid] = $newProcess;
     
-            if ($this->_onRestart !== null) {
-                call_user_func($this->_onRestart, $oldProcess, $newProcess);
+            if ($this->onRestart !== null) {
+                call_user_func($this->onRestart, $oldProcess, $newProcess);
             }
         } else {
-            $this->_executeTask($oldProcess->getTask());
+            $this->executeTask($oldProcess->getTask());
         }
     }
     
@@ -259,27 +259,27 @@ class ThreadHelper
     {
         $oldPid = pcntl_waitpid(-1, $status, WNOHANG);
     
-        if ($oldPid === -1 || !isset($this->_processes[$oldPid])) {
+        if ($oldPid === -1 || !isset($this->processes[$oldPid])) {
             return;
         }
     
-        $oldProcess = $this->_processes[$oldPid];
-        unset($this->_processes[$oldPid]);
+        $oldProcess = $this->processes[$oldPid];
+        unset($this->processes[$oldPid]);
     
         $pid = pcntl_fork();
     
         if ($pid === -1) {
-            $this->_cliHelper->writeTimeLine('Could not fork!');
+            $this->cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $newProcess = new Process($oldProcess->getTask(), $pid);
-            $this->_processes[$pid] = $newProcess;
+            $this->processes[$pid] = $newProcess;
     
-            if ($this->_onCrash !== null) {
-                call_user_func($this->_onStart, $oldProcess, $newProcess);
+            if ($this->onCrash !== null) {
+                call_user_func($this->onStart, $oldProcess, $newProcess);
             }
         } else {
-            $this->_executeTask($oldProcess->getTask());
+            $this->executeTask($oldProcess->getTask());
         }
     }
     
@@ -289,7 +289,7 @@ class ThreadHelper
      * @param \Zepi\Core\Utils\Entity\Task $task
      * @return Process
      */
-    protected function _executeTask(Task $task)
+    protected function executeTask(Task $task)
     {
         call_user_func($task->getCallback(), $task);
     }

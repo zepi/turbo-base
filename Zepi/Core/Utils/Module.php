@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Core\Utils\Manager\ConfigurationManager
      */
-    protected $_configurationManager;
+    protected $configurationManager;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -61,15 +61,15 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager':
-                if ($this->_configurationManager === null) {
-                    $path = $this->_framework->getRootDirectory() . '/config/framework.ini';
+                if ($this->configurationManager === null) {
+                    $path = $this->framework->getRootDirectory() . '/config/framework.ini';
                     $configFileBackend = new \Zepi\Core\Utils\Backend\ConfigurationFileBackend($path);
                     
-                    $this->_configurationManager = new $className($configFileBackend);
-                    $this->_configurationManager->loadConfigurationFile();
+                    $this->configurationManager = new $className($configFileBackend);
+                    $this->configurationManager->loadConfigurationFile();
                 }
                 
-                return $this->_configurationManager;
+                return $this->configurationManager;
             break;
             
             case '\\Zepi\\Core\\Utils\\Helper\\ThreadHelper':

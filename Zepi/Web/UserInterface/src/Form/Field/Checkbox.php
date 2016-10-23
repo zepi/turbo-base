@@ -49,7 +49,7 @@ class Checkbox extends FieldAbstract
      * @access protected
      * @var array
      */
-    protected $_availableValues = array();
+    protected $availableValues = array();
     
     /**
      * Returns the name of the template to render the field
@@ -83,9 +83,9 @@ class Checkbox extends FieldAbstract
     public function setValue($value, RequestAbstract $request)
     {
         if (!$request->hasParam($this->getHtmlName() . '_change')) {
-            $this->_value = false;
+            $this->value = false;
         } else if ($request->hasParam($this->getHtmlName() . '_change')) {
-            $this->_value = true;
+            $this->value = true;
         }
     }
 }

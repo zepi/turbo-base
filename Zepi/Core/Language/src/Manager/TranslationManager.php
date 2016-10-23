@@ -49,25 +49,25 @@ class TranslationManager
      * @access protected
      * @var \Zepi\Core\Language\Manager\LanguageFileManager
      */
-    protected $_languageFileManager;
+    protected $languageFileManager;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Request\RequestAbstract
      */
-    protected $_request;
+    protected $request;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_translatedStrings = array();
+    protected $translatedStrings = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_loadableFiles = array();
+    protected $loadableFiles = array();
     
     /**
      * Constructs the object.
@@ -78,8 +78,8 @@ class TranslationManager
      */
     public function __construct(LanguageFileManager $languageFileManager, RequestAbstract $request)
     {
-        $this->_languageFileManager = $languageFileManager;
-        $this->_request = $request;
+        $this->languageFileManager = $languageFileManager;
+        $this->request = $request;
     }
     
     /**
@@ -96,24 +96,24 @@ class TranslationManager
     public function translate($string, $namespace, $arguments = array())
     {
         // If the domain not is loaded already load the translation file for the given namespace
-        if (!isset($this->_translatedStrings[$namespace]) || !is_array($this->_translatedStrings[$namespace])) {
-            $this->_loadLanguageFileForNamespace($namespace);
+        if (!isset($this->translatedStrings[$namespace]) || !is_array($this->translatedStrings[$namespace])) {
+            $this->loadLanguageFileForNamespace($namespace);
         }
         
         // If no translation for the original string is available or the string is not translated 
         // return the original string back to the caller.
-        if (!isset($this->_translatedStrings[$namespace][$string]) || $this->_translatedStrings[$namespace][$string] == '') {
+        if (!isset($this->translatedStrings[$namespace][$string]) || $this->translatedStrings[$namespace][$string] == '') {
             if (count($arguments) > 0) {
-                $string = $this->_replacePlaceholders($string, $arguments);
+                $string = $this->replacePlaceholders($string, $arguments);
             }
             
             return $string;
         }
         
-        $translatedString = $this->_replacePlaceholders($this->_translatedStrings[$namespace][$string], $arguments);
+        $translatedString = $this->replacePlaceholders($this->translatedStrings[$namespace][$string], $arguments);
         
         if (count($arguments) > 0) {
-            $translatedString = $this->_replacePlaceholders($translatedString, $arguments);
+            $translatedString = $this->replacePlaceholders($translatedString, $arguments);
         }
         
         return $translatedString;
@@ -127,7 +127,7 @@ class TranslationManager
      * @param array $arguments
      * @return string
      */
-    protected function _replacePlaceholders($string, $arguments)
+    protected function replacePlaceholders($string, $arguments)
     {
         foreach ($arguments as $key => $value) {
             $string = str_replace('%' . $key . '%', $value, $string);
@@ -143,10 +143,10 @@ class TranslationManager
      * @access protected
      * @param string $namespace
      */
-    protected function _loadLanguageFileForNamespace($namespace)
+    protected function loadLanguageFileForNamespace($namespace)
     {
-        $loadedLocale = $this->_request->getLocale();
-        $content = $this->_languageFileManager->loadTranslationFileContent($namespace, $loadedLocale);
+        $loadedLocale = $this->request->getLocale();
+        $content = $this->languageFileManager->loadTranslationFileContent($namespace, $loadedLocale);
         
         // If the received content is empty return false
         if ($content === false) {
@@ -164,11 +164,11 @@ class TranslationManager
             $pattern = substr($line, 0, $delimiter);
             $replacement = substr($line, $delimiter + 3);
             
-            if (!isset($this->_translatedStrings[$namespace]) || !is_array($this->_translatedStrings[$namespace])) {
-                $this->_translatedStrings[$namespace] = array();
+            if (!isset($this->translatedStrings[$namespace]) || !is_array($this->translatedStrings[$namespace])) {
+                $this->translatedStrings[$namespace] = array();
             }
             
-            $this->_translatedStrings[$namespace][$pattern] = $replacement;
+            $this->translatedStrings[$namespace][$pattern] = $replacement;
         }
     }
 }

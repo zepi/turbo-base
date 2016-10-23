@@ -69,14 +69,14 @@ class Email extends FieldAbstract
     {
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
     
-        if (!filter_var($this->_value, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
             return new Error(
                 Error::INVALID_VALUE,
                 $translationManager->translate(
                     'The value for the field %field% is not an valid email address.',
                     '\\Zepi\\Web\\UserInterface', 
                     array(
-                        'field' => $this->_label
+                        'field' => $this->label
                     )
                 )
             );

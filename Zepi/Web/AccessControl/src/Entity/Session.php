@@ -52,19 +52,19 @@ class Session implements SessionInterface
      * @access protected
      * @var \Zepi\Web\AccessControl\Entity\User
      */
-    protected $_user;
+    protected $user;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_sessionToken;
+    protected $sessionToken;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_sessionTokenLifetime;
+    protected $sessionTokenLifetime;
     
     /**
      * Constructs the object
@@ -79,9 +79,9 @@ class Session implements SessionInterface
         $sessionToken,
         $sessionTokenLifetime
     ) {
-        $this->_user = $user;
-        $this->_sessionToken = $sessionToken;
-        $this->_sessionTokenLifetime = $sessionTokenLifetime;
+        $this->user = $user;
+        $this->sessionToken = $sessionToken;
+        $this->sessionTokenLifetime = $sessionTokenLifetime;
     }
     
     /**
@@ -92,7 +92,7 @@ class Session implements SessionInterface
      */
     public function getUser()
     {
-        return $this->_user;
+        return $this->user;
     }
     
     /**
@@ -105,7 +105,7 @@ class Session implements SessionInterface
      */
     public function hasAccess($accessLevel)
     {
-        return $this->_user->hasAccess($accessLevel);
+        return $this->user->hasAccess($accessLevel);
     }
     
     /**
@@ -116,7 +116,7 @@ class Session implements SessionInterface
      */
     public function getSessionToken()
     {
-        return $this->_sessionToken;
+        return $this->sessionToken;
     }
     
     /**
@@ -127,6 +127,6 @@ class Session implements SessionInterface
      */
     public function getSessionTokenLifetime()
     {
-        return $this->_sessionTokenLifetime;
+        return $this->sessionTokenLifetime;
     }
 }

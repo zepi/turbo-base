@@ -54,19 +54,19 @@ class MailHelper
      * @access protected
      * @var \Zepi\Core\Utils\Manager\ConfigurationManager
      */
-    protected $_configurationManager;
+    protected $configurationManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * Constructs the object
@@ -78,9 +78,9 @@ class MailHelper
      */
     public function __construct(ConfigurationManager $configurationManager, TemplatesManager $templatesManager, TranslationManager $translationManager)
     {
-        $this->_configurationManager = $configurationManager;
-        $this->_templatesManager = $templatesManager;
-        $this->_translationManager = $translationManager;
+        $this->configurationManager = $configurationManager;
+        $this->templatesManager = $templatesManager;
+        $this->translationManager = $translationManager;
     }
     
     /**
@@ -93,7 +93,7 @@ class MailHelper
      */
     public function translate($string, $namespace, $args = array())
     {
-        return $this->_translationManager->translate($string, $namespace, $args);
+        return $this->translationManager->translate($string, $namespace, $args);
     }
     
     /**
@@ -104,16 +104,16 @@ class MailHelper
      * 
      * @throws \Zepi\Web\Mail\Exception No mail transport defined. Please check your configuration.
      */
-    protected function _getMailer()
+    protected function getMailer()
     {
         $transport = null;
-        if ($this->_configurationManager->getSetting('mailer', 'type') === 'sendmail') {
-            $transport = \Swift_SendmailTransport::newInstance($this->_configurationManager->getSetting('mailer', 'sendmailCommand'));
-        } else if ($this->_configurationManager->getSetting('mailer', 'type') === 'smtp') {
-            $host = $this->_configurationManager->getSetting('mailer', 'smtpHost');
-            $port = $this->_configurationManager->getSetting('mailer', 'smtpPort');
-            $username = $this->_configurationManager->getSetting('mailer', 'smtpUsername');
-            $password = $this->_configurationManager->getSetting('mailer', 'smtpPassword');
+        if ($this->configurationManager->getSetting('mailer', 'type') === 'sendmail') {
+            $transport = \Swift_SendmailTransport::newInstance($this->configurationManager->getSetting('mailer', 'sendmailCommand'));
+        } else if ($this->configurationManager->getSetting('mailer', 'type') === 'smtp') {
+            $host = $this->configurationManager->getSetting('mailer', 'smtpHost');
+            $port = $this->configurationManager->getSetting('mailer', 'smtpPort');
+            $username = $this->configurationManager->getSetting('mailer', 'smtpUsername');
+            $password = $this->configurationManager->getSetting('mailer', 'smtpPassword');
             
             $transport = \Swift_SmtpTransport::newInstance($host, $port);
             $transport->setUsername($username);
@@ -145,8 +145,8 @@ class MailHelper
         $message->setSubject($subject);
     
         // From
-        $fromEmail = $this->_configurationManager->getSetting('mailer', 'sendFrom');
-        $fromName = $this->_configurationManager->getSetting('mailer', 'sendFromName');
+        $fromEmail = $this->configurationManager->getSetting('mailer', 'sendFrom');
+        $fromName = $this->configurationManager->getSetting('mailer', 'sendFromName');
         $message->setFrom(array($fromEmail => $fromName));
     
         // To
@@ -157,11 +157,11 @@ class MailHelper
         
         // Text body
         if ($textBody === false) {
-            $textBody = $this->_createTextBody($htmlBody);
+            $textBody = $this->createTextBody($htmlBody);
         }
         $message->addPart($textBody, 'text/plain');
     
-        $mailer = $this->_getMailer();
+        $mailer = $this->getMailer();
         return $mailer->send($message);
     }
     
@@ -172,7 +172,7 @@ class MailHelper
      * @param string $html
      * @return string
      */
-    protected function _createTextBody($html)
+    protected function createTextBody($html)
     {
         $text = \Html2Text\Html2Text::convert($html);
         

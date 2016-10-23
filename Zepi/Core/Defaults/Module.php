@@ -53,7 +53,7 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
     }
@@ -65,7 +65,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
         $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
     }

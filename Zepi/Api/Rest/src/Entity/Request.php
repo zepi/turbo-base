@@ -52,31 +52,31 @@ class Request
      * @access protected
      * @var string
      */
-    protected $_requestMethod = self::REQUEST_METHOD_GET;
+    protected $requestMethod = self::REQUEST_METHOD_GET;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_host;
+    protected $host;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_endpoint;
+    protected $endpoint;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_queryData = array();
+    protected $queryData = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_postData = array();
+    protected $postData = array();
     
     /**
      * Constructs the object
@@ -88,9 +88,9 @@ class Request
      */
     public function __construct($requestMethod, $host, $endpoint)
     {
-        $this->_requestMethod = $requestMethod;
-        $this->_host = $host;
-        $this->_endpoint = $endpoint;
+        $this->requestMethod = $requestMethod;
+        $this->host = $host;
+        $this->endpoint = $endpoint;
     }
     
     /**
@@ -101,7 +101,7 @@ class Request
      */
     public function getRequestMethod()
     {
-        return $this->_requestMethod;
+        return $this->requestMethod;
     }
     
     /**
@@ -112,7 +112,7 @@ class Request
      */
     public function getHost()
     {
-        return $this->_host;
+        return $this->host;
     }
     
     /**
@@ -123,7 +123,7 @@ class Request
      */
     public function getEndpoint()
     {
-        return $this->_endpoint;
+        return $this->endpoint;
     }
     
     /**
@@ -135,7 +135,7 @@ class Request
      */
     public function addQueryData($key, $value)
     {
-        $this->_queryData[$key] = $value;
+        $this->queryData[$key] = $value;
     }
     
     /**
@@ -146,7 +146,7 @@ class Request
      */
     public function getQueryData()
     {
-        return $this->_queryData;
+        return $this->queryData;
     }
     
     /**
@@ -158,7 +158,7 @@ class Request
      */
     public function addPostData($key, $value)
     {
-        $this->_postData[$key] = $value;
+        $this->postData[$key] = $value;
     }
     
     /**
@@ -169,6 +169,6 @@ class Request
      */
     public function getPostData()
     {
-        return $this->_postData;
+        return $this->postData;
     }
 }

@@ -64,7 +64,7 @@ class ProfileChangePassword extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * Constructs the object
@@ -75,8 +75,8 @@ class ProfileChangePassword extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
     }
     
     /**
@@ -99,7 +99,7 @@ class ProfileChangePassword extends FrontendEventHandler
         $this->setTitle($this->translate('Profile - Change password', '\\Zepi\\Web\\AccessControl'));
         
         // Get the Form object
-        $changePasswordForm = $this->_createForm($framework, $request, $response);
+        $changePasswordForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
         $changePasswordForm->processFormData($request);
@@ -109,7 +109,7 @@ class ProfileChangePassword extends FrontendEventHandler
         if ($changePasswordForm->isSubmitted()) {
             $errors = $changePasswordForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_changePassword($changePasswordForm, $framework, $request, $response);
+                $result = $this->changePassword($changePasswordForm, $framework, $request, $response);
             }
         }
         
@@ -153,7 +153,7 @@ class ProfileChangePassword extends FrontendEventHandler
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    protected function _changePassword(Form $form, Framework $framework, WebRequest $request, Response $response)
+    protected function changePassword(Form $form, Framework $framework, WebRequest $request, Response $response)
     {
         // Get the logged in user 
         $session = $request->getSession();
@@ -164,7 +164,7 @@ class ProfileChangePassword extends FrontendEventHandler
         $newPassword = trim($form->getField('change-password', 'new-password')->getValue());
         $newPasswordConfirmed = trim($form->getField('change-password', 'new-password-confirmed')->getValue());
         
-        $result = $this->_validateData($framework, $user, $oldPassword, $newPassword, $newPasswordConfirmed);
+        $result = $this->validateData($framework, $user, $oldPassword, $newPassword, $newPasswordConfirmed);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -175,7 +175,7 @@ class ProfileChangePassword extends FrontendEventHandler
         $user->setNewPassword($newPassword);
         
         // Get the UserManager to update the user
-        $result = $this->_userManager->updateUser($user);
+        $result = $this->userManager->updateUser($user);
         
         return $result;
     }
@@ -190,7 +190,7 @@ class ProfileChangePassword extends FrontendEventHandler
      * @param string $newPassword
      * @param string $newPasswordConfirmed
      */
-    protected function _validateData(Framework $framework, User $user, $oldPassword, $newPassword, $newPasswordConfirmed)
+    protected function validateData(Framework $framework, User $user, $oldPassword, $newPassword, $newPasswordConfirmed)
     {
         // Old password
         if (!$user->comparePasswords($oldPassword)) {
@@ -218,7 +218,7 @@ class ProfileChangePassword extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, WebRequest $request, Response $response)
+    protected function createForm(Framework $framework, WebRequest $request, Response $response)
     {
         // Create the form
         $form = new Form('change-password', $request->getFullRoute('profile/change-password'), 'post');

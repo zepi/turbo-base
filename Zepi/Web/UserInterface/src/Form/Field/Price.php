@@ -49,25 +49,25 @@ class Price extends FieldAbstract
      * @access protected
      * @var string
      */
-    protected $_currency;
+    protected $currency;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_separatorThousands;
+    protected $separatorThousands;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_separatorDecimal;
+    protected $separatorDecimal;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_suffix;
+    protected $suffix;
     
     /**
      * Constructs the object
@@ -87,10 +87,10 @@ class Price extends FieldAbstract
      */
     public function __construct($key, $label, $isMandatory = false, $value = '', $currency = 'USD', $separatorThousands = '.', $separatorDecimal = ',', $suffix = '', $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
-        $this->_currency = $currency;
-        $this->_separatorThousands = $separatorThousands;
-        $this->_separatorDecimal = $separatorDecimal;
-        $this->_suffix = $suffix;
+        $this->currency = $currency;
+        $this->separatorThousands = $separatorThousands;
+        $this->separatorDecimal = $separatorDecimal;
+        $this->suffix = $suffix;
         
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -115,7 +115,7 @@ class Price extends FieldAbstract
      */
     public function setValue($value, RequestAbstract $request)
     {
-        $this->_value = preg_replace('/([^0-9\\.])/i', '', $value);
+        $this->value = preg_replace('/([^0-9\\.])/i', '', $value);
     }
     
     /**
@@ -126,7 +126,7 @@ class Price extends FieldAbstract
      */
     public function getCurrency()
     {
-        return $this->_currency;
+        return $this->currency;
     }
     
     /**
@@ -137,7 +137,7 @@ class Price extends FieldAbstract
      */
     public function getSeparatorThousands()
     {
-        return $this->_separatorThousands;
+        return $this->separatorThousands;
     }
     
     /**
@@ -148,7 +148,7 @@ class Price extends FieldAbstract
      */
     public function getSeparatorDecimal()
     {
-        return $this->_separatorDecimal;
+        return $this->separatorDecimal;
     }
     
     /**
@@ -159,6 +159,6 @@ class Price extends FieldAbstract
      */
     public function getSuffix()
     {
-        return $this->_suffix;
+        return $this->suffix;
     }
 }

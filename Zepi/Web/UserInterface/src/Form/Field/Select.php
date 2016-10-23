@@ -47,7 +47,7 @@ class Select extends FieldAbstract
      * @access protected
      * @var array
      */
-    protected $_availableValues = array();
+    protected $availableValues = array();
     
     /**
      * Constructs the object
@@ -73,7 +73,7 @@ class Select extends FieldAbstract
             $placeholder = '',
             $tabIndex = null
     ) {
-        $this->_availableValues = $availableValues;
+        $this->availableValues = $availableValues;
     
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -97,6 +97,6 @@ class Select extends FieldAbstract
      */
     public function getAvailableValues()
     {
-        return $this->_availableValues;
+        return $this->availableValues;
     }
 }

@@ -2,5 +2,5 @@
     $layoutRenderer = $additionalData['layoutRenderer']; 
     $container = $additionalData['container'];
 ?>
-<?php echo $this->_templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
+<?php echo $this->templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
 <p class="help-block"><?php echo $container->getHelpText(); ?></p>

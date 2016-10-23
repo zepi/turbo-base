@@ -50,13 +50,13 @@ class ErrorBox extends Part
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\ErrorBox';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\ErrorBox';
     
     /**
      * @access protected
      * @var array
      */
-    protected $_errors = array();
+    protected $errors = array();
     
     /**
      * Constructs the object
@@ -67,9 +67,9 @@ class ErrorBox extends Part
      */
     public function __construct($key, $priority = 10, $errors = array())
     {
-        $this->_key = $key;
-        $this->_priority = 10;
-        $this->_errors = $errors;
+        $this->key = $key;
+        $this->priority = 10;
+        $this->errors = $errors;
     }
     
     /**
@@ -80,7 +80,7 @@ class ErrorBox extends Part
      */
     public function addError(Error $error)
     {
-        $this->_errors[] = $error;
+        $this->errors[] = $error;
     }
     
     /**
@@ -91,7 +91,7 @@ class ErrorBox extends Part
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
     
     /**
@@ -102,6 +102,6 @@ class ErrorBox extends Part
      */
     public function hasErrors()
     {
-        return (count($this->_errors) > 0);
+        return (count($this->errors) > 0);
     }
 }

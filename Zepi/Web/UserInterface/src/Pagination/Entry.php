@@ -47,7 +47,7 @@ class Entry
      * @access protected
      * @var string
      */
-    protected $_label;
+    protected $label;
     
     /**
      * Constructs the object
@@ -56,7 +56,7 @@ class Entry
      */
     public function __construct($label)
     {
-        $this->_label = $label;
+        $this->label = $label;
     }
     
     /**
@@ -67,6 +67,6 @@ class Entry
      */
     public function getLabel()
     {
-        return $this->_label;
+        return $this->label;
     }
 }

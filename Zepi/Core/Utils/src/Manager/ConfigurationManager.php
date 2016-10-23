@@ -49,13 +49,13 @@ class ConfigurationManager
      * @access protected
      * @var \Zepi\Core\Utils\Backend\ConfigurationFileBackend
      */
-    protected $_configurationFileBackend;
+    protected $configurationFileBackend;
 
     /**
      * @access protected
      * @var array
      */
-    protected $_settings = array();
+    protected $settings = array();
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class ConfigurationManager
      */
     public function __construct(ConfigurationFileBackend $configurationFileBackend)
     {
-        $this->_configurationFileBackend = $configurationFileBackend;
+        $this->configurationFileBackend = $configurationFileBackend;
     }
     
     /**
@@ -75,7 +75,7 @@ class ConfigurationManager
      */
     public function loadConfigurationFile()
     {
-        $this->_settings = $this->_configurationFileBackend->loadConfiguration();
+        $this->settings = $this->configurationFileBackend->loadConfiguration();
     }
     
     /**
@@ -85,7 +85,7 @@ class ConfigurationManager
      */
     public function saveConfigurationFile()
     {
-        $this->_configurationFileBackend->saveConfiguration($this->_settings);
+        $this->configurationFileBackend->saveConfiguration($this->settings);
     }
     
     /**
@@ -102,7 +102,7 @@ class ConfigurationManager
             return false;
         }
         
-        return $this->_settings[$group][$key];
+        return $this->settings[$group][$key];
     }
     
     /**
@@ -113,7 +113,7 @@ class ConfigurationManager
      */
     public function getSettings()
     {
-        return $this->_settings;
+        return $this->settings;
     }
     
     /**
@@ -126,7 +126,7 @@ class ConfigurationManager
      */
     public function hasSetting($group, $key)
     {
-        return (isset($this->_settings[$group][$key]));
+        return (isset($this->settings[$group][$key]));
     }
     
     /**
@@ -139,11 +139,11 @@ class ConfigurationManager
      */
     public function setSetting($group, $key, $value)
     {
-        if (!isset($this->_settings[$group]) || !is_array($this->_settings[$group])) {
-            $this->_settings[$group] = array();
+        if (!isset($this->settings[$group]) || !is_array($this->settings[$group])) {
+            $this->settings[$group] = array();
         }
         
-        $this->_settings[$group][$key] = $value;
+        $this->settings[$group][$key] = $value;
     }
     
     /**
@@ -156,7 +156,7 @@ class ConfigurationManager
      */
     public function addSettingIfNotSet($group, $key, $value)
     {
-        if (isset($this->_settings[$group][$key])) {
+        if (isset($this->settings[$group][$key])) {
             return;
         }
         
@@ -175,7 +175,7 @@ class ConfigurationManager
             return false;
         }
         
-        unset($this->_settings[$group]);
+        unset($this->settings[$group]);
     }
     
     /**
@@ -187,6 +187,6 @@ class ConfigurationManager
      */
     public function hasSettingGroup($group)
     {
-        return (isset($this->_settings[$group]));
+        return (isset($this->settings[$group]));
     }
 }

@@ -56,7 +56,7 @@ class DeleteGroup extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\GroupManager
      */
-    protected $_groupManager;
+    protected $groupManager;
     
     /**
      * Constructs the object
@@ -67,8 +67,8 @@ class DeleteGroup extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, GroupManager $groupManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_groupManager = $groupManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->groupManager = $groupManager;
     }
     
     /**
@@ -97,16 +97,16 @@ class DeleteGroup extends FrontendEventHandler
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if (!$this->_groupManager->hasGroupForUuid($uuid)) {
+        if (!$this->groupManager->hasGroupForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/groups/'));
             return;
         }
         
-        $group = $this->_groupManager->getGroupForUuid($uuid);
+        $group = $this->groupManager->getGroupForUuid($uuid);
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam(1) === 'confirmed') {
-            $this->_groupManager->deleteGroup($group);
+            $this->groupManager->deleteGroup($group);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroupFinished', array(
                 'group' => $group

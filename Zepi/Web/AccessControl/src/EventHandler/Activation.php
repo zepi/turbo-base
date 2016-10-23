@@ -32,13 +32,13 @@ class Activation extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -50,9 +50,9 @@ class Activation extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager, AccessControlManager $accessControlManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
-        $this->_accessControlManager = $accessControlManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -75,7 +75,7 @@ class Activation extends FrontendEventHandler
         $activationToken = $request->getRouteParam(1);
         
         // Activate the user
-        $result = $this->_activateUser($uuid, $activationToken);
+        $result = $this->activateUser($uuid, $activationToken);
                 
         // Display the result
         $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Activation', array(
@@ -91,21 +91,21 @@ class Activation extends FrontendEventHandler
      * @param string $activationToken
      * @return array
      */
-    protected function _activateUser($uuid, $activationToken)
+    protected function activateUser($uuid, $activationToken)
     {
         // Check the uuid
-        if (!$this->_userManager->hasUserForUuid($uuid)) {
+        if (!$this->userManager->hasUserForUuid($uuid)) {
             return array('result' => false, 'message' => $this->translate('Account with the given UUID does not exist.', '\\Zepi\\Web\\AccessControl'));
         }
         
         // Compare the activation token
-        $user = $this->_userManager->getUserForUuid($uuid);
+        $user = $this->userManager->getUserForUuid($uuid);
         if ($user->getMetaData('activationToken') !== $activationToken) {
             return array('result' => false, 'message' => $this->translate('The given activation token is not valid.', '\\Zepi\\Web\\AccessControl'));
         }
         
         // Remove the disabled access level
-        $this->_accessControlManager->revokePermission($uuid, '\\Global\\Disabled');
+        $this->accessControlManager->revokePermission($uuid, '\\Global\\Disabled');
         
         return array('result' => true, 'message' => $this->translate('Your account was activated successfully.', '\\Zepi\\Web\\AccessControl'));
     }

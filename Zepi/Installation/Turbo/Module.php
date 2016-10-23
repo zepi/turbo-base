@@ -55,8 +55,8 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation':
-                $cliHelper = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper');
-                $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+                $cliHelper = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper');
+                $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         
                 return new $className($cliHelper, $configurationManager);
                 break;
@@ -77,7 +77,7 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         // Add the event handler
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation');
     }
     
@@ -89,7 +89,7 @@ class Module extends ModuleAbstract
     public function deactivate()
     {
         // Add the event handler
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->removeEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation');
     }
 }

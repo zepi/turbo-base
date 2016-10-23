@@ -39,13 +39,13 @@ class RequestNewPassword extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\Mail\Helper\MailHelper
      */
-    protected $_mailHelper;
+    protected $mailHelper;
     
     /**
      * Constructs the object
@@ -57,9 +57,9 @@ class RequestNewPassword extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager, MailHelper $mailHelper)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
-        $this->_mailHelper = $mailHelper;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
+        $this->mailHelper = $mailHelper;
     }
     
     /**
@@ -76,7 +76,7 @@ class RequestNewPassword extends FrontendEventHandler
         $this->setTitle($this->translate('Request a new password', '\\Zepi\\Web\\AccessControl'));
         
         // Get the form object
-        $requestForm = $this->_createForm($framework, $request, $response);
+        $requestForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
         $requestForm->processFormData($request);
@@ -87,7 +87,7 @@ class RequestNewPassword extends FrontendEventHandler
         if ($requestForm->isSubmitted()) {
             $errors = $requestForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_sendRequest($requestForm, $framework, $request, $response);
+                $result = $this->sendRequest($requestForm, $framework, $request, $response);
             } 
         }
          
@@ -140,12 +140,12 @@ class RequestNewPassword extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return string|boolean
      */
-    protected function _sendRequest(Form $form, Framework $framework, RequestAbstract $request, Response $response)
+    protected function sendRequest(Form $form, Framework $framework, RequestAbstract $request, Response $response)
     {
         $group = $form->searchPartByKeyAndType('user-data');
         $username = trim($group->getPart('username')->getValue());
         
-        $result = $this->_validateData($framework, $username);
+        $result = $this->validateData($framework, $username);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -153,18 +153,18 @@ class RequestNewPassword extends FrontendEventHandler
         }
         
         // Load the user
-        $user = $this->_userManager->getUserForUsername($username);
+        $user = $this->userManager->getUserForUsername($username);
         
         // Generate an request token
         $token = uniqid(md5($user->getMetaData('email')), true);
         $user->setMetaData('passwordRequestToken', $token);
         $user->setMetaData('passwordRequestTokenLifetime', time() + 3600);
         
-        $this->_userManager->updateUser($user);
+        $this->userManager->updateUser($user);
         
         // Send the request mail
         $requestLink = $request->getFullRoute('/generate-new-password/' . $user->getUuid() . '/' . $token . '/');
-        $this->_mailHelper->sendMail(
+        $this->mailHelper->sendMail(
             $user->getMetaData('email'),
             $this->translate('New password requested', '\\Zepi\\Web\\AccessControl'),
             $this->render('\\Zepi\\Web\\AccessControl\\Mail\\RequestNewPassword', array(
@@ -183,10 +183,10 @@ class RequestNewPassword extends FrontendEventHandler
      * @param string $username
      * @return boolean|string
      */
-    protected function _validateData(Framework $framework, $username)
+    protected function validateData(Framework $framework, $username)
     {
         // If the given username doesn't exists
-        if (!$this->_userManager->hasUserForUsername($username)) {
+        if (!$this->userManager->hasUserForUsername($username)) {
             return $this->translate('The inserted username does not exist.', '\\Zepi\\Web\\AccessControl');
         }
         
@@ -203,7 +203,7 @@ class RequestNewPassword extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, RequestAbstract $request, Response $response)
+    protected function createForm(Framework $framework, RequestAbstract $request, Response $response)
     {
         // Create the form
         $form = new Form('request-new-password', $request->getFullRoute(), 'post');

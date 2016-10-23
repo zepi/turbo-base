@@ -50,37 +50,37 @@ class Selector extends FieldAbstract
      * @access protected
      * @var array
      */
-    protected $_items = array();
+    protected $items = array();
     
     /**
      * @access protected
      * @var string
      */
-    protected $_leftTitle;
+    protected $leftTitle;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_rightTitle;
+    protected $rightTitle;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_itemTemplate;
+    protected $itemTemplate;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_leftItems = array();
+    protected $leftItems = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_rightItems = array();
+    protected $rightItems = array();
     
     /**
      * Constructs the object
@@ -112,10 +112,10 @@ class Selector extends FieldAbstract
         $placeholder = '',
         $tabIndex = null
     ) {
-        $this->_items = $items;
-        $this->_leftTitle = $leftTitle;
-        $this->_rightTitle = $rightTitle;
-        $this->_itemTemplate = $itemTemplate;
+        $this->items = $items;
+        $this->leftTitle = $leftTitle;
+        $this->rightTitle = $rightTitle;
+        $this->itemTemplate = $itemTemplate;
         
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -165,13 +165,13 @@ class Selector extends FieldAbstract
         $hashs = json_decode($value);
         
         if ($hashs === false) {
-            $this->_value = array();
+            $this->value = array();
             return;
         }
 
         $values = array();        
         foreach ($hashs as $hash) {
-            $item = $this->_getItemByHash($hash);
+            $item = $this->getItemByHash($hash);
             if ($item === false) {
                 continue;
             }
@@ -179,9 +179,9 @@ class Selector extends FieldAbstract
             $values[] = $item->getKey();
         }
 
-        $this->_value = $values;
+        $this->value = $values;
         
-        $this->_transformItems();
+        $this->transformItems();
     }
     
     /**
@@ -192,9 +192,9 @@ class Selector extends FieldAbstract
      * @param string $hash
      * @return \Zepi\Web\UserInterface\Entity\SelectorItem|boolean
      */
-    protected function _getItemByHash($hash)
+    protected function getItemByHash($hash)
     {
-        foreach ($this->_items as $item) {
+        foreach ($this->items as $item) {
             if ($item->getHash() === $hash) {
                 return $item;
             }
@@ -211,7 +211,7 @@ class Selector extends FieldAbstract
      */
     public function getItems()
     {
-        return $this->_items;
+        return $this->items;
     }
     
     /**
@@ -222,7 +222,7 @@ class Selector extends FieldAbstract
      */
     public function getLeftTitle()
     {
-        return $this->_leftTitle;
+        return $this->leftTitle;
     }
     
     /**
@@ -233,7 +233,7 @@ class Selector extends FieldAbstract
      */
     public function getRightTitle()
     {
-        return $this->_rightTitle;
+        return $this->rightTitle;
     }
     
     /**
@@ -244,7 +244,7 @@ class Selector extends FieldAbstract
      */
     public function getItemTemplate()
     {
-        return $this->_itemTemplate;
+        return $this->itemTemplate;
     }
     
     /**
@@ -256,11 +256,11 @@ class Selector extends FieldAbstract
     public function getLeftItems()
     {
         // Transform the items into the two sides
-        if (empty($this->_leftItems) && empty($this->_rightItems)) {
-            $this->_transformItems();
+        if (empty($this->leftItems) && empty($this->rightItems)) {
+            $this->transformItems();
         }
         
-        return $this->_leftItems;
+        return $this->leftItems;
     }
     
     /**
@@ -272,11 +272,11 @@ class Selector extends FieldAbstract
     public function getRightItems()
     {
         // Transform the items into the two sides
-        if (empty($this->_leftItems) && empty($this->_rightItems)) {
-            $this->_transformItems();
+        if (empty($this->leftItems) && empty($this->rightItems)) {
+            $this->transformItems();
         }
         
-        return $this->_rightItems;
+        return $this->rightItems;
     }
     
     /**
@@ -284,16 +284,16 @@ class Selector extends FieldAbstract
      * 
      * @access protected
      */
-    protected function _transformItems()
+    protected function transformItems()
     {
-        $this->_leftItems = array();
-        $this->_rightItems = array();
+        $this->leftItems = array();
+        $this->rightItems = array();
         
-        foreach ($this->_items as $hash => $value) {
-            if (array_search($value->getKey(), $this->_value) !== false) {
-                $this->_rightItems[] = $value;
+        foreach ($this->items as $hash => $value) {
+            if (array_search($value->getKey(), $this->value) !== false) {
+                $this->rightItems[] = $value;
             } else {
-                $this->_leftItems[] = $value;
+                $this->leftItems[] = $value;
             }
         }
     }

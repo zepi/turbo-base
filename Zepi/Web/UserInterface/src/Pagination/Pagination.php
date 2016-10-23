@@ -47,7 +47,7 @@ class Pagination
      * @access protected
      * @var array
      */
-    protected $_entries = array();
+    protected $entries = array();
     
     /**
      * Adds an entry to the pagination
@@ -57,7 +57,7 @@ class Pagination
      */
     public function addEntry(Entry $entry)
     {
-        $this->_entries[] = $entry;
+        $this->entries[] = $entry;
     }
     
     /**
@@ -68,7 +68,7 @@ class Pagination
      */
     public function getEntries()
     {
-        return $this->_entries;
+        return $this->entries;
     }
     
     /**
@@ -79,6 +79,6 @@ class Pagination
      */
     public function getLatestEntry()
     {
-        return end($this->_entries);
+        return end($this->entries);
     }
 }

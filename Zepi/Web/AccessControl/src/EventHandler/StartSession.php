@@ -55,7 +55,7 @@ class StartSession implements WebEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\SessionManager
      */
-    protected $_sessionManager;
+    protected $sessionManager;
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class StartSession implements WebEventHandlerInterface
      */
     public function __construct(SessionManager $sessionManager)
     {
-        $this->_sessionManager = $sessionManager;
+        $this->sessionManager = $sessionManager;
     }
     
     /**
@@ -84,6 +84,6 @@ class StartSession implements WebEventHandlerInterface
         }
         
         // Reinitialize the session
-        $this->_sessionManager->reinitializeSession($framework, $request, $response);
+        $this->sessionManager->reinitializeSession($framework, $request, $response);
     }
 }

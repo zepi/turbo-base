@@ -55,7 +55,7 @@ class Logout extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\SessionManager
      */
-    protected $_sessionManager;
+    protected $sessionManager;
     
     /**
      * Constructs the object
@@ -66,8 +66,8 @@ class Logout extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, SessionManager $sessionManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_sessionManager = $sessionManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->sessionManager = $sessionManager;
     }
     
     /**
@@ -88,7 +88,7 @@ class Logout extends FrontendEventHandler
         }
         
         // Initializes the user session
-        $this->_sessionManager->logoutUser($request, $response);
+        $this->sessionManager->logoutUser($request, $response);
         
         // Set the title for the page
         $this->setTitle($this->translate('Successfully logged out', '\\Zepi\\Web\\AccessControl'));

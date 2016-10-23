@@ -49,19 +49,19 @@ class DynamicZone extends FieldAbstract
      * @access protected
      * @var string
      */
-    protected $_key = '';
+    protected $key = '';
     
     /**
      * @access protected
      * @var string
      */
-    protected $_triggerKey;
+    protected $triggerKey;
     
     /**
      * @access protected
      * @var callable
      */
-    protected $_callback;
+    protected $callback;
     
     /**
      * Constructs the object
@@ -73,9 +73,9 @@ class DynamicZone extends FieldAbstract
      */
     public function __construct($key, $triggerKey, $callback)
     {
-        $this->_key = $key;
-        $this->_triggerKey = $triggerKey;
-        $this->_callback = $callback;
+        $this->key = $key;
+        $this->triggerKey = $triggerKey;
+        $this->callback = $callback;
     }
     
     /**
@@ -119,7 +119,7 @@ class DynamicZone extends FieldAbstract
      */
     public function getTriggerKey()
     {
-        return $this->_triggerKey;
+        return $this->triggerKey;
     }
     
     /**
@@ -133,7 +133,7 @@ class DynamicZone extends FieldAbstract
         $form = $this->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\Form');
         
         if (is_object($form)) {
-            $part = $form->searchPartByKeyAndType($this->_triggerKey);
+            $part = $form->searchPartByKeyAndType($this->triggerKey);
             return $part->getHtmlId();
         }
         
@@ -148,7 +148,7 @@ class DynamicZone extends FieldAbstract
      */
     public function getCallback()
     {
-        return $this->_callback;
+        return $this->callback;
     }
     
     /**
@@ -159,7 +159,7 @@ class DynamicZone extends FieldAbstract
      */
     public function renderZone()
     {
-        return call_user_func($this->_callback, $this);
+        return call_user_func($this->callback, $this);
     }
     
     /**

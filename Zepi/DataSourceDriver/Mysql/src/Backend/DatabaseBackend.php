@@ -50,12 +50,12 @@ class DatabaseBackend
     /**
      * @var bool
      */
-    protected $_isConnected = false;
+    protected $isConnected = false;
     
     /**
      * @var \Zepi\DataSourceDriver\Mysql\Wrapper\Pdo
      */
-    protected $_pdo;
+    protected $pdo;
     
     /**
      * Constructs the object.
@@ -64,7 +64,7 @@ class DatabaseBackend
      */
     public function __construct(Pdo $pdo)
     {
-        $this->_pdo = $pdo;
+        $this->pdo = $pdo;
     }
     
     /**
@@ -89,7 +89,7 @@ class DatabaseBackend
                 $sql .= 'AND ';
             }
             
-            $sql .= $this->_getFieldName($columnPrefix, $filter->getFieldName()) . ' ' . $filter->getMode() . ' ' . $this->_pdo->quote($this->_replaceWildcard($filter->getNeededValue())) . ' ';
+            $sql .= $this->getFieldName($columnPrefix, $filter->getFieldName()) . ' ' . $filter->getMode() . ' ' . $this->pdo->quote($this->replaceWildcard($filter->getNeededValue())) . ' ';
         }
         
         // Sorting
@@ -99,7 +99,7 @@ class DatabaseBackend
                 $mode = $dataRequest->getSortByDirection();
             }
             
-            $sql .= 'ORDER BY ' . $this->_getFieldName($columnPrefix, $dataRequest->getSortBy()) . ' ' . $mode . ' ';
+            $sql .= 'ORDER BY ' . $this->getFieldName($columnPrefix, $dataRequest->getSortBy()) . ' ' . $mode . ' ';
         }
         
         // Offset
@@ -118,7 +118,7 @@ class DatabaseBackend
      * @param string $columnName
      * @return string
      */
-    protected function _getFieldName($columnPrefix, $columnName)
+    protected function getFieldName($columnPrefix, $columnName)
     {
         return $columnPrefix . '_' . $columnName;
     }
@@ -130,7 +130,7 @@ class DatabaseBackend
      * @param string $value
      * @return string
      */
-    protected function _replaceWildcard($value)
+    protected function replaceWildcard($value)
     {
         return str_replace('*', '%', $value);
     }
@@ -146,8 +146,8 @@ class DatabaseBackend
     public function execute($sql)
     {
         try {
-            $this->_connect();
-            $statement = $this->_pdo->query($sql);
+            $this->connect();
+            $statement = $this->pdo->query($sql);
              
             return $statement->rowCount();
         } catch (\PDOException $e) {
@@ -166,8 +166,8 @@ class DatabaseBackend
     public function query($sql)
     {
         try {
-            $this->_connect();
-            $statement = $this->_pdo->query($sql);
+            $this->connect();
+            $statement = $this->pdo->query($sql);
 
             $statement->setFetchMode(\PDO::FETCH_ASSOC);           
             return $statement;
@@ -179,14 +179,14 @@ class DatabaseBackend
     /**
      * Connects to the database using lazy initialization
      */
-    protected function _connect()
+    protected function connect()
     {
-        if ($this->_isConnected) {
+        if ($this->isConnected) {
             return;
         }
         
-        $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->_isConnected = true;
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->isConnected = true;
     }
 
     /**
@@ -197,7 +197,7 @@ class DatabaseBackend
      */
     public function escape($value) 
     {
-        return $this->_pdo->quote($value);
+        return $this->pdo->quote($value);
     }
 
     /**
@@ -205,7 +205,7 @@ class DatabaseBackend
      */
     public function beginTransaction()
     {
-        $this->_pdo->beginTransaction();
+        $this->pdo->beginTransaction();
     }
     
     /**
@@ -213,7 +213,7 @@ class DatabaseBackend
      */
     public function commit()
     {
-        $this->_pdo->commit();
+        $this->pdo->commit();
     }
     
     /**
@@ -221,7 +221,7 @@ class DatabaseBackend
      */
     public function rollBack()
     {
-        $this->_pdo->rollBack();
+        $this->pdo->rollBack();
     }
     
     /**
@@ -232,6 +232,6 @@ class DatabaseBackend
      */
     public function getLastId()
     {
-        return $this->_pdo->lastInsertId();
+        return $this->pdo->lastInsertId();
     }
 }

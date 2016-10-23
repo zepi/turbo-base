@@ -52,7 +52,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\UserInterface\Frontend\FrontendHelper
      */
-    protected $_frontendHelper;
+    protected $frontendHelper;
     
     /**
      * Constructs the object
@@ -62,7 +62,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function __construct(FrontendHelper $frontendHelper)
     {
-        $this->_frontendHelper = $frontendHelper;
+        $this->frontendHelper = $frontendHelper;
     }
     
     /**
@@ -86,7 +86,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getSetting($group, $key)
     {
-        return $this->_frontendHelper->getSetting($group, $key);
+        return $this->frontendHelper->getSetting($group, $key);
     }
     
     /**
@@ -100,7 +100,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function translate($string, $namespace = null, $arguments = array())
     {
-        return $this->_frontendHelper->translate($string, $namespace, $arguments);
+        return $this->frontendHelper->translate($string, $namespace, $arguments);
     }
     
     /**
@@ -113,7 +113,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function render($key, $additionalData = array())
     {
-        return $this->_frontendHelper->render($key, $additionalData);
+        return $this->frontendHelper->render($key, $additionalData);
     }
     
     /**
@@ -125,7 +125,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function setTitle($title, $function = '')
     {
-        $this->_frontendHelper->setTitle($title, $function);
+        $this->frontendHelper->setTitle($title, $function);
     }
     
     /**
@@ -136,7 +136,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getTitle()
     {
-        return $this->_frontendHelper->getTitle();
+        return $this->frontendHelper->getTitle();
     }
     
     /**
@@ -149,7 +149,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function activateMenuEntry($key = '')
     {
-        return $this->_frontendHelper->activateMenuEntry($key);
+        return $this->frontendHelper->activateMenuEntry($key);
     }
     
     /**
@@ -160,7 +160,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getMenuManager()
     {
-        return $this->_frontendHelper->getMenuManager();
+        return $this->frontendHelper->getMenuManager();
     }
     
     /**
@@ -171,7 +171,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getLayoutRenderer()
     {
-        return $this->_frontendHelper->getLayoutRenderer();
+        return $this->frontendHelper->getLayoutRenderer();
     }
     
     /**
@@ -182,7 +182,7 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getOverviewPageRenderer()
     {
-        return $this->_frontendHelper->getOverviewPageRenderer();
+        return $this->frontendHelper->getOverviewPageRenderer();
     }
     
     /**
@@ -193,6 +193,6 @@ abstract class FrontendEventHandler implements WebEventHandlerInterface
      */
     public function getTableRenderer()
     {
-        return $this->_frontendHelper->getTableRenderer();
+        return $this->frontendHelper->getTableRenderer();
     }
 }

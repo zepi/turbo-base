@@ -47,5 +47,5 @@ class Column extends Part
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Column';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Column';
 }

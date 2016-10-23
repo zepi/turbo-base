@@ -51,7 +51,7 @@ class Module extends ModuleAbstract
      */
     public function initialize()
     {
-        $this->_framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Mysql');
+        $this->framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Mysql');
     }
     
     
@@ -66,7 +66,7 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\DataSourceDriver\\Mysql\\Backend\\DatabaseBackend':
-                $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+                $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                 
                 $databaseHost = $configurationManager->getSetting('mysql', 'databaseHost');
                 $databaseName = $configurationManager->getSetting('mysql', 'databaseName');
@@ -96,7 +96,7 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->addSettingIfNotSet('mysql', 'databaseHost', 'localhost');
         $configurationManager->addSettingIfNotSet('mysql', 'databaseName', '');
         $configurationManager->addSettingIfNotSet('mysql', 'databaseUser', '');
@@ -111,7 +111,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->removeSettingGroup('mysql');
         $configurationManager->saveConfigurationFile();
     }

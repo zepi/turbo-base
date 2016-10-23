@@ -47,61 +47,61 @@ class MenuEntry
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_target;
+    protected $target;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_window;
+    protected $window;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_class;
+    protected $class;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_iconClass;
+    protected $iconClass;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_hideWhenEmpty;
+    protected $hideWhenEmpty;
     
     /**
      * @access protected
      * @var MenuEntry
      */
-    protected $_parent = null;
+    protected $parent = null;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_children = array();
+    protected $children = array();
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_isActive = false;
+    protected $isActive = false;
     
     /**
      * Constructs the object
@@ -124,13 +124,13 @@ class MenuEntry
         $window = '_self',
         $hideWhenEmpty = false
     ) {
-        $this->_key = $key;
-        $this->_name = $name;
-        $this->_target = $target;
-        $this->_window = $window;
-        $this->_class = $class;
-        $this->_iconClass = $iconClass;
-        $this->_hideWhenEmpty = $hideWhenEmpty;
+        $this->key = $key;
+        $this->name = $name;
+        $this->target = $target;
+        $this->window = $window;
+        $this->class = $class;
+        $this->iconClass = $iconClass;
+        $this->hideWhenEmpty = $hideWhenEmpty;
     }
     
     /**
@@ -141,7 +141,7 @@ class MenuEntry
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -152,7 +152,7 @@ class MenuEntry
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -163,7 +163,7 @@ class MenuEntry
      */
     public function getTarget()
     {
-        return $this->_target;
+        return $this->target;
     }
     
     /**
@@ -175,7 +175,7 @@ class MenuEntry
      */
     public function getWindow()
     {
-        return $this->_window;
+        return $this->window;
     }
     
     /**
@@ -186,7 +186,7 @@ class MenuEntry
      */
     public function getClass()
     {
-        return $this->_class;
+        return $this->class;
     }
     
     /**
@@ -197,7 +197,7 @@ class MenuEntry
      */
     public function getIconClass()
     {
-        return $this->_iconClass;
+        return $this->iconClass;
     }
     
     /**
@@ -208,7 +208,7 @@ class MenuEntry
      */
     public function hideWhenEmpty()
     {
-        return ($this->_hideWhenEmpty);
+        return ($this->hideWhenEmpty);
     }
     
     /**
@@ -219,7 +219,7 @@ class MenuEntry
      */
     public function getChildren()
     {
-        return $this->_children;
+        return $this->children;
     }
     
     /**
@@ -230,7 +230,7 @@ class MenuEntry
      */
     public function hasChildren()
     {
-        return (count($this->_children) > 0);
+        return (count($this->children) > 0);
     }
     
     /**
@@ -242,7 +242,7 @@ class MenuEntry
      */
     public function hasVisibleChildren()
     {
-        foreach ($this->_children as $child) {
+        foreach ($this->children as $child) {
             if (!($child instanceof \Zepi\Web\General\Entity\HiddenMenuEntry)) {
                 return true;
             }
@@ -259,11 +259,11 @@ class MenuEntry
      */
     public function shouldHide()
     {
-        if (!$this->_hideWhenEmpty) {
+        if (!$this->hideWhenEmpty) {
             return false;
         }
         
-        foreach ($this->_children as $child) {
+        foreach ($this->children as $child) {
             if (!$child->shouldHide()) {
                 return false;
             }
@@ -285,7 +285,7 @@ class MenuEntry
             return false;
         }
          
-        $this->_children = $children;
+        $this->children = $children;
         
         return true;
     }
@@ -300,11 +300,11 @@ class MenuEntry
      */
     public function addChild(MenuEntry $child)
     {
-        if (isset($this->_children[$child->getKey()])) {
+        if (isset($this->children[$child->getKey()])) {
             return false;
         }
         
-        $this->_children[$child->getKey()] = $child;
+        $this->children[$child->getKey()] = $child;
         
         // Sets this MenuEntry as parent of the child
         $child->setParent($this);
@@ -320,7 +320,7 @@ class MenuEntry
      */
     public function getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
     
     /**
@@ -331,7 +331,7 @@ class MenuEntry
      */
     public function setParent(MenuEntry $parent)
     {
-        $this->_parent = $parent;
+        $this->parent = $parent;
     }
     
     /**
@@ -342,7 +342,7 @@ class MenuEntry
      */
     public function hasParent()
     {
-        return ($this->_parent != null);
+        return ($this->parent != null);
     }
     
     /**
@@ -353,11 +353,11 @@ class MenuEntry
      */
     public function getBestTarget()
     {
-        if ($this->hasParent() && ($this->_target == '' || $this->_target == '#')) {
-            return $this->_parent->getBestTarget();
+        if ($this->hasParent() && ($this->target == '' || $this->target == '#')) {
+            return $this->parent->getBestTarget();
         }
         
-        return $this->_target;
+        return $this->target;
     }
     
     /**
@@ -368,10 +368,10 @@ class MenuEntry
      */
     public function setActive($isActive)
     {
-        $this->_isActive = (bool) $isActive;
+        $this->isActive = (bool) $isActive;
         
-        if ($this->_parent !== null) {
-            $this->_parent->setActive($isActive);
+        if ($this->parent !== null) {
+            $this->parent->setActive($isActive);
         }
     }
     
@@ -383,6 +383,6 @@ class MenuEntry
      */
     public function isActive()
     {
-        return ($this->_isActive);
+        return ($this->isActive);
     }
 }

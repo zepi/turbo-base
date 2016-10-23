@@ -53,25 +53,25 @@ class TemplatesManager
      * @access protected
      * @var array
      */
-    protected $_templates = array();
+    protected $templates = array();
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Framework
      */
-    protected $_framework;
+    protected $framework;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
      */
-    protected $_templatesObjectBackend;
+    protected $templatesObjectBackend;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_renderer = array();
+    protected $renderer = array();
     
     /**
      * Constructs the object
@@ -84,8 +84,8 @@ class TemplatesManager
         Framework $framework,
         ObjectBackendAbstract $templatesObjectBackend
     ) {
-        $this->_framework = $framework;
-        $this->_templatesObjectBackend = $templatesObjectBackend;
+        $this->framework = $framework;
+        $this->templatesObjectBackend = $templatesObjectBackend;
     }
     
     /**
@@ -95,7 +95,7 @@ class TemplatesManager
      */
     public function initializeTemplatesManager()
     {
-        $this->_loadTemplates();
+        $this->loadTemplates();
     }
     
     /**
@@ -103,14 +103,14 @@ class TemplatesManager
      * 
      * @access public
      */
-    protected function _loadTemplates()
+    protected function loadTemplates()
     {
-        $templates = $this->_templatesObjectBackend->loadObject();
+        $templates = $this->templatesObjectBackend->loadObject();
         if (!is_array($templates)) {
             $templates = array();
         }
         
-        $this->_templates = $templates;
+        $this->templates = $templates;
     }
     
     /**
@@ -118,9 +118,9 @@ class TemplatesManager
      * 
      * @access public
      */
-    protected function _saveTemplates()
+    protected function saveTemplates()
     {
-        $this->_templatesObjectBackend->saveObject($this->_templates);
+        $this->templatesObjectBackend->saveObject($this->templates);
     }
     
     /**
@@ -141,15 +141,15 @@ class TemplatesManager
         }
         
         // Create the arrays, if they are not existing
-        if (!isset($this->_templates[$key]) || !is_array($this->_templates[$key])) {
-            $this->_templates[$key] = array();
+        if (!isset($this->templates[$key]) || !is_array($this->templates[$key])) {
+            $this->templates[$key] = array();
         }
         
-        $this->_templates[$key][$priority] = $file;
+        $this->templates[$key][$priority] = $file;
         
-        ksort($this->_templates[$key]);
+        ksort($this->templates[$key]);
         
-        $this->_saveTemplates();
+        $this->saveTemplates();
         
         return true;
     }
@@ -165,12 +165,12 @@ class TemplatesManager
     public function removeTemplate($key, $file, $priority = 10)
     {
         // If we can't find the template file we do not have to remove anything.
-        if (!isset($this->_templates[$key][$priority])) {
+        if (!isset($this->templates[$key][$priority])) {
             return false;
         }
         
         // Remove the template file.
-        unset($this->_templates[$key][$priority]);
+        unset($this->templates[$key][$priority]);
     }
     
     /**
@@ -184,11 +184,11 @@ class TemplatesManager
     {
         $extension = $renderer->getExtension();
 
-        if (isset($this->_renderer[$extension])) {
+        if (isset($this->renderer[$extension])) {
             return false;
         }
         
-        $this->_renderer[$extension] = $renderer;
+        $this->renderer[$extension] = $renderer;
         return true;
     }
     
@@ -202,15 +202,15 @@ class TemplatesManager
      */
     public function renderTemplate($key, $additionalData = array())
     {
-        if (!isset($this->_templates[$key])) {
+        if (!isset($this->templates[$key])) {
             return '';
         }
         
         $output = '';
         
         // Render the template files
-        foreach ($this->_templates[$key] as $priority => $templateFile) {
-            $output .= $this->_searchRendererAndRenderTemplate($templateFile, $additionalData);
+        foreach ($this->templates[$key] as $priority => $templateFile) {
+            $output .= $this->searchRendererAndRenderTemplate($templateFile, $additionalData);
         }
         
         return $output;
@@ -225,7 +225,7 @@ class TemplatesManager
      * @param array $additionalData
      * @return string
      */
-    protected function _searchRendererAndRenderTemplate($templateFile, $additionalData = array())
+    protected function searchRendererAndRenderTemplate($templateFile, $additionalData = array())
     {
         // Get the file information for the template file
         $fileInfo = pathinfo($templateFile);
@@ -233,19 +233,19 @@ class TemplatesManager
         
         // If we haven't a renderer for this extension we return an
         // empty string to prevent everything from failing.
-        if (!isset($this->_renderer[$extension])) {
+        if (!isset($this->renderer[$extension])) {
             return '';
         }
         
         // Take the renderer...
-        $renderer = $this->_renderer[$extension];
+        $renderer = $this->renderer[$extension];
         
         // ...and render the template file.
         return $renderer->renderTemplateFile(
             $templateFile, 
-            $this->_framework, 
-            $this->_framework->getRequest(), 
-            $this->_framework->getResponse(),
+            $this->framework, 
+            $this->framework->getRequest(), 
+            $this->framework->getResponse(),
             $additionalData
         );
     }

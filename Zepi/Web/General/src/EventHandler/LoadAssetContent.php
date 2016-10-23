@@ -55,7 +55,7 @@ class LoadAssetContent implements WebEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\General\Manager\AssetsManager
      */
-    protected $_assetsManager;
+    protected $assetsManager;
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class LoadAssetContent implements WebEventHandlerInterface
      */
     public function __construct(AssetsManager $assetsManager)
     {
-        $this->_assetsManager = $assetsManager;
+        $this->assetsManager = $assetsManager;
     }
     
     /**
@@ -85,19 +85,19 @@ class LoadAssetContent implements WebEventHandlerInterface
         $version = $request->getRouteParam(2); // Version of the file 
         
         // If the file isn't cached display nothing
-        if (!$this->_assetsManager->isCached($type, $hash, $version)) {
+        if (!$this->assetsManager->isCached($type, $hash, $version)) {
             $response->setOutput('/** Zepi Assets Manager: Not cached! */');
             return;
         }
         
         // Load the content
-        $content = $this->_assetsManager->getAssetContent($type, $hash, $version);
+        $content = $this->assetsManager->getAssetContent($type, $hash, $version);
         if ($content === '') {
             $content = '/** Zepi Assets Manager: File is empty or does not exists! */';
         }
         
         // Define the if modified since timestamp
-        $cachedAssetTimestamp = $this->_assetsManager->getCachedAssetTimestamp($type, $hash, $version);
+        $cachedAssetTimestamp = $this->assetsManager->getCachedAssetTimestamp($type, $hash, $version);
         $ifModifiedSince = -1;
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] != '') {
             $ifModifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
@@ -125,7 +125,7 @@ class LoadAssetContent implements WebEventHandlerInterface
         }
         
         // Set the content type
-        $contentType = $this->_getContentType($type, $version);
+        $contentType = $this->getContentType($type, $version);
         if ($contentType !== '') {
             header('Content-type: ' . $contentType, true);
         }
@@ -142,7 +142,7 @@ class LoadAssetContent implements WebEventHandlerInterface
      * @param string $version
      * @return string
      */
-    protected function _getContentType($type, $version)
+    protected function getContentType($type, $version)
     {
         if ($type === 'css') {
             return 'text/css';

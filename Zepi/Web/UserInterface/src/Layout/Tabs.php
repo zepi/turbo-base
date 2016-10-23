@@ -49,7 +49,7 @@ class Tabs extends Part
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Tabs';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Tabs';
     
     /**
      * Construct the object
@@ -70,7 +70,7 @@ class Tabs extends Part
             foreach ($parts as $part) {
                 if ($part instanceof \Zepi\Web\UserInterface\Layout\Tab) {
                     // Activate the first tab
-                    if (count($this->_parts) === 0) {
+                    if (count($this->parts) === 0) {
                         $part->setActive(true);
                     }
                     

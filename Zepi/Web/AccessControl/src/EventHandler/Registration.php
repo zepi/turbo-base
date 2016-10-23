@@ -42,19 +42,19 @@ class Registration extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\Mail\Helper\MailHelper
      */
-    protected $_mailHelper;
+    protected $mailHelper;
     
     /**
      * Constructs the object
@@ -67,10 +67,10 @@ class Registration extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager, AccessControlManager $accessControlManager, MailHelper $mailHelper)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
-        $this->_accessControlManager = $accessControlManager;
-        $this->_mailHelper = $mailHelper;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
+        $this->accessControlManager = $accessControlManager;
+        $this->mailHelper = $mailHelper;
     }
     
     /**
@@ -87,7 +87,7 @@ class Registration extends FrontendEventHandler
         $this->setTitle($this->translate('Registration', '\\Zepi\\Web\\AccessControl'));
         
         // Get the form object
-        $registrationForm = $this->_createForm($framework, $request, $response);
+        $registrationForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
         $registrationForm->processFormData($request);
@@ -98,7 +98,7 @@ class Registration extends FrontendEventHandler
         if ($registrationForm->isSubmitted()) {
             $errors = $registrationForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_createUser($registrationForm, $framework, $request, $response);
+                $result = $this->createUser($registrationForm, $framework, $request, $response);
             } 
         }
          
@@ -151,7 +151,7 @@ class Registration extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return string|boolean
      */
-    protected function _createUser(Form $registrationForm, Framework $framework, RequestAbstract $request, Response $response)
+    protected function createUser(Form $registrationForm, Framework $framework, RequestAbstract $request, Response $response)
     {
         $group = $registrationForm->searchPartByKeyAndType('user-data');
         $username = trim($group->getPart('username')->getValue());
@@ -161,7 +161,7 @@ class Registration extends FrontendEventHandler
         $passwordConfirmed = trim($group->getPart('password-confirmed')->getValue());
         $tos = $group->getPart('tos-accepted')->getValue();
         
-        $result = $this->_validateData($framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos);
+        $result = $this->validateData($framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -176,14 +176,14 @@ class Registration extends FrontendEventHandler
         $activationToken = uniqid(md5($email), true);
         $user->setMetaData('activationToken', $activationToken);
         
-        $user = $this->_userManager->addUser($user);
+        $user = $this->userManager->addUser($user);
         
         // Add the disabled access level
-        $this->_accessControlManager->grantPermission($user->getUuid(), '\\Global\\Disabled', 'Registration');
+        $this->accessControlManager->grantPermission($user->getUuid(), '\\Global\\Disabled', 'Registration');
         
         // Send the registration mail
         $activationLink = $request->getFullRoute('/activate/' . $user->getUuid() . '/' . $activationToken . '/');
-        $this->_mailHelper->sendMail(
+        $this->mailHelper->sendMail(
             $user->getMetaData('email'),
             $this->translate('Your registration', '\\Zepi\\Web\\AccessControl'),
             $this->render('\\Zepi\\Web\\AccessControl\\Mail\\Registration', array(
@@ -207,10 +207,10 @@ class Registration extends FrontendEventHandler
      * @param boolean $tos
      * @return boolean|string
      */
-    protected function _validateData(Framework $framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos)
+    protected function validateData(Framework $framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos)
     {
         // If the given username already exists
-        if ($this->_userManager->hasUserForUsername($username)) {
+        if ($this->userManager->hasUserForUsername($username)) {
             return $this->translate('The inserted username is already in use. Please select a new username.', '\\Zepi\\Web\\AccessControl');
         }
         
@@ -250,7 +250,7 @@ class Registration extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, RequestAbstract $request, Response $response)
+    protected function createForm(Framework $framework, RequestAbstract $request, Response $response)
     {
         // Create the form
         $form = new Form('register', $request->getFullRoute(), 'post');

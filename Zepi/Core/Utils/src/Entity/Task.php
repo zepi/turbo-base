@@ -47,25 +47,25 @@ class Task
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var callable
      */
-    protected $_callback;
+    protected $callback;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_resetTime;
+    protected $resetTime;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_instances;
+    protected $instances;
     
     /**
      * Constructs the entity
@@ -78,10 +78,10 @@ class Task
      */
     public function __construct($name, $callback, $resetTime, $instances = 1)
     {
-        $this->_name = $name;
-        $this->_callback = $callback;
-        $this->_resetTime = $resetTime;
-        $this->_instances = $instances;
+        $this->name = $name;
+        $this->callback = $callback;
+        $this->resetTime = $resetTime;
+        $this->instances = $instances;
     }
     
     /**
@@ -92,7 +92,7 @@ class Task
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -103,7 +103,7 @@ class Task
      */
     public function getCallback()
     {
-        return $this->_callback;
+        return $this->callback;
     }
     
     /**
@@ -114,7 +114,7 @@ class Task
      */
     public function getResetTime()
     {
-        return $this->_resetTime;
+        return $this->resetTime;
     }
     
     /**
@@ -125,6 +125,6 @@ class Task
      */
     public function getInstances()
     {
-        return $this->_instances;
+        return $this->instances;
     }
 }

@@ -50,19 +50,19 @@ class Cell
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Column
      */
-    protected $_column;
+    protected $column;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Table\Row
      */
-    protected $_row;
+    protected $row;
     
     /**
      * @access protected
      * @var mixed
      */
-    protected $_value;
+    protected $value;
     
     /**
      * Construcst the object
@@ -74,9 +74,9 @@ class Cell
      */
     public function __construct(Column $column, Row $row, $value = '')
     {
-        $this->_column = $column;
-        $this->_row = $row;
-        $this->_value = $value;
+        $this->column = $column;
+        $this->row = $row;
+        $this->value = $value;
     }
     
     /**
@@ -87,7 +87,7 @@ class Cell
      */
     public function getColumn()
     {
-        return $this->_column;
+        return $this->column;
     }
     
     /**
@@ -98,7 +98,7 @@ class Cell
      */
     public function getRow()
     {
-        return $this->_row;
+        return $this->row;
     }
     
     /**
@@ -109,6 +109,6 @@ class Cell
      */
     public function getValue()
     {
-        return $this->_value;
+        return $this->value;
     }
 }

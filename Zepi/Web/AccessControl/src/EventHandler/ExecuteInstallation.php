@@ -57,19 +57,19 @@ class ExecuteInstallation implements CliEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Utils\Helper\CliHelper
      */
-    protected $_cliHelper;
+    protected $cliHelper;
     
     /**
      * Constructs the object
@@ -81,9 +81,9 @@ class ExecuteInstallation implements CliEventHandlerInterface
      */
     public function __construct(UserManager $userManager, AccessControlManager $accessControlManager, CliHelper $cliHelper)
     {
-        $this->_userManager = $userManager;
-        $this->_accessControlManager = $accessControlManager;
-        $this->_cliHelper = $cliHelper;
+        $this->userManager = $userManager;
+        $this->accessControlManager = $accessControlManager;
+        $this->cliHelper = $cliHelper;
     }
     
     /**
@@ -98,18 +98,18 @@ class ExecuteInstallation implements CliEventHandlerInterface
     {
         // Execute the installer only if there are no users
         $dataRequest = new \Zepi\Core\Utils\Entity\DataRequest(1, 0, 'name', 'ASC');
-        if ($this->_userManager->countUsers($dataRequest) > 0) {
+        if ($this->userManager->countUsers($dataRequest) > 0) {
             return;
         }
         
         $username = '';
         while ($username === '') {
-            $username = trim($this->_cliHelper->inputText('Please enter the username for the super-admin user:'));
+            $username = trim($this->cliHelper->inputText('Please enter the username for the super-admin user:'));
         }
         
         $password = '';
         while ($password === '') {
-            $password = trim($this->_cliHelper->inputText('Please enter the password for the super-admin user:'));
+            $password = trim($this->cliHelper->inputText('Please enter the password for the super-admin user:'));
         }
         
         // Create the super-admin user
@@ -117,10 +117,10 @@ class ExecuteInstallation implements CliEventHandlerInterface
         $user->setNewPassword($password);
         
         // Save the super-admin user
-        $user = $this->_userManager->addUser($user);
+        $user = $this->userManager->addUser($user);
         
         // Add the super-admin access level
-        $this->_accessControlManager->grantPermission(
+        $this->accessControlManager->grantPermission(
             $user->getUuid(),
             '\\Global\\*',
             'CLI'

@@ -51,7 +51,7 @@ class ProtectedMenuEntry extends MenuEntry
      * @access protected
      * @var string
      */
-    protected $_accessLevelKey;
+    protected $accessLevelKey;
     
     /**
      * Constructs the object
@@ -76,7 +76,7 @@ class ProtectedMenuEntry extends MenuEntry
     ) {
         parent::__construct($key, $name, $target, $iconClass, $class, $window);
         
-        $this->_accessLevelKey = $accessLevelKey;
+        $this->accessLevelKey = $accessLevelKey;
     }
     
     /**
@@ -88,6 +88,6 @@ class ProtectedMenuEntry extends MenuEntry
      */
     public function getAccessLevelKey()
     {
-        return $this->_accessLevelKey;
+        return $this->accessLevelKey;
     }
 }

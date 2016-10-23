@@ -47,7 +47,7 @@ class ButtonGroup extends Group
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup';
     
     /**
      * Constructs the object
@@ -60,9 +60,9 @@ class ButtonGroup extends Group
      */
     public function __construct($key, $parts = array(), $priority = 10, $classes = array('text-center'))
     {
-        $this->_key = $key;
-        $this->_priority = $priority;
-        $this->_classes = $classes;
+        $this->key = $key;
+        $this->priority = $priority;
+        $this->classes = $classes;
 
         foreach ($parts as $part) {
             $this->addPart($part);

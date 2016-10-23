@@ -56,13 +56,13 @@ class ExecuteInstallation implements CliEventHandlerInterface
      * @access protected
      * @var \Zepi\Core\Utils\Helper\CliHelper
      */
-    protected $_cliHelper;
+    protected $cliHelper;
     
     /**
      * @access protected
      * @var \Zepi\Core\Utils\Manager\ConfigurationManager
      */
-    protected $_configurationManager;
+    protected $configurationManager;
     
     /**
      * Constructs the object
@@ -73,8 +73,8 @@ class ExecuteInstallation implements CliEventHandlerInterface
      */
     public function __construct(CliHelper $cliHelper, ConfigurationManager $configurationManager)
     {
-        $this->_cliHelper = $cliHelper;
-        $this->_configurationManager = $configurationManager;
+        $this->cliHelper = $cliHelper;
+        $this->configurationManager = $configurationManager;
     }
     
     /**
@@ -88,14 +88,14 @@ class ExecuteInstallation implements CliEventHandlerInterface
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         // Configure turbo
-        foreach ($this->_configurationManager->getSettings() as $settingGroupKey => $groupSettings) {
-            $this->_configureGroup($settingGroupKey, $groupSettings);
+        foreach ($this->configurationManager->getSettings() as $settingGroupKey => $groupSettings) {
+            $this->configureGroup($settingGroupKey, $groupSettings);
             
-            $this->_cliHelper->newLine();
+            $this->cliHelper->newLine();
         }
         
         // Save the settings
-        $this->_configurationManager->saveConfigurationFile();
+        $this->configurationManager->saveConfigurationFile();
         
         // Execute the DataSource setups
         $dataSourceManager = $framework->getDataSourceManager();
@@ -112,15 +112,15 @@ class ExecuteInstallation implements CliEventHandlerInterface
      * @param string $settingGroupKey
      * @param array $groupSettings
      */
-    protected function _configureGroup($settingGroupKey, $groupSettings)
+    protected function configureGroup($settingGroupKey, $groupSettings)
     {
-        $configureSettingGroup = $this->_cliHelper->confirmAction('Would you like to configure the configuration group "' . $settingGroupKey . '"?');
+        $configureSettingGroup = $this->cliHelper->confirmAction('Would you like to configure the configuration group "' . $settingGroupKey . '"?');
         if (!$configureSettingGroup) {
             return;
         }
         
         foreach ($groupSettings as $key => $value) {
-            $this->_configureSetting($settingGroupKey, $key, $value);
+            $this->configureSetting($settingGroupKey, $key, $value);
         }
     }
     
@@ -132,14 +132,14 @@ class ExecuteInstallation implements CliEventHandlerInterface
      * @param string $key
      * @param string $value
      */
-    protected function _configureSetting($settingGroupKey, $key, $value)
+    protected function configureSetting($settingGroupKey, $key, $value)
     {
-        $newValue = $this->_cliHelper->inputText('Please enter the value for "' . $key . '":', $value);
+        $newValue = $this->cliHelper->inputText('Please enter the value for "' . $key . '":', $value);
         
         if ($newValue === $value) {
             return;
         }
         
-        $this->_configurationManager->setSetting($settingGroupKey, $key, $newValue);
+        $this->configurationManager->setSetting($settingGroupKey, $key, $newValue);
     }
 }

@@ -56,13 +56,13 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      * @access protected
      * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
      */
-    protected $_entityManager;
+    protected $entityManager;
     
     /**
      * @access protected
      * @var \Zepi\Turbo\Manager\RuntimeManager
      */
-    protected $_runtimeManager;
+    protected $runtimeManager;
     
     /**
      * Constructs the object
@@ -73,8 +73,8 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      */
     public function __construct(EntityManager $entityManager, RuntimeManager $runtimeManager)
     {
-        $this->_entityManager = $entityManager;
-        $this->_runtimeManager = $runtimeManager;
+        $this->entityManager = $entityManager;
+        $this->runtimeManager = $runtimeManager;
     }
     
     /**
@@ -104,8 +104,8 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         try {
             $dataRequest->setSelectedFields(array('*'));
             
-            $queryBuilder = $this->_entityManager->getQueryBuilder();
-            $this->_entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
+            $queryBuilder = $this->entityManager->getQueryBuilder();
+            $this->entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
             
             $permissions = $queryBuilder->getQuery()->getResult();
             if ($permissions == null) {
@@ -136,8 +136,8 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
             $request->setPage(0);
             $request->setNumberOfEntries(0);
         
-            $queryBuilder = $this->_entityManager->getQueryBuilder();
-            $this->_entityManager->buildDataRequestQuery($request, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
+            $queryBuilder = $this->entityManager->getQueryBuilder();
+            $this->entityManager->buildDataRequestQuery($request, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
             
             // Count
             $queryBuilder->select($queryBuilder->expr()->count('p.id'));
@@ -165,7 +165,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
     public function hasPermissionForId($id)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $permission = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->find($id);
             
             if ($permission !== null) {
@@ -190,7 +190,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
     public function getPermissionForId($id)
     {
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $permission = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->find($id);
             
             if ($permission !== null) {
@@ -222,7 +222,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         }
         
         try {
-            $queryBuilder = $this->_entityManager->getQueryBuilder();
+            $queryBuilder = $this->entityManager->getQueryBuilder();
             $queryBuilder->select($queryBuilder->expr()->count('p.id'))
                          ->from('\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p')
                          ->where('p.accessEntityUuid = :accessEntityUuid')
@@ -260,7 +260,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         }
     
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $permissions = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->findBy(array(
                 'accessEntityUuid' => $accessEntityUuid
             ));
@@ -296,7 +296,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         try {
             $accessLevels = $this->getPermissionsRawForUuid($accessEntityUuid);
     
-            $accessLevels = $this->_runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', $accessLevels);
+            $accessLevels = $this->runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', $accessLevels);
 
             return $accessLevels;
         } catch (\Exception $e) {
@@ -330,7 +330,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         try {
             $permission = new Permission(null, $accessEntityUuid, $accessLevel, $grantedBy);
             
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $em->persist($permission);
             $em->flush();
             
@@ -363,7 +363,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         }
         
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $permissions = $em->getRepository($class)->findBy(array(
                 'accessEntityUuid' => $accessEntityUuid,
                 'accessLevelKey' => $accessLevel
@@ -396,7 +396,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         }
     
         try {
-            $em = $this->_entityManager->getDoctrineEntityManager();
+            $em = $this->entityManager->getDoctrineEntityManager();
             $permissions = $em->getRepository($class)->findBy(array(
                 'accessLevelKey' => $accessLevel
             ));

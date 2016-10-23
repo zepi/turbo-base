@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Api\AccessControl\Manager\TokenManager
      */
-    protected $_tokenManager;
+    protected $tokenManager;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -61,13 +61,13 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Api\\AccessControl\\Manager\\TokenManager':
-                if ($this->_tokenManager === null) {
-                    $accessControlManager = $this->_framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
+                if ($this->tokenManager === null) {
+                    $accessControlManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager');
                     
-                    $this->_tokenManager = new $className($accessControlManager);
+                    $this->tokenManager = new $className($accessControlManager);
                 }
                 
-                return $this->_tokenManager;
+                return $this->tokenManager;
             break;
             
             default: 

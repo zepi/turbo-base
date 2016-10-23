@@ -58,7 +58,7 @@ class TokenManager
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -69,7 +69,7 @@ class TokenManager
     public function __construct(
         AccessControlManager $accessControlManager
     ) {
-        $this->_accessControlManager = $accessControlManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -84,12 +84,12 @@ class TokenManager
     public function addToken(Token $token)
     {
         // If the name already is used we cannot add a new token
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $token->getName())) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $token->getName())) {
             throw new Exception('Cannot add the token. Name is already in use.');
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity($token);
+        $uuid = $this->accessControlManager->addAccessEntity($token);
         
         if ($uuid === false) {
             throw new Exception('Cannot add the token. Internal software error.');
@@ -109,12 +109,12 @@ class TokenManager
     public function updateToken(Token $token)
     {
         // If the uuid does not exists we cannot update the token
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($token->getUuid())) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid($token->getUuid())) {
             throw new Exception('Cannot update the token. Token does not exist.');
         }
         
         // Add the access entity
-        return $this->_accessControlManager->updateAccessEntity(
+        return $this->accessControlManager->updateAccessEntity(
             $token->getUuid(), 
             $token->getName(),
             $token->getKey(),
@@ -133,12 +133,12 @@ class TokenManager
     public function deleteToken($uuid)
     {
         // If the uuid does not exists we cannot delete the token
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid($uuid)) {
             throw new Exception('Cannot update the token. Token does not exist.');
         }
         
         // Delete the access entity
-        return $this->_accessControlManager->deleteAccessEntity($uuid);
+        return $this->accessControlManager->deleteAccessEntity($uuid);
     }
     
     /**
@@ -150,7 +150,7 @@ class TokenManager
      */
     public function hasTokenForUuid($uuid)
     {
-        if ($this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if ($this->accessControlManager->hasAccessEntityForUuid($uuid)) {
             return true;
         }
         
@@ -166,7 +166,7 @@ class TokenManager
      */
     public function hasTokenForPublicKey($publicKey)
     {
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey)) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey)) {
             return true;
         }
         
@@ -182,12 +182,12 @@ class TokenManager
      */
     public function getTokenForUuid($uuid)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForUuid($uuid)) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid($uuid)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid($uuid);
+        $accessEntity = $this->accessControlManager->getAccessEntityForUuid($uuid);
 
         if ($accessEntity === false) {
             return false;
@@ -216,12 +216,12 @@ class TokenManager
      */
     public function getTokenForPublicKey($publicKey)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey)) {
+        if (!$this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey);
+        $accessEntity = $this->accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $publicKey);
 
         if ($accessEntity === false) {
             return false;
@@ -253,7 +253,7 @@ class TokenManager
         $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
         
         $tokens = array();
-        $accessEntities = $this->_accessControlManager->getAccessEntities($dataRequest);
+        $accessEntities = $this->accessControlManager->getAccessEntities($dataRequest);
         foreach ($accessEntities as $accessEntity) {
             $token = new Token(
                 $accessEntity->getId(),
@@ -282,7 +282,7 @@ class TokenManager
     {
         $dataRequest->addFilter(new Filter('type', self::ACCESS_ENTITY_TYPE, '='));
         
-        return $this->_accessControlManager->countAccessEntities($dataRequest);
+        return $this->accessControlManager->countAccessEntities($dataRequest);
     }
     
     /**

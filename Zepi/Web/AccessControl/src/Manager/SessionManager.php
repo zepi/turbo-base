@@ -54,13 +54,13 @@ class SessionManager
      * @var \Zepi\Web\ACcessControl\Entity\Session
      * @access protected
      */
-    protected $_session;
+    protected $session;
     
     /**
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * Constructs the object
@@ -70,7 +70,7 @@ class SessionManager
      */
     public function __construct(UserManager $userManager)
     {
-        $this->_userManager = $userManager;
+        $this->userManager = $userManager;
     }
     
     /**
@@ -89,7 +89,7 @@ class SessionManager
             $sessionTokenLifetime = $request->getSessionData('userSessionTokenLifetime');
             
             // Cleanup the session
-            $this->_cleanupSession($request);
+            $this->cleanupSession($request);
             
             // Save the old session token for some requests in the next 60 seconds
             if ($sessionToken !== false) {
@@ -99,7 +99,7 @@ class SessionManager
         }
         
         // Regenerate the session
-        $this->_regenerateSession($request);
+        $this->regenerateSession($request);
         
         $sessionToken = md5($user->getUuid()) . '-' . md5(uniqid());
         $sessionTokenLifeTime = time() + 300;
@@ -128,11 +128,11 @@ class SessionManager
         
         // If the session wasn't started before, we start it now...
         if ($request->getSessionData('sessionStarted') === false) {
-            $this->_startSession($request);
+            $this->startSession($request);
         }
         
         // Validate the session data
-        $valid = $this->_validateSessionData($request);
+        $valid = $this->validateSessionData($request);
         
         // If the session not is valid we redirect to the start of everything
         if (!$valid) {
@@ -141,12 +141,12 @@ class SessionManager
         
         // There is a 1% chance that we regenerate the session
         if (mt_rand(1, 100) <= 1) {
-            $this->_regenerateSession($request);
+            $this->regenerateSession($request);
         }
 
         // Initialize the user session
         if ($request->getSessionData('userUuid') !== false) {
-            $this->_reinitializeUserSession($framework, $request, $response);
+            $this->reinitializeUserSession($framework, $request, $response);
         }
     }
     
@@ -159,7 +159,7 @@ class SessionManager
      */
     public function logoutUser(WebRequest $request, Response $response)
     {
-        $this->_cleanupSession($request);
+        $this->cleanupSession($request);
         
         $request->removeSession();
     }
@@ -174,7 +174,7 @@ class SessionManager
      * @param \Zepi\Turbo\Response\Response $response
      * @return boolean
      */
-    protected function _reinitializeUserSession(Framework $framework, WebRequest $request, Response $response)
+    protected function reinitializeUserSession(Framework $framework, WebRequest $request, Response $response)
     {
         $token = $request->getSessionData('userSessionToken');
         $lifetime = $request->getSessionData('userSessionTokenLifetime');
@@ -211,7 +211,7 @@ class SessionManager
         $userUuid = $request->getSessionData('userUuid');        
         
         // If the given uuid doesn't exists, this session can't be valid
-        if (!$notValid && !$this->_userManager->hasUserForUuid($userUuid)) {
+        if (!$notValid && !$this->userManager->hasUserForUuid($userUuid)) {
             $notValid = true;
         }
 
@@ -219,14 +219,14 @@ class SessionManager
         // okey. Our session token is not set or the lifetime is invalid or expired.
         // This is maybe an expired session or a hijacking attack...
         if ($notValid) {
-            $this->_cleanupSession($request);
-            $this->_regenerateSession($request);
+            $this->cleanupSession($request);
+            $this->regenerateSession($request);
             
             return false;
         }
         
         // Load the user
-        $user = $this->_userManager->getUserForUuid($userUuid);
+        $user = $this->userManager->getUserForUuid($userUuid);
         
         // If the user is disabled we cannot initialize the session
         if (!$user->hasAccess('\\Global\\*') && $user->hasAccess('\\Global\\Disabled')) {
@@ -251,7 +251,7 @@ class SessionManager
      * @access protected
      * @param \Zepi\Turbo\Request\WebRequest $request
      */
-    protected function _startSession(WebRequest $request)
+    protected function startSession(WebRequest $request)
     {
         // Save the nonce base on the session
         $request->setSessionData('nonceBase', md5(uniqid()));
@@ -274,7 +274,7 @@ class SessionManager
      * @access protected
      * @param \Zepi\Turbo\Request\WebRequest $request
      */
-    protected function _cleanupSession(WebRequest $request)
+    protected function cleanupSession(WebRequest $request)
     {
         $sessionToken = $request->getSessionData('userSessionToken');
         setcookie($sessionToken, 0, time() - 60, '/', '', $request->isSsl());
@@ -299,7 +299,7 @@ class SessionManager
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
-    protected function _validateSessionData(WebRequest $request)
+    protected function validateSessionData(WebRequest $request)
     {
         if ($request->getSessionData('isObsolete') && $request->getSessionData('maxLifetime') < time()) {
             return false;
@@ -315,7 +315,7 @@ class SessionManager
      * @access protected
      * @param \Zepi\Turbo\Request\WebRequest $request
      */
-    protected function _regenerateSession(WebRequest $request)
+    protected function regenerateSession(WebRequest $request)
     {
         // Let the old session expire...
         $request->setSessionData('isObsolete', true);

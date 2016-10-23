@@ -65,13 +65,13 @@ class Login extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\SessionManager
      */
-    protected $_sessionManager;
+    protected $sessionManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * Constructs the object
@@ -83,9 +83,9 @@ class Login extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, SessionManager $sessionManager, UserManager $userManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_sessionManager = $sessionManager;
-        $this->_userManager = $userManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->sessionManager = $sessionManager;
+        $this->userManager = $userManager;
     }
     
     /**
@@ -109,7 +109,7 @@ class Login extends FrontendEventHandler
         $this->setTitle($this->translate('Login', '\\Zepi\\Web\\AccessControl'));
         
         // Get the form object
-        $loginForm = $this->_createForm($framework, $request, $response);
+        $loginForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
         $loginForm->processFormData($request);
@@ -120,7 +120,7 @@ class Login extends FrontendEventHandler
         if ($loginForm->isSubmitted()) {
             $errors = $loginForm->validateFormData($framework);
             if (count($errors) === 0) {
-                $result = $this->_authorizeUser($loginForm, $framework, $request, $response);
+                $result = $this->authorizeUser($loginForm, $framework, $request, $response);
             } 
         }
          
@@ -170,9 +170,9 @@ class Login extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return string|boolean
      */
-    protected function _authorizeUser(Form $loginForm, Framework $framework, WebRequest $request, Response $response)
+    protected function authorizeUser(Form $loginForm, Framework $framework, WebRequest $request, Response $response)
     {
-        $user = $this->_validateUserData($framework, $loginForm->getField('user-data', 'username')->getValue(), $loginForm->getField('user-data', 'password')->getValue());
+        $user = $this->validateUserData($framework, $loginForm->getField('user-data', 'username')->getValue(), $loginForm->getField('user-data', 'password')->getValue());
         if ($user === false) {
             return false;
         }
@@ -183,7 +183,7 @@ class Login extends FrontendEventHandler
         }
         
         // Initializes the user session
-        $this->_sessionManager->initializeUserSession($request, $response, $user);
+        $this->sessionManager->initializeUserSession($request, $response, $user);
         
         // Redirect to the target or to the start page
         $target = '/';
@@ -204,7 +204,7 @@ class Login extends FrontendEventHandler
      * @param string $password
      * @return boolean|\Zepi\Web\AccessControl\Entity\User
      */
-    protected function _validateUserData(Framework $framework, $username, $password)
+    protected function validateUserData(Framework $framework, $username, $password)
     {
         // If the password isn't at least 8 characters long
         if (strlen($password) < 8) {
@@ -212,11 +212,11 @@ class Login extends FrontendEventHandler
         }
         
         // If the given username doesn't exists
-        if (!$this->_userManager->hasUserForUsername($username)) {
+        if (!$this->userManager->hasUserForUsername($username)) {
             return false;
         }
         
-        $user = $this->_userManager->getUserForUsername($username);
+        $user = $this->userManager->getUserForUsername($username);
         
         // If the user not is usable
         if ($user === false) {
@@ -241,7 +241,7 @@ class Login extends FrontendEventHandler
      * @param \Zepi\Turbo\Response\Response $response
      * @return \Zepi\Web\UserInterface\Form\Form
      */
-    protected function _createForm(Framework $framework, WebRequest $request, Response $response)
+    protected function createForm(Framework $framework, WebRequest $request, Response $response)
     {
         // Create the form
         $form = new Form('login', $request->getFullRoute('login'), 'post');

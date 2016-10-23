@@ -55,7 +55,7 @@ class ClearAssetCache implements CliEventHandlerInterface
      * @access protected
      * @var \Zepi\Web\General\Manager\AssetsManager
      */
-    protected $_assetsManager;
+    protected $assetsManager;
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class ClearAssetCache implements CliEventHandlerInterface
      */
     public function __construct(AssetsManager $assetsManager)
     {
-        $this->_assetsManager = $assetsManager;
+        $this->assetsManager = $assetsManager;
     }
     
     /**
@@ -79,7 +79,7 @@ class ClearAssetCache implements CliEventHandlerInterface
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         // Clean the asset cache
-        $this->_assetsManager->clearAssetCache();
+        $this->assetsManager->clearAssetCache();
         $response->setOutputPart('cacheCleared', 'The asset cache was successfully cleared!');
     }
 }

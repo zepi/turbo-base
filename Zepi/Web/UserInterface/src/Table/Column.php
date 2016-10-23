@@ -49,37 +49,37 @@ class Column
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_name;
+    protected $name;
     
     /**
      * @access protected
      * @var mixed
      */
-    protected $_width;
+    protected $width;
     
     /**
      * @access protected
      * @var boolean
      */
-    protected $_filterable;
+    protected $filterable;
     
     /**
      * @access protected
      * @var boolean|string
      */
-    protected $_fieldType;
+    protected $fieldType;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_classes;
+    protected $classes;
     
     /**
      * Constructs the object
@@ -94,12 +94,12 @@ class Column
      */
     public function __construct($key, $name, $width, $filterable = false, $fieldType = 'text', $classes = '')
     {
-        $this->_key = $key;
-        $this->_name = $name;
-        $this->_width = $width;
-        $this->_filterable = $filterable;
-        $this->_fieldType = $fieldType;
-        $this->_classes = $classes;
+        $this->key = $key;
+        $this->name = $name;
+        $this->width = $width;
+        $this->filterable = $filterable;
+        $this->fieldType = $fieldType;
+        $this->classes = $classes;
     }
     
     /**
@@ -110,7 +110,7 @@ class Column
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -121,7 +121,7 @@ class Column
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
     
     /**
@@ -132,7 +132,7 @@ class Column
      */
     public function getWidth()
     {
-        return $this->_width;
+        return $this->width;
     }
     
     /**
@@ -143,13 +143,13 @@ class Column
      */
     public function getHtmlWidth()
     {
-        if (is_string($this->_width) && $this->_width === self::WIDTH_AUTO) {
+        if (is_string($this->width) && $this->width === self::WIDTH_AUTO) {
             return '';
-        } else if (intval($this->_width) > 0) {
-            return $this->_width . '%';
+        } else if (intval($this->width) > 0) {
+            return $this->width . '%';
         }
         
-        return $this->_width;
+        return $this->width;
     }
     
     /**
@@ -160,7 +160,7 @@ class Column
      */
     public function isFilterable()
     {
-        return $this->_filterable;
+        return $this->filterable;
     }
     
     /**
@@ -171,7 +171,7 @@ class Column
      */
     public function getFieldType()
     {
-        return $this->_fieldType;
+        return $this->fieldType;
     }
     
     /**
@@ -182,6 +182,6 @@ class Column
      */
     public function getClasses()
     {
-        return $this->_classes;
+        return $this->classes;
     }
 }

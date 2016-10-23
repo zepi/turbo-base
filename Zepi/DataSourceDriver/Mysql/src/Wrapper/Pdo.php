@@ -50,32 +50,32 @@ class Pdo
     /**
      * @var \PDO
      */
-    protected $_pdo;
+    protected $pdo;
     
     /**
      * @var string
      */
-    protected $_dsn;
+    protected $dsn;
     
     /**
      * @var string
      */
-    protected $_username;
+    protected $username;
     
     /**
      * @var string
      */
-    protected $_password;
+    protected $password;
     
     /**
      * @var integer
      */
-    protected $_connectionTime;
+    protected $connectionTime;
     
     /**
      * @var array
      */
-    protected $_options = array();
+    protected $options = array();
     
     /**
      * Constructs the object.
@@ -88,10 +88,10 @@ class Pdo
      */
     public function __construct($dsn, $username = '', $password = '', $options = array())
     {
-        $this->_dsn = $dsn;
-        $this->_username = $username;
-        $this->_password = $password;
-        $this->_options = $options;
+        $this->dsn = $dsn;
+        $this->username = $username;
+        $this->password = $password;
+        $this->options = $options;
     }
     
     /**
@@ -101,17 +101,17 @@ class Pdo
      * @param array $parameters
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function _call($method, $parameters)
     {
-        if ($this->_connectionTime < (time() - 300)) {
-            $this->_pdo = null;
+        if ($this->connectionTime < (time() - 300)) {
+            $this->pdo = null;
         }
         
-        if ($this->_pdo === null) {
-            $this->_pdo = new \PDO($this->_dsn, $this->_username, $this->_password, $this->_options);
-            $this->_connectionTime = time();
+        if ($this->pdo === null) {
+            $this->pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
+            $this->connectionTime = time();
         }
         
-        return call_user_func_array(array($this->_pdo, $method), $parameters);
+        return call_user_func_array(array($this->pdo, $method), $parameters);
     }
 }

@@ -49,19 +49,19 @@ class Group extends Part
      * @access protected
      * @var string
      */
-    protected $_key;
+    protected $key;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_label;
+    protected $label;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Group';
+    protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Group';
     
     /**
      * Constructs the object
@@ -74,9 +74,9 @@ class Group extends Part
      */
     public function __construct($key, $label, $parts = array(), $priority = 10)
     {
-        $this->_key = $key;
-        $this->_label = $label;
-        $this->_priority = $priority;
+        $this->key = $key;
+        $this->label = $label;
+        $this->priority = $priority;
         
         foreach ($parts as $part) {
             $this->addPart($part);
@@ -96,10 +96,10 @@ class Group extends Part
         // If the group isn't assigned to a data form we can not generate
         // the id of the group.
         if (!$form) {
-            return $this->_key;
+            return $this->key;
         }
         
-        return $form->getHtmlId() . '-' . $this->_key;
+        return $form->getHtmlId() . '-' . $this->key;
     }
     
     /**
@@ -110,7 +110,7 @@ class Group extends Part
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -121,7 +121,7 @@ class Group extends Part
      */
     public function getLabel()
     {
-        return $this->_label;
+        return $this->label;
     }
     
     /**
@@ -132,6 +132,6 @@ class Group extends Part
      */
     public function hasLabel()
     {
-        return (trim($this->_label) !== '');
+        return (trim($this->label) !== '');
     }
 }

@@ -51,13 +51,13 @@ class Number extends FieldAbstract
      * @access protected
      * @var integer
      */
-    protected $_minValue;
+    protected $minValue;
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_maxValue;
+    protected $maxValue;
     
     /**
      * Constructs the object
@@ -75,8 +75,8 @@ class Number extends FieldAbstract
      */
     public function __construct($key, $label, $isMandatory = false, $value = '', $minValue = null, $maxValue = null, $helpText = '', $classes = array(), $placeholder = '', $tabIndex = null)
     {
-        $this->_minValue = $minValue;
-        $this->_maxValue = $maxValue;
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
     
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -101,7 +101,7 @@ class Number extends FieldAbstract
      */
     public function setValue($value, RequestAbstract $request)
     {
-        $this->_value = intval($value);
+        $this->value = intval($value);
     }
     
     /**
@@ -112,7 +112,7 @@ class Number extends FieldAbstract
      */
     public function getMinValue()
     {
-        return $this->_minValue;
+        return $this->minValue;
     }
     
     /**
@@ -123,7 +123,7 @@ class Number extends FieldAbstract
      */
     public function getMaxValue()
     {
-        return $this->_maxValue;
+        return $this->maxValue;
     }
     
     /**
@@ -138,29 +138,29 @@ class Number extends FieldAbstract
     {
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
-        if ($this->_minValue !== null && $this->_value < $this->_minValue) {
+        if ($this->minValue !== null && $this->value < $this->minValue) {
             return new Error(
                 Error::INVALID_VALUE,
                 $translationManager->translate(
                     'The value for the field %field% is lower than the allowed minimum (%min%).', 
                     '\\Zepi\\Web\\UserInterface', 
                     array(
-                        'field' => $this->_label,
-                        'min' => $this->_minValue
+                        'field' => $this->label,
+                        'min' => $this->minValue
                     )
                 )
             );
         }
         
-        if ($this->_maxValue !== null && $this->_value > $this->_maxValue) {
+        if ($this->maxValue !== null && $this->value > $this->maxValue) {
             return new Error(
                 Error::INVALID_VALUE,
                 $translationManager->translate(
                     'The value for the field %field% is higher than the allowed maximum (%max%).', 
                     '\\Zepi\\Web\\UserInterface', 
                     array(
-                        'field' => $this->_label,
-                        'max' => $this->_maxValue
+                        'field' => $this->label,
+                        'max' => $this->maxValue
                     )
                 )
             );

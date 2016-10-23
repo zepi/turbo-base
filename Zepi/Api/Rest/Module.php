@@ -48,7 +48,7 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Api\Rest\Helper\FrontendHelper
      */
-    protected $_frontendHelper;
+    protected $frontendHelper;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -61,32 +61,32 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Api\\Rest\\Helper\\FrontendHelper':
-                if ($this->_frontendHelper === null) {
-                    $this->_frontendHelper = new $className(
-                        $this->_framework,
-                        $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
-                        $this->_framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\OverviewPage'),
-                        $this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table'),
-                        $this->_framework->getInstance('\\Zepi\\Api\\Rest\\Helper\\RestHelper')
+                if ($this->frontendHelper === null) {
+                    $this->frontendHelper = new $className(
+                        $this->framework,
+                        $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
+                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
+                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
+                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
+                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'),
+                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout'),
+                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\OverviewPage'),
+                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table'),
+                        $this->framework->getInstance('\\Zepi\\Api\\Rest\\Helper\\RestHelper')
                     );
                 }
             
-                return $this->_frontendHelper;
+                return $this->frontendHelper;
             break;
             
             case '\\Zepi\\Api\\Rest\\Helper\\RestHelper':
-                if ($this->_frontendHelper === null) {
-                    $this->_frontendHelper = new $className(
-                        $this->_framework->getInstance('\\Zepi\\Api\\AccessControl\\Manager\\TokenManager')
+                if ($this->frontendHelper === null) {
+                    $this->frontendHelper = new $className(
+                        $this->framework->getInstance('\\Zepi\\Api\\AccessControl\\Manager\\TokenManager')
                     );
                 }
             
-                return $this->_frontendHelper;
+                return $this->frontendHelper;
             break;
             
             default: 

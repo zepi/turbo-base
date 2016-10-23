@@ -60,7 +60,7 @@ class GroupManager
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -71,7 +71,7 @@ class GroupManager
     public function __construct(
         AccessControlManager $accessControlManager
     ) {
-        $this->_accessControlManager = $accessControlManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -86,12 +86,12 @@ class GroupManager
     public function addGroup(Group $group)
     {
         // If the name of the group already is used we cannot add a new group
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $group->getName())) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $group->getName())) {
             throw new Exception('Cannot add the group. The name of the group is already in use.');
         }
         
         // Add the access entity
-        $uuid = $this->_accessControlManager->addAccessEntity($group);
+        $uuid = $this->accessControlManager->addAccessEntity($group);
         
         if ($uuid === false) {
             throw new Exception('Cannot add the group. Internal software error.');
@@ -111,12 +111,12 @@ class GroupManager
     public function updateGroup(Group $group)
     {
         // If the uuid does not exists we cannot update the group
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. The group does not exist.');
         }
         
         // Update the access entity
-        return $this->_accessControlManager->updateAccessEntity($group);
+        return $this->accessControlManager->updateAccessEntity($group);
     }
     
     /**
@@ -130,12 +130,12 @@ class GroupManager
     public function deleteGroup($group)
     {
         // If the uuid does not exists we cannot delete the group
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. Group does not exist.');
         }
     
         // Delete the access entity
-        return $this->_accessControlManager->deleteAccessEntity($group);
+        return $this->accessControlManager->deleteAccessEntity($group);
     }
     
     /**
@@ -147,7 +147,7 @@ class GroupManager
      */
     public function hasGroupForUuid($uuid)
     {
-        if ($this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
+        if ($this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return true;
         }
         
@@ -163,7 +163,7 @@ class GroupManager
      */
     public function hasGroupForName($name)
     {
-        if ($this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name)) {
+        if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name)) {
             return true;
         }
         
@@ -179,12 +179,12 @@ class GroupManager
      */
     public function getGroupForUuid($uuid)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
+        if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
+        $accessEntity = $this->accessControlManager->getAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $uuid);
 
         if ($accessEntity === false) {
             return false;
@@ -202,12 +202,12 @@ class GroupManager
      */
     public function getGroupForName($name)
     {
-        if (!$this->_accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name)) {
+        if (!$this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name)) {
             return false;
         }
         
         // Get the access entity
-        $accessEntity = $this->_accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name);
+        $accessEntity = $this->accessControlManager->getAccessEntityForName(self::ACCESS_ENTITY_TYPE, $name);
 
         if ($accessEntity === false) {
             return false;
@@ -225,7 +225,7 @@ class GroupManager
      */
     public function getGroups(DataRequest $dataRequest)
     {
-        return $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
     
     /**
@@ -237,6 +237,6 @@ class GroupManager
      */
     public function countGroups(DataRequest $dataRequest)
     {
-        return $this->_accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
 }

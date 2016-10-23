@@ -49,25 +49,25 @@ class Module extends ModuleAbstract
      * @access protected
      * @var \Zepi\Web\General\Manager\AssetsManager
      */
-    protected $_assetsManager;
+    protected $assetsManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\MenuManager
      */
-    protected $_menuManager;
+    protected $menuManager;
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\MetaInformationManager
      */
-    protected $_metaInformationManager;
+    protected $metaInformationManager;
     
     /**
      * Initializes and return an instance of the given class name.
@@ -80,13 +80,13 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Web\\General\\Manager\\AssetsManager':
-                if ($this->_assetsManager === null) {
+                if ($this->assetsManager === null) {
                     // Get the assets backend
-                    $path = $this->_framework->getRootDirectory() . '/data/assets.data';
+                    $path = $this->framework->getRootDirectory() . '/data/assets.data';
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
                     
                     // Get the cache backends
-                    $path = $this->_directory . '/cache/';
+                    $path = $this->directory . '/cache/';
                     $fileObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path . 'cachedFiles.data');
                     $fileBackend = new \Zepi\Turbo\Backend\FileBackend($path);
                     
@@ -94,12 +94,12 @@ class Module extends ModuleAbstract
                     $cssHelper = new \Zepi\Web\General\Helper\CssHelper($fileBackend);
                     
                     // Load the configuration
-                    $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+                    $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                     $minifyAssets = $configurationManager->getSetting('assets', 'minifyAssets');
                     $combineAssetGroups = $configurationManager->getSetting('assets', 'combineAssetGroups');
                     
-                    $this->_assetsManager = new $className(
-                        $this->_framework, 
+                    $this->assetsManager = new $className(
+                        $this->framework, 
                         $assetsObjectBackend, 
                         $fileObjectBackend, 
                         $fileBackend,
@@ -107,52 +107,52 @@ class Module extends ModuleAbstract
                         $minifyAssets,
                         $combineAssetGroups
                     );
-                    $this->_assetsManager->initializeAssetManager();
+                    $this->assetsManager->initializeAssetManager();
                 }
                 
-                return $this->_assetsManager;
+                return $this->assetsManager;
             break;
             
             case '\\Zepi\\Web\\General\\Manager\\TemplatesManager':
-                if ($this->_templatesManager === null) {
+                if ($this->templatesManager === null) {
                     // Get the templates backend
-                    $path = $this->_framework->getRootDirectory() . '/data/templates.data';
+                    $path = $this->framework->getRootDirectory() . '/data/templates.data';
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
                     
-                    $this->_templatesManager = new $className(
-                        $this->_framework, 
+                    $this->templatesManager = new $className(
+                        $this->framework, 
                         $assetsObjectBackend
                     );
-                    $this->_templatesManager->initializeTemplatesManager();
+                    $this->templatesManager->initializeTemplatesManager();
                     
                     // Execute the register renderer event
-                    $runtimeManager = $this->_framework->getRuntimeManager();
+                    $runtimeManager = $this->framework->getRuntimeManager();
                     $runtimeManager->executeEvent('\\Zepi\\Web\\General\\Event\\RegisterRenderers');
                 }
                 
-                return $this->_templatesManager;
+                return $this->templatesManager;
             break;
             
             case '\\Zepi\\Web\\General\\Manager\\MenuManager':
-                if ($this->_menuManager === null) {
-                    $this->_menuManager = new $className(
-                        $this->_framework
+                if ($this->menuManager === null) {
+                    $this->menuManager = new $className(
+                        $this->framework
                     );
                 }
                 
-                return $this->_menuManager;
+                return $this->menuManager;
             break;
             
             case '\\Zepi\\Web\\General\\Manager\\MetaInformationManager':
-                if ($this->_metaInformationManager === null) {
-                    $this->_metaInformationManager = new $className();
+                if ($this->metaInformationManager === null) {
+                    $this->metaInformationManager = new $className();
                 }
                 
-                return $this->_metaInformationManager;
+                return $this->metaInformationManager;
             break;
             
             case '\\Zepi\\Web\\General\\EventHandler\\Administration':
-                return new $className($this->_framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'));
+                return new $className($this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'));
             break;
             
             case '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache':
@@ -174,7 +174,7 @@ class Module extends ModuleAbstract
      */
     public function initialize()
     {
-        $menuManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
+        $menuManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
 
         $menuEntry = new \Zepi\Web\General\Entity\MenuEntry(
             'administration',
@@ -197,7 +197,7 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
@@ -205,18 +205,18 @@ class Module extends ModuleAbstract
         
         $runtimeManager->addFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Web\\General\\FilterHandler\\VerifyEventName');
         
-        $routeManager = $this->_framework->getRouteManager();
+        $routeManager = $this->framework->getRouteManager();
         $routeManager->addRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
         $routeManager->addRoute('assets|clearAssetCache', '\\Zepi\\Web\\General\\Event\\ClearAssetCache', 1);
         $routeManager->addRoute('administration', '\\Zepi\\Web\\General\\Event\\Administration', 1);
         
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->addSettingIfNotSet('assets', 'minifyAssets', 'true');
         $configurationManager->addSettingIfNotSet('assets', 'combineAssetGroups', 'true');
         $configurationManager->saveConfigurationFile();
         
-        $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->addTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->_directory . '/templates/Administration.phtml');
+        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
+        $templatesManager->addTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->directory . '/templates/Administration.phtml');
     }
     
     /**
@@ -226,7 +226,7 @@ class Module extends ModuleAbstract
      */
     public function deactivate()
     {
-        $runtimeManager = $this->_framework->getRuntimeManager();
+        $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
         $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
@@ -234,16 +234,16 @@ class Module extends ModuleAbstract
         
         $runtimeManager->removeFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Web\\General\\FilterHandler\\VerifyEventName');
         
-        $routeManager = $this->_framework->getRouteManager();
+        $routeManager = $this->framework->getRouteManager();
         $routeManager->removeRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
         $routeManager->removeRoute('assets|clearAssetCache', '\\Zepi\\Web\\General\\Event\\ClearAssetCache', 1);
         $routeManager->removeRoute('administration', '\\Zepi\\Web\\General\\Event\\Administration', 1);
         
-        $configurationManager = $this->_framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
         $configurationManager->removeSettingGroup('assets');
         $configurationManager->saveConfigurationFile();
         
-        $templatesManager = $this->_framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->_directory . '/templates/Administration.phtml');
+        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
+        $templatesManager->removeTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->directory . '/templates/Administration.phtml');
     }
 }

@@ -47,37 +47,37 @@ class DataRequest
      * @access protected
      * @var array
      */
-    protected $_filters = array();
+    protected $filters = array();
      
     /**
      * @access protected
      * @var integer
      */
-    protected $_page;
+    protected $page;
     
     /**
      * @access protected
      * @var false|integer
      */
-    protected $_numberOfEntries;
+    protected $numberOfEntries;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_sortBy;
+    protected $sortBy;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_sortByDirection;
+    protected $sortByDirection;
     
     /**
      * @access protected
      * @var array
      */
-    protected $_selectedFields = array();
+    protected $selectedFields = array();
     
     /**
      * Constructs the object
@@ -91,11 +91,11 @@ class DataRequest
      */
     public function __construct($page, $numberOfEntries, $sortBy, $sortByDirection, $selectedFields = array('*'))
     {
-        $this->_page = $page;
-        $this->_numberOfEntries = $numberOfEntries;
-        $this->_sortBy = $sortBy;
-        $this->_sortByDirection = $sortByDirection;
-        $this->_selectedFields = $selectedFields;
+        $this->page = $page;
+        $this->numberOfEntries = $numberOfEntries;
+        $this->sortBy = $sortBy;
+        $this->sortByDirection = $sortByDirection;
+        $this->selectedFields = $selectedFields;
     }
     
     /**
@@ -107,7 +107,7 @@ class DataRequest
     public function addFilter(Filter $filter)
     {
         $key = $filter->getKey();
-        $this->_filters[$key] = $filter;
+        $this->filters[$key] = $filter;
     }
     
     /**
@@ -118,7 +118,7 @@ class DataRequest
      */
     public function getFilters()
     {
-        return $this->_filters;
+        return $this->filters;
     }
     
     /**
@@ -130,7 +130,7 @@ class DataRequest
      */
     public function hasFilter($name)
     {
-        foreach ($this->_filters as $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->getFieldName() === $name) {
                 return true;
             }
@@ -148,7 +148,7 @@ class DataRequest
      */
     public function getFilter($name)
     {
-        foreach ($this->_filters as $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->getFieldName() === $name) {
                 return $filter;
             }
@@ -164,7 +164,7 @@ class DataRequest
      */
     public function clearFilters()
     {
-        $this->_filters = array();
+        $this->filters = array();
     }
     
     /**
@@ -175,7 +175,7 @@ class DataRequest
      */
     public function getPage()
     {
-        return $this->_page;
+        return $this->page;
     }
     
     /**
@@ -186,7 +186,7 @@ class DataRequest
      */
     public function setPage($page)
     {
-        $this->_page = $page;
+        $this->page = $page;
     }
     
     /**
@@ -197,11 +197,11 @@ class DataRequest
      */
     public function getOffset()
     {
-        if ($this->_numberOfEntries === false) {
+        if ($this->numberOfEntries === false) {
             return false;
         }
         
-        return ($this->_page - 1) * $this->_numberOfEntries;
+        return ($this->page - 1) * $this->numberOfEntries;
     }
     
     /**
@@ -212,7 +212,7 @@ class DataRequest
      */
     public function getNumberOfEntries()
     {
-        return $this->_numberOfEntries;
+        return $this->numberOfEntries;
     }
     
     /**
@@ -223,7 +223,7 @@ class DataRequest
      */
     public function setNumberOfEntries($numberOfEntries)
     {
-        $this->_numberOfEntries = $numberOfEntries;
+        $this->numberOfEntries = $numberOfEntries;
     }
     
     /**
@@ -234,7 +234,7 @@ class DataRequest
      */
     public function getSortBy()
     {
-        return $this->_sortBy;
+        return $this->sortBy;
     }
     
     /**
@@ -245,7 +245,7 @@ class DataRequest
      */
     public function setSortBy($sortBy)
     {
-        $this->_sortBy = $sortBy;
+        $this->sortBy = $sortBy;
     }
     
     /**
@@ -256,7 +256,7 @@ class DataRequest
      */
     public function getSortByDirection()
     {
-        return $this->_sortByDirection;
+        return $this->sortByDirection;
     }
     
     /**
@@ -267,7 +267,7 @@ class DataRequest
      */
     public function setSortByDirection($sortByDirection)
     {
-        $this->_sortByDirection = $sortByDirection;
+        $this->sortByDirection = $sortByDirection;
     }
     
     /**
@@ -278,7 +278,7 @@ class DataRequest
      */
     public function getSelectedFields()
     {
-        return $this->_selectedFields;
+        return $this->selectedFields;
     }
     
     /**
@@ -289,6 +289,6 @@ class DataRequest
      */
     public function setSelectedFields($selectedFields)
     {
-        $this->_selectedFields = $selectedFields;
+        $this->selectedFields = $selectedFields;
     }
 }

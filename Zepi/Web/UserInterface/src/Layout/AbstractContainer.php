@@ -47,37 +47,37 @@ abstract class AbstractContainer
      * @access protected
      * @var string
      */
-    protected $_key = '';
+    protected $key = '';
     
     /**
      * @access protected
      * @var array
      */
-    protected $_parts = array();
+    protected $parts = array();
     
     /**
      * @access protected
      * @var array
      */
-    protected $_classes = array();
+    protected $classes = array();
     
     /**
      * @access protected
      * @var string
      */
-    protected $_templateKey = '';
+    protected $templateKey = '';
     
     /**
      * @access protected
      * @var integer
      */
-    protected $_priority = 10;
+    protected $priority = 10;
     
     /**
      * @access protected
      * @var \Zepi\Web\UserInterface\Layout\AbstractContainer
      */
-    protected $_parent;
+    protected $parent;
     
     /**
      * Construct the object
@@ -101,15 +101,15 @@ abstract class AbstractContainer
         }
         
         if (is_array($classes)) {
-            $this->_classes = $classes;
+            $this->classes = $classes;
         }
         
-        $this->_key = uniqid();
+        $this->key = uniqid();
         if ($key != '') {
-            $this->_key = $key;
+            $this->key = $key;
         }
         
-        $this->_priority = $priority;
+        $this->priority = $priority;
     }
     
     /**
@@ -120,7 +120,7 @@ abstract class AbstractContainer
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -132,12 +132,12 @@ abstract class AbstractContainer
     public function getHtmlId()
     {
         $id = '';
-        if (is_object($this->_parent)) {
-            $id = $this->_parent->getHtmlId();
+        if (is_object($this->parent)) {
+            $id = $this->parent->getHtmlId();
         }
         
-        if ($this->_key !== '') {
-            $id .= '-' . $this->_key;
+        if ($this->key !== '') {
+            $id .= '-' . $this->key;
         }
         
         return $id;
@@ -151,7 +151,7 @@ abstract class AbstractContainer
      */
     public function addPart(Part $part)
     {
-        $this->_parts[] = $part;
+        $this->parts[] = $part;
         $part->setParent($this);
     }
     
@@ -164,7 +164,7 @@ abstract class AbstractContainer
      */    
     public function getPart($key)
     {
-        foreach ($this->_parts as $part) {
+        foreach ($this->parts as $part) {
             if ($part->getKey() === $key) {
                 return $part;
             }
@@ -181,7 +181,7 @@ abstract class AbstractContainer
      */
     public function getParts()
     {
-        return $this->_parts;
+        return $this->parts;
     }
     
     /**
@@ -192,7 +192,7 @@ abstract class AbstractContainer
      */
     public function getClasses()
     {
-        return $this->_classes;
+        return $this->classes;
     }
     
     /**
@@ -203,7 +203,7 @@ abstract class AbstractContainer
      */
     public function getTemplateKey()
     {
-        return $this->_templateKey;
+        return $this->templateKey;
     }
     
     /**
@@ -214,7 +214,7 @@ abstract class AbstractContainer
      */
     public function getPriority()
     {
-        return $this->_priority;
+        return $this->priority;
     }
     
     /**
@@ -225,7 +225,7 @@ abstract class AbstractContainer
      */
     public function getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
     
     /**
@@ -236,7 +236,7 @@ abstract class AbstractContainer
      */
     public function setParent(AbstractContainer $parent)
     {
-        $this->_parent = $parent;
+        $this->parent = $parent;
     }
     
     /**
@@ -250,7 +250,7 @@ abstract class AbstractContainer
      */
     public function searchPartByKeyAndType($key, $type = '\\Zepi\\Web\\UserInterface\\Layout\\AbstractContainer')
     {
-        foreach ($this->_parts as $part) {
+        foreach ($this->parts as $part) {
             if ((is_a($part, $type) || is_subclass_of($part, $type)) && $part->getKey() === $key) {
                 return $part;
             }
@@ -278,8 +278,8 @@ abstract class AbstractContainer
             return $this;
         }
         
-        if ($this->_parent !== null) {
-            return $this->_parent->getParentOfType($type);
+        if ($this->parent !== null) {
+            return $this->parent->getParentOfType($type);
         }
         
         return false;
@@ -297,7 +297,7 @@ abstract class AbstractContainer
     {
         $results = array();
 
-        foreach ($this->_parts as $part) {
+        foreach ($this->parts as $part) {
             if (is_a($part, $type) || is_subclass_of($part, $type)) {
                 $results[] = $part;
             }

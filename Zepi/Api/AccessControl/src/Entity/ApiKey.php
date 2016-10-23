@@ -47,13 +47,13 @@ class ApiKey
      * @access protected
      * @var string
      */
-    protected $_publicKey;
+    protected $publicKey;
     
     /**
      * @access protected
      * @var string
      */
-    protected $_privateKey;
+    protected $privateKey;
     
     /**
      * Constructs the object
@@ -63,8 +63,8 @@ class ApiKey
      */
     public function __construct($publicKey, $privateKey)
     {
-        $this->_publicKey = $publicKey;
-        $this->_privateKey = $privateKey;
+        $this->publicKey = $publicKey;
+        $this->privateKey = $privateKey;
     }
     
     /**
@@ -75,7 +75,7 @@ class ApiKey
      */
     public function getPublicKey()
     {
-        return $this->_publicKey;
+        return $this->publicKey;
     }
     
     /**
@@ -86,6 +86,6 @@ class ApiKey
      */
     public function getPrivateKey()
     {
-        return $this->_privateKey;
+        return $this->privateKey;
     }
 }

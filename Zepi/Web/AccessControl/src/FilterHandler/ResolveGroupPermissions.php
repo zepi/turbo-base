@@ -55,7 +55,7 @@ class ResolveGroupPermissions implements FilterHandlerInterface
      * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
-    protected $_accessControlManager;
+    protected $accessControlManager;
     
     /**
      * Constructs the object
@@ -65,7 +65,7 @@ class ResolveGroupPermissions implements FilterHandlerInterface
      */
     public function __construct(AccessControlManager $accessControlManager)
     {
-        $this->_accessControlManager = $accessControlManager;
+        $this->accessControlManager = $accessControlManager;
     }
     
     /**
@@ -87,7 +87,7 @@ class ResolveGroupPermissions implements FilterHandlerInterface
             if ($parts[1] === 'Group' && count($parts) === 3) {
                 $uuid = $parts[2];
                 
-                $groupPermissions = $this->_accessControlManager->getPermissionsForUuid($uuid);
+                $groupPermissions = $this->accessControlManager->getPermissionsForUuid($uuid);
                 foreach ($groupPermissions as $groupPermission) {
                     $permissions[] = $groupPermission;
                 }

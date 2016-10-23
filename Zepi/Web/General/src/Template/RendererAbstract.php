@@ -53,19 +53,19 @@ abstract class RendererAbstract
      * @access protected
      * @var string
      */
-    protected $_extension = '';
+    protected $extension = '';
     
     /**
      * @access protected
      * @var \Zepi\Web\General\Manager\TemplatesManager
      */
-    protected $_templatesManager;
+    protected $templatesManager;
     
     /**
      * @access protected
      * @var \Zepi\Core\Language\Manager\TranslationManager
      */
-    protected $_translationManager;
+    protected $translationManager;
     
     /**
      * Constructs the object
@@ -76,8 +76,8 @@ abstract class RendererAbstract
      */
     public function __construct(TemplatesManager $templatesManager, TranslationManager $translationManager)
     {
-        $this->_templatesManager = $templatesManager;
-        $this->_translationManager = $translationManager;
+        $this->templatesManager = $templatesManager;
+        $this->translationManager = $translationManager;
     }
     
     /**
@@ -90,7 +90,7 @@ abstract class RendererAbstract
      */
     public function getExtension()
     {
-        return $this->_extension;
+        return $this->extension;
     }
     
     /**
@@ -118,7 +118,7 @@ abstract class RendererAbstract
      */
     public function renderTemplate($key, $additionalData = array())
     {
-        return $this->_templatesManager->renderTemplate($key, $additionalData);
+        return $this->templatesManager->renderTemplate($key, $additionalData);
     }
     
     /**
@@ -145,6 +145,6 @@ abstract class RendererAbstract
      */
     public function translate($string, $namespace, $arguments = array())
     {
-        return $this->_translationManager->translate($string, $namespace, $arguments);
+        return $this->translationManager->translate($string, $namespace, $arguments);
     }
 }

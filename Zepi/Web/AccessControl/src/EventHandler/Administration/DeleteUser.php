@@ -71,7 +71,7 @@ class DeleteUser extends FrontendEventHandler
      * @access protected
      * @var \Zepi\Web\AccessControl\Manager\UserManager
      */
-    protected $_userManager;
+    protected $userManager;
     
     /**
      * Constructs the object
@@ -82,8 +82,8 @@ class DeleteUser extends FrontendEventHandler
      */
     public function __construct(FrontendHelper $frontendHelper, UserManager $userManager)
     {
-        $this->_frontendHelper = $frontendHelper;
-        $this->_userManager = $userManager;
+        $this->frontendHelper = $frontendHelper;
+        $this->userManager = $userManager;
     }
     
     /**
@@ -112,16 +112,16 @@ class DeleteUser extends FrontendEventHandler
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if (!$this->_userManager->hasUserForUuid($uuid)) {
+        if (!$this->userManager->hasUserForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/users/'));
             return;
         }
         
-        $user = $this->_userManager->getUserForUuid($request->getRouteParam(0));
+        $user = $this->userManager->getUserForUuid($request->getRouteParam(0));
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam(1) === 'confirmed') {
-            $this->_userManager->deleteUser($user);
+            $this->userManager->deleteUser($user);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUserFinished', array(
                 'user' => $user
