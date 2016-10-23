@@ -190,18 +190,7 @@ class UserManager
             return false;
         }
         
-        // Create the user object
-        $user = new User(
-            $accessEntity->getId(),
-            $accessEntity->getUuid(),
-            $accessEntity->getName(),
-            $accessEntity->getKey(),
-            $accessEntity->getMetaDataArray()
-        );
-        
-        $user->setPermissions($accessEntity->getPermissions());
-        
-        return $user;
+        return $accessEntity;
     }
     
     /**
@@ -224,18 +213,7 @@ class UserManager
             return false;
         }
         
-        // Create the user object
-        $user = new User(
-            $accessEntity->getId(),
-            $accessEntity->getUuid(),
-            $accessEntity->getName(),
-            $accessEntity->getKey(),
-            $accessEntity->getMetaDataArray()
-        );
-        
-        $user->setPermissions($accessEntity->getPermissions());
-        
-        return $user;
+        return $accessEntity;
     }
     
     /**
@@ -247,23 +225,7 @@ class UserManager
      */
     public function getUsers(DataRequest $dataRequest)
     {
-        $users = array();
-        $accessEntities = $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
-        foreach ($accessEntities as $accessEntity) {
-            $user = new User(
-                $accessEntity->getId(),
-                $accessEntity->getUuid(),
-                $accessEntity->getName(),
-                $accessEntity->getKey(),
-                $accessEntity->getMetaDataArray()
-            );
-            
-            $user->setPermissions($accessEntity->getPermissions());
-            
-            $users[] = $user;
-        }
-        
-        return $users;
+        return $this->_accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
     
     /**
