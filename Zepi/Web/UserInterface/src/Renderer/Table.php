@@ -239,28 +239,6 @@ class Table
         
         $head->addRow($row);
         
-        // Add the filter row
-        if ($table->hasFilters()) {
-            $row = new FilterRow($head);
-            foreach ($table->getColumns() as $column) {
-                if ($column->isFilterable()) {
-                    $value = '';
-                    $filter = $dataRequest->getFilter($column->getKey());
-                    if ($filter !== false) {
-                        $value = $filter->getNeededValue();
-                    }
-            
-                    $cell = new Cell($column, $row, $value);
-                } else {
-                    $cell = new Cell($column, $row, null);
-                }
-            
-                $row->addCell($cell);
-            }
-            
-            $head->addRow($row);
-        }
-        
         return $head;
     }
     

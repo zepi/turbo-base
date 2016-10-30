@@ -183,6 +183,10 @@ class Module extends ModuleAbstract
         $assetsManager->addAsset(AssetsManager::CSS, 'ui-jquery-is-loading-css', $this->directory . '/assets/css/is-loading.css', array('zt-form'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-is-loading', $this->directory . '/assets/js/is-loading/jquery.isloading.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-loading-helper', $this->directory . '/assets/js/loadingHelper.js', array('ui-jquery-is-loading'));
+        
+        $assetsManager->addAsset(AssetsManager::CSS, 'ui-datatables-css', $this->directory . '/assets/vendor/DataTables/datatables.min.css', array('zt-form'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-js', $this->directory . '/assets/vendor/DataTables/datatables.js', array('zt-main'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
     }
     
     /**

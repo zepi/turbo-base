@@ -4,46 +4,15 @@
     $preparedTable = $additionalData['preparedTable'];
 ?>
 
-<table class="table table-striped">
+<table width="100%" class="table table-striped userinterface-datatable dt-responsive" id="<?php echo $preparedTable->getId(); ?>">
     <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
         <thead>
             <?php foreach ($preparedTable->getHead()->getRows() as $row): ?>
-                <?php if ($row instanceof FilterRow): ?>
-                    <form action="<?php echo $request->getFullRoute(); ?>" method="post">
-                <?php endif; ?>
                 <tr>
                     <?php foreach ($row->getCells() as $cell): ?>
-                        <?php if ($row instanceof FilterRow && $cell->getValue() !== null): ?>
-                            <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>">
-                                <div class="input-group">
-                                    <?php $fieldType = $cell->getColumn()->getFieldType(); ?>
-                                    <?php if ($fieldType === 'select'): ?>
-                                        <select class="form-control" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>">
-                                            <?php foreach ($preparedTable->getTable()->getFilterValues($cell->getColumn()->getKey()) as $value => $label): ?>
-                                                <option value="<?php echo $value; ?>"
-                                                    <?php if ($cell->getValue() == $value) { echo 'selected="selected"'; } ?>
-                                                    >
-                                                    <?php echo $label; ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    <?php else: ?>
-                                        <input type="text" class="form-control" placeholder="" name="table-filter-<?php echo $cell->getColumn()->getKey(); ?>" value="<?php echo $cell->getValue(); ?>" />
-                                    <?php endif; ?>
-                                    <span class="input-group-btn input-group-btn-mdi">
-                                        <button class="btn btn-default" type="submit"><span class="mdi mdi-magnify"></span></button>
-                                    </span>
-                                </div>
-                            </th>
-                        <?php else: ?>
-                            <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>"><?php echo $cell->getValue(); ?></th>
-                        <?php endif; ?>
+                        <th width="<?php echo $cell->getColumn()->getHtmlWidth(); ?>" class="<?php echo $cell->getColumn()->getClasses(); ?>"><?php echo $cell->getValue(); ?></th>
                     <?php endforeach; ?>
                 </tr>
-                <?php if ($row instanceof FilterRow): ?>
-                        <input type="hidden" value="1" name="table-filter-update" />
-                    </form>
-                <?php endif; ?>
             <?php endforeach; ?>
         </thead>
     <?php endif; ?>
@@ -79,14 +48,27 @@
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
-            
-            <?php if ($preparedTable->getTable()->hasPagination()): ?>
-                <tr>
-                    <td colspan="<?php echo $preparedTable->getNumberOfColumns(); ?>">
-                        <?php $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Pagination', array('pagination' => $preparedTable->getPagination())); ?>
-                    </td>
-                </tr>
-            <?php endif; ?>
         </tfoot>
     <?php endif; ?>
 </table>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var options = defaultDataTableOptions;
+
+        options.aoColumns = [
+            <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
+                <?php foreach ($preparedTable->getHead()->getRows() as $row): ?>
+                    <?php foreach ($row->getCells() as $cell): ?>
+                        {
+                            <?php if (!$cell->isSortable()): ?>
+                                
+                            <?php endif; ?>
+                        }
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        ];
+
+        $('#<?php echo $preparedTable->getId(); ?>').DataTable(options);
+    });
+</script>

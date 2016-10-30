@@ -98,6 +98,18 @@ class PreparedTable
     }
     
     /**
+     * Returns the id for the prepared table
+     * 
+     * @return string
+     */
+    public function getId()
+    {
+        $className = get_class($this->table);
+        
+        return str_replace('\\', '_', $className);
+    }
+    
+    /**
      * Returns the Table object
      * 
      * @access public

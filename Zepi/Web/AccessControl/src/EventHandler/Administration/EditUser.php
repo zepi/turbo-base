@@ -372,7 +372,7 @@ class EditUser extends FrontendEventHandler
                                                     ),
                                                     1
                                                 )
-                                            ), array('col-md-12')),
+                                            ), array('col-md-6')),
                                             new Column(array(
                                                 new Group(
                                                     'optional-data',
@@ -411,7 +411,7 @@ class EditUser extends FrontendEventHandler
                                                     ),
                                                     2
                                                 )
-                                            ), array('col-md-12')),
+                                            ), array('col-md-6')),
                                         )
                                     ),
                                 ),
@@ -456,7 +456,7 @@ class EditUser extends FrontendEventHandler
                                     1000,
                                     array('text-left')
                                 )
-                            ), array('col-md-6')),
+                            ), array('col-md-4')),
                             new Column(array(
                                 new ButtonGroup(
                                     'buttons',
@@ -470,7 +470,7 @@ class EditUser extends FrontendEventHandler
                                     ),
                                     1000
                                 )
-                            ), array('col-md-12'))
+                            ), array('col-md-4'))
                         )
                     )
                 ))
