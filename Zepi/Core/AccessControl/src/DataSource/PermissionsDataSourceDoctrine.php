@@ -95,7 +95,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      *
      * @access public
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return array
+     * @return array|false
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the permissions for the given data request.
      */
@@ -232,12 +232,11 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
             
             $data = $queryBuilder->getQuery();
             if ($data === false) {
-                return 0;
+                return false;
             }
             
             return ($data->getSingleScalarResult() > 0);
         } catch (\Exception $e) {
-            var_dump($e);
             throw new Exception('Cannot verify the permission for uuid "' . $accessEntityUuid . '" and access level "' . $accessLevel . '".', 0, $e);
         }
     }
@@ -364,7 +363,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         
         try {
             $em = $this->entityManager->getDoctrineEntityManager();
-            $permissions = $em->getRepository($class)->findBy(array(
+            $permissions = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->findBy(array(
                 'accessEntityUuid' => $accessEntityUuid,
                 'accessLevelKey' => $accessLevel
             ));

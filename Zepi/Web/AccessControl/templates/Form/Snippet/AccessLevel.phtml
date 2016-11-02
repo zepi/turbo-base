@@ -1,4 +1,7 @@
-<?php $selectorItem = $additionalData['item']; ?>
+<?php 
+    $selectorItem = $additionalData['item']; 
+    $side = $additionalData['side'];
+?>
 <?php
     $classes = '';
     if ($selectorItem->isDisabled()) {
@@ -17,8 +20,17 @@
         </div>
         
         <div class="item-data">
-            <div class="item-data-title"><?php echo $this->translate('Description:', '\\Zepi\\Web\\AccessControl'); ?></div>
             <div class="item-data-content"><?php echo $selectorItem->getDescription(); ?></div>
+        </div>
+    </div>
+    <div class="item-right-area">
+        <div class="item-buttons">
+            <div class="item-button item-button-add">
+                <span class="glyphicon glyphicon-plus"></span>
+            </div>
+            <div class="item-button item-button-remove">
+                <span class="glyphicon glyphicon-remove"></span>
+            </div>
         </div>
     </div>
 </li>

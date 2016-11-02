@@ -1,34 +1,8 @@
 <?php $field = $additionalData['field']; ?>
 <div class="selector">
-    <div class="selector-left-side selector-side" data-side="left">
-        <div class="selector-side-box">
-            <div class="selector-side-title">
-                <h2><?php echo $field->getLeftTitle(); ?></h2>
-            </div>
-            <div class="item-search">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </div>
-                    <input type="text" id="<?php echo $field->getHtmlId(); ?>-left-search" class="form-control item-search-field <?php echo $field->getHtmlClasses(); ?>"  />
-                </div>
-            </div>
-            <div class="item-list available-items">
-                <ul>
-                    <?php foreach ($field->getLeftItems() as $item): ?>
-                        <?php $this->printTemplate($field->getItemTemplate(), array('item' => $item)); ?>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="selector-center-buttons">
-        <button type="button" class="btn btn-default to-right" disabled><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-        <button type="button" class="btn btn-default to-left" disabled><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-    </div>
-    <div class="selector-right-side selector-side" data-side="right">
-        <div class="selector-side-box">
-            <div class="selector-side-title">
+    <div class="selector-selected-area selector-area" data-side="right">
+        <div class="selector-area-box">
+            <div class="selector-area-title">
                 <h2><?php echo $field->getRightTitle(); ?></h2>
             </div>
             <div class="item-search">
@@ -42,7 +16,29 @@
             <div class="item-list granted-items">
                 <ul>
                     <?php foreach ($field->getRightItems() as $item): ?>
-                        <?php $this->printTemplate($field->getItemTemplate(), array('item' => $item)); ?>
+                        <?php $this->printTemplate($field->getItemTemplate(), array('item' => $item, 'side' => 'selected')); ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="selector-available-area selector-area" data-side="left">
+        <div class="selector-area-box">
+            <div class="selector-area-title">
+                <h2><?php echo $field->getLeftTitle(); ?></h2>
+            </div>
+            <div class="item-search">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </div>
+                    <input type="text" id="<?php echo $field->getHtmlId(); ?>-left-search" class="form-control item-search-field <?php echo $field->getHtmlClasses(); ?>"  />
+                </div>
+            </div>
+            <div class="item-list available-items">
+                <ul>
+                    <?php foreach ($field->getLeftItems() as $item): ?>
+                        <?php $this->printTemplate($field->getItemTemplate(), array('item' => $item, 'side' => 'available')); ?>
                     <?php endforeach; ?>
                 </ul>
             </div>

@@ -91,7 +91,7 @@ class GroupTable extends TableAbstract
         $translationManager = $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
         return array(
-            new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, true, Column::DATA_TYPE_HTML),
+            new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, true, Column::DATA_TYPE_HTML, 'icon-column'),
             new Column('uuid', $translationManager->translate('UUID', '\\Zepi\\Web\\AccessControl'), 30, true, true, Column::DATA_TYPE_STRING),
             new Column('actions', '', Column::WIDTH_AUTO, false, false, Column::DATA_TYPE_HTML, 'auto-width button-column')
         );
@@ -111,7 +111,7 @@ class GroupTable extends TableAbstract
         
         switch ($key) {
             case 'name':
-                return $object->getName();
+                return '<span class="mdi mdi-account-multiple"></span>' . $object->getName();
             break;
             
             case 'uuid':
