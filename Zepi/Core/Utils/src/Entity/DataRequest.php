@@ -186,7 +186,11 @@ class DataRequest
      */
     public function setPage($page)
     {
-        $this->page = $page;
+        $this->page = intval($page);
+        
+        if ($this->page == 0) {
+            $this->page = 1;
+        }
     }
     
     /**

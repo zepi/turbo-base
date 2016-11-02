@@ -8,19 +8,20 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <h1>
-                <?php echo $this->translate('Group management', '\\Zepi\\Web\\AccessControl'); ?>
-                
+            <div class="page-title">
+                <h1>
+                    <?php echo $this->translate('Group management', '\\Zepi\\Web\\AccessControl'); ?>
+                </h1>
                 <div class="header-toolbar-right">
-                    <div class="btn-group" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
                         <a href="<?php echo $request->getFullRoute('administration/groups/add'); ?>" class="btn btn-success">
                             <span class="glyphicon glyphicon-plus"></span>
                             <?php echo $this->translate('Add group', '\\Zepi\\Web\\AccessControl'); ?>
                         </a>
                     </div>
                 </div>
-            </h1>
-            
+            </div>
+        
             <?php
                 $renderedTable = $this->printTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Table', array(
                     'preparedTable' => $tableRenderer->prepareTable(

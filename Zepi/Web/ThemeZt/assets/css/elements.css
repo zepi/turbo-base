@@ -24,24 +24,51 @@ a.btn .mdi { margin-right: 5px; }
 /**
  * Toolbar
  */
-.header-toolbar-right { float: right; }
+.page-title { position: relative; }
+.page-title .header-toolbar-right { right: 0; position: absolute; top: 50%; margin-top: -16px; }
+
+@media screen and (max-width: 768px) {
+    .page-title .header-toolbar-right { position: relative; text-align: right; margin: 0 0 20px 0; }
+}
 
 /**
  * Overview navigation boxes
  */
-ul.overview-navigation { margin: 0 -10px 40px -10px; padding: 0; list-style-type: none; }
-ul.overview-navigation:after { display: table; clear: both; content: ''; }
-ul.overview-navigation li { display: table; }
-ul.overview-navigation li .overview-navigation-box { height: 140px; background: #F6F6F6; border: 1px solid #AAAAAA; padding: 20px; display: table-cell; vertical-align: middle; text-align: center; }
-ul.overview-navigation li .overview-navigation-icon { font-size: 50px; text-align: center; }
-ul.overview-navigation li .overview-navigation-label { font-size: 18px; text-align: center; padding: 10px 0 0 0; }
-ul.overview-navigation li .overview-navigation-without-icon { padding: 25px 0; }
-ul.overview-navigation li a { text-decoration: none; }
-ul.overview-navigation li .mdi { font-size: 64px; }
+.overview-navigation { margin: 0 -15px 40px -15px; padding: 0; list-style-type: none; }
+.overview-navigation:after { display: table; clear: both; content: ''; }
+.overview-navigation > div { width: 25%; padding: 0 15px 30px 15px; float: left; }
+.overview-navigation > div .overview-navigation-box { display: block; height: 140px; background: #F6F6F6; border: 1px solid #AAAAAA; padding: 20px; vertical-align: middle; text-align: center; }
+.overview-navigation > div .overview-navigation-icon { font-size: 50px; text-align: center; }
+.overview-navigation > div .overview-navigation-label { font-size: 18px; text-align: center; padding: 10px 0 0 0; }
+.overview-navigation > div .overview-navigation-without-icon { padding: 25px 0; }
+.overview-navigation > div a { text-decoration: none; }
+.overview-navigation > div .mdi { font-size: 64px; }
+
+@media screen and (max-width: 600px) {
+    .overview-navigation > div { width: 100%; }
+}
+
+@media screen and (min-width: 601px) and (max-width: 960px) {
+    .overview-navigation > div { width: 50%; }
+}
+
+@media screen and (min-width: 961px) and (max-width: 1200px) {
+    .overview-navigation > div { width: 33%; }
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1500px) {
+    .overview-navigation > div { width: 25%; }
+}
+
+@media screen and (min-width: 1501px) {
+    .overview-navigation > div { width: 20%; }
+}
+
 
 /**
  * Tables
  */
+.table { border-bottom: 3px solid #dddddd; }
 .table thead tr th,
 .table thead tr td,
 .table tbody tr th,
@@ -54,6 +81,27 @@ ul.overview-navigation li .mdi { font-size: 64px; }
 .button-column { text-align: right; }
 .button-column .btn { margin: 0 0 0 10px; }
 .button-column .btn:first-child { margin: 0; }
+
+@media screen and (max-width: 767px) {
+    .button-group .btn { width: 100%; }
+}
+
+table.dataTable > tbody > tr.child ul { display: block; }
+table.dataTable > tbody > tr.child ul li:before,
+table.dataTable > tbody > tr.child ul li:after { clear: both; content: ""; display: table; }
+table.dataTable > tbody > tr.child ul li .dtr-title { float: left; display: inline-block; min-width: 100px; }
+table.dataTable > tbody > tr.child ul li .dtr-data { float: left; display: inline-block; }
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, 
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before { top: 50%; margin-top: -9px; box-shadow: none; border: 2px solid #337ab7; }
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before, 
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before { top: 50%; margin-top: -9px; box-shadow: none; border: 2px solid #d33333; }
+table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn { margin-right: 10px; }
+
+@media screen and (max-width: 767px) {
+    div.dataTables_wrapper div.dataTables_filter {
+        text-align: right;
+    }
+}
 
 /**
  * Pagination
@@ -265,3 +313,8 @@ td .message { margin: 20px; }
 .userinterface-tabs .tab-pane fieldset:first-child { margin-top: 0; }
 .userinterface-tabs .tab-pane fieldset:last-child { margin-bottom: 0; }
 .userinterface-tabs { margin: 0 0 50px 0; }
+
+.userinterface-tabs .panel-default { border-color: #BBB; }
+.userinterface-tabs .panel-default > .panel-heading { background: #F8F8F8; background-image: none; padding: 0; border-color: #BBB; }
+.userinterface-tabs .panel-default > .panel-heading a { padding: 10px 15px; display: block; text-decoration: none; font-size: 14px; }
+.userinterface-tabs .panel-default > .panel-heading + .panel-collapse > .panel-body { border-top-color: #BBB; }

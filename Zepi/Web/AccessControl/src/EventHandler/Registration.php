@@ -4,8 +4,8 @@
  * 
  * @package Zepi\Web\AccessControl
  * @subpackage EventHandler
- * @author Matthias Zobrist <m.zobrist@promatrix.ch>
- * @copyright Copyright (c) 2015 promatrix ag
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
  */
 
 namespace Zepi\Web\AccessControl\EventHandler;
@@ -33,8 +33,8 @@ use \Zepi\Web\Mail\Helper\MailHelper;
 /**
  * Event handler to handle the registration process
  * 
- * @author Matthias Zobrist <m.zobrist@promatrix.ch>
- * @copyright Copyright (c) 2015 promatrix ag
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
  */
 class Registration extends FrontendEventHandler
 {

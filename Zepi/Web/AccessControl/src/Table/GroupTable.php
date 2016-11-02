@@ -91,9 +91,9 @@ class GroupTable extends TableAbstract
         $translationManager = $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
         return array(
-            new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, 'text'),
-            new Column('uuid', $translationManager->translate('UUID', '\\Zepi\\Web\\AccessControl'), 30, true, 'text'),
-            new Column('actions', '', Column::WIDTH_AUTO, false, false, 'auto-width button-column')
+            new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, true, Column::DATA_TYPE_HTML),
+            new Column('uuid', $translationManager->translate('UUID', '\\Zepi\\Web\\AccessControl'), 30, true, true, Column::DATA_TYPE_STRING),
+            new Column('actions', '', Column::WIDTH_AUTO, false, false, Column::DATA_TYPE_HTML, 'auto-width button-column')
         );
     }
     

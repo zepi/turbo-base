@@ -85,6 +85,12 @@ class PreparedTable
     protected $pagination;
     
     /**
+     * @access protected
+     * @var string
+     */
+    protected $token;
+    
+    /**
      * Constructs the object
      * 
      * @access public
@@ -250,5 +256,25 @@ class PreparedTable
     public function setPagination(Pagination $pagination)
     {
         $this->pagination = $pagination;
+    }
+    
+    /**
+     * Returns the token for the prepared table
+     * 
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+    
+    /**
+     * Sets the token for the prepared table
+     * 
+     * @param string $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
     }
 }

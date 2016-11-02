@@ -100,6 +100,12 @@ class Module extends ModuleAbstract
                 return $this->frontendHelper;
             break;
             
+            case '\\Zepi\\Web\\UserInterface\\EventHandler\\LoadData':
+                return new $className(
+                    $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper')
+                );
+            break;
+            
             default: 
                 return new $className();
             break;
@@ -171,6 +177,7 @@ class Module extends ModuleAbstract
         // Add the assets
         $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
         $assetsManager->addAsset(AssetsManager::JS, 'ui-tabs', $this->directory . '/assets/js/tabs.js', array('zt-main'));
+        $assetsManager->addAsset(AssetsManager::JS, 'ui-responsive-tabs', $this->directory . '/assets/vendor/bootstrap-responsive-tabs/js/responsive-tabs.js', array('ui-tabs'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-price', $this->directory . '/assets/js/price.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-dynamic-zone', $this->directory . '/assets/js/dynamicZone.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-mask', $this->directory . '/assets/js/jquery.maskMoney.js', array('zt-main'));
@@ -187,6 +194,14 @@ class Module extends ModuleAbstract
         $assetsManager->addAsset(AssetsManager::CSS, 'ui-datatables-css', $this->directory . '/assets/vendor/DataTables/datatables.min.css', array('zt-form'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-js', $this->directory . '/assets/vendor/DataTables/datatables.js', array('zt-main'));
         $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
+        
+        // Register the event handler
+        $runtimeManager = $this->framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Web\\UserInterface\\Event\\LoadData', '\\Zepi\\Web\\UserInterface\\EventHandler\\LoadData');
+        
+        // Register the route
+        $routeManager = $this->framework->getRouteManager();
+        $routeManager->addRoute('user-interface|load-data|[s]', '\\Zepi\\Web\\UserInterface\\Event\\LoadData');
     }
     
     /**

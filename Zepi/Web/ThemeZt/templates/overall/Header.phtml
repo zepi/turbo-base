@@ -26,48 +26,59 @@
         <?php $framework->getRuntimeManager()->executeEvent('\\Zepi\\Web\\General\\Event\\DisplayAssets'); ?>
     </head>
     <body>
-        <div class="container-fluid">
-            <header>
-                <div class="header-row">
-                    <div class="logo-cell">
-                        <div class="logo">
-                            <img src="<?php echo $assetManager->getAssetUrl(AssetsManager::IMAGE, 'logo'); ?>" />
-                        </div>
-                    </div>
-                    <div class="icon-cell">
-                        <ul class="notification-bar">
-                            <?php $framework->getRuntimeManager()->executeEvent('\\Zepi\\Web\\General\\Event\\NotificationBarElements'); ?>
-                        </ul>
+        <header>
+            <div class="header-row clearfix">
+                <div class="logo-cell">
+                    <div class="logo">
+                        <img src="<?php echo $assetManager->getAssetUrl(AssetsManager::IMAGE, 'logo'); ?>" />
                     </div>
                 </div>
-                <nav class="header-navigation clearfix">
-                    <div class="header-navigation-left">
-                        <ul class="root">
-                            <?php if ($menuManager != false): ?>
-                                <?php foreach ($menuManager->getMenuEntries('menu-left') as $priority => $menuEntries): ?>
-                                    <?php foreach ($menuEntries as $menuEntry): ?>
-                                        <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                        <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
-                                    <?php endforeach; ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
+                <div class="icon-cell">
+                    <ul class="notification-bar">
+                        <?php $framework->getRuntimeManager()->executeEvent('\\Zepi\\Web\\General\\Event\\NotificationBarElements'); ?>
+                    </ul>
+                </div>
+            </div>
+            <nav class="header-navigation clearfix">
+                <div class="responsive-header-navigation clearfix">
+                    <div class="responsive-header-navigation-left">
+                        <div class="responsive-nav-button" data-target=".header-navigation-left">
+                            <span class="mdi mdi-menu"></span>
+                        </div>
                     </div>
-                    <div class="header-navigation-right">
-                        <ul class="root">
-                            <?php if ($menuManager != false): ?>
-                                <?php foreach ($menuManager->getMenuEntries('menu-right') as $priority => $menuEntries): ?>
-                                    <?php foreach ($menuEntries as $menuEntry): ?>
-                                        <?php $response->setData('printingMenuEntry', $menuEntry); ?>
-                                        <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
-                                    <?php endforeach; ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
+                    <div class="responsive-header-navigation-right">
+                        <div class="responsive-nav-button" data-target=".header-navigation-right">
+                            <span class="mdi mdi-account"></span>
+                        </div>
                     </div>
-                </nav>
-            </header>
-            
+                </div>
+                <div class="header-navigation-side header-navigation-left">
+                    <ul class="root">
+                        <?php if ($menuManager != false): ?>
+                            <?php foreach ($menuManager->getMenuEntries('menu-left') as $priority => $menuEntries): ?>
+                                <?php foreach ($menuEntries as $menuEntry): ?>
+                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                <div class="header-navigation-side header-navigation-right">
+                    <ul class="root">
+                        <?php if ($menuManager != false): ?>
+                            <?php foreach ($menuManager->getMenuEntries('menu-right') as $priority => $menuEntries): ?>
+                                <?php foreach ($menuEntries as $menuEntry): ?>
+                                    <?php $response->setData('printingMenuEntry', $menuEntry); ?>
+                                    <?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot'); ?>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="container-fluid">
             <?php $entries = $menuManager->getBreadcrumbEntries(); ?>
             <?php if (count($entries) > 0): ?>
                 <nav class="breadcrumb-row" role="breadcrumb">

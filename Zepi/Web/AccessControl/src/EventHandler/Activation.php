@@ -4,8 +4,8 @@
  * 
  * @package Zepi\Web\AccessControl
  * @subpackage EventHandler
- * @author Matthias Zobrist <m.zobrist@promatrix.ch>
- * @copyright Copyright (c) 2015 promatrix ag
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
  */
 
 namespace Zepi\Web\AccessControl\EventHandler;
@@ -23,8 +23,8 @@ use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 /**
  * Event handler to activate an account
  * 
- * @author Matthias Zobrist <m.zobrist@promatrix.ch>
- * @copyright Copyright (c) 2015 promatrix ag
+ * @author Matthias Zobrist <matthias.zobrist@zepi.net>
+ * @copyright Copyright (c) 2015 zepi
  */
 class Activation extends FrontendEventHandler
 {

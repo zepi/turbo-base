@@ -103,7 +103,7 @@ class EntityManager
         }
         
         // Offset
-        if ($dataRequest->getOffset() > 0 || $dataRequest->getNumberOfEntries() > 0) {
+        if ($dataRequest->getOffset() >= 0 && $dataRequest->getNumberOfEntries() > 0) {
             $queryBuilder->setFirstResult($dataRequest->getOffset());
             $queryBuilder->setMaxResults($dataRequest->getNumberOfEntries());
         }

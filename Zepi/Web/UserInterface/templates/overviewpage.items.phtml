@@ -2,7 +2,7 @@
     $children = $additionalData['children'];
 ?>
 
-<ul class="overview-navigation">
+<div class="overview-navigation">
     <?php foreach ($children as $child): ?>
         <?php
             $iconClass = '';
@@ -20,7 +20,7 @@
                 $urlTarget = $child->getTarget();
             }
         ?>
-        <li class="col-sm-2">
+        <div class="overview-navigation-holder">
             <a href="<?php echo $request->getFullRoute($urlTarget); ?>" class="overview-navigation-box">
                 <?php if ($iconClass !== ''): ?>
                     <div class="overview-navigation-icon">
@@ -33,6 +33,6 @@
                     <?php echo $child->getName(); ?>
                 </div>
             </a>
-        </li>
+        </div>
     <?php endforeach; ?>
-</ul>
+</div>

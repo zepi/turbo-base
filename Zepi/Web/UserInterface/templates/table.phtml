@@ -55,20 +55,39 @@
     jQuery(document).ready(function () {
         var options = defaultDataTableOptions;
 
-        options.aoColumns = [
-            <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
-                <?php foreach ($preparedTable->getHead()->getRows() as $row): ?>
-                    <?php foreach ($row->getCells() as $cell): ?>
-                        {
-                            <?php if (!$cell->isSortable()): ?>
-                                
-                            <?php endif; ?>
-                        }
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        ];
+        options.pageLength = 20;
+        options.lengthMenu = [ 20, 50, 100 ];
+        options.ajax = "<?php echo $request->getFullRoute('user-interface/load-data/' . $preparedTable->getToken()); ?>";
+        options.deferRender = true;
 
+        options.language = {
+            sEmptyTable: '<?php echo $this->translate('No data available in table', '\\Zepi\\Web\\UserInterface'); ?>',
+            sInfo: '<?php echo $this->translate('Showing _START_ to _END_ of _TOTAL_ entries', '\\Zepi\\Web\\UserInterface'); ?>',
+            sInfoEmpty: '<?php echo $this->translate('Showing 0 to 0 of 0 entries', '\\Zepi\\Web\\UserInterface'); ?>',
+            sInfoFiltered: '<?php echo $this->translate('(filtered from _MAX_ total entries)', '\\Zepi\\Web\\UserInterface'); ?>',
+            sInfoPostFix: '',
+            sInfoThousands: '<?php echo $this->translate(',', '\\Zepi\\Web\\UserInterface'); ?>',
+            sLengthMenu: '<?php echo $this->translate('Show _MENU_ entries', '\\Zepi\\Web\\UserInterface'); ?>',
+            sLoadingRecords: '<?php echo $this->translate('Loading...', '\\Zepi\\Web\\UserInterface'); ?>',
+            sProcessing: '<?php echo $this->translate('Processing...', '\\Zepi\\Web\\UserInterface'); ?>',
+            sSearch: '<?php echo $this->translate('Search:', '\\Zepi\\Web\\UserInterface'); ?>',
+            sZeroRecords: '<?php echo $this->translate('No matching records found', '\\Zepi\\Web\\UserInterface'); ?>',
+            oPaginate: {
+                sFirst: '<?php echo $this->translate('First', '\\Zepi\\Web\\UserInterface'); ?>',
+                sLast: '<?php echo $this->translate('Last', '\\Zepi\\Web\\UserInterface'); ?>',
+                sNext: '<?php echo $this->translate('Next', '\\Zepi\\Web\\UserInterface'); ?>',
+                sPrevious: '<?php echo $this->translate('Previous', '\\Zepi\\Web\\UserInterface'); ?>'
+            },
+            oAria: {
+                sSortAscending: '<?php echo $this->translate(': activate to sort column ascending', '\\Zepi\\Web\\UserInterface'); ?>',
+                sSortDescending: '<?php echo $this->translate(': activate to sort column descending', '\\Zepi\\Web\\UserInterface'); ?>'
+            }
+        };
+        
+        <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
+            options.columns = <?php echo json_encode($preparedTable->getHead()->getColumnOptions()); ?>
+        <?php endif; ?>
+        
         $('#<?php echo $preparedTable->getId(); ?>').DataTable(options);
     });
 </script>

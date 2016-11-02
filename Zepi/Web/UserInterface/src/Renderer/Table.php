@@ -133,10 +133,11 @@ class Table
         // Add the table foot
         $preparedTable->setFoot($this->renderFoot($table));
         
-        // Add the pagination
-        if ($table->hasPagination() && $numberOfEntries !== false) {
-            $preparedTable->setPagination($this->paginationRenderer->prepare($dataRequest, $paginationUrl, $table->countData($dataRequest), $numberOfEntries));
-        }
+        // Create the token
+        $token = uniqid('dt');
+        $preparedTable->setToken($token);
+        $request->setSessionData('dt-class-' . $token, get_class($table));
+        $request->setSessionData('dt-time-' . $token, time());
         
         return $preparedTable;
     }
@@ -176,7 +177,7 @@ class Table
         }
         
         // Check if the data request is valid
-        if ($dataRequest !== false) {
+        if ($dataRequest !== false && $numberOfEntries == $dataRequest->getNumberOfEntries()) {
             if (!$pageNotSet) {
                 $dataRequest->setPage($page);
                 $dataRequest->setSortBy($sortBy);
@@ -251,7 +252,7 @@ class Table
      * @param mixed $object
      * @return \Zepi\Web\UserInterface\Table\Row
      */
-    public function renderRow(TableAbstract $table, Body $body, $object)
+    protected function renderRow(TableAbstract $table, Body $body, $object)
     {
         $row = new Row($body);
         foreach ($table->getColumns() as $column) {

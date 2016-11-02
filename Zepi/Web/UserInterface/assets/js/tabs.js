@@ -5,4 +5,6 @@ jQuery(document).ready(function () {
 		    jQuery(this).tab('show');
 		});
 	});
+	
+	fakewaffle.responsiveTabs(['xs', 'sm']);
 });

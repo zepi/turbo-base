@@ -47,6 +47,12 @@
                     <?php endif; ?>
                     
                     <?php echo $child->getName(); ?>
+                    
+                    <?php if ($child->hasVisibleChildren()): ?>
+                        <div class="responsive-submenu-button">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </div>
+                    <?php endif; ?>
                 </a>
                 
                 <?php if ($child->hasChildren()): ?>

@@ -101,4 +101,19 @@ class Row
     {
         return $this->cells;
     }
+    
+    /**
+     * Returns an array for the row
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        $rowData = array();
+        foreach ($this->cells as $cell) {
+            $rowData[] = $cell->getValue();
+        }
+        
+        return $rowData;
+    }
 }

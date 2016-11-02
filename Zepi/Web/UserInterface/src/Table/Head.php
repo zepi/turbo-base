@@ -43,5 +43,19 @@ namespace Zepi\Web\UserInterface\Table;
  */
 class Head extends Part
 {
-
+    public function getColumnOptions()
+    {
+        $options = array();
+        foreach ($this->rows as $row) {
+            foreach ($row->getCells() as $cell) {
+                $options[] = array(
+                    'type' => $cell->getColumn()->getDataType(),
+                    'orderable' => $cell->getColumn()->isSortable(),
+                    'className' => $cell->getColumn()->getClasses()
+                );
+            }
+        }
+        
+        return $options;
+    }
 }

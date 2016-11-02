@@ -45,6 +45,12 @@ class Column
 {
     const WIDTH_AUTO = 'auto';
     
+    const DATA_TYPE_STRING = 'string';
+    const DATA_TYPE_DATE = 'date';
+    const DATA_TYPE_NUM = 'num-fmt';
+    const DATA_TYPE_HTML_NUM = 'html-num-fmt';
+    const DATA_TYPE_HTML = 'html';
+    
     /**
      * @access protected
      * @var string
@@ -71,9 +77,15 @@ class Column
     
     /**
      * @access protected
-     * @var boolean|string
+     * @var boolean
      */
-    protected $fieldType;
+    protected $sortable;
+    
+    /**
+     * @access protected
+     * @var string
+     */
+    protected $dataType;
     
     /**
      * @access protected
@@ -89,16 +101,18 @@ class Column
      * @param string $name
      * @param mixed $width
      * @param boolean $filterable
-     * @param boolean|string $fieldType
+     * @param boolean $sortable
+     * @param string $dataType
      * @param string $classes
      */
-    public function __construct($key, $name, $width, $filterable = false, $fieldType = 'text', $classes = '')
+    public function __construct($key, $name, $width, $filterable = false, $sortable = true, $dataType = self::DATA_TYPE_STRING, $classes = '')
     {
         $this->key = $key;
         $this->name = $name;
         $this->width = $width;
         $this->filterable = $filterable;
-        $this->fieldType = $fieldType;
+        $this->sortable = $sortable;
+        $this->dataType = $dataType;
         $this->classes = $classes;
     }
     
@@ -164,14 +178,25 @@ class Column
     }
     
     /**
-     * Returns the field type of the column
+     * Returns true if the column is sortable
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isSortable()
+    {
+        return $this->sortable;
+    }
+    
+    /**
+     * Returns the data type of the column
      * 
      * @access public
-     * @return boolean|string
+     * @return string
      */
-    public function getFieldType()
+    public function getDataType()
     {
-        return $this->fieldType;
+        return $this->dataType;
     }
     
     /**

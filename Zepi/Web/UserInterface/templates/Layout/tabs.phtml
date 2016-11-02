@@ -3,12 +3,12 @@
     $container = $additionalData['container'];
 ?>
 <div class="userinterface-tabs">
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs responsive" role="tablist">
         <?php foreach ($container->getParts() as $part): ?>
             <li role="presentation" <?php if ($part->isActive()) { ?>class="active"<?php } ?>><a href="#<?php echo $part->getHtmlId(); ?>" role="tab" data-toggle="tab"><?php echo $part->getName(); ?></a></li>
         <?php endforeach; ?>
     </ul>
-    <div class="tab-content">
+    <div class="tab-content responsive">
         <?php foreach ($container->getParts() as $part): ?>
             <?php echo $layoutRenderer->render($part); ?>
         <?php endforeach; ?>
