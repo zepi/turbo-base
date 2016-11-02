@@ -615,24 +615,6 @@ class AssetsManager
     }
     
     /**
-     * Deletes the old type cache file before a new one is saved.
-     * 
-     * @access protected
-     * @param string $type
-     */
-    protected function removeOldTypeCacheFile($type)
-    {
-        $hash = $this->getTypeHash($type);
-
-        if (!$this->hasCachedFile($hash)) {
-            return false;
-        }
-
-        $fileData = $this->cachedFiles[$hash];
-        $this->fileBackend->deleteFile($fileData['file']);
-    }
-    
-    /**
      * Returns true if there is a cached file for the given
      * hash
      * 
@@ -654,10 +636,34 @@ class AssetsManager
     protected function removeOldCacheFile($file)
     {
         $hash = $this->getHash($file);
+        $this->removeCacheFile($hash);
+    }
+    
+
+    /**
+     * Deletes the old type cache file before a new one is saved.
+     *
+     * @access protected
+     * @param string $type
+     */
+    protected function removeOldTypeCacheFile($type)
+    {
+        $hash = $this->getTypeHash($type);
+        $this->removeCacheFile($hash);
+    }
+    
+    /**
+     * Deletes the cache file for the given hash
+     * 
+     * @param string $hash
+     * @return boolean
+     */
+    protected function removeCacheFile($hash)
+    {
         if (!$this->hasCachedFile($hash)) {
             return false;
         }
-
+        
         $fileData = $this->cachedFiles[$hash];
         $this->fileBackend->deleteFile($fileData['file']);
     }

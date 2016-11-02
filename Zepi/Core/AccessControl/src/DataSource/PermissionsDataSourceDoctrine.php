@@ -95,7 +95,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      *
      * @access public
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return array|false
+     * @return array
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the permissions for the given data request.
      */
@@ -109,7 +109,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
             
             $permissions = $queryBuilder->getQuery()->getResult();
             if ($permissions == null) {
-                return false;
+                return array();
             }
             
             return $permissions;
@@ -396,7 +396,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
     
         try {
             $em = $this->entityManager->getDoctrineEntityManager();
-            $permissions = $em->getRepository($class)->findBy(array(
+            $permissions = $em->getRepository('\\Zepi\\Core\\AccessControl\\Entity\\Permission')->findBy(array(
                 'accessLevelKey' => $accessLevel
             ));
             
