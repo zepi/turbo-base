@@ -27,12 +27,12 @@
 /**
  * The exception
  * 
- * @package Zepi\Web\AccessControl
+ * @package Zepi\Api\AccessControl
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl;
+namespace Zepi\Api\AccessControl;
 
 /**
  * The exception
