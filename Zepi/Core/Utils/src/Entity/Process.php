@@ -45,7 +45,7 @@ class Process
 {
     /**
      * @access protected
-     * @var \Zepi\Core\Utils\Task
+     * @var \Zepi\Core\Utils\Entity\Task
      */
     protected $task;
     

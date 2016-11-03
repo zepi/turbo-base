@@ -72,6 +72,10 @@ class VerifyEventName implements FilterHandlerInterface
         
         $urlParts = parse_url($fullUrl);
         
+        if ($urlParts == false) {
+            return $value;
+        }
+        
         if (isset($urlParts['path'])) {
             $path = $urlParts['path'];
         

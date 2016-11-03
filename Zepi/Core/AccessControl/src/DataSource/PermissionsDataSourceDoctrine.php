@@ -25,7 +25,7 @@
  */
 
 /**
- * The PermissionsDataSourceDoctrine communicates with the MySQL Database and 
+ * The PermissionsDataSourceDoctrine communicates with Doctrine and 
  * loads and saves the permissions.
  * 
  * @package Zepi\Core\AccessControl
@@ -44,7 +44,7 @@ use \Zepi\Core\AccessControl\Entity\Permission;
 use \Zepi\Core\Utils\Entity\DataRequest;
 
 /**
- * The PermissionsDataSourceDoctrine communicates with the MySQL Database and 
+ * The PermissionsDataSourceDoctrine communicates with Doctrine and 
  * loads and saves the permissions.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>

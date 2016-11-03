@@ -94,11 +94,17 @@ class ConfigurationManager
      * @access public
      * @param string $group
      * @param string $key
-     * @return false|string
+     * @return boolean|string
      */
     public function getSetting($group, $key)
     {
         if (!$this->hasSetting($group, $key)) {
+            return false;
+        }
+        
+        if ($this->settings[$group][$key] == 'true') {
+            return true;
+        } else if ($this->settings[$group][$key] == 'false') {
             return false;
         }
         
