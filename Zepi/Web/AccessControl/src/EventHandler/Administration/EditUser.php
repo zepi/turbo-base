@@ -270,6 +270,10 @@ class EditUser extends FrontendEventHandler
             $this->userManager->updateUser($user);
         }
         
+        if ($user === false) {
+            return false;
+        }
+        
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $accessLevelsElement->getValue();
@@ -334,6 +338,11 @@ class EditUser extends FrontendEventHandler
             $this->accessLevelManager->getAccessLevels(),
             $request->getSession()->getUser()
         );
+        
+        $rawPermissionsForUuid = $this->accessControlManager->getPermissionsRawForUuid($user->getUuid());
+        if ($rawPermissionsForUuid === false) {
+            $rawPermissionsForUuid = array();
+        }
         
         $page = new Page(
             array(
@@ -425,7 +434,7 @@ class EditUser extends FrontendEventHandler
                                         'access-levels',
                                         $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $this->accessControlManager->getPermissionsRawForUuid($user->getUuid()),
+                                        $rawPermissionsForUuid,
                                         $accessLevelSelectorItems,
                                         $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),

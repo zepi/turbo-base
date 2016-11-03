@@ -605,13 +605,18 @@ class AssetsManager
      */
     protected function minifyContent($type, $content)
     {
+        $minifier = null;
         if ($type === self::CSS) {
             $minifier = new \MatthiasMullie\Minify\CSS($content);
         } else if ($type === self::JS) {
             $minifier = new \MatthiasMullie\Minify\JS($content);
         }
         
-        return $minifier->minify();
+        if ($minifier !== null) {
+            return $minifier->minify();
+        }
+        
+        return $content;
     }
     
     /**

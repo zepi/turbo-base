@@ -264,6 +264,10 @@ class EditGroup extends FrontendEventHandler
             $this->groupManager->updateGroup($group);
         }
         
+        if ($group === false) {
+            return false;
+        }
+        
         // Save the access levels
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $this->cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
@@ -335,6 +339,11 @@ class EditGroup extends FrontendEventHandler
             $group
         );
         
+        $rawPermissionsForUuid = $this->accessControlManager->getPermissionsRawForUuid($group->getUuid());
+        if ($rawPermissionsForUuid === false) {
+            $rawPermissionsForUuid = array();
+        }
+        
         $page = new Page(
             array(
                 new Form('edit-group', $request->getFullRoute(), 'post', array(
@@ -391,7 +400,7 @@ class EditGroup extends FrontendEventHandler
                                         'access-levels',
                                         $this->translate('Access Level Selector', '\\Zepi\\Web\\AccessControl'),
                                         false,
-                                        $this->accessControlManager->getPermissionsRawForUuid($group->getUuid()),
+                                        $rawPermissionsForUuid,
                                         $accessLevelSelectorItems,
                                         $this->translate('Available Access Levels', '\\Zepi\\Web\\AccessControl'),
                                         $this->translate('Granted Access Levels', '\\Zepi\\Web\\AccessControl'),
