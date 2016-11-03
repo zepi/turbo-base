@@ -207,20 +207,7 @@ class ThreadHelper
     public function startProcess(Task $task)
     {
         $pid = pcntl_fork();
-    
-        if ($pid === -1) {
-            $this->cliHelper->writeTimeLine('Could not fork!');
-            exit;
-        } elseif ($pid) {
-            $process = new Process($task, $pid);
-            $this->processes[$pid] = $process;
-    
-            if ($this->onStart !== null) {
-                call_user_func($this->onStart, $process);
-            }
-        } else {
-            $this->executeTask($task);
-        }
+        $this->startFork($pid, $this->onStart, $task);
     }
     
     /**
@@ -234,20 +221,7 @@ class ThreadHelper
         posix_kill($oldProcess->getPid(), SIGUSR1);
     
         $pid = pcntl_fork();
-    
-        if ($pid === -1) {
-            $this->cliHelper->writeTimeLine('Could not fork!');
-            exit;
-        } elseif ($pid) {
-            $newProcess = new Process($oldProcess->getTask(), $pid);
-            $this->processes[$pid] = $newProcess;
-    
-            if ($this->onRestart !== null) {
-                call_user_func($this->onRestart, $oldProcess, $newProcess);
-            }
-        } else {
-            $this->executeTask($oldProcess->getTask());
-        }
+        $this->startFork($pid, $this->onRestart, $oldProcess->getTask(), $oldProcess);
     }
     
     /**
@@ -265,19 +239,35 @@ class ThreadHelper
         unset($this->processes[$oldPid]);
     
         $pid = pcntl_fork();
+        $this->startFork($pid, $this->onCrash, $oldProcess->getTask(), $oldProcess);
+    }
     
+    /**
+     * Starts the work of the fork
+     * 
+     * @param integer $pid
+     * @param callable $callback
+     * @param \Zepi\Core\Utils\Entity\Task $task
+     * @param \Zepi\Core\Utils\Entity\Process $oldProcess
+     */
+    protected function startFork($pid, $callback, Task $task, Process $oldProcess = null)
+    {
         if ($pid === -1) {
             $this->cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
             $newProcess = new Process($oldProcess->getTask(), $pid);
             $this->processes[$pid] = $newProcess;
-    
-            if ($this->onCrash !== null) {
-                call_user_func($this->onStart, $oldProcess, $newProcess);
+        
+            if ($callback !== null) {
+                if ($oldProcess !== null) {
+                    call_user_func($callback, $oldProcess, $newProcess);
+                } else {
+                    call_user_func($callback, $newProcess);
+                }
             }
         } else {
-            $this->executeTask($oldProcess->getTask());
+            $this->executeTask($task);
         }
     }
     
