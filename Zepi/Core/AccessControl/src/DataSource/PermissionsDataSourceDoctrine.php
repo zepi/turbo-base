@@ -368,7 +368,6 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
                 'accessLevelKey' => $accessLevel
             ));
             
-            $accessLevels = array();
             foreach ($permissions as $permission) {
                 $em->remove($permission);
             }
@@ -400,7 +399,6 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
                 'accessLevelKey' => $accessLevel
             ));
             
-            $accessLevels = array();
             foreach ($permissions as $permission) {
                 $em->remove($permission);
             }

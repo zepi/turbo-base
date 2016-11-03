@@ -221,7 +221,6 @@ class FrontendHelper
      */
     public function activateMenuEntry($key = '')
     {
-        $menuEntry = null;
         if ($key != '') {
             $menuEntry = $this->menuManager->getMenuEntryForKey($key);
             

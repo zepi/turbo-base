@@ -252,10 +252,8 @@ class ThreadHelper
     
     /**
      * Starts a crashed process again
-     *
-     * @param integer $signo
      */
-    public function startCrashedProcess($signo)
+    public function startCrashedProcess()
     {
         $oldPid = pcntl_waitpid(-1, $status, WNOHANG);
     

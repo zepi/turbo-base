@@ -59,7 +59,6 @@ class Token extends AccessEntity
         parent::__construct(
             $id,
             $uuid,
-            get_class($this),
             $name,
             $key,
             $metaData

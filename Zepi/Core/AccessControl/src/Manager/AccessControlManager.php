@@ -255,7 +255,10 @@ class AccessControlManager
         
         if ($permission instanceof \Zepi\Core\AccessControl\Entity\Permission) {
             $accessEntity = $this->getAccessEntityForUuid($permission->getAccessEntityUuid());
-            $permission->setAccessEntity($accessEntity);
+            
+            if ($accessEntity instanceof \Zepi\Core\AccessControl\Entity\AccessEntity) {
+                $permission->setAccessEntity($accessEntity);
+            }
         }
         
         return $permission;

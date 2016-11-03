@@ -147,8 +147,13 @@ class RestHelper
                 $xml = new \SimpleXMLElement('<root/>');
                 $this->fillXml($xml, $result);
                 
+                $result = $xml->asXML();
+                if ($result === false) {
+                    $result = '';
+                }
+                
                 $response->sendHeader('Content-Type: text/xml');
-                $response->setOutput($xml->asXML());
+                $response->setOutput($result);
             break;
             
             case 'application/json':

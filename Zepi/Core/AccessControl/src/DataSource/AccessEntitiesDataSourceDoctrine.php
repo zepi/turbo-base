@@ -347,6 +347,11 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
     protected function loadPermissions(AccessEntity $accessEntity) 
     {
         $permissions = $this->permissionsDataSource->getPermissionsForUuid($accessEntity->getUuid());
+        
+        if ($permissions === false) {
+            return;
+        }
+        
         $accessEntity->setPermissions($permissions);
     }
 }

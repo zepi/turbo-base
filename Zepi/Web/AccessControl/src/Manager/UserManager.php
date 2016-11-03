@@ -127,7 +127,7 @@ class UserManager
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot delete the user. User does not exist.
      */
-    public function deleteUser($uuid)
+    public function deleteUser($user)
     {
         // If the uuid does not exists we cannot delete the user
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
