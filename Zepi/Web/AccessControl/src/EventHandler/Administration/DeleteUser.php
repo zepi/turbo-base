@@ -112,7 +112,7 @@ class DeleteUser extends FrontendEventHandler
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if ($uuid === false || !$this->userManager->hasUserForUuid($uuid)) {
+        if (!is_string($uuid) || !$this->userManager->hasUserForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/users/'));
             return;
         }

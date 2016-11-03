@@ -97,7 +97,7 @@ class DeleteGroup extends FrontendEventHandler
         $uuid = $request->getRouteParam(0);
         
         // If the UUID does not exists redirect to the overview page
-        if ($uuid === false || !$this->groupManager->hasGroupForUuid($uuid)) {
+        if (!is_string($uuid) || !$this->groupManager->hasGroupForUuid($uuid)) {
             $response->redirectTo($request->getFullRoute('/administration/groups/'));
             return;
         }
