@@ -102,6 +102,7 @@ class RestHelper
             case 'PUT':
             case 'DELETE':
                 $args['query'] = $request->getQueryData();
+                break;
             case 'POST':
                 $args['form_params'] = $request->getPostData();
                 break;
@@ -134,11 +135,11 @@ class RestHelper
      * Send the api result to the client
      *
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Api\Rest\Entity\Request $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param array $result
      */
-    public function sendResponse(RequestAbstract $request, Response $response, $result)
+    public function sendResponse(RestRequest $request, Response $response, $result)
     {
         $dataType = $request->getHeader('Accept');
         
@@ -169,7 +170,7 @@ class RestHelper
      * 
      * @access public
      * @param \SimpleXMLElement $element
-     * @param array $data
+     * @param array|object $data
      */
     protected function fillXml(\SimpleXMLElement $element, $data)
     {
@@ -193,7 +194,10 @@ class RestHelper
      * if everything is correct or false if the request is wrong
      * 
      * @access public
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     * @param \Zepi\Api\AccessControl\Entity\ApiKey $apiKey
+     * @param string $hmac
+     * @param string $route
+     * @param array $data
      * @return false|\Zepi\Api\AccessControl\Entity\Token
      */
     public function validateRequest(ApiKey $apiKey, $hmac, $route, $data)

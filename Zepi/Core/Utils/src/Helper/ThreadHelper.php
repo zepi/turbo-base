@@ -256,7 +256,7 @@ class ThreadHelper
             $this->cliHelper->writeTimeLine('Could not fork!');
             exit;
         } elseif ($pid) {
-            $newProcess = new Process($oldProcess->getTask(), $pid);
+            $newProcess = new Process($task, $pid);
             $this->processes[$pid] = $newProcess;
         
             if ($callback !== null) {
