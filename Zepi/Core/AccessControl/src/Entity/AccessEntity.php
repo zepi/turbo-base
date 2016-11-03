@@ -143,17 +143,6 @@ class AccessEntity
     }
     
     /**
-     * Returns the type of the access entity
-     * 
-     * @access public
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-    
-    /**
      * Returns the name of the access entitiy
      * 
      * @access public

@@ -51,13 +51,13 @@ class Response
     
     /**
      * @access protected
-     * @var array
+     * @var string
      */
-    protected $result = array();
+    protected $result;
     
     /**
      * @access protected
-     * @var array
+     * @var \stdClass
      */
     protected $data;
     

@@ -71,7 +71,7 @@ class Process
      * Constructs the entity
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Task $task
+     * @param \Zepi\Core\Utils\Entity\Task $task
      * @param integer $pid
      */
     public function __construct(Task $task, $pid)

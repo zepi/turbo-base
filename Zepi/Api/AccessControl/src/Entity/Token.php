@@ -73,6 +73,6 @@ class Token extends AccessEntity
      */
     public function getApiKey()
     {
-        return new ApiKey($this->name, $this->key);
+        return new ApiKey($this->name, $this->privateKey);
     }
 }

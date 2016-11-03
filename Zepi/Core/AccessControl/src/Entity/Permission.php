@@ -65,6 +65,11 @@ class Permission
     protected $accessEntityUuid;
     
     /**
+     * @var \Zepi\Core\AccessControl\Entity\AccessEntity
+     */
+    protected $accessEntity;
+    
+    /**
      * @Column(type="string", name="access_level_key")
      * @var string
      */

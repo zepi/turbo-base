@@ -46,7 +46,7 @@ class Module extends ModuleAbstract
 {
     /**
      * @access protected
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
      */
     protected $entityManager;
     
