@@ -138,11 +138,13 @@ class EditGroup extends FrontendEventHandler
             return;
         }
 
+        $uuid = $request->getRouteParam(0);
+        
         // If there is a request parameter we need to edit a user. Otherwise we create a new one.
-        if ($request->getRouteParam(0) !== false) {
+        if ($uuid !== false) {
             $additionalTitle = $this->translate('Modify group', '\\Zepi\\Web\\AccessControl');
             
-            $group = $this->groupManager->getGroupForUuid($request->getRouteParam(0));
+            $group = $this->groupManager->getGroupForUuid($uuid);
         } else {
             $additionalTitle = $this->translate('Add group', '\\Zepi\\Web\\AccessControl');
             

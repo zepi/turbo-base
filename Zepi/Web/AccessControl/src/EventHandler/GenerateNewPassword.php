@@ -94,6 +94,11 @@ class GenerateNewPassword extends FrontendEventHandler
         $uuid = $request->getRouteParam(0);
         $token = $request->getRouteParam(1);
         
+        if ($uuid === false || !$this->userManager->hasUserForUuid($uuid) || $token === false) {
+            $response->redirectTo('/');
+            return;
+        }
+        
         // Load the user
         $user = $this->userManager->getUserForUuid($uuid);
         

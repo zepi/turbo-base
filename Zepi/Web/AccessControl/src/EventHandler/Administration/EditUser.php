@@ -137,11 +137,13 @@ class EditUser extends FrontendEventHandler
             return;
         }
         
+        $uuid = $request->getRouteParam(0);
+        
         // If there is a request parameter we need to edit a user. Otherwise we create a new one.
-        if ($request->getRouteParam(0) !== false) {
+        if ($uuid !== false) {
             $additionalTitle = $this->translate('Modify user', '\\Zepi\\Web\\AccessControl');
             
-            $user = $this->userManager->getUserForUuid($request->getRouteParam(0));
+            $user = $this->userManager->getUserForUuid($uuid);
         } else {
             $additionalTitle = $this->translate('Add user', '\\Zepi\\Web\\AccessControl');
             

@@ -88,8 +88,10 @@ class ResolveGroupPermissions implements FilterHandlerInterface
                 $uuid = $parts[2];
                 
                 $groupPermissions = $this->accessControlManager->getPermissionsForUuid($uuid);
-                foreach ($groupPermissions as $groupPermission) {
-                    $permissions[] = $groupPermission;
+                if ($groupPermissions !== false) {
+                    foreach ($groupPermissions as $groupPermission) {
+                        $permissions[] = $groupPermission;
+                    }
                 }
             } else {
                 $permissions[] = $accessLevel;

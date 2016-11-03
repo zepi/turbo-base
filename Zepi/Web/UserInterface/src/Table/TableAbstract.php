@@ -167,7 +167,6 @@ abstract class TableAbstract
      *
      * @access public
      * @param string $key
-     * @param mixed $object
      * @return array
      */
     public function getFilterValues($key)

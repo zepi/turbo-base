@@ -84,6 +84,12 @@ class LoadAssetContent implements WebEventHandlerInterface
         $hash = $request->getRouteParam(1); // Hash of the asset
         $version = $request->getRouteParam(2); // Version of the file 
         
+        // Check if all values are available
+        if ($type == false || $hash == false || $version == false) {
+            $response->setOutput('/** Zepi Assets Manager: Malformed request! */');
+            return;
+        }
+        
         // If the file isn't cached display nothing
         if (!$this->assetsManager->isCached($type, $hash, $version)) {
             $response->setOutput('/** Zepi Assets Manager: Not cached! */');

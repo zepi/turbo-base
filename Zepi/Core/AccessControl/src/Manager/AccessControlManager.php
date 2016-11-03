@@ -185,7 +185,7 @@ class AccessControlManager
      * 
      * @param string $class
      * @param string $name
-     * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
+     * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      */
     public function getAccessEntityForName($class, $name)
     {

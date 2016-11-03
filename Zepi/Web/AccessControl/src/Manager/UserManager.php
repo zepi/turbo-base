@@ -198,7 +198,7 @@ class UserManager
      * 
      * @access public
      * @param string $username
-     * @return boolean
+     * @return boolean|\Zepi\Web\AccessControl\Entity\User
      */
     public function getUserForUsername($username)
     {
