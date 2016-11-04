@@ -105,7 +105,7 @@ class Activation extends FrontendEventHandler
         }
         
         // Remove the disabled access level
-        $this->accessControlManager->revokePermission($uuid, '\\Global\\Disabled');
+        $this->accessControlManager->revokePermission($uuid, get_class($user), '\\Global\\Disabled');
         
         return array('result' => true, 'message' => $this->translate('Your account was activated successfully.', '\\Zepi\\Web\\AccessControl'));
     }
