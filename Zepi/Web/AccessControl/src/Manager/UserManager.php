@@ -175,7 +175,7 @@ class UserManager
      * 
      * @access public
      * @param string $uuid
-     * @return boolean
+     * @return false|\Zepi\Web\AccessControl\Entity\User
      */
     public function getUserForUuid($uuid)
     {
@@ -198,7 +198,7 @@ class UserManager
      * 
      * @access public
      * @param string $username
-     * @return boolean|\Zepi\Web\AccessControl\Entity\User
+     * @return false|\Zepi\Web\AccessControl\Entity\User
      */
     public function getUserForUsername($username)
     {

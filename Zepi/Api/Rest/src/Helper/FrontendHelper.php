@@ -45,8 +45,9 @@ use \Zepi\Web\UserInterface\Renderer\Layout;
 use \Zepi\Web\UserInterface\Renderer\Table;
 use \Zepi\Web\UserInterface\Renderer\OverviewPage;
 use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Web\UserInterface\Frontend\FrontendHelper as UserInterfaceFrontendHelper;
-use Zepi\Api\AccessControl\Manager\TokenManager;
+use \Zepi\Api\AccessControl\Manager\TokenManager;
 use \Zepi\Api\Rest\Helper\RestHelper;
 
 /**
@@ -188,6 +189,10 @@ class FrontendHelper extends UserInterfaceFrontendHelper
      */
     public function sendResponse($result)
     {
+        if (!($this->framework->getRequest() instanceof WebRequest)) {
+            return;
+        }
+        
         return $this->restHelper->sendResponse($this->framework->getRequest(), $this->framework->getResponse(), $result);
     }
 }
