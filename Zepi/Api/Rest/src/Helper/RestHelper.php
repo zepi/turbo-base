@@ -37,7 +37,7 @@
 namespace Zepi\Api\Rest\Helper;
 
 use \Zepi\Api\AccessControl\Manager\TokenManager;
-use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Api\Rest\Exception;
 use \Zepi\Api\Rest\Entity\Request as RestRequest;
@@ -135,11 +135,11 @@ class RestHelper
      * Send the api result to the client
      *
      * @access public
-     * @param \Zepi\Api\Rest\Entity\Request $request
+     * @param \Zepi\Turbo\Request\WebRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      * @param array $result
      */
-    public function sendResponse(RestRequest $request, Response $response, $result)
+    public function sendResponse(WebRequest $request, Response $response, $result)
     {
         $dataType = $request->getHeader('Accept');
         
