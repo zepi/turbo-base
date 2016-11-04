@@ -193,44 +193,6 @@ class AccessControlManager
     }
     
     /**
-     * Returns an array with all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
-     * @return array
-     */
-    public function getPermissions(DataRequest $dataRequest)
-    {
-        $permissions = $this->permissionsDataSource->getPermissions($dataRequest);
-        
-        foreach ($permissions as $key => $permission) {
-            if (!$this->accessEntitiesDataSource->hasAccessEntityForUuid($permission->getAccessEntityUuid())) {
-                unset($permissions[$key]);
-                continue;
-            }
-            
-            $accessEntity = $this->getAccessEntityForUuid($permission->getAccessEntityUuid());
-            $permission->setAccessEntity($accessEntity);
-        }
-        
-        return $permissions;
-    }
-    
-    /**
-     * Returns the number of all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
-     * @return integer
-     */
-    public function countPermissions(DataRequest $dataRequest)
-    {
-        return $this->permissionsDataSource->countPermissions($dataRequest);
-    }
-    
-    /**
      * Returns true if there is a permission object for the given id
      *
      * @access public
@@ -254,7 +216,7 @@ class AccessControlManager
         $permission = $this->permissionsDataSource->getPermissionForId($id);
         
         if ($permission instanceof \Zepi\Core\AccessControl\Entity\Permission) {
-            $accessEntity = $this->getAccessEntityForUuid($permission->getAccessEntityUuid());
+            $accessEntity = $this->getAccessEntityForUuid($permission->getAccessEntityClass(), $permission->getAccessEntityUuid());
             
             if ($accessEntity instanceof \Zepi\Core\AccessControl\Entity\AccessEntity) {
                 $permission->setAccessEntity($accessEntity);
@@ -283,13 +245,14 @@ class AccessControlManager
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @param string $grantedBy
      * @return boolean
      */
-    public function grantPermission($accessEntityUuid, $accessLevel, $grantedBy)
+    public function grantPermission($accessEntityUuid, $accessEntityClass, $accessLevel, $grantedBy)
     {
-        return $this->permissionsDataSource->grantPermission($accessEntityUuid, $accessLevel, $grantedBy);
+        return $this->permissionsDataSource->grantPermission($accessEntityUuid, $accessEntityClass, $accessLevel, $grantedBy);
     }
     
     /**
@@ -297,12 +260,13 @@ class AccessControlManager
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @return boolean
      */
-    public function revokePermission($accessEntityUuid, $accessLevel)
+    public function revokePermission($accessEntityUuid, $accessEntityClass, $accessLevel)
     {
-        return $this->permissionsDataSource->revokePermission($accessEntityUuid, $accessLevel);
+        return $this->permissionsDataSource->revokePermission($accessEntityUuid, $accessEntityClass, $accessLevel);
     }
     
     /**
@@ -348,13 +312,13 @@ class AccessControlManager
      * level no action is taken.
      * 
      * @access public
-     * @param string $accessEntitiyUuid
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntitiyUuid
      * @param array $accessLevels
      * @param \Zepi\Core\AccessControl\Entity\AccessEntity $donor
      */
-    public function updatePermissions($accessEntitiyUuid, $accessLevels, AccessEntity $donor)
+    public function updatePermissions(AccessEntity $accessEntity, $accessLevels, AccessEntity $donor)
     {
-        $permissions = $this->getPermissionsRawForUuid($accessEntitiyUuid);
+        $permissions = $this->getPermissionsRawForUuid($accessEntity->getUuid());
         
         $grantedPermissions = array_diff($accessLevels, $permissions);
         $revokedPermissions = array_diff($permissions, $accessLevels);
@@ -365,7 +329,7 @@ class AccessControlManager
                 continue;
             }
 
-            $this->grantPermission($accessEntitiyUuid, $accessLevel, $donor->getName());
+            $this->grantPermission($accessEntity->getUuid(), get_class($accessEntity), $accessLevel, $donor->getName());
         }
         
         // Revoke the removed access levels
@@ -374,7 +338,7 @@ class AccessControlManager
                 continue;
             }
 
-            $this->revokePermission($accessEntitiyUuid, $accessLevel);
+            $this->revokePermission($accessEntity->getUuid(), get_class($accessEntity), $accessLevel);
         }
     }
 }

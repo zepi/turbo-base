@@ -179,7 +179,7 @@ class Registration extends FrontendEventHandler
         $user = $this->userManager->addUser($user);
         
         // Add the disabled access level
-        $this->accessControlManager->grantPermission($user->getUuid(), '\\Global\\Disabled', 'Registration');
+        $this->accessControlManager->grantPermission($user->getUuid(), '\\Zepi\\Web\\AccessControl\\Entity\\User', '\\Global\\Disabled', 'Registration');
         
         // Send the registration mail
         $activationLink = $request->getFullRoute('/activate/' . $user->getUuid() . '/' . $activationToken . '/');

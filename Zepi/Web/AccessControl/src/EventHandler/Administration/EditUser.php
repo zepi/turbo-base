@@ -280,7 +280,7 @@ class EditUser extends FrontendEventHandler
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $accessLevelsElement->getValue();
         
-        $this->accessControlManager->updatePermissions($user->getUuid(), $accessLevels, $request->getSession()->getUser());
+        $this->accessControlManager->updatePermissions($user, $accessLevels, $request->getSession()->getUser());
         
         return $result;
     }

@@ -90,70 +90,6 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
     }
     
     /**
-     * Returns an array with all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return array
-     * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot load the permissions for the given data request.
-     */
-    public function getPermissions(DataRequest $dataRequest)
-    {
-        try {
-            $dataRequest->setSelectedFields(array('*'));
-            
-            $queryBuilder = $this->entityManager->getQueryBuilder();
-            $this->entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
-            
-            $permissions = $queryBuilder->getQuery()->getResult();
-            if ($permissions == null) {
-                return array();
-            }
-            
-            return $permissions;
-        } catch (\Exception $e) {
-            throw new Exception('Cannot load the permissions for the given data request from the database.', 0, $e);
-        }
-    }
-    
-    /**
-     * Returns the number of all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return false|integer
-     * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot count the permissions for the given data request.
-     */
-    public function countPermissions(DataRequest $dataRequest)
-    {
-        try {
-            $request = clone $dataRequest;
-        
-            $request->setPage(0);
-            $request->setNumberOfEntries(0);
-        
-            $queryBuilder = $this->entityManager->getQueryBuilder();
-            $this->entityManager->buildDataRequestQuery($request, $queryBuilder, '\\Zepi\\Core\\AccessControl\\Entity\\Permission', 'p');
-            
-            // Count
-            $queryBuilder->select($queryBuilder->expr()->count('p.id'));
-            
-            $data = $queryBuilder->getQuery();
-            if ($data === false) {
-                return 0;
-            }
-            
-            return $data->getSingleScalarResult();
-        } catch (\Exception $e) {
-            throw new Exception('Cannot count the permissions for the given data request.', 0, $e);
-        }
-    }
-    
-    /**
      * Returns true if there is a permission for the given id
      *
      * @access public
@@ -308,13 +244,14 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @param string $grantedBy
      * @return boolean
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot grant the access level "{accessLevel}" for the given uuid "{accessEntityUuid}".
      */
-    public function grantPermission($accessEntityUuid, $accessLevel, $grantedBy)
+    public function grantPermission($accessEntityUuid, $accessEntityClass, $accessLevel, $grantedBy)
     {
         // Do not add the permission if we haven't all data
         if ($accessEntityUuid == '' || $accessLevel == '' || $grantedBy == '') {
@@ -327,7 +264,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
         }
         
         try {
-            $permission = new Permission(null, $accessEntityUuid, $accessLevel, $grantedBy);
+            $permission = new Permission(null, $accessEntityUuid, $accessEntityClass, $accessLevel, $grantedBy);
             
             $em = $this->entityManager->getDoctrineEntityManager();
             $em->persist($permission);
@@ -344,12 +281,13 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @return boolean
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot revoke the access level "{accessLevel}" from the given uuid "{accessEntityUuid}".
      */
-    public function revokePermission($accessEntityUuid, $accessLevel)
+    public function revokePermission($accessEntityUuid, $accessEntityClass, $accessLevel)
     {
         // Do not revoke the permission if we haven't all data
         if ($accessEntityUuid == '' || $accessLevel == '') {

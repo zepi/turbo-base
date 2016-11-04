@@ -70,6 +70,12 @@ class Permission
     protected $accessEntity;
     
     /**
+     * @Column(type="string", name="access_entity_class")
+     * @var string
+     */
+    protected $accessEntityClass;
+    
+    /**
      * @Column(type="string", name="access_level_key")
      * @var string
      */
@@ -90,10 +96,11 @@ class Permission
      * @param string $accessLevelKey
      * @param string $grantedBy
      */
-    public function __construct($id, $accessEntityUuid, $accessLevelKey, $grantedBy)
+    public function __construct($id, $accessEntityUuid, $accessEntityClass, $accessLevelKey, $grantedBy)
     {
         $this->id = $id;
         $this->accessEntityUuid = $accessEntityUuid;
+        $this->accessEntityClass = $accessEntityClass;
         $this->accessLevelKey = $accessLevelKey;
         $this->grantedBy = $grantedBy;
     }
@@ -118,6 +125,17 @@ class Permission
     public function getAccessEntityUuid()
     {
         return $this->accessEntityUuid;
+    }
+    
+    /**
+     * Returns the class of the access entity
+     *
+     * @access public
+     * @return string
+     */
+    public function getAccessEntityClass()
+    {
+        return $this->accessEntityClass;
     }
     
     /**

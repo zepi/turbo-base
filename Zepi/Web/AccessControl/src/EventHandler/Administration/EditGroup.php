@@ -274,7 +274,7 @@ class EditGroup extends FrontendEventHandler
         $accessLevelsElement = $form->searchPartByKeyAndType('access-levels');
         $accessLevels = $this->cleanAccessLevels($group->getUuid(), $accessLevelsElement->getValue());
 
-        $this->accessControlManager->updatePermissions($group->getUuid(), $accessLevels, $request->getSession()->getUser());
+        $this->accessControlManager->updatePermissions($group, $accessLevels, $request->getSession()->getUser());
         
         return $result;
     }

@@ -48,26 +48,6 @@ use \Zepi\Core\Utils\Entity\DataRequest;
 interface PermissionsDataSourceInterface
 {
     /**
-     * Returns an array with all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return array
-     */
-    public function getPermissions(DataRequest $dataRequest);
-    
-    /**
-     * Returns the number of all found permissions for the given DataRequest
-     * object.
-     *
-     * @access public
-     * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return false|integer
-     */
-    public function countPermissions(DataRequest $dataRequest);
-    
-    /**
      * Returns true if there is a permission for the given id
      *
      * @access public
@@ -121,21 +101,23 @@ interface PermissionsDataSourceInterface
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @param string $grantedBy
      * @return boolean
      */
-    public function grantPermission($accessEntityUuid, $accessLevel, $grantedBy);
+    public function grantPermission($accessEntityUuid, $accessEntityClass, $accessLevel, $grantedBy);
     
     /**
      * Revokes the permission for the given access entity uuid and access level.
      * 
      * @access public
      * @param string $accessEntityUuid
+     * @param string $accessEntityClass
      * @param string $accessLevel
      * @return boolean
      */
-    public function revokePermission($accessEntityUuid, $accessLevel);
+    public function revokePermission($accessEntityUuid, $accessEntityClass, $accessLevel);
     
     /**
      * Revokes the permission for the given access level.

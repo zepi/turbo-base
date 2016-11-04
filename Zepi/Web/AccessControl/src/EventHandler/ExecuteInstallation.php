@@ -122,6 +122,7 @@ class ExecuteInstallation implements CliEventHandlerInterface
         // Add the super-admin access level
         $this->accessControlManager->grantPermission(
             $user->getUuid(),
+            '\\Zepi\\Web\\AccessControl\\Entity\\User',
             '\\Global\\*',
             'CLI'
         );
