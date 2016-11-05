@@ -93,14 +93,4 @@ class Module extends ModuleAbstract
     {
         
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        
-    }
 }

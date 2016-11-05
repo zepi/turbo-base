@@ -57,16 +57,4 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\FinalizeOutput', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultOutputRenderer', 9999);
-        $runtimeManager->removeEventHandler('\\Zepi\\Turbo\\Event\\RouteNotFound', '\\Zepi\\Core\\Defaults\\EventHandler\\DefaultRouteNotFound', 9999);
-    }
 }

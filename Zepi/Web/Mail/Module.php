@@ -99,17 +99,4 @@ class Module extends ModuleAbstract
         $configurationManager->addSettingIfNotSet('mailer', 'sendFromName', 'zepi Turbo');
         $configurationManager->saveConfigurationFile();
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        // Configuration
-        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->removeSettingGroup('mailer');
-        $configurationManager->saveConfigurationFile();
-    }
 }

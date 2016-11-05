@@ -80,16 +80,4 @@ class Module extends ModuleAbstract
         $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation');
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        // Add the event handler
-        $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Installation\\Turbo\\EventHandler\\ExecuteInstallation');
-    }
 }

@@ -218,32 +218,4 @@ class Module extends ModuleAbstract
         $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $templatesManager->addTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->directory . '/templates/Administration.phtml');
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\DisplayAssets', '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets');
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\LoadAssetContent', '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent');
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\ClearAssetCache', '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache');
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\Administration', '\\Zepi\\Web\\General\\EventHandler\\Administration');
-        
-        $runtimeManager->removeFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Web\\General\\FilterHandler\\VerifyEventName');
-        
-        $routeManager = $this->framework->getRouteManager();
-        $routeManager->removeRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
-        $routeManager->removeRoute('assets|clearAssetCache', '\\Zepi\\Web\\General\\Event\\ClearAssetCache', 1);
-        $routeManager->removeRoute('administration', '\\Zepi\\Web\\General\\Event\\Administration', 1);
-        
-        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->removeSettingGroup('assets');
-        $configurationManager->saveConfigurationFile();
-        
-        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->directory . '/templates/Administration.phtml');
-    }
 }

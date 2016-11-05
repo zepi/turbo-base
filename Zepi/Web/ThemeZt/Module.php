@@ -94,40 +94,4 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->directory . '/templates/mail/Header.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->directory . '/templates/mail/Footer.phtml');
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        // Remove the assets
-        $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'bootstrap');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'bootstrap-theme');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'materialdesignicons');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'zt2-base');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'zt2-theme');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'zt2-elements');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'zt2-form');
-        $assetsManager->removeAsset(AssetsManager::CSS, 'zt2-print');
-
-        $assetsManager->removeAsset(AssetsManager::JS, 'jquery');
-        $assetsManager->removeAsset(AssetsManager::JS, 'modernizr');
-        $assetsManager->removeAsset(AssetsManager::JS, 'bootstrap');
-        $assetsManager->removeAsset(AssetsManager::JS, 'zt2-main');
-        
-        $assetsManager->removeAsset(AssetsManager::IMAGE, 'logo');
-        $assetsManager->removeAsset(AssetsManager::IMAGE, 'logo-mail');
-        
-        // Remove the templates
-        $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header', $this->directory . '/templates/overall/Header.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer', $this->directory . '/templates/overall/Footer.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemRoot', $this->directory . '/templates/snippets/NavItemRoot.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->directory . '/templates/snippets/NavItemSubmenu.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->directory . '/templates/mail/Header.phtml');
-        $templatesManager->removeTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->directory . '/templates/mail/Footer.phtml');
-    }
 }

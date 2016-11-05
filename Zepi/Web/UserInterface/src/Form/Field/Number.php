@@ -132,7 +132,7 @@ class Number extends FieldAbstract
      *
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @return true|\Zepi\Web\UserInterface\Form\Error
+     * @return boolean|\Zepi\Web\UserInterface\Form\Error
      */
     public function validate(Framework $framework)
     {

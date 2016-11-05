@@ -106,15 +106,4 @@ class Module extends ModuleAbstract
         $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->removeEventHandler('\\Zepi\\Web\\General\\Event\\RegisterRenderers', '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer');
-    }
 }

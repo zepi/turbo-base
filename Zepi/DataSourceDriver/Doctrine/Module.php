@@ -122,16 +122,4 @@ class Module extends ModuleAbstract
         $configurationManager->addSettingIfNotSet('doctrine', 'databasePassword', '');
         $configurationManager->saveConfigurationFile();
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->removeSettingGroup('doctrine');
-        $configurationManager->saveConfigurationFile();
-    }
 }

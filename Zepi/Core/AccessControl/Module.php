@@ -166,32 +166,4 @@ class Module extends ModuleAbstract
             '\\Zepi\\Core\\AccessControl'
         ));
     }
-    
-    /**
-     * This action will be executed on the deactiviation of the module
-     * 
-     * @access public
-     */
-    public function deactivate()
-    {
-        $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->removeFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
-        
-        // Access Levels
-        $accessLevelsManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
-        $accessLevelsManager->removeAccessLevel('\\Global\\*');
-        $accessLevelsManager->removeAccessLevel('\\Global\\Disabled');
-        
-        // Data Sources
-        $dataSourceManager = $this->framework->getDataSourceManager();
-        $dataSourceManager->removeDataSource(
-            '\\Zepi\\DataSourceDriver\\Doctrine',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'
-        );
-        
-        $dataSourceManager->removeDataSource(
-            '\\Zepi\\DataSourceDriver\\Doctrine',
-            '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine'
-        );
-    }
 }
