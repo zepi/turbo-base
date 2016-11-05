@@ -115,18 +115,7 @@ class ProfileChangePassword extends FrontendEventHandler
         
         // Fill the errors into the error box
         $errorBox = $changePasswordForm->getPart('login-errors');
-        if (($changePasswordForm->isSubmitted() && !$result) || count($errors) > 0) {
-            if (count($errors) === 0) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
-                ));
-            } else {
-                foreach ($errors as $error) {
-                    $errorBox->addError($error);
-                }
-            }
-        }
+        $errorBox->updateErrorBox($changePasswordForm, $result, $errors);
         
         // If $result isn't true, display the login form
         if (!$changePasswordForm->isSubmitted() || $errorBox->hasErrors()) {

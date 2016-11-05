@@ -205,23 +205,7 @@ class EditUser extends FrontendEventHandler
         
         // Translate the result
         $errorBox = $editUserForm->getPart('edit-user-errors');
-        if (($editUserForm->isSubmitted() && $result !== true) || count($errors) > 0) {
-            if (is_string($result)) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $result
-                ));
-            } else if (count($errors) === 0) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
-                ));
-            } else {
-                foreach ($errors as $error) {
-                    $errorBox->addError($error);
-                }
-            }
-        }
+        $errorBox->updateErrorBox($editUserForm, $result, $errors);
     
         return $errorBox;
     }

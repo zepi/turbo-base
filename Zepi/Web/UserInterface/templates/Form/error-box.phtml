@@ -1,4 +1,6 @@
 <?php
+    use \Zepi\Web\UserInterface\Form\Error;
+
     $layoutRenderer = $additionalData['layoutRenderer']; 
     $container = $additionalData['container'];
 ?>
@@ -7,7 +9,11 @@
         <?php echo $this->translate('There were some errors with the submitted data:', '\\Zepi\\Web\\UserInterface'); ?>
         <ul>
             <?php foreach ($container->getErrors() as $error): ?>
-                <li><?php echo $error->getErrorMessage(); ?></li>
+                <?php if ($error->getErrorCode() === Error::UNKNOWN_ERROR): ?>
+                    <li><?php echo $this->translate('There was an error with the request. Please repeat the action or contact the administrator.', '\\Zepi\\Web\\UserInterface'); ?></li>
+                <?php else: ?>
+                    <li><?php echo $error->getErrorMessage(); ?></li>
+                <?php endif; ?>
             <?php endforeach; ?>
         </ul>
     </div>

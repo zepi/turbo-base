@@ -51,6 +51,7 @@ class Error extends Part
     const WRONG_INPUT = 3;
     const WRONG_FORMAT = 4;
     const INVALID_VALUE = 5;
+    const UNKNOWN_ERROR = 1000;
     
     /**
      * @access protected

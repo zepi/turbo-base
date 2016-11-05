@@ -104,23 +104,7 @@ class Registration extends FrontendEventHandler
          
         // Fill the errors into the error box
         $errorBox = $registrationForm->getPart('register-errors');
-        if (($registrationForm->isSubmitted() && !$result) || count($errors) > 0) {
-            if (is_string($result)) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $result
-                ));
-            } else if (count($errors) === 0) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $this->translate('Your submitted data weren\'t correct. Please repeat the registration or contact the administrator.', '\\Zepi\\Web\\AccessControl')
-                ));
-            } else {
-                foreach ($errors as $error) {
-                    $errorBox->addError($error);
-                }
-            }
-        }
+        $errorBox->updateErrorBox($registrationForm, $result, $errors);
         
         // If $result isn't true, display the login form
         if (!$registrationForm->isSubmitted() || $errorBox->hasErrors()) {

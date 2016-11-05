@@ -312,7 +312,7 @@ class AccessControlManager
      * level no action is taken.
      * 
      * @access public
-     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntitiyUuid
+     * @param \Zepi\Core\AccessControl\Entity\AccessEntity $accessEntity
      * @param array $accessLevels
      * @param \Zepi\Core\AccessControl\Entity\AccessEntity $donor
      */

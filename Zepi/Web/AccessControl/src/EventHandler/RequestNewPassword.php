@@ -93,23 +93,7 @@ class RequestNewPassword extends FrontendEventHandler
          
         // Fill the errors into the error box
         $errorBox = $requestForm->getPart('request-errors');
-        if (($requestForm->isSubmitted() && $result !== true) || count($errors) > 0) {
-            if (is_string($result)) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $result
-                ));
-            } else if (count($errors) === 0) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $this->translate('Your submitted data weren\'t correct. Please repeat the request or contact the administrator.', '\\Zepi\\Web\\AccessControl')
-                ));
-            } else {
-                foreach ($errors as $error) {
-                    $errorBox->addError($error);
-                }
-            }
-        }
+        $errorBox->updateErrorBox($requestForm, $result, $errors);
         
         // If $result isn't true, display the login form
         if (!$requestForm->isSubmitted() || $errorBox->hasErrors()) {

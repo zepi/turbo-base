@@ -126,23 +126,7 @@ class Login extends FrontendEventHandler
          
         // Fill the errors into the error box
         $errorBox = $loginForm->getPart('login-errors');
-        if (($loginForm->isSubmitted() && $result !== true) || count($errors) > 0) {
-            if (is_string($result)) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $result
-                ));
-            } else if (count($errors) === 0) {
-                $errorBox->addError(new Error(
-                    Error::GENERAL_ERROR,
-                    $this->translate('Your submitted data weren\'t correct. Please repeat the login with your correct user data or contact the administrator.', '\\Zepi\\Web\\AccessControl')
-                ));
-            } else {
-                foreach ($errors as $error) {
-                    $errorBox->addError($error);
-                }
-            }
-        }
+        $errorBox->updateErrorBox($loginForm, $result, $errors);
         
         // If $result isn't true, display the login form
         if (!$loginForm->isSubmitted() || $errorBox->hasErrors()) {
@@ -174,7 +158,7 @@ class Login extends FrontendEventHandler
     {
         $user = $this->validateUserData($framework, $loginForm->getField('user-data', 'username')->getValue(), $loginForm->getField('user-data', 'password')->getValue());
         if ($user === false) {
-            return false;
+            return $this->translate('There is no user with this username or password.', '\\Zepi\\Web\\AccessControl');;
         }
         
         // If the user is disabled we cannot create a session

@@ -104,4 +104,32 @@ class ErrorBox extends Part
     {
         return (count($this->errors) > 0);
     }
+    
+    /**
+     * Updates the error box with the form data, result or error objects
+     * 
+     * @param \Zepi\Web\UserInterface\Form\Form $form
+     * @param boolean|string $result
+     * @param array $errors
+     */
+    public function updateErrorBox($form, $result, $errors)
+    {
+        if (($form->isSubmitted() && $result !== true) || count($errors) > 0) {
+            if (is_string($result)) {
+                $this->addError(new Error(
+                    Error::GENERAL_ERROR,
+                    $result
+                ));
+            } else if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->addError($error);
+                }
+            } else {
+                $this->addError(new Error(
+                    Error::UNKNOWN_ERROR,
+                    ''
+                ));
+            }
+        }
+    }
 }
