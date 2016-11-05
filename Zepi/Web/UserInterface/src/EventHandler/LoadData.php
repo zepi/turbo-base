@@ -71,21 +71,6 @@ class LoadData extends FrontendEventHandler
             return;
         }
         
-        /**
-         * // Generate the Table
-        $userTable = new \Zepi\Web\AccessControl\Table\UserTable(
-            $framework, 
-            true,
-            true
-        );
-        
-        // Display logout message
-        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Users', array(
-            'userTable' => $userTable,
-            'tableRenderer' => $this->getTableRenderer()
-        )));
-         */
-        
         $table = new $class($framework, false);
         $generator = $this->getTableRenderer();
         

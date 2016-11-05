@@ -87,6 +87,30 @@ class Pagination
             $pagination->addEntry($button);
         }
         
+        $this->addPages($pagination, $activePage, $neededPages);
+        
+        if ($activePage < $neededPages) {
+            // Add the next page button
+            $button = new Button('&rsaquo;', $this->buildUrl(($activePage + 1)));
+            $pagination->addEntry($button);
+            
+            // Add the last page button
+            $button = new Button('&raquo;', $this->buildUrl($neededPages));
+            $pagination->addEntry($button);
+        }
+        
+        return $pagination;
+    }
+    
+    /**
+     * Add the pages to the pagination
+     * 
+     * @param \Zepi\Web\UserInterface\Pagination\Pagination $pagination
+     * @param integer $activePage
+     * @param integer $neededPages
+     */
+    protected function addPages(Pagination $pagination, $activePage, $neededPages)
+    {
         // Add the pages
         for ($i = 1; $i <= $neededPages; $i++) {
             if ($i == $activePage) {
@@ -100,18 +124,6 @@ class Pagination
                 $pagination->addEntry($dots);
             }
         }
-        
-        if ($activePage < $neededPages) {
-            // Add the next page button
-            $button = new Button('&rsaquo;', $this->buildUrl(($activePage + 1)));
-            $pagination->addEntry($button);
-            
-            // Add the last page button
-            $button = new Button('&raquo;', $this->buildUrl($neededPages));
-            $pagination->addEntry($button);
-        }
-        
-        return $pagination;
     }
     
     /**
