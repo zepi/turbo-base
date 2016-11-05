@@ -95,13 +95,13 @@ class TranslationManager
      */
     public function translate($string, $namespace, $arguments = array())
     {
-        // If the domain not is loaded already load the translation file for the given namespace
+        // Load the language file for the given namespace if the language file isn't loaded
         if (!isset($this->translatedStrings[$namespace]) || !is_array($this->translatedStrings[$namespace])) {
             $this->loadLanguageFileForNamespace($namespace);
         }
         
         // If no translation for the original string is available or the string is not translated 
-        // return the original string back to the caller.
+        // return the original string to the caller.
         if (!isset($this->translatedStrings[$namespace][$string]) || $this->translatedStrings[$namespace][$string] == '') {
             if (count($arguments) > 0) {
                 $string = $this->replacePlaceholders($string, $arguments);

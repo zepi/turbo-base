@@ -66,7 +66,7 @@ class Pagination
      * @param string $paginationUrl
      * @param integer $numberOfEntries
      * @param integer $numberOfEntriesPerPage
-     * @return string
+     * @return \Zepi\Web\UserInterface\Pagination\Pagination
      */
     public function prepare(DataRequest $dataRequest, $paginationUrl, $numberOfEntries, $numberOfEntriesPerPage = 10)
     {
@@ -109,7 +109,7 @@ class Pagination
      * @param integer $activePage
      * @param integer $neededPages
      */
-    protected function addPages(Pagination $pagination, $activePage, $neededPages)
+    protected function addPages(PaginationObject $pagination, $activePage, $neededPages)
     {
         // Add the pages
         for ($i = 1; $i <= $neededPages; $i++) {
