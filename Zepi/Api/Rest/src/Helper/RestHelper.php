@@ -97,15 +97,10 @@ class RestHelper
             ]
         ];
         
-        switch($request->getRequestMethod()) {
-            case 'GET':
-            case 'PUT':
-            case 'DELETE':
-                $args['query'] = $request->getQueryData();
-                break;
-            case 'POST':
-                $args['form_params'] = $request->getPostData();
-                break;
+        if ($request->getRequestMethod() === 'POST') {
+            $args['form_params'] = $request->getPostData();
+        } else {
+            $args['query'] = $request->getQueryData();
         }
         
         try {
@@ -118,18 +113,29 @@ class RestHelper
             $responseRaw = $e->getResponse();
         }
         
-        $body = (string) $responseRaw->getBody();
+        return $this->prepareResponse($responseRaw, $request);
+    }
 
+    /**
+     * Prepares the response object for the given raw response object
+     * 
+     * @param mixed $responseRaw
+     * @param \Zepi\Api\Rest\Entity\Request
+     * @return \Zepi\Api\Rest\Entity\Response
+     */
+    protected function prepareResponse($responseRaw, RestRequest $request)
+    {
+        $body = (string) $responseRaw->getBody();
+        
         $parsedResult = json_decode($body);
         if ($parsedResult == false) {
             $parsedResult = new \stdClass();
         }
-
+        
         $response = new RestResponse($responseRaw->getStatusCode(), $body, $parsedResult, $request);
-
+        
         return $response;
     }
-
     
     /**
      * Send the api result to the client

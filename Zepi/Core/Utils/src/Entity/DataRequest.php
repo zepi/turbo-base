@@ -231,6 +231,16 @@ class DataRequest
     }
     
     /**
+     * Returns true if only a range of the result is requested
+     * 
+     * @return boolean
+     */
+    public function hasRange()
+    {
+        return ($dataRequest->getOffset() !== false && $dataRequest->getOffset() >= 0 && $dataRequest->getNumberOfEntries() !== false && $dataRequest->getNumberOfEntries() > 0);
+    }
+    
+    /**
      * Returns the key with which the data should be sorted
      * 
      * @access public
@@ -250,6 +260,16 @@ class DataRequest
     public function setSortBy($sortBy)
     {
         $this->sortBy = $sortBy;
+    }
+    
+    /**
+     * Returns true if the data request has sorting
+     * 
+     * @return boolean
+     */
+    public function hasSorting()
+    {
+        return ($this->sortBy !== '');
     }
     
     /**

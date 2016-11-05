@@ -93,7 +93,7 @@ class EntityManager
         }
         
         // Sorting
-        if ($dataRequest->getSortBy() != '') {
+        if ($dataRequest->hasSorting()) {
             $mode = 'ASC';
             if (in_array($dataRequest->getSortByDirection(), array('ASC', 'DESC'))) {
                 $mode = $dataRequest->getSortByDirection();
@@ -103,9 +103,7 @@ class EntityManager
         }
         
         // Offset
-        if ($dataRequest->getOffset() !== false && $dataRequest->getOffset() >= 0 
-            && $dataRequest->getNumberOfEntries() !== false && $dataRequest->getNumberOfEntries() > 0
-        ) {
+        if ($dataRequest->hasRange()) {
             $queryBuilder->setFirstResult($dataRequest->getOffset());
             $queryBuilder->setMaxResults($dataRequest->getNumberOfEntries());
         }
