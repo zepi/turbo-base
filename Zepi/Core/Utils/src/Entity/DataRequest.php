@@ -237,7 +237,7 @@ class DataRequest
      */
     public function hasRange()
     {
-        return ($dataRequest->getOffset() !== false && $dataRequest->getOffset() >= 0 && $dataRequest->getNumberOfEntries() !== false && $dataRequest->getNumberOfEntries() > 0);
+        return ($this->getOffset() !== false && $this->getOffset() >= 0 && $this->getNumberOfEntries() !== false && $this->getNumberOfEntries() > 0);
     }
     
     /**

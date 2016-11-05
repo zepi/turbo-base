@@ -179,41 +179,7 @@ class SessionManager
         $token = $request->getSessionData('userSessionToken');
         $lifetime = $request->getSessionData('userSessionTokenLifetime');
         
-        $notValid = false;
-        
-        // Cookie does not exists - this is maybe a session hijacking attack
-        if ($request->getCookieData($token) === false) {
-            $notValid = true;
-        }
-        
-        // Check for the old data
-        if ($notValid && $request->getSessionData('oldUserSessionToken') !== false) {
-            $token = $request->getSessionData('oldUserSessionToken');
-            $lifetime = $request->getSessionData('oldUserSessionTokenLifetime');
-            
-            // Look for the old session token cookie...
-            if ($request->getCookieData($token) === false) {
-                $notValid = true;
-            }
-        }
-        
-        // Check the lifetime of the cookie and the session
-        if (!$notValid && $request->getCookieData($token) != $lifetime) {
-            $notValid = true;
-        }
-        
-        // If the session token expired more than 30 minutes ago
-        // the session isn't valid anymore
-        if (!$notValid && $lifetime < time() - 1800) {
-            $notValid = true;
-        }
-        
-        $userUuid = $request->getSessionData('userUuid');        
-        
-        // If the given uuid doesn't exists, this session can't be valid
-        if (!$notValid && !$this->userManager->hasUserForUuid($userUuid)) {
-            $notValid = true;
-        }
+        list($notValid, $token, $lifetime, $userUuid) = $this->verifyToken($request, $token, $lifetime);
 
         // We do not load any user session because this session isn't 
         // okey. Our session token is not set or the lifetime is invalid or expired.
@@ -243,6 +209,55 @@ class SessionManager
         }
 
         return true;
+    }
+    
+    /**
+     * Verifies the given session token and lifetime
+     * 
+     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param string $token
+     * @param string $lifetime
+     * @return array
+     */
+    protected function verifyToken(WebRequest $request, $token, $lifetime)
+    {
+        $notValid = false;
+        
+        // Cookie does not exists - this is maybe a session hijacking attack
+        if ($request->getCookieData($token) === false) {
+            $notValid = true;
+        }
+        
+        // Check for the old data
+        if ($notValid && $request->getSessionData('oldUserSessionToken') !== false) {
+            $token = $request->getSessionData('oldUserSessionToken');
+            $lifetime = $request->getSessionData('oldUserSessionTokenLifetime');
+        
+            // Look for the old session token cookie...
+            if ($request->getCookieData($token) === false) {
+                $notValid = true;
+            }
+        }
+        
+        // Check the lifetime of the cookie and the session
+        if (!$notValid && $request->getCookieData($token) != $lifetime) {
+            $notValid = true;
+        }
+        
+        // If the session token expired more than 30 minutes ago
+        // the session isn't valid anymore
+        if (!$notValid && $lifetime < time() - 1800) {
+            $notValid = true;
+        }
+        
+        $userUuid = $request->getSessionData('userUuid');
+        
+        // If the given uuid doesn't exists, this session can't be valid
+        if (!$notValid && !$this->userManager->hasUserForUuid($userUuid)) {
+            $notValid = true;
+        }
+        
+        return array($notValid, $token, $lifetime, $userUuid);
     }
     
     /**
