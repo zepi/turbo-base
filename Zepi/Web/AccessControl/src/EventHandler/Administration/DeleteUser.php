@@ -109,7 +109,7 @@ class DeleteUser extends FrontendEventHandler
         $this->activateMenuEntry('user-administration');
         
         // Get the user
-        $uuid = $request->getRouteParam(0);
+        $uuid = $request->getRouteParam('uuid');
         
         // If the UUID does not exists redirect to the overview page
         if (!is_string($uuid) || !$this->userManager->hasUserForUuid($uuid)) {
@@ -120,7 +120,7 @@ class DeleteUser extends FrontendEventHandler
         $user = $this->userManager->getUserForUuid($uuid);
         
         // If $result isn't true, display the edit user form
-        if ($request->getRouteParam(1) === 'confirmed') {
+        if ($request->getRouteParam('confirmation') === 'confirmed') {
             $this->userManager->deleteUser($user);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUserFinished', array(

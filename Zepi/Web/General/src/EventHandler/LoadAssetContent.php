@@ -80,9 +80,9 @@ class LoadAssetContent implements WebEventHandlerInterface
     public function execute(Framework $framework, WebRequest $request, Response $response, $value = null)
     {
         // Get the route params
-        $type = $request->getRouteParam(0); // Type of the asset
-        $hash = $request->getRouteParam(1); // Hash of the asset
-        $version = $request->getRouteParam(2); // Version of the file 
+        $type = $request->getRouteParam('type'); // Type of the asset
+        $hash = $request->getRouteParam('hash'); // Hash of the asset
+        $version = $request->getRouteParam('version'); // Version of the file 
         
         // Check if all values are available
         if ($type == false || $hash == false || $version == false) {

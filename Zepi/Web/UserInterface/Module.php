@@ -201,6 +201,6 @@ class Module extends ModuleAbstract
         
         // Register the route
         $routeManager = $this->framework->getRouteManager();
-        $routeManager->addRoute('user-interface|load-data|[s]', '\\Zepi\\Web\\UserInterface\\Event\\LoadData');
+        $routeManager->addRoute('user-interface|load-data|[s:token]', '\\Zepi\\Web\\UserInterface\\Event\\LoadData');
     }
 }

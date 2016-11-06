@@ -94,7 +94,7 @@ class DeleteGroup extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Get the user
-        $uuid = $request->getRouteParam(0);
+        $uuid = $request->getRouteParam('uuid');
         
         // If the UUID does not exists redirect to the overview page
         if (!is_string($uuid) || !$this->groupManager->hasGroupForUuid($uuid)) {
@@ -105,7 +105,7 @@ class DeleteGroup extends FrontendEventHandler
         $group = $this->groupManager->getGroupForUuid($uuid);
         
         // If $result isn't true, display the edit user form
-        if ($request->getRouteParam(1) === 'confirmed') {
+        if ($request->getRouteParam('confirmation') === 'confirmed') {
             $this->groupManager->deleteGroup($group);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteGroupFinished', array(

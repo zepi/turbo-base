@@ -49,12 +49,12 @@ class LoadData extends FrontendEventHandler
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         // Verify the session
-        if (!$request->hasSession() || $request->getRouteParam(0) == '') {
+        if (!$request->hasSession() || $request->getRouteParam('token') == '') {
             $response->redirectTo('/');
             return;
         }
         
-        $token = $request->getRouteParam(0);
+        $token = $request->getRouteParam('token');
         
         // Verify the datatable session data
         if ($request->getSessionData('dt-class-' . $token) === false || $request->getSessionData('dt-time-' . $token) === false) {

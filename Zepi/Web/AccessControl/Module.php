@@ -300,9 +300,9 @@ class Module extends ModuleAbstract
         
         $routeManager = $this->framework->getRouteManager();
         $routeManager->addRoute('register', '\\Zepi\\Web\\AccessControl\\Event\\Registration');
-        $routeManager->addRoute('activate|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Activation');
+        $routeManager->addRoute('activate|[s:uuid]|[s:token]', '\\Zepi\\Web\\AccessControl\\Event\\Activation');
         $routeManager->addRoute('request-new-password', '\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword');
-        $routeManager->addRoute('generate-new-password|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword');
+        $routeManager->addRoute('generate-new-password|[s:uuid]|[s:token]', '\\Zepi\\Web\\AccessControl\\Event\\GenerateNewPassword');
         $routeManager->addRoute('login', '\\Zepi\\Web\\AccessControl\\Event\\Login');
         $routeManager->addRoute('logout', '\\Zepi\\Web\\AccessControl\\Event\\Logout');
         $routeManager->addRoute('profile', '\\Zepi\\Web\\AccessControl\\Event\\Profile');
@@ -310,17 +310,15 @@ class Module extends ModuleAbstract
         
         // Administration
         $routeManager->addRoute('administration|users', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users');
-        $routeManager->addRoute('administration|users|page|[d]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users');
         $routeManager->addRoute('administration|users|add', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser');
-        $routeManager->addRoute('administration|users|modify|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser');
-        $routeManager->addRoute('administration|users|delete|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser');
-        $routeManager->addRoute('administration|users|delete|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser');
+        $routeManager->addRoute('administration|users|modify|[s:uuid]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser');
+        $routeManager->addRoute('administration|users|delete|[s:uuid]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser');
+        $routeManager->addRoute('administration|users|delete|[s:uuid]|[s:confirmation]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser');
         $routeManager->addRoute('administration|groups', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups');
-        $routeManager->addRoute('administration|groups|page|[d]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups');
         $routeManager->addRoute('administration|groups|add', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup');
-        $routeManager->addRoute('administration|groups|modify|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup');
-        $routeManager->addRoute('administration|groups|delete|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
-        $routeManager->addRoute('administration|groups|delete|[s]|[s]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
+        $routeManager->addRoute('administration|groups|modify|[s:uuid]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup');
+        $routeManager->addRoute('administration|groups|delete|[s:uuid]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
+        $routeManager->addRoute('administration|groups|delete|[s:uuid]|[s:confirmation]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
         
         
         

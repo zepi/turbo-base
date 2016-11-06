@@ -138,7 +138,7 @@ class EditGroup extends FrontendEventHandler
             return;
         }
 
-        $uuid = $request->getRouteParam(0);
+        $uuid = $request->getRouteParam('uuid');
         
         // If there is a request parameter we need to edit a user. Otherwise we create a new one.
         if (is_string($uuid)) {

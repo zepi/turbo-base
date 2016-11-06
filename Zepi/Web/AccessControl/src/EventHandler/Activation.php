@@ -71,8 +71,8 @@ class Activation extends FrontendEventHandler
         $this->setTitle($title);
         
         // Get the cluster
-        $uuid = $request->getRouteParam(0);
-        $activationToken = $request->getRouteParam(1);
+        $uuid = $request->getRouteParam('uuid');
+        $activationToken = $request->getRouteParam('token');
         
         // Activate the user
         $result = $this->activateUser($uuid, $activationToken);

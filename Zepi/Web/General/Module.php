@@ -206,7 +206,7 @@ class Module extends ModuleAbstract
         $runtimeManager->addFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Web\\General\\FilterHandler\\VerifyEventName');
         
         $routeManager = $this->framework->getRouteManager();
-        $routeManager->addRoute('assets|[s]|[s]|[s]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
+        $routeManager->addRoute('assets|[s:type]|[s:hash]|[s:version]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
         $routeManager->addRoute('assets|clearAssetCache', '\\Zepi\\Web\\General\\Event\\ClearAssetCache', 1);
         $routeManager->addRoute('administration', '\\Zepi\\Web\\General\\Event\\Administration', 1);
         
