@@ -88,11 +88,7 @@ class ExecuteInstallation implements CliEventHandlerInterface
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         // Configure turbo
-        foreach ($this->configurationManager->getSettings() as $settingGroupKey => $groupSettings) {
-            $this->configureGroup($settingGroupKey, $groupSettings);
-            
-            $this->cliHelper->newLine();
-        }
+        $this->configure();
         
         // Save the settings
         $this->configurationManager->saveConfigurationFile();
@@ -106,21 +102,33 @@ class ExecuteInstallation implements CliEventHandlerInterface
     }
     
     /**
-     * Configures one settings group
-     * 
-     * @access protected
-     * @param string $settingGroupKey
-     * @param array $groupSettings
+     * Iterates trough all configuration settings and asks the user for a
+     * value.
      */
-    protected function configureGroup($settingGroupKey, $groupSettings)
+    protected function configure()
     {
-        $configureSettingGroup = $this->cliHelper->confirmAction('Would you like to configure the configuration group "' . $settingGroupKey . '"?');
+        $configureSettingGroup = $this->cliHelper->confirmAction('Would you like to change the settings?');
         if (!$configureSettingGroup) {
             return;
         }
         
-        foreach ($groupSettings as $key => $value) {
-            $this->configureSetting($settingGroupKey, $key, $value);
+        $this->configureSettings($this->configurationManager->getSettings());
+    }
+    
+    /**
+     * Configures one settings group
+     * 
+     * @access protected
+     * @param array $settings
+     */
+    protected function configureSettings($settings, $path = '')
+    {
+        foreach ($settings as $key => $node) {
+            if (is_array($node)) {
+                $this->configureSettings($node, $path . $key . '.');
+            } else {
+                $this->configureSetting($path . $key, $node);
+            }
         }
     }
     
@@ -128,18 +136,17 @@ class ExecuteInstallation implements CliEventHandlerInterface
      * Configures one setting
      * 
      * @access protected
-     * @param string $settingGroupKey
-     * @param string $key
+     * @param string $path
      * @param string $value
      */
-    protected function configureSetting($settingGroupKey, $key, $value)
+    protected function configureSetting($path, $value)
     {
-        $newValue = $this->cliHelper->inputText('Please enter the value for "' . $key . '":', $value);
+        $newValue = $this->cliHelper->inputText('Please enter the value for "' . $path . '":', $value);
         
         if ($newValue === $value) {
             return;
         }
         
-        $this->configurationManager->setSetting($settingGroupKey, $key, $newValue);
+        $this->configurationManager->setSetting($path, $newValue);
     }
 }

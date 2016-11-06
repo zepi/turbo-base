@@ -93,7 +93,7 @@ class RegisterMenuEntries extends FrontendEventHandler
             );
             $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry, 100);
         } else {
-            if ($this->getSetting('accesscontrol', 'allowRegistration')) {
+            if ($this->getSetting('accesscontrol.allowRegistration')) {
                 $menuEntry = new \Zepi\Web\General\Entity\MenuEntry(
                     'registration',
                     $this->translate('Registration', '\\Pmx\\Autopilot\\AccessControl'),

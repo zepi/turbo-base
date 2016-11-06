@@ -85,14 +85,14 @@ class Module extends ModuleAbstract
     {
         // Configuration
         $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->addSettingIfNotSet('mailer', 'type', 'sendmail');
-        $configurationManager->addSettingIfNotSet('mailer', 'sendmailCommand', '/usr/sbin/sendmail -bs');
-        $configurationManager->addSettingIfNotSet('mailer', 'smtpHost', '');
-        $configurationManager->addSettingIfNotSet('mailer', 'smtpPort', 25);
-        $configurationManager->addSettingIfNotSet('mailer', 'smtpUsername', '');
-        $configurationManager->addSettingIfNotSet('mailer', 'smtpPassword', '');
-        $configurationManager->addSettingIfNotSet('mailer', 'sendFrom', 'info@turbo.local');
-        $configurationManager->addSettingIfNotSet('mailer', 'sendFromName', 'zepi Turbo');
+        $configurationManager->addSettingIfNotSet('mailer.type', 'sendmail');
+        $configurationManager->addSettingIfNotSet('mailer.sendmailCommand', '/usr/sbin/sendmail -bs');
+        $configurationManager->addSettingIfNotSet('mailer.smtpHost', '');
+        $configurationManager->addSettingIfNotSet('mailer.smtpPort', 25);
+        $configurationManager->addSettingIfNotSet('mailer.smtpUsername', '');
+        $configurationManager->addSettingIfNotSet('mailer.smtpPassword', '');
+        $configurationManager->addSettingIfNotSet('mailer.sendFrom', 'info@turbo.local');
+        $configurationManager->addSettingIfNotSet('mailer.sendFromName', 'zepi Turbo');
         $configurationManager->saveConfigurationFile();
     }
 }

@@ -107,13 +107,13 @@ class MailHelper
     protected function getMailer()
     {
         $transport = null;
-        if ($this->configurationManager->getSetting('mailer', 'type') === 'sendmail') {
-            $transport = \Swift_SendmailTransport::newInstance($this->configurationManager->getSetting('mailer', 'sendmailCommand'));
-        } else if ($this->configurationManager->getSetting('mailer', 'type') === 'smtp') {
-            $host = $this->configurationManager->getSetting('mailer', 'smtpHost');
-            $port = $this->configurationManager->getSetting('mailer', 'smtpPort');
-            $username = $this->configurationManager->getSetting('mailer', 'smtpUsername');
-            $password = $this->configurationManager->getSetting('mailer', 'smtpPassword');
+        if ($this->configurationManager->getSetting('mailer.type') === 'sendmail') {
+            $transport = \Swift_SendmailTransport::newInstance($this->configurationManager->getSetting('mailer.sendmailCommand'));
+        } else if ($this->configurationManager->getSetting('mailer.type') === 'smtp') {
+            $host = $this->configurationManager->getSetting('mailer.smtpHost');
+            $port = $this->configurationManager->getSetting('mailer.smtpPort');
+            $username = $this->configurationManager->getSetting('mailer.smtpUsername');
+            $password = $this->configurationManager->getSetting('mailer.smtpPassword');
             
             $transport = \Swift_SmtpTransport::newInstance($host, $port);
             $transport->setUsername($username);
@@ -145,8 +145,8 @@ class MailHelper
         $message->setSubject($subject);
     
         // From
-        $fromEmail = $this->configurationManager->getSetting('mailer', 'sendFrom');
-        $fromName = $this->configurationManager->getSetting('mailer', 'sendFromName');
+        $fromEmail = $this->configurationManager->getSetting('mailer.sendFrom');
+        $fromName = $this->configurationManager->getSetting('mailer.sendFromName');
         $message->setFrom(array($fromEmail => $fromName));
     
         // To

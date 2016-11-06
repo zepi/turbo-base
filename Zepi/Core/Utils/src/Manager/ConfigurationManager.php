@@ -53,9 +53,9 @@ class ConfigurationManager
 
     /**
      * @access protected
-     * @var array
+     * @var \stdClass
      */
-    protected $settings = array();
+    protected $settings;
     
     /**
      * Constructs the object
@@ -89,29 +89,6 @@ class ConfigurationManager
     }
     
     /**
-     * Returns the value of the given settings key.
-     * 
-     * @access public
-     * @param string $group
-     * @param string $key
-     * @return boolean|string
-     */
-    public function getSetting($group, $key)
-    {
-        if (!$this->hasSetting($group, $key)) {
-            return false;
-        }
-        
-        if ($this->settings[$group][$key] == 'true') {
-            return true;
-        } else if ($this->settings[$group][$key] == 'false') {
-            return false;
-        }
-        
-        return $this->settings[$group][$key];
-    }
-    
-    /**
      * Returns all setting groups and settings
      *
      * @access public
@@ -123,76 +100,128 @@ class ConfigurationManager
     }
     
     /**
-     * Returns true if the given settings key exists.
+     * Returns the value of the given settings key.
      * 
      * @access public
-     * @param string $group
-     * @param string $key
+     * @param string $path
+     * @return boolean|string
+     */
+    public function getSetting($path)
+    {
+        if (!$this->hasSetting($path)) {
+            return null;
+        }
+        
+        $value = $this->resolvePath($path);
+        
+        return $value;
+    }
+
+    /**
+     * Returns true if the given settings key exists.
+     *
+     * @access public
+     * @param string $path
      * @return boolean
      */
-    public function hasSetting($group, $key)
+    public function hasSetting($path)
     {
-        return (isset($this->settings[$group][$key]));
+        $value = $this->resolvePath($path);
+    
+        if ($value === null) {
+            return false;
+        }
+        
+        return true;
     }
     
     /**
-     * Saves a setting in the configuration file.
+     * Resolves the path in the loaded settings
      * 
-     * @access public
-     * @param string $group
-     * @param string $key
-     * @param string $value
+     * @param string $path
+     * @return NULL|mixed
      */
-    public function setSetting($group, $key, $value)
+    protected function resolvePath($path)
     {
-        if (!isset($this->settings[$group]) || !is_array($this->settings[$group])) {
-            $this->settings[$group] = array();
+        $parts = explode('.', $path);
+        $settings = $this->settings;
+        foreach ($parts as $part) {
+            if (!isset($settings[$part])) {
+                return null;
+            }
+        
+            $settings = $settings[$part];
         }
         
-        $this->settings[$group][$key] = $value;
+        return $settings;
     }
     
+    /**
+    * Saves a setting in the configuration file.
+    *
+    * @access public
+    * @param string $path
+    * @param string $value
+    */
+    public function setSetting($path, $value)
+    {
+        if ($value === 'false') {
+            $value = false;
+        } else if ($value === 'true') {
+            $value = true;
+        } else if ($value === 'null') {
+            $value = null;
+        }
+        
+        $parts = explode('.', $path);
+        $this->settings = $this->updateSetting($this->settings, $parts, $value);
+    }
+    
+    /**
+     * Updates the given setting and adds not-existing configuration
+     * nodes to the configuration tree.
+     * 
+     * @param array $settings
+     * @param array $parts
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function updateSetting($settings, $parts, $value)
+    {
+        $part = current(array_slice($parts, 0, 1));
+
+        if ((string) intval($part) == $part) {
+            $part = intval($part);
+        }
+        
+        if (count($parts) > 0) {
+            $parts = array_slice($parts, 1);
+            
+            if (!isset($settings[$part])) {
+                $settings[$part] = array();
+            }
+
+            $settings[$part] = $this->updateSetting($settings[$part], $parts, $value);
+        } else {
+            $settings = $value;
+        }
+        
+        return $settings;
+    }
+        
     /**
      * Adds a setting key and value if the setting isn't set.
      * 
      * @access public
-     * @param string $group
-     * @param string $key
+     * @param string $path
      * @param string $value
      */
-    public function addSettingIfNotSet($group, $key, $value)
+    public function addSettingIfNotSet($path, $value)
     {
-        if (isset($this->settings[$group][$key])) {
+        if ($this->hasSetting($path)) {
             return;
         }
-        
-        $this->setSetting($group, $key, $value);
-    }
-    
-    /**
-     * Removes the given settings group from the settings.
-     * 
-     * @access public
-     * @param string $group
-     */
-    public function removeSettingGroup($group)
-    {
-        if (!$this->hasSettingGroup($group)) {
-            return false;
-        }
-        
-        unset($this->settings[$group]);
-    }
-    
-    /**
-     * Returns true if the given settings group exists.
-     * 
-     * @access public
-     * @param string $group
-     * @return boolean
-     */
-    public function hasSettingGroup($group)
-    {
-        return (isset($this->settings[$group]));
+
+        $this->setSetting($path, $value);
     }
 }

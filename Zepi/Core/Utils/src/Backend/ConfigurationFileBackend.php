@@ -77,15 +77,7 @@ class ConfigurationFileBackend
             throw new Exception('The file "' . $this->path . '" isn\'t writable!');
         }
         
-        $content = '';
-        
-        foreach ($settings as $groupKey => $groupSettings) {
-            $content .= '[' . $groupKey . ']' . PHP_EOL;
-            
-            foreach ($groupSettings as $key => $value) {
-                $content .= $key . ' = "' . $value . '"' . PHP_EOL;
-            }
-        }
+        $content = json_encode($settings);
         
         return file_put_contents($this->path, $content);
     }
@@ -108,25 +100,11 @@ class ConfigurationFileBackend
             throw new Exception('The file "' . $this->path . '" isn\'t readable!');
         }
         
-        // Parse the ini file
-        $settings = parse_ini_file($this->path, true);
-        if ($settings === false) {
-            $settings = array();
-        }
-        
-        // Transform the boolean values
-        foreach ($settings as $settingGroup => $groupSettings) {
-            if (!is_array($groupSettings)) {
-                continue;
-            }
-            
-            foreach ($groupSettings as $settingKey => $settingValue) {
-                if ($settingValue === 'true') {
-                    $settings[$settingGroup][$settingKey] = true;
-                } else if ($settingValue === 'false') {
-                    $settings[$settingGroup][$settingKey] = false;
-                }
-            }
+        $content = file_get_contents($this->path);
+        $settings = json_decode($content, true);
+
+        if ($settings == false) {
+            return array();
         }
         
         return $settings;

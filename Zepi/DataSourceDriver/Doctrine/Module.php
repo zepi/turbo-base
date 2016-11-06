@@ -76,11 +76,11 @@ class Module extends ModuleAbstract
                     $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                     
                     $params = array(
-                        'driver' => $configurationManager->getSetting('doctrine', 'databaseDriver'),
-                        'host' => $configurationManager->getSetting('doctrine', 'databaseHost'),
-                        'dbname' => $configurationManager->getSetting('doctrine', 'databaseName'),
-                        'user' => $configurationManager->getSetting('doctrine', 'databaseUser'),
-                        'password' => $configurationManager->getSetting('doctrine', 'databasePassword')
+                        'driver' => $configurationManager->getSetting('doctrine.databaseDriver'),
+                        'host' => $configurationManager->getSetting('doctrine.databaseHost'),
+                        'dbname' => $configurationManager->getSetting('doctrine.databaseName'),
+                        'user' => $configurationManager->getSetting('doctrine.databaseUser'),
+                        'password' => $configurationManager->getSetting('doctrine.databasePassword')
                     );
                     
                     $paths = array();
@@ -115,11 +115,11 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->addSettingIfNotSet('doctrine', 'databaseDriver', 'pdo_mysql');
-        $configurationManager->addSettingIfNotSet('doctrine', 'databaseHost', 'localhost');
-        $configurationManager->addSettingIfNotSet('doctrine', 'databaseName', '');
-        $configurationManager->addSettingIfNotSet('doctrine', 'databaseUser', '');
-        $configurationManager->addSettingIfNotSet('doctrine', 'databasePassword', '');
+        $configurationManager->addSettingIfNotSet('doctrine.databaseDriver', 'pdo_mysql');
+        $configurationManager->addSettingIfNotSet('doctrine.databaseHost', 'localhost');
+        $configurationManager->addSettingIfNotSet('doctrine.databaseName', '');
+        $configurationManager->addSettingIfNotSet('doctrine.databaseUser', '');
+        $configurationManager->addSettingIfNotSet('doctrine.databasePassword', '');
         $configurationManager->saveConfigurationFile();
     }
 }

@@ -236,8 +236,8 @@ class Module extends ModuleAbstract
         
         // Configuration
         $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->addSettingIfNotSet('accesscontrol', 'allowRegistration', true);
-        $configurationManager->addSettingIfNotSet('accesscontrol', 'allowRenewPassword', true);
+        $configurationManager->addSettingIfNotSet('accesscontrol.allowRegistration', true);
+        $configurationManager->addSettingIfNotSet('accesscontrol.allowRenewPassword', true);
         $configurationManager->saveConfigurationFile();
     }
 }

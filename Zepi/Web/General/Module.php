@@ -95,8 +95,8 @@ class Module extends ModuleAbstract
                     
                     // Load the configuration
                     $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-                    $minifyAssets = $configurationManager->getSetting('assets', 'minifyAssets');
-                    $combineAssetGroups = $configurationManager->getSetting('assets', 'combineAssetGroups');
+                    $minifyAssets = $configurationManager->getSetting('assets.minifyAssets');
+                    $combineAssetGroups = $configurationManager->getSetting('assets.combineAssetGroups');
                     
                     $this->assetsManager = new $className(
                         $this->framework, 
@@ -199,8 +199,8 @@ class Module extends ModuleAbstract
         $routeManager->addRoute('administration', '\\Zepi\\Web\\General\\Event\\Administration', 1);
         
         $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
-        $configurationManager->addSettingIfNotSet('assets', 'minifyAssets', 'true');
-        $configurationManager->addSettingIfNotSet('assets', 'combineAssetGroups', 'true');
+        $configurationManager->addSettingIfNotSet('assets.minifyAssets', 'true');
+        $configurationManager->addSettingIfNotSet('assets.combineAssetGroups', 'true');
         $configurationManager->saveConfigurationFile();
         
         $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');

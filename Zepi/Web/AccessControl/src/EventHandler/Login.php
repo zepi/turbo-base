@@ -135,8 +135,8 @@ class Login extends FrontendEventHandler
                 'errors' => $errors,
                 'form' => $loginForm, 
                 'layoutRenderer' => $this->getLayoutRenderer(),
-                'allowRegistration' => $this->getSetting('accesscontrol', 'allowRegistration'),
-                'allowRenewPassword' => $this->getSetting('accesscontrol', 'allowRenewPassword'),
+                'allowRegistration' => $this->getSetting('accesscontrol.allowRegistration'),
+                'allowRenewPassword' => $this->getSetting('accesscontrol.allowRenewPassword'),
             ));
             
             $response->setOutput($renderedOutput);
@@ -243,7 +243,7 @@ class Login extends FrontendEventHandler
         }
         
         $helpText = '';
-        if ($this->getSetting('accesscontrol', 'allowRenewPassword')) {
+        if ($this->getSetting('accesscontrol.allowRenewPassword')) {
             $helpText = $this->translate('Lost your password? <a href="%link%">Renew it here.</a>', '\\Zepi\\Web\\AccessControl', array(
                 'link' => $request->getFullRoute('request-new-password')
             ));

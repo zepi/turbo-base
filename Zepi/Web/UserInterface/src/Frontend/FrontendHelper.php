@@ -145,13 +145,12 @@ class FrontendHelper
      * Returns the setting for the given group and key
      * 
      * @access public
-     * @param string $group
-     * @param string $key
+     * @param string $path
      * @return mixed
      */
-    public function getSetting($group, $key)
+    public function getSetting($path)
     {
-        return $this->configurationManager->getSetting($group, $key);
+        return $this->configurationManager->getSetting($path);
     }
     
     /**
