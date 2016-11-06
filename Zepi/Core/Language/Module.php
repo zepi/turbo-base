@@ -68,7 +68,7 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Core\\Language\\Manager\\LanguageFileManager':
                 if ($this->languageFileManager === null) {
-                    $this->languageFileManager = new $className($this->framework);
+                    $this->languageFileManager = $this->framework->initiateObject($className);
                 }
                 
                 return $this->languageFileManager;
@@ -76,19 +76,14 @@ class Module extends ModuleAbstract
             
             case '\\Zepi\\Core\\Language\\Manager\\TranslationManager':
                 if ($this->translationManager === null) {
-                    $languageFileManager = $this->getInstance('\\Zepi\\Core\\Language\\Manager\\LanguageFileManager');
-                    
-                    $this->translationManager = new $className(
-                        $languageFileManager,
-                        $this->framework->getRequest()
-                    );
+                    $this->translationManager = $this->framework->initiateObject($className);
                 }
                 
                 return $this->translationManager;
             break;
             
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

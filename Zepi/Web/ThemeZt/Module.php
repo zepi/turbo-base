@@ -46,18 +46,6 @@ use \Zepi\Web\General\Manager\AssetsManager;
 class Module extends ModuleAbstract
 {
     /**
-     * Initializes and return an instance of the given class name.
-     * 
-     * @access public
-     * @param string $className
-     * @return mixed
-     */
-    public function getInstance($className)
-    {
-        
-    }
-    
-    /**
      * This action will be executed on the activation of the module
      * 
      * @access public

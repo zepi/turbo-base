@@ -62,18 +62,14 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Web\\Mail\\Helper\\MailHelper':
                 if ($this->mailHelper === null) {
-                    $this->mailHelper = new $className(
-                        $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
-                    );
+                    $this->mailHelper = $this->framework->initiateObject($className);
                 }
                 
                 return $this->mailHelper;
             break;
             
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

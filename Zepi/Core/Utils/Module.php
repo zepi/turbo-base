@@ -65,19 +65,17 @@ class Module extends ModuleAbstract
                     $path = $this->framework->getRootDirectory() . '/config/framework.ini';
                     $configFileBackend = new \Zepi\Core\Utils\Backend\ConfigurationFileBackend($path);
                     
-                    $this->configurationManager = new $className($configFileBackend);
+                    $this->configurationManager = $this->framework->initiateObject($className, array(
+                        'configurationFileBackend' => $configFileBackend
+                    ));
                     $this->configurationManager->loadConfigurationFile();
                 }
                 
                 return $this->configurationManager;
             break;
             
-            case '\\Zepi\\Core\\Utils\\Helper\\ThreadHelper':
-                return new $className($this->getInstance('\\Zepi\\Core\\Utils\\Helper\\CliHelper'));
-            break;
-            
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

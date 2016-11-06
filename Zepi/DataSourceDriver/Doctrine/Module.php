@@ -100,7 +100,7 @@ class Module extends ModuleAbstract
             break;
             
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

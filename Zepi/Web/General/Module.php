@@ -135,9 +135,7 @@ class Module extends ModuleAbstract
             
             case '\\Zepi\\Web\\General\\Manager\\MenuManager':
                 if ($this->menuManager === null) {
-                    $this->menuManager = new $className(
-                        $this->framework
-                    );
+                    $this->menuManager = $this->framework->initiateObject($className);
                 }
                 
                 return $this->menuManager;
@@ -145,24 +143,14 @@ class Module extends ModuleAbstract
             
             case '\\Zepi\\Web\\General\\Manager\\MetaInformationManager':
                 if ($this->metaInformationManager === null) {
-                    $this->metaInformationManager = new $className();
+                    $this->metaInformationManager = $this->framework->initiateObject($className);
                 }
                 
                 return $this->metaInformationManager;
             break;
             
-            case '\\Zepi\\Web\\General\\EventHandler\\Administration':
-                return new $className($this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper'));
-            break;
-            
-            case '\\Zepi\\Web\\General\\EventHandler\\ClearAssetCache':
-            case '\\Zepi\\Web\\General\\EventHandler\\DisplayAssets':
-            case '\\Zepi\\Web\\General\\EventHandler\\LoadAssetContent':
-                return new $className($this->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager'));
-            break;
-            
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

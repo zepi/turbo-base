@@ -62,35 +62,14 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Api\\Rest\\Helper\\FrontendHelper':
                 if ($this->frontendHelper === null) {
-                    $this->frontendHelper = new $className(
-                        $this->framework,
-                        $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
-                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout'),
-                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\OverviewPage'),
-                        $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table'),
-                        $this->framework->getInstance('\\Zepi\\Api\\Rest\\Helper\\RestHelper')
-                    );
+                    $this->frontendHelper = $this->framework->initiateObject($className);
                 }
             
                 return $this->frontendHelper;
             break;
-            
-            case '\\Zepi\\Api\\Rest\\Helper\\RestHelper':
-                if ($this->frontendHelper === null) {
-                    $this->frontendHelper = new $className(
-                        $this->framework->getInstance('\\Zepi\\Api\\AccessControl\\Manager\\TokenManager')
-                    );
-                }
-            
-                return $this->frontendHelper;
-            break;
-            
+
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

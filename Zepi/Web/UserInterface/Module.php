@@ -61,53 +61,16 @@ class Module extends ModuleAbstract
     public function getInstance($className)
     {
         switch ($className) {
-            case '\\Zepi\\Web\\UserInterface\\Renderer\\Table':
-                // Load the pagination renderer
-                $paginationRenderer = $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Pagination');
-                
-                $layoutRenderer = new $className(
-                    $paginationRenderer
-                );
-                
-                return $layoutRenderer;
-            break;
-            
-            case '\\Zepi\\Web\\UserInterface\\Renderer\\Layout':
-                // Load the template manager
-                $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
-                
-                $layoutRenderer = new $className(
-                    $templatesManager
-                );
-                
-                return $layoutRenderer;
-            break;
-            
             case '\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper':
                 if ($this->frontendHelper === null) {
-                    $this->frontendHelper = new $className(
-                        $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager'),
-                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager'),
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'),
-                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Layout'),
-                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\OverviewPage'),
-                        $this->getInstance('\\Zepi\\Web\\UserInterface\\Renderer\\Table')
-                    );
+                    $this->frontendHelper = $this->framework->initiateObject($className);
                 }
             
                 return $this->frontendHelper;
             break;
             
-            case '\\Zepi\\Web\\UserInterface\\EventHandler\\LoadData':
-                return new $className(
-                    $this->framework->getInstance('\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper')
-                );
-            break;
-            
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

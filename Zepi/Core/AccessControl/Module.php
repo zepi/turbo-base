@@ -74,10 +74,10 @@ class Module extends ModuleAbstract
                 if ($this->accessControlManager === null) {
                     $dataSourceManager = $this->framework->getDataSourceManager();
                     
-                    $accessEntitiesDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface');
-                    $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
-                    
-                    $this->accessControlManager = new $className($accessEntitiesDataSource, $permissionDataSource);
+                    $this->accessControlManager = $this->framework->initiateObject($className, array(
+                        'accessEntitiesDataSource' => $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceInterface'),
+                        'permissionsDataSource' => $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface')
+                    ));
                 }
                 
                 return $this->accessControlManager;
@@ -85,43 +85,29 @@ class Module extends ModuleAbstract
             
             case '\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager':
                 if ($this->accessLevelManager === null) {
-                    // Get the templates backend
-                    $path = $this->framework->getRootDirectory() . '/data/access-levels.data';
-                    $accessLevelsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
-            
-                    $this->accessLevelManager = new $className(
-                            $this->framework,
-                            $accessLevelsObjectBackend
-                    );
+                    $accessLevelsObjectBackend = $this->framework->initiateObject('\Zepi\Turbo\Backend\FileObjectBackend', array(
+                        'path' => $this->framework->getRootDirectory() . '/data/access-levels.data'
+                    ));
+                    
+                    $this->accessLevelManager = $this->framework->initiateObject($className, array(
+                        'accessLevelObjectBackend' => $accessLevelsObjectBackend
+                    ));
                     $this->accessLevelManager->initializeAccessLevelManager();
                 }
             
                 return $this->accessLevelManager;
-                break;
+            break;
             
             case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine':
                 $dataSourceManager = $this->framework->getDataSourceManager();
                 
-                $entityManager = $this->framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
-                $permissionDataSource = $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface');
-                
-                $dataSource = new $className($entityManager, $permissionDataSource);
-                return $dataSource;
-            break;
-            
-            case '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine':
-                $entityManager = $this->framework->getInstance('\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager');
-                
-                $dataSource = new $className($entityManager, $this->framework->getRuntimeManager());
-                return $dataSource;
-            break;
-            
-            case '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel':
-                return new $className($this->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessControlManager'));
+                return $this->framework->initiateObject($className, array(
+                    'permissionsDataSource' => $dataSourceManager->getDataSource('\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceInterface')
+                ));
             break;
             
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }

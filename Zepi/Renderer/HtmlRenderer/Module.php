@@ -62,24 +62,14 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer':
                 if ($this->htmlRenderer === null) {
-                    $this->htmlRenderer = new $className(
-                        $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                        $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager')
-                    );
+                    $this->htmlRenderer = $this->framework->initiateObject($className);
                 }
                 
                 return $this->htmlRenderer;
             break;
             
-            case '\\Zepi\\Renderer\\HtmlRenderer\\EventHandler\\RegisterRenderer':
-                return new $className(
-                    $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager'),
-                    $this->getInstance('\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer')
-                );
-            break;
-            
             default: 
-                return new $className();
+                return $this->framework->initiateObject($className);
             break;
         }
     }
