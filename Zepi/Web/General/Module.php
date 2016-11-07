@@ -64,18 +64,6 @@ class Module extends ModuleAbstract
     protected $templatesManager;
     
     /**
-     * @access protected
-     * @var \Zepi\Web\General\Manager\MenuManager
-     */
-    protected $menuManager;
-    
-    /**
-     * @access protected
-     * @var \Zepi\Web\General\Manager\MetaInformationManager
-     */
-    protected $metaInformationManager;
-    
-    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -151,19 +139,8 @@ class Module extends ModuleAbstract
             break;
             
             case '\\Zepi\\Web\\General\\Manager\\MenuManager':
-                if ($this->menuManager === null) {
-                    $this->menuManager = $this->framework->initiateObject($className);
-                }
-                
-                return $this->menuManager;
-            break;
-            
             case '\\Zepi\\Web\\General\\Manager\\MetaInformationManager':
-                if ($this->metaInformationManager === null) {
-                    $this->metaInformationManager = $this->framework->initiateObject($className);
-                }
-                
-                return $this->metaInformationManager;
+                return $this->framework->initiateObject($className, array(), true);
             break;
             
             default: 

@@ -45,12 +45,6 @@ use \Zepi\Turbo\Module\ModuleAbstract;
 class Module extends ModuleAbstract
 {
     /**
-     * @access protected
-     * @var \Zepi\Core\Mail\Helper\MailHelper
-     */
-    protected $mailHelper;
-    
-    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -61,11 +55,7 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Web\\Mail\\Helper\\MailHelper':
-                if ($this->mailHelper === null) {
-                    $this->mailHelper = $this->framework->initiateObject($className);
-                }
-                
-                return $this->mailHelper;
+                return $this->framework->initiateObject($className, array(), true);
             break;
             
             default: 

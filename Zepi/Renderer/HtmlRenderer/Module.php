@@ -45,12 +45,6 @@ use \Zepi\Turbo\Module\ModuleAbstract;
 class Module extends ModuleAbstract
 {
     /**
-     * @access protected
-     * @var \Zepi\Renderer\HtmlRenderer\Renderer\Renderer
-     */
-    protected $htmlRenderer;
-    
-    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -61,11 +55,7 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Renderer\\HtmlRenderer\\Renderer\\Renderer':
-                if ($this->htmlRenderer === null) {
-                    $this->htmlRenderer = $this->framework->initiateObject($className);
-                }
-                
-                return $this->htmlRenderer;
+                return $this->framework->initiateObject($className, array(), true);
             break;
             
             default: 

@@ -46,12 +46,6 @@ use \Zepi\Web\General\Manager\AssetManager;
 class Module extends ModuleAbstract
 {
     /**
-     * @access protected
-     * @var \Zepi\Web\UserInterface\Frontend\FrontendHelper
-     */
-    protected $frontendHelper;
-    
-    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -62,11 +56,7 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Web\\UserInterface\\Frontend\\FrontendHelper':
-                if ($this->frontendHelper === null) {
-                    $this->frontendHelper = $this->framework->initiateObject($className);
-                }
-            
-                return $this->frontendHelper;
+                return $this->framework->initiateObject($className, array(), true);
             break;
             
             default: 

@@ -48,18 +48,6 @@ use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
 class Module extends ModuleAbstract
 {
     /**
-     * @access protected
-     * @var \Zepi\Web\AccessControl\Manager\UserManager
-     */
-    protected $userManager;
-    
-    /**
-     * @access protected
-     * @var \Zepi\Web\AccessControl\Manager\GroupManager
-     */
-    protected $groupManager;
-    
-    /**
      * Initializes and return an instance of the given class name.
      * 
      * @access public
@@ -70,19 +58,8 @@ class Module extends ModuleAbstract
     {
         switch ($className) {
             case '\\Zepi\\Web\\AccessControl\\Manager\\UserManager':
-                if ($this->userManager === null) {
-                    $this->userManager = $this->framework->initiateObject($className);
-                }
-                
-                return $this->userManager;
-            break;
-            
             case '\\Zepi\\Web\\AccessControl\\Manager\\GroupManager':
-                if ($this->groupManager === null) {
-                    $this->groupManager = $this->framework->initiateObject($className);
-                }
-                
-                return $this->groupManager;
+                return $this->framework->initiateObject($className, array(), true);
             break;
             
             default: 
