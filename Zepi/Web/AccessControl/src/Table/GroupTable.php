@@ -92,7 +92,7 @@ class GroupTable extends TableAbstract
         
         return array(
             new Column('name', $translationManager->translate('Name', '\\Zepi\\Web\\AccessControl'), 50, true, true, Column::DATA_TYPE_HTML, 'icon-column'),
-            new Column('uuid', $translationManager->translate('UUID', '\\Zepi\\Web\\AccessControl'), 30, true, true, Column::DATA_TYPE_STRING),
+            new Column('uuid', $translationManager->translate('UUID', '\\Zepi\\Web\\AccessControl'), 50, true, true, Column::DATA_TYPE_STRING),
             new Column('actions', '', Column::WIDTH_AUTO, false, false, Column::DATA_TYPE_HTML, 'auto-width button-column')
         );
     }

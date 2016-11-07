@@ -8,11 +8,12 @@
             <div class="message success">
                 <?php echo $this->translate('The user was successfully deleted.', '\\Zepi\\Web\\AccessControl'); ?>
             </div>
-            
-            <div class="button-list">
-                <div class="secondary-buttons align-left">
-                    <a href="<?php echo $request->getFullRoute('/administration/users/'); ?>" class="btn btn-default">Zurück</a>
-                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="button-group text-left">
+                <a href="<?php echo $request->getFullRoute('/administration/users/'); ?>" class="btn btn-default">Zurück</a>
             </div>
         </div>
     </div>

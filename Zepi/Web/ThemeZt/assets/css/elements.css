@@ -83,7 +83,7 @@ a.btn .mdi { margin-right: 5px; }
 .button-column .btn:first-child { margin: 0; }
 
 @media screen and (max-width: 767px) {
-    .button-group .btn { width: 100%; }
+    .button-group .btn { width: 100%; margin-bottom: 10px; }
 }
 
 table.dataTable > tbody > tr.child ul { display: block; }
@@ -96,13 +96,12 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before { top:
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before, 
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before { top: 50%; margin-top: -9px; box-shadow: none; border: 2px solid #d33333; }
 table.dataTable > tbody > tr.child ul li .dtr-data { width: 100%; }
+table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data { word-break: break-all; }
 table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn { margin-right: 10px; }
 
 @media screen and (max-width: 767px) {
     div.dataTables_wrapper div.dataTables_filter { text-align: right; }
-}
 
-@media screen and (max-width: 460px) {
     table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn { width: 100%; margin: 0 0 10px 0; }
     table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn:last-child { margin-bottom: 0; }
 }
@@ -122,12 +121,21 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn { margin-r
 /**
  * Object box
  */
-.object-box { display: table; margin: 40px auto; }
+.object-box { display: table; margin: 40px auto; width: 100%; }
 .object-box > div { border: 1px solid #BBBBBB; background: #F6F6F6; padding: 20px; display: table-cell; }
 .object-box .object-box-icon { float: left; }
 .object-box .object-box-icon .mdi { font-size: 80px; line-height: 60px; vertical-align: middle; }
 .object-box .object-box-description { float: left; }
 .object-box .object-box-description .dl-horizontal { margin: 0; }
+
+@media screen and (max-width: 768px) {
+    .object-box { width: 100%; display: block; }
+    .object-box > div { display: block; }
+    .object-box .object-box-icon { float: none; display: block; text-align: center; }
+    .object-box .object-box-description { float: none; }
+    .object-box .object-box-description .dl-horizontal dt { margin-top: 10px; }
+    .object-box .object-box-description .dl-horizontal dd { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+}
 
 /**
  * Button list

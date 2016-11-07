@@ -28,17 +28,20 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="button-list">
-                <div class="secondary-buttons align-left">
-                    <a href="<?php echo $request->getFullRoute('/administration/groups/'); ?>" class="btn btn-default">Zurück</a>
-                </div>
-                <div class="primary-buttons align-center">
-                    <a href="<?php echo $request->getFullRoute() . 'confirmed/'; ?>" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-trash"></span>
-                        <?php echo $this->translate('Delete', '\\Zepi\\Web\\AccessControl'); ?>
-                    </a>
-                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-4">
+            <div class="button-group text-left">
+                <a href="<?php echo $request->getFullRoute('/administration/groups/'); ?>" class="btn btn-default">Zurück</a>
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <div class="button-group text-center">
+                <a href="<?php echo $request->getFullRoute() . 'confirmed/'; ?>" class="btn btn-danger btn-lg">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <?php echo $this->translate('Delete', '\\Zepi\\Web\\AccessControl'); ?>
+                </a>
             </div>
         </div>
     </div>

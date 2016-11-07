@@ -1,5 +1,5 @@
 .selector .selector-available-area,
-.selector .selector-selected-area { float: left; display: inline-block; }
+.selector .selector-selected-area { display: block; }
 
 .selector .selector-selected-area { padding-bottom: 20px; }
 
