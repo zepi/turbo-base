@@ -282,7 +282,7 @@ class EditUser extends FrontendEventHandler
     protected function validateData(Framework $framework, User $user, $username, $password, $passwordConfirmed)
     {
         // Username
-        if ($this->userManager->hasUserForUsername($username) && $this->userManager->getUserForUsername($username)->getUuid() == $user->getUuid()) {
+        if ($this->userManager->hasUserForUsername($username) && $this->userManager->getUserForUsername($username)->getUuid() != $user->getUuid()) {
             return $this->translate('The username is already in use.', '\\Zepi\\Web\\AccessControl');
         }        
         
