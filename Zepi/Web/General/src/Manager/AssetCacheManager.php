@@ -25,12 +25,12 @@
  */
 
 /**
- * Manages all assets like css, js, image or webfont files.
+ * Generates and manages the cache for the asset files.
  * 
  * @package Zepi\Web\General
  * @subpackage Manager
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
 namespace Zepi\Web\General\Manager;
@@ -38,56 +38,44 @@ namespace Zepi\Web\General\Manager;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Backend\ObjectBackendAbstract;
 use \Zepi\Turbo\Backend\FileBackend;
+use \Zepi\Web\General\Manager\AssetManager;
 use \Zepi\Web\General\Helper\CssHelper;
 use \Zepi\Web\General\Entity\Asset;
 
 /**
- * Manages all assets like css, js, image or webfont files.
+ * Generates and manages the cache for the asset files.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
-class AssetsManager
+class AssetCacheManager
 {
-    const CSS = 'css';
-    const JS = 'js';
-    const IMAGE = 'image';
-    const BINARY = 'binary';
-    
     /**
      * @access protected
      * @param array
      */
     protected $assetTypes = array(
-        self::CSS => array('minify' => true),
-        self::JS => array('minify' => true),
-        self::IMAGE => array('minify' => false),
-        self::BINARY => array('minify' => false)
+        AssetManager::CSS => array('minify' => true),
+        AssetManager::JS => array('minify' => true),
+        AssetManager::IMAGE => array('minify' => false),
+        AssetManager::BINARY => array('minify' => false)
     );
     
     /**
      * @access protected
      * @var array
      */
-    protected $assets = array();
-    
-    /**
-     * @access protected
-     * @var array
-     */
     protected $cachedFiles = array();
-    
+
     /**
-     * @access protected
      * @var \Zepi\Turbo\Framework
      */
     protected $framework;
     
     /**
-     * @access protected
-     * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
+     * @var \Zepi\Web\General\Manager\AssetManager
      */
-    protected $assetsObjectBackend;
+    protected $assetManager;
     
     /**
      * @access protected
@@ -124,7 +112,7 @@ class AssetsManager
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Backend\ObjectBackendAbstract $assetsObjectBackend
+     * @param \Zepi\Web\General\Manager\AssetManager $assetManager
      * @param \Zepi\Turbo\Backend\ObjectBackendAbstract $cachedFilesObjectBackend
      * @param \Zepi\Turbo\Backend\FileBackend $fileBackend
      * @param \Zepi\Web\General\Helper\CssHelper $cssHelper
@@ -133,7 +121,7 @@ class AssetsManager
      */
     public function __construct(
         Framework $framework,
-        ObjectBackendAbstract $assetsObjectBackend, 
+        AssetManager $assetManager,
         ObjectBackendAbstract $cachedFilesObjectBackend, 
         FileBackend $fileBackend,
         CssHelper $cssHelper,
@@ -141,7 +129,7 @@ class AssetsManager
         $combineAssets
     ) {
         $this->framework = $framework;
-        $this->assetsObjectBackend = $assetsObjectBackend;
+        $this->assetManager = $assetManager;
         $this->cachedFilesObjectBackend = $cachedFilesObjectBackend;
         $this->fileBackend = $fileBackend;
         $this->cssHelper = $cssHelper;
@@ -155,35 +143,9 @@ class AssetsManager
      * 
      * @access public
      */
-    public function initializeAssetManager()
+    public function initializeAssetCacheManager()
     {
-        $this->loadAssets();
         $this->loadAssetsCache();
-    }
-    
-    /**
-     * Loads cache data for the assets
-     * 
-     * @access public
-     */
-    protected function loadAssets()
-    {
-        $assets = $this->assetsObjectBackend->loadObject();
-        if (!is_array($assets)) {
-            $assets = array();
-        }
-        
-        $this->assets = $assets;
-    }
-    
-    /**
-     * Saves the assets cache to the file backend.
-     * 
-     * @access public
-     */
-    protected function saveAssets()
-    {
-        $this->assetsObjectBackend->saveObject($this->assets);
     }
     
     /**
@@ -288,66 +250,6 @@ class AssetsManager
     }
     
     /**
-     * Adds a file as an asset.
-     * 
-     * @access public
-     * @param string $type
-     * @param string $assetName
-     * @param string $fileName
-     * @param array $dependencies
-     */
-    public function addAsset($type, $assetName, $fileName, $dependencies = array())
-    {
-        if (!isset($this->assets[$type]) || !is_array($this->assets[$type])) {
-            $this->assets[$type] = array();
-        }
-        
-        $asset = new Asset(
-            $type,
-            $assetName,
-            $fileName,
-            $dependencies
-        );
-        
-        $this->assets[$type][$assetName] = $asset;
-        $this->saveAssets();
-    }
-    
-    /**
-     * Returns true if the asset for the given type
-     * and file name exists.
-     * 
-     * @access public
-     * @param string $type
-     * @param string $fileName
-     * @return boolean
-     */
-    public function hasAsset($type, $fileName)
-    {
-        return (isset($this->assets[$type][$fileName]));
-    }
-    
-    /**
-     * Adds a file as an asset.
-     * 
-     * @access public
-     * @param string $type
-     * @param string $fileName
-     */
-    public function removeAsset($type, $fileName)
-    {
-        // If the key doesn't exists return false
-        if (!$this->hasAsset($type, $fileName)) {
-            return false;
-        }
-        
-        // If the file was found remove the index
-        unset($this->assets[$type][$fileName]);
-        
-        return true;
-    }
-    
-    /**
      * Make the cache for an asset type and display the html 
      * code to include the asset type.
      * 
@@ -357,7 +259,7 @@ class AssetsManager
      */
     public function displayAssetType($type)
     {
-        $files = $this->getAssetFiles($type);
+        $files = $this->assetManager->getAssetFiles($type);
 
         // If there are no files for the given type return here.
         if ($files === false) {
@@ -401,7 +303,7 @@ class AssetsManager
      */
     public function getAssetUrl($type, $assetName)
     {
-        $file = $this->getAssetFile($type, $assetName);
+        $file = $this->assetManager->getAssetFile($type, $assetName);
         
         if ($file === false) {
             return;
@@ -504,7 +406,7 @@ class AssetsManager
         }
 
         // Minify the content, if possible and activated
-        if (($type === self::CSS || $type === self::JS) && $this->minifyAssets) {
+        if (($type === AssetManager::CSS || $type === AssetManager::JS) && $this->minifyAssets) {
             $typeContent = $this->minifyContent($type, $typeContent);
         }
         
@@ -549,7 +451,7 @@ class AssetsManager
         $content = $this->optimizeContent($type, $fileName, $content);
         
         // Minify the content, if possible and activated
-        if (($type === self::CSS || $type === self::JS) && $this->minifyAssets) {
+        if (($type === AssetManager::CSS || $type === AssetManager::JS) && $this->minifyAssets) {
             $content = $this->minifyContent($type, $content);
         }
         
@@ -587,7 +489,7 @@ class AssetsManager
      */
     protected function optimizeContent($type, $file, $content)
     {
-        if ($type === self::CSS) {
+        if ($type === AssetManager::CSS) {
             $content = $this->cssHelper->optimizeCssContent($this, $content, $file);
         }
         
@@ -606,9 +508,9 @@ class AssetsManager
     protected function minifyContent($type, $content)
     {
         $minifier = null;
-        if ($type === self::CSS) {
+        if ($type === AssetManager::CSS) {
             $minifier = new \MatthiasMullie\Minify\CSS($content);
-        } else if ($type === self::JS) {
+        } else if ($type === AssetManager::JS) {
             $minifier = new \MatthiasMullie\Minify\JS($content);
         }
         
@@ -735,92 +637,6 @@ class AssetsManager
     }
     
     /**
-     * Sorts the files by dependencies
-     * 
-     * @access public 
-     * @param array $assets
-     * @return array
-     */
-    protected function sortFilesByDependencies($assets)
-    {
-        $sortedAssets = array();
-        foreach ($assets as $asset) {
-            if ($asset->hasDependencies()) {
-                $sortedAssets = $this->resolveDependencies($sortedAssets, $assets, $asset);
-            } else {
-                $sortedAssets[$asset->getAssetName()] = $asset;
-            }
-        }
-        
-        return $sortedAssets;
-    }
-
-    /**
-     * Returns the sorted assets with all dependencies
-     * 
-     * @access public
-     * @param array $sortedAssets
-     * @param array $assets
-     * @param \Zepi\Web\General\Entity\Asset $asset
-     * @return array
-     */
-    protected function resolveDependencies($sortedAssets, $assets, $asset)
-    {
-        if ($asset->hasDependencies()) {
-            foreach ($asset->getDependencies() as $dependency) {
-                if (!isset($sortedAssets[$dependency]) && isset($assets[$dependency])) {
-                    $sortedAssets = $this->resolveDependencies($sortedAssets, $assets, $assets[$dependency]);
-                }
-            }
-        }
-        
-        $sortedAssets[$asset->getAssetName()] = $asset;
-        
-        return $sortedAssets;
-    }
-    
-    /**
-     * Returns an array with all files for the given type, 
-     * sorted by the priority of the assets.
-     * 
-     * @access protected
-     * @param string $type
-     * @return boolean|array
-     */
-    protected function getAssetFiles($type)
-    {
-        if (!isset($this->assets[$type])) {
-            return false;
-        }
-        
-        // Sort the files by dependnecies
-        $files = $this->sortFilesByDependencies($this->assets[$type]);
-
-        return $files;
-    }
-    
-    /**
-     * Returns the file for the given file name
-     * or false if the file does not exist.
-     *
-     * @access protected
-     * @param string $type
-     * @param string $assetName
-     * @return false|\Zepi\Web\General\Entity\Asset
-     */
-    protected function getAssetFile($type, $assetName)
-    {
-        if (!$this->hasAsset($type, $assetName)) {
-            return false;
-        }
-    
-        // Sort the files by dependnecies
-        $file = $this->assets[$type][$assetName];
-    
-        return $file;
-    }
-    
-    /**
      * Returns the file extension for the given type.
      * 
      * @access protected
@@ -829,9 +645,9 @@ class AssetsManager
      */
     protected function getExtensionForType($type)
     {
-        if ($type === self::CSS) {
+        if ($type === AssetManager::CSS) {
             return 'css';
-        } else if ($type === self::JS) {
+        } else if ($type === AssetManager::JS) {
             return 'js';
         }
     }
@@ -850,9 +666,9 @@ class AssetsManager
         $url = $this->getUrlToTheAssetLoader($file);
         
         // Return the correct html tag
-        if ($type === self::CSS) {
+        if ($type === AssetManager::CSS) {
             return '<link rel="stylesheet" type="text/css" href="' . $url . '">' . PHP_EOL;
-        } else if ($type === self::JS) {
+        } else if ($type === AssetManager::JS) {
             return '<script type="text/javascript" src="' . $url . '"></script>' . PHP_EOL;
         }
     }

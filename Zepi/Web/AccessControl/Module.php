@@ -37,7 +37,6 @@ namespace Zepi\Web\AccessControl;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
 use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
-use \Zepi\Web\General\Manager\AssetsManager;
 
 /**
  * This module delivers the frontend functionality for the

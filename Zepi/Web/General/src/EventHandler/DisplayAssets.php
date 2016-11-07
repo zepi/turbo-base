@@ -37,11 +37,10 @@ namespace Zepi\Web\General\EventHandler;
 
 use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Web\Test\Exception;
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetManager;
+use \Zepi\Web\General\Manager\AssetCacheManager;
 
 /**
  * Displays the assets.
@@ -53,19 +52,19 @@ class DisplayAssets implements WebEventHandlerInterface
 {
     /**
      * @access protected
-     * @var \Zepi\Web\General\Manager\AssetsManager
+     * @var \Zepi\Web\General\Manager\AssetCacheManager
      */
-    protected $assetsManager;
+    protected $assetCacheManager;
     
     /**
      * Constructs the object
      *
      * @access public
-     * @param \Zepi\Web\General\Manager\AssetsManager $assetsManager
+     * @param \Zepi\Web\General\Manager\AssetCacheManager $assetCacheManager
      */
-    public function __construct(AssetsManager $assetsManager)
+    public function __construct(AssetCacheManager $assetCacheManager)
     {
-        $this->assetsManager = $assetsManager;
+        $this->assetCacheManager = $assetCacheManager;
     }
     
     /**
@@ -80,9 +79,9 @@ class DisplayAssets implements WebEventHandlerInterface
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
         // Display the main css group
-        $this->assetsManager->displayAssetType(AssetsManager::CSS);
+        $this->assetCacheManager->displayAssetType(AssetManager::CSS);
         
         // Display the main js group
-        $this->assetsManager->displayAssetType(AssetsManager::JS);
+        $this->assetCacheManager->displayAssetType(AssetManager::JS);
     }
 }

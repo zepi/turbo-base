@@ -37,11 +37,9 @@ namespace Zepi\Web\General\EventHandler;
 
 use \Zepi\Turbo\FrameworkInterface\CliEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\CliRequest;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Web\Test\Exception;
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetCacheManager;
 
 /**
  * Clears the asset cache to rebuild the whole css and javascript cache.
@@ -53,19 +51,19 @@ class ClearAssetCache implements CliEventHandlerInterface
 {
     /**
      * @access protected
-     * @var \Zepi\Web\General\Manager\AssetsManager
+     * @var \Zepi\Web\General\Manager\AssetCacheManager
      */
-    protected $assetsManager;
+    protected $assetCacheManager;
     
     /**
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\Web\General\Manager\AssetsManager $assetsManager
+     * @param \Zepi\Web\General\Manager\AssetCacheManager $assetCacheManager
      */
-    public function __construct(AssetsManager $assetsManager)
+    public function __construct(AssetCacheManager $assetCacheManager)
     {
-        $this->assetsManager = $assetsManager;
+        $this->assetCacheManager = $assetCacheManager;
     }
     
     /**
@@ -79,7 +77,7 @@ class ClearAssetCache implements CliEventHandlerInterface
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         // Clean the asset cache
-        $this->assetsManager->clearAssetCache();
+        $this->assetCacheManager->clearAssetCache();
         $response->setOutputPart('cacheCleared', 'The asset cache was successfully cleared!');
     }
 }

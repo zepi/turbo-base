@@ -47,9 +47,15 @@ class Module extends ModuleAbstract
 {
     /**
      * @access protected
-     * @var \Zepi\Web\General\Manager\AssetsManager
+     * @var \Zepi\Web\General\Manager\AssetManager
      */
-    protected $assetsManager;
+    protected $assetManager;
+    
+    /**
+     * @access protected
+     * @var \Zepi\Web\General\Manager\AssetCacheManager
+     */
+    protected $assetCacheManager;
     
     /**
      * @access protected
@@ -79,38 +85,49 @@ class Module extends ModuleAbstract
     public function getInstance($className)
     {
         switch ($className) {
-            case '\\Zepi\\Web\\General\\Manager\\AssetsManager':
-                if ($this->assetsManager === null) {
+            case '\\Zepi\\Web\\General\\Manager\\AssetManager':
+                if ($this->assetManager === null) {
                     // Get the assets backend
                     $path = $this->framework->getRootDirectory() . '/data/assets.data';
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
-                    
+
+                    $this->assetManager = new $className(
+                        $assetsObjectBackend
+                    );
+                    $this->assetManager->initializeAssetManager();
+                }
+                
+                return $this->assetManager;
+            break;
+            
+            case '\\Zepi\\Web\\General\\Manager\\AssetCacheManager':
+                if ($this->assetCacheManager === null) {
                     // Get the cache backends
                     $path = $this->directory . '/cache/';
                     $fileObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path . 'cachedFiles.data');
                     $fileBackend = new \Zepi\Turbo\Backend\FileBackend($path);
-                    
+            
                     // CSS helper
                     $cssHelper = new \Zepi\Web\General\Helper\CssHelper($fileBackend);
-                    
+            
                     // Load the configuration
                     $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                     $minifyAssets = $configurationManager->getSetting('assets.minifyAssets');
                     $combineAssetGroups = $configurationManager->getSetting('assets.combineAssetGroups');
-                    
-                    $this->assetsManager = new $className(
-                        $this->framework, 
-                        $assetsObjectBackend, 
-                        $fileObjectBackend, 
+            
+                    $this->assetCacheManager = new $className(
+                        $this->framework,
+                        $this->getInstance('\\Zepi\\Web\\General\\Manager\\AssetManager'),
+                        $fileObjectBackend,
                         $fileBackend,
                         $cssHelper,
                         $minifyAssets,
                         $combineAssetGroups
                     );
-                    $this->assetsManager->initializeAssetManager();
+                    $this->assetCacheManager->initializeAssetCacheManager();
                 }
-                
-                return $this->assetsManager;
+            
+                return $this->assetCacheManager;
             break;
             
             case '\\Zepi\\Web\\General\\Manager\\TemplatesManager':

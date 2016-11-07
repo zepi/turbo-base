@@ -35,7 +35,8 @@
 
 namespace Zepi\Web\General\Helper;
 
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetManager;
+use \Zepi\Web\General\Manager\AssetCacheManager;
 use \Zepi\Turbo\Backend\FileBackend;
 
 /**
@@ -48,9 +49,9 @@ class CssHelper
 {
     /**
      * @access protected
-     * @var AssetsManager
+     * @var AssetCacheManager
      */
-    protected $assetsManager;
+    protected $assetCacheManager;
     
     /**
      * @access protected
@@ -73,14 +74,14 @@ class CssHelper
      * Optimizes the given css content.
      * 
      * @access public
-     * @param \Zepi\Web\General\Manager\AssetsManager $assetsManager
+     * @param \Zepi\Web\General\Manager\AssetCacheManager $assetCacheManager
      * @param string $content
      * @param string $file
      * @return string
      */
-    public function optimizeCssContent(AssetsManager $assetsManager, $content, $file)
+    public function optimizeCssContent(AssetCacheManager $assetCacheManager, $content, $file)
     {
-        $this->assetsManager = $assetsManager;
+        $this->assetCacheManager = $assetCacheManager;
         
         $content = $this->optimizeUrls($content, $file);
         
@@ -132,11 +133,11 @@ class CssHelper
                 // Replace the reference in the css content
                 $content = str_replace($match[1], '\'' . $urlData . '\'', $content);
             } else {
-                $type = AssetsManager::BINARY;
+                $type = AssetManager::BINARY;
                 
                 // Cache the file
-                $cachedFile = $this->assetsManager->generateCachedFile($type, $fullFilePath);
-                $url = $this->assetsManager->getUrlToTheAssetLoader($cachedFile['file']);
+                $cachedFile = $this->assetCacheManager->generateCachedFile($type, $fullFilePath);
+                $url = $this->assetCacheManager->getUrlToTheAssetLoader($cachedFile['file']);
     
                 // Add the additional data
                 if ($additionalData !== '') {

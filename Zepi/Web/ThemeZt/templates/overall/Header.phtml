@@ -1,12 +1,12 @@
 <?php 
-    use \Zepi\Web\General\Manager\AssetsManager;
+    use \Zepi\Web\General\Manager\AssetManager;
 
     $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'); 
     $menuManager->activateCorrectMenuEntry();
     $activeMainMenuEntry = null;
     
     $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
-    $assetManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
+    $assetCacheManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetCacheManager');
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -30,7 +30,7 @@
             <div class="header-row clearfix">
                 <div class="logo-cell">
                     <div class="logo">
-                        <img src="<?php echo $assetManager->getAssetUrl(AssetsManager::IMAGE, 'logo'); ?>" />
+                        <img src="<?php echo $assetCacheManager->getAssetUrl(AssetManager::IMAGE, 'logo'); ?>" />
                     </div>
                 </div>
                 <div class="icon-cell">

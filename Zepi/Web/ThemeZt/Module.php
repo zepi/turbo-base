@@ -35,7 +35,7 @@
 namespace Zepi\Web\ThemeZt;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetManager;
 
 /**
  * Default theme for zepi Turbo
@@ -55,23 +55,23 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         // Add the assets
-        $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap.css');
-        $assetsManager->addAsset(AssetsManager::CSS, 'bootstrap-theme', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap-theme.css', array('bootstrap'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'materialdesignicons', $this->directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-base', $this->directory . '/assets/css/base.css', array('bootstrap-theme'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-theme', $this->directory . '/assets/css/theme.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-elements', $this->directory . '/assets/css/elements.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-form', $this->directory . '/assets/css/form.css', array('zt-base'));
-        $assetsManager->addAsset(AssetsManager::CSS, 'zt-print', $this->directory . '/assets/css/print.css', array('zt-base'));
+        $assetManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetManager');
+        $assetManager->addAsset(AssetManager::CSS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap.css');
+        $assetManager->addAsset(AssetManager::CSS, 'bootstrap-theme', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap-theme.css', array('bootstrap'));
+        $assetManager->addAsset(AssetManager::CSS, 'materialdesignicons', $this->directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
+        $assetManager->addAsset(AssetManager::CSS, 'zt-base', $this->directory . '/assets/css/base.css', array('bootstrap-theme'));
+        $assetManager->addAsset(AssetManager::CSS, 'zt-theme', $this->directory . '/assets/css/theme.css', array('zt-base'));
+        $assetManager->addAsset(AssetManager::CSS, 'zt-elements', $this->directory . '/assets/css/elements.css', array('zt-base'));
+        $assetManager->addAsset(AssetManager::CSS, 'zt-form', $this->directory . '/assets/css/form.css', array('zt-base'));
+        $assetManager->addAsset(AssetManager::CSS, 'zt-print', $this->directory . '/assets/css/print.css', array('zt-base'));
         
-        $assetsManager->addAsset(AssetsManager::JS, 'modernizr', $this->directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
-        $assetsManager->addAsset(AssetsManager::JS, 'jquery', $this->directory . '/assets/js/vendor/jquery-1.10.1.min.js');
-        $assetsManager->addAsset(AssetsManager::JS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/js/bootstrap.min.js', array('jquery'));
-        $assetsManager->addAsset(AssetsManager::JS, 'zt-main', $this->directory . '/assets/js/main.js', array('jquery'));
+        $assetManager->addAsset(AssetManager::JS, 'modernizr', $this->directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
+        $assetManager->addAsset(AssetManager::JS, 'jquery', $this->directory . '/assets/js/vendor/jquery-1.10.1.min.js');
+        $assetManager->addAsset(AssetManager::JS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/js/bootstrap.min.js', array('jquery'));
+        $assetManager->addAsset(AssetManager::JS, 'zt-main', $this->directory . '/assets/js/main.js', array('jquery'));
         
-        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo', $this->directory . '/assets/images/logo.svg');
-        $assetsManager->addAsset(AssetsManager::IMAGE, 'logo-mail', $this->directory . '/assets/images/logo-mail.jpg');
+        $assetManager->addAsset(AssetManager::IMAGE, 'logo', $this->directory . '/assets/images/logo.svg');
+        $assetManager->addAsset(AssetManager::IMAGE, 'logo-mail', $this->directory . '/assets/images/logo-mail.jpg');
         
         // Add the templates
         $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');

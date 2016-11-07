@@ -37,11 +37,9 @@ namespace Zepi\Web\General\EventHandler;
 
 use \Zepi\Turbo\FrameworkInterface\WebEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Web\Test\Exception;
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetCacheManager;
 
 /**
  * Loads the content of the given asset.
@@ -53,19 +51,19 @@ class LoadAssetContent implements WebEventHandlerInterface
 {
     /**
      * @access protected
-     * @var \Zepi\Web\General\Manager\AssetsManager
+     * @var \Zepi\Web\General\Manager\AssetCacheManager
      */
-    protected $assetsManager;
+    protected $assetCacheManager;
     
     /**
      * Constructs the object
      *
      * @access public
-     * @param \Zepi\Web\General\Manager\AssetsManager $assetsManager
+     * @param \Zepi\Web\General\Manager\AssetCacheManager $assetCacheManager
      */
-    public function __construct(AssetsManager $assetsManager)
+    public function __construct(AssetCacheManager $assetCacheManager)
     {
-        $this->assetsManager = $assetsManager;
+        $this->assetCacheManager = $assetCacheManager;
     }
     
     /**
@@ -91,19 +89,19 @@ class LoadAssetContent implements WebEventHandlerInterface
         }
         
         // If the file isn't cached display nothing
-        if (!$this->assetsManager->isCached($type, $hash, $version)) {
+        if (!$this->assetCacheManager->isCached($type, $hash, $version)) {
             $response->setOutput('/** Zepi Assets Manager: Not cached! */');
             return;
         }
         
         // Load the content
-        $content = $this->assetsManager->getAssetContent($type, $hash, $version);
+        $content = $this->assetCacheManager->getAssetContent($type, $hash, $version);
         if ($content === '') {
             $content = '/** Zepi Assets Manager: File is empty or does not exists! */';
         }
         
         // Define the if modified since timestamp
-        $cachedAssetTimestamp = $this->assetsManager->getCachedAssetTimestamp($type, $hash, $version);
+        $cachedAssetTimestamp = $this->assetCacheManager->getCachedAssetTimestamp($type, $hash, $version);
         $ifModifiedSince = -1;
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] != '') {
             $ifModifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];

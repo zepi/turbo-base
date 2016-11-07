@@ -35,7 +35,7 @@
 namespace Zepi\Web\UserInterface;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
-use \Zepi\Web\General\Manager\AssetsManager;
+use \Zepi\Web\General\Manager\AssetManager;
 
 /**
  * This module delivers the frontend user interface for zepi Turbo
@@ -138,25 +138,25 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Layout\\Tab', $this->directory . '/templates/Layout/tab.phtml');
         
         // Add the assets
-        $assetsManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetsManager');
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-tabs', $this->directory . '/assets/js/tabs.js', array('zt-main'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-responsive-tabs', $this->directory . '/assets/vendor/bootstrap-responsive-tabs/js/responsive-tabs.js', array('ui-tabs'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-price', $this->directory . '/assets/js/price.js', array('zt-main'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-dynamic-zone', $this->directory . '/assets/js/dynamicZone.js', array('zt-main'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-mask', $this->directory . '/assets/js/jquery.maskMoney.js', array('zt-main'));
+        $assetManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetManager');
+        $assetManager->addAsset(AssetManager::JS, 'ui-tabs', $this->directory . '/assets/js/tabs.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-responsive-tabs', $this->directory . '/assets/vendor/bootstrap-responsive-tabs/js/responsive-tabs.js', array('ui-tabs'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-price', $this->directory . '/assets/js/price.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-dynamic-zone', $this->directory . '/assets/js/dynamicZone.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-mask', $this->directory . '/assets/js/jquery.maskMoney.js', array('zt-main'));
         
-        $assetsManager->addAsset(AssetsManager::CSS, 'ui-form', $this->directory . '/assets/css/form.css', array('zt-form'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-selector', $this->directory . '/assets/js/selector.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-form', $this->directory . '/assets/css/form.css', array('zt-form'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-selector', $this->directory . '/assets/js/selector.js', array('zt-main'));
         
-        $assetsManager->addAsset(AssetsManager::CSS, 'ui-spin', $this->directory . '/assets/css/spin.css', array('zt-form'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-spin', $this->directory . '/assets/css/spin.css', array('zt-form'));
 
-        $assetsManager->addAsset(AssetsManager::CSS, 'ui-jquery-is-loading-css', $this->directory . '/assets/css/is-loading.css', array('zt-form'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-jquery-is-loading', $this->directory . '/assets/js/is-loading/jquery.isloading.js', array('zt-main'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-loading-helper', $this->directory . '/assets/js/loadingHelper.js', array('ui-jquery-is-loading'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-jquery-is-loading-css', $this->directory . '/assets/css/is-loading.css', array('zt-form'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-is-loading', $this->directory . '/assets/js/is-loading/jquery.isloading.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-loading-helper', $this->directory . '/assets/js/loadingHelper.js', array('ui-jquery-is-loading'));
         
-        $assetsManager->addAsset(AssetsManager::CSS, 'ui-datatables-css', $this->directory . '/assets/vendor/DataTables/datatables.min.css', array('zt-form'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-js', $this->directory . '/assets/vendor/DataTables/datatables.js', array('zt-main'));
-        $assetsManager->addAsset(AssetsManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-datatables-css', $this->directory . '/assets/vendor/DataTables/datatables.min.css', array('zt-form'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-js', $this->directory . '/assets/vendor/DataTables/datatables.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
         
         // Register the event handler
         $runtimeManager = $this->framework->getRuntimeManager();
