@@ -4,7 +4,8 @@
     $menuManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager'); 
     $menuManager->activateCorrectMenuEntry();
     $activeMainMenuEntry = null;
-    
+
+    $configurationManager = $framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
     $metaInformationManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\MetaInformationManager');
     $assetCacheManager = $framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetCacheManager');
 ?>
@@ -30,7 +31,9 @@
             <div class="header-row clearfix">
                 <div class="logo-cell">
                     <div class="logo">
-                        <img src="<?php echo $assetCacheManager->getAssetUrl(AssetManager::IMAGE, 'logo'); ?>" />
+                        <a href="<?php echo $configurationManager->getSetting('web.defaultPage'); ?>">
+                            <img src="<?php echo $assetCacheManager->getAssetUrl(AssetManager::IMAGE, 'logo'); ?>" />
+                        </a>
                     </div>
                 </div>
                 <div class="icon-cell">

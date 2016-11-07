@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "required": {
+            "\\Zepi\\Core\\Utils": "*",
             "\\Zepi\\Renderer\\HtmlRenderer": "*",
             "\\Zepi\\Web\\General": "*"
         }

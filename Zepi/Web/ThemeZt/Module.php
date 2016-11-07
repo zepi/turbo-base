@@ -81,5 +81,10 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\NavItemSubmenu', $this->directory . '/templates/snippets/NavItemSubmenu.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Header', $this->directory . '/templates/mail/Header.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Mail\\Footer', $this->directory . '/templates/mail/Footer.phtml');
+        
+        // Add the settings
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->addSettingIfNotSet('web.defaultPage', '/');
+        $configurationManager->saveConfigurationFile();
     }
 }
