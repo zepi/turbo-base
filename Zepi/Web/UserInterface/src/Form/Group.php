@@ -81,6 +81,8 @@ class Group extends Part
         foreach ($parts as $part) {
             $this->addPart($part);
         }
+        
+        $this->publicKey = $key;
     }
     
     /** 

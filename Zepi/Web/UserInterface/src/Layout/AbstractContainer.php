@@ -50,6 +50,11 @@ abstract class AbstractContainer
     protected $key = '';
     
     /**
+     * @var string
+     */
+    protected $publicKey = '';
+    
+    /**
      * @access protected
      * @var array
      */
@@ -140,6 +145,30 @@ abstract class AbstractContainer
             $id .= '-' . $this->key;
         }
         
+        return $id;
+    }
+    
+    /**
+     * Returns the path for the element, starting from the given
+     * AbstractContainer
+     *
+     * @return string
+     */
+    public function getPath(AbstractContainer $startingFrom = null)
+    {
+        $id = '';
+        if (is_object($this->parent) && $startingFrom !== $this->parent) {
+            $id = $this->parent->getPath($startingFrom);
+        }
+    
+        if ($id != '' && substr($id, -1) != '.') {
+            $id .= '.';
+        }
+        
+        if ($this->publicKey !== '') {
+            $id .= $this->publicKey;
+        }
+    
         return $id;
     }
     

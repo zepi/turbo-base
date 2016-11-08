@@ -141,6 +141,8 @@ abstract class FieldAbstract extends Part
         if (count($classes) > 0) {
             $this->classes = $classes;
         }
+        
+        $this->publicKey = $key;
     }
     
     /**

@@ -51,6 +51,11 @@ use \Zepi\Web\UserInterface\Layout\Part;
  */
 class Form extends Part
 {
+    const DATA_VALID = 'data_valid';
+    const DATA_INVALID = 'data_invalid';
+    const DATA_ERROR = 'data_error';
+    const NOT_SUBMITTED = 'not_submited';
+    
     /**
      * @access protected
      * @var string
@@ -99,6 +104,8 @@ class Form extends Part
         foreach ($parts as $part) {
             $this->addPart($part);
         }
+        
+        $this->publicKey = $key;
     }
     
     /**

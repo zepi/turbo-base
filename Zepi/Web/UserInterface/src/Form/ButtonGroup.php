@@ -67,5 +67,7 @@ class ButtonGroup extends Group
         foreach ($parts as $part) {
             $this->addPart($part);
         }
+        
+        $this->publicKey = $key;
     }
 }
