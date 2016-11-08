@@ -42,11 +42,11 @@ use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\AccessControl\Entity\User;
 use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
 use \Zepi\Web\UserInterface\Form\Form;
+use \Zepi\Web\UserInterface\Form\Error;
 use \Zepi\Web\AccessControl\Manager\UserManager;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Core\AccessControl\Manager\AccessLevelManager;
-use Zepi\Web\AccessControl\Layout\EditUserLayout;
-use Zepi\Web\UserInterface\Form\Error;
+use \Zepi\Web\AccessControl\Layout\EditUserLayout;
 
 /**
  * Displays the edit user form and saves the data to the database.
@@ -139,7 +139,7 @@ class EditUser extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Process the data
-        $result = $this->processFormData($framework, $request, $response, $user);
+        $result = $this->processFormData($request, $user);
         if ($result === true) {
             // Display the successful saved message
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditUserFinished', array(

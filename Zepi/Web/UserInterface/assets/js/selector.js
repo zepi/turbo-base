@@ -46,9 +46,12 @@
          * Moves an item from one to the other area
          */
         moveToArea: function (item, event, targetArea) {
-            console.log(event);
         	var selector = this.element;
         	var parent = this;
+        	
+        	if (item.hasClass('item-disabled')) {
+        	    return;
+        	}
         	
         	if (targetArea == 'selected') {
         		var area = this.selectedArea; 

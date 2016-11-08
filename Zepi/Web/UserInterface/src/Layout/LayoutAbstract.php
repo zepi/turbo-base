@@ -108,7 +108,7 @@ abstract class LayoutAbstract
     }
     
     /**
-     * Searches the submited Form object in the layout and validates the data
+     * Searches the submitted Form object in the layout and validates the data
      * 
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @param callable $callback
@@ -127,7 +127,11 @@ abstract class LayoutAbstract
         
         // Execute the custom validation method
         if (is_callable($callback)) {
-            $errors = array_merge($errors, call_user_func_array($callback, array($this->getFormValues())));
+            $callbackErrors = call_user_func_array($callback, array($this->getFormValues()));
+            
+            if (is_array($callbackErrors)) {
+                $errors = array_merge($errors, $callbackErrors);
+            }
         }
         
         if (is_array($errors) && count($errors) > 0) {

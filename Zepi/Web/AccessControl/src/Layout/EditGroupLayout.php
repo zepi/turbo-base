@@ -25,7 +25,7 @@
  */
 
 /**
- * Generates the layout for the EditUser event
+ * Generates the layout for the EditGroup event
  * 
  * @package Zepi\Web\AccessControl
  * @subpackage Layout
@@ -44,7 +44,6 @@ use \Zepi\Web\UserInterface\Form\ErrorBox;
 use \Zepi\Web\UserInterface\Form\ButtonGroup;
 use \Zepi\Web\UserInterface\Form\Field\Text;
 use \Zepi\Web\UserInterface\Form\Field\Textarea;
-use \Zepi\Web\UserInterface\Form\Field\Password;
 use \Zepi\Web\UserInterface\Form\Field\Button;
 use \Zepi\Web\UserInterface\Form\Field\Submit;
 use \Zepi\Web\UserInterface\Form\Field\Selector;
@@ -58,15 +57,15 @@ use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Core\AccessControl\Manager\AccessLevelManager;
 use \Zepi\Core\Language\Manager\TranslationManager;
 use \Zepi\Web\AccessControl\Helper\AccessLevelHelper;
-use \Zepi\Web\AccessControl\Entity\User;
+use \Zepi\Web\AccessControl\Entity\Group as EntityGroup;
 
 /**
- * Generates the layout for the EditUser event
+ * Generates the layout for the EditGroup event
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
-class EditUserLayout extends LayoutAbstract
+class EditGroupLayout extends LayoutAbstract
 {
     /**
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
@@ -84,9 +83,9 @@ class EditUserLayout extends LayoutAbstract
     protected $accessLevelHelper;
     
     /**
-     * @var \Zepi\Web\AccessControl\Entity\User
+     * @var \Zepi\Web\AccessControl\Entity\Group
      */
-    protected $user;
+    protected $group;
     
     /**
      * Construct the object
@@ -114,11 +113,11 @@ class EditUserLayout extends LayoutAbstract
     /**
      * Sets the user
      * 
-     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @param \Zepi\Web\AccessControl\Entity\Group $group
      */
-    public function setUser(User $user)
+    public function setGroup(EntityGroup $group)
     {
-        $this->user = $user;
+        $this->group = $group;
     }
     
     /**
@@ -126,31 +125,32 @@ class EditUserLayout extends LayoutAbstract
      *
      * @return \Zepi\Web\UserInterface\Layout\AbstractContainer
      * 
-     * @throws \Zepi\Web\AccessControl\Exception User is not set.
+     * @throws \Zepi\Web\AccessControl\Exception Group is not set.
      */
     protected function generateLayout()
     {
-        if ($this->user === null) {
-            throw new Exception('User is not set.');
+        if ($this->group === null) {
+            throw new Exception('Group is not set.');
         }
         
         $request = $this->framework->getRequest();
         
         $accessLevelSelectorItems = $this->accessLevelHelper->transformAccessLevels(
             $this->accessLevelManager->getAccessLevels(),
-            $request->getSession()->getUser()
+            $request->getSession()->getUser(),
+            $this->group
         );
         
-        $rawPermissionsForUuid = $this->accessControlManager->getPermissionsRawForUuid($this->user->getUuid());
+        $rawPermissionsForUuid = $this->accessControlManager->getPermissionsRawForUuid($this->group->getUuid());
         if ($rawPermissionsForUuid === false) {
             $rawPermissionsForUuid = array();
         }
         
         $page = new Page(
             array(
-                new Form('edit-user', $request->getFullRoute(), 'post', array(
+                new Form('edit-group', $request->getFullRoute(), 'post', array(
                     new ErrorBox(
-                        'edit-user-errors'
+                        'edit-group-errors'
                     ),
                     new Tabs(
                         array(
@@ -164,21 +164,11 @@ class EditUserLayout extends LayoutAbstract
                                                     $this->translate('Required data', '\\Zepi\\Web\\AccessControl'),
                                                     array(
                                                         new Text(
-                                                            'username',
-                                                            $this->translate('Username', '\\Zepi\\Web\\AccessControl'),
+                                                            'groupname',
+                                                            $this->translate('Group name', '\\Zepi\\Web\\AccessControl'),
                                                             true,
-                                                            $this->user->getName(),
-                                                            $this->translate('The username must be unique. Only one user can use an username.', '\\Zepi\\Web\\AccessControl')
-                                                        ),
-                                                        new Password(
-                                                            'password',
-                                                            $this->translate('Password', '\\Zepi\\Web\\AccessControl'),
-                                                            $this->user->isNew()
-                                                        ),
-                                                        new Password(
-                                                            'password-confirmed',
-                                                            $this->translate('Confirm password', '\\Zepi\\Web\\AccessControl'),
-                                                            $this->user->isNew()
+                                                            $this->group->getName(),
+                                                            $this->translate('The group name must be unique. Only one group can use a group name.', '\\Zepi\\Web\\AccessControl')
                                                         ),
                                                     ),
                                                     1
@@ -189,36 +179,12 @@ class EditUserLayout extends LayoutAbstract
                                                     'optional-data',
                                                     $this->translate('Optional data', '\\Zepi\\Web\\AccessControl'),
                                                     array(
-                                                        new Text(
-                                                            'email',
-                                                            $this->translate('Email address', '\\Zepi\\Web\\AccessControl'),
-                                                            false,
-                                                            $this->user->getMetaData('email')
-                                                        ),
-                                                        new Text(
-                                                            'location',
-                                                            $this->translate('Location', '\\Zepi\\Web\\AccessControl'),
-                                                            false,
-                                                            $this->user->getMetaData('location')
-                                                        ),
-                                                        new Text(
-                                                            'website',
-                                                            $this->translate('Website', '\\Zepi\\Web\\AccessControl'),
-                                                            false,
-                                                            $this->user->getMetaData('website')
-                                                        ),
-                                                        new Text(
-                                                            'twitter',
-                                                            $this->translate('Twitter', '\\Zepi\\Web\\AccessControl'),
-                                                            false,
-                                                            $this->user->getMetaData('twitter')
-                                                        ),
                                                         new Textarea(
-                                                            'biography',
-                                                            $this->translate('Biography', '\\Zepi\\Web\\AccessControl'),
+                                                            'description',
+                                                            $this->translate('Description', '\\Zepi\\Web\\AccessControl'),
                                                             false,
-                                                            $this->user->getMetaData('biography')
-                                                        )
+                                                                $this->group->getMetaData('description')
+                                                        ),
                                                     ),
                                                     2
                                                 )
@@ -227,8 +193,8 @@ class EditUserLayout extends LayoutAbstract
                                     ),
                                 ),
                                 array(),
-                                'user-tab',
-                                $this->translate('User informations', '\\Zepi\\Web\\AccessControl')
+                                'group-tab',
+                                $this->translate('Group informations', '\\Zepi\\Web\\AccessControl')
                             ),
                             new Tab(
                                 array(
@@ -247,7 +213,7 @@ class EditUserLayout extends LayoutAbstract
                                 'access-tab',
                                 $this->translate('Permissions', '\\Zepi\\Web\\AccessControl')
                             )
-                        )
+                        )        
                     ),
                     new Row(
                         array(
@@ -261,7 +227,7 @@ class EditUserLayout extends LayoutAbstract
                                             array('btn-default'),
                                             '',
                                             'a',
-                                            $request->getFullRoute('/administration/users/')
+                                            $request->getFullRoute('/administration/groups/')
                                         )
                                     ),
                                     1000,
@@ -274,7 +240,7 @@ class EditUserLayout extends LayoutAbstract
                                     array(
                                         new Submit(
                                             'submit',
-                                            $this->translate('Save', '\\Zepi\\Web\\AccessControl'),
+                                            $this->translate('Save', '\\Zepi\\Web\\AccessControl'), 
                                             array('btn-large', 'btn-primary'),
                                             'mdi mdi-floppy'
                                         )
