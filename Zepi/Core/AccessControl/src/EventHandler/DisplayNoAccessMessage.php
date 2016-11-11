@@ -57,6 +57,6 @@ class DisplayNoAccessMessage implements CliEventHandlerInterface
      */
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
-        $response->addOutputPart('You have no access to the requested command!');
+        $response->setOutputPart('noAccess', 'You have no access to the requested command!');
     }
 }

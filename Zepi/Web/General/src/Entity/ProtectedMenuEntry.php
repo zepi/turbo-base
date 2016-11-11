@@ -62,6 +62,7 @@ class ProtectedMenuEntry extends MenuEntry
      * @param string $iconClass
      * @param string $class
      * @param string $window
+     * @param boolean $hideWhenEmpty
      */
     public function __construct(
         $key, 
@@ -70,9 +71,10 @@ class ProtectedMenuEntry extends MenuEntry
         $target = '#', 
         $iconClass = '',
         $class = '', 
-        $window = '_self'
+        $window = '_self',
+        $hideWhenEmpty = false
     ) {
-        parent::__construct($key, $name, $target, $iconClass, $class, $window);
+        parent::__construct($key, $name, $target, $iconClass, $class, $window, $hideWhenEmpty);
         
         $this->accessLevelKey = $accessLevelKey;
     }

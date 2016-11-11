@@ -130,7 +130,7 @@ class EventAccessManager
      * Removes all access levels for the given event name.
      * 
      * @access public
-     * @param string $key
+     * @param string $eventName
      * @return false|void
      */
     public function removeItems($eventName)

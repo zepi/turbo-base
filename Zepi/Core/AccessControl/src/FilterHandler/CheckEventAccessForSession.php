@@ -38,6 +38,7 @@ namespace Zepi\Core\AccessControl\FilterHandler;
 use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\AccessControl\Manager\EventAccessManager;
 
@@ -76,6 +77,10 @@ class CheckEventAccessForSession implements FilterHandlerInterface
      */
     public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
+        if (!($request instanceof WebRequest)) {
+            return $value;
+        }
+        
         $items = $this->eventAccessManager->getAccessLevelsForEvent($value);
         
         // If there are no access levels for the given event name the access

@@ -67,10 +67,10 @@ class ListModules implements CliEventHandlerInterface
         $moduleManager = $framework->getModuleManager();
         foreach ($moduleManager->getModules() as $namespace => $module) {
             $properties = $moduleManager->getModuleProperties($module->getDirectory());
-            $info = $properties['module'];
+            $info = $properties->module;
             
-            $output .= '- ' . $info['name'] . ' ' . $info['version'] . ' (' . $namespace . '):' . PHP_EOL;
-            $output .= '  ' . $info['description'] . PHP_EOL . PHP_EOL;
+            $output .= '- ' . $info->name . ' ' . $info->version . ' (' . $namespace . '):' . PHP_EOL;
+            $output .= '  ' . $info->description . PHP_EOL . PHP_EOL;
         }
         
         $response->setOutputPart('modules', $output);

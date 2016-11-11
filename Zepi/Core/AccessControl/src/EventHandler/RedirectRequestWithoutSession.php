@@ -67,6 +67,6 @@ class RedirectRequestWithoutSession implements EventHandlerInterface
             return;
         }
         
-        $response->addOutputPart('You need a session to execute this command!');
+        $response->setOutputPart('sessionNeeded', 'You need a session to execute this command!');
     }
 }
