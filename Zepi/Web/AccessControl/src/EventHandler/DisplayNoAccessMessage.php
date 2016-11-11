@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,69 +25,40 @@
  */
 
 /**
- * The ProtectedMenuEntry representats a protected entry 
- * in the navigation.
+ * Displays a message if the session has no access to the requested command.
  * 
  * @package Zepi\Web\AccessControl
- * @subpackage Entity
+ * @subpackage EventHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\Entity;
+namespace Zepi\Web\AccessControl\EventHandler;
 
-use \Zepi\Web\General\Entity\MenuEntry;
+use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
+use \Zepi\Turbo\Framework;
+use \Zepi\Turbo\Request\WebRequest;
+use \Zepi\Turbo\Response\Response;
 
 /**
- * The ProtectedMenuEntry representats a protected entry 
- * in the navigation.
+ * Displays a message if the session has no access to the requested command.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
-class ProtectedMenuEntry extends MenuEntry
+class DisplayNoAccessMessage extends FrontendEventHandler
 {
     /**
-     * @access protected
-     * @var string
-     */
-    protected $accessLevelKey;
-    
-    /**
-     * Constructs the object
+     * Displays a message if the session has no access to the requested command.
      * 
-     * @access public
-     * @param string $key
-     * @param string $name
-     * @param string $accessLevelKey
-     * @param string $target
-     * @param string $iconClass
-     * @param string $class
-     * @param string $window
+     * @param \Zepi\Turbo\Framework $framework
+     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Response\Response $response
      */
-    public function __construct(
-        $key, 
-        $name,
-        $accessLevelKey,
-        $target = '#', 
-        $iconClass = '',
-        $class = '', 
-        $window = '_self'
-    ) {
-        parent::__construct($key, $name, $target, $iconClass, $class, $window);
-        
-        $this->accessLevelKey = $accessLevelKey;
-    }
-    
-    /**
-     * Returns the access level key for the protected
-     * menu entry.
-     * 
-     * @access public
-     * @return string
-     */
-    public function getAccessLevelKey()
+    public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        return $this->accessLevelKey;
+        $renderedOutput = $this->render('\\Zepi\\Web\\AccessControl\\Templates\\NoAccessMessage');
+        
+        $response->setOutput($renderedOutput);
     }
 }

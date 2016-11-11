@@ -158,9 +158,10 @@ class Module extends ModuleAbstract
     {
         $menuManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\MenuManager');
 
-        $menuEntry = new \Zepi\Web\General\Entity\MenuEntry(
+        $menuEntry = new \Zepi\Web\General\Entity\ProtectedMenuEntry(
             'administration',
             'Administration',
+            '\\Global\\Administrator',
             'administration',
             'mdi-settings',
             '',
@@ -186,6 +187,11 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Web\\General\\Event\\Administration', '\\Zepi\\Web\\General\\EventHandler\\Administration');
         
         $runtimeManager->addFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Web\\General\\FilterHandler\\VerifyEventName');
+        $runtimeManager->addFilterHandler('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\General\\FilterHandler\\FilterMenuEntriesForProtectedEntries');
+        
+        // Add the permissions
+        $eventAccessManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\EventAccessManager');
+        $eventAccessManager->addItem('\\Zepi\\Web\\General\\Event\\Administration', '\\Global\\Administrator');
         
         $routeManager = $this->framework->getRouteManager();
         $routeManager->addRoute('assets|[s:type]|[s:hash]|[s:version]', '\\Zepi\\Web\\General\\Event\\LoadAssetContent', 1);
@@ -199,5 +205,14 @@ class Module extends ModuleAbstract
         
         $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
         $templatesManager->addTemplate('\\Zepi\\Web\\General\\Templates\\Administration', $this->directory . '/templates/Administration.phtml');
+        
+        // Register the access level
+        $accessLevelsManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\AccessLevelManager');
+        $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
+            '\\Global\\Administrator',
+            'Administrator',
+            'Can view the administrator overview page.',
+            '\\Zepi\\Web\\AccessControl'
+        ));
     }
 }

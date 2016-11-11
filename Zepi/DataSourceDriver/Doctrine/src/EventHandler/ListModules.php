@@ -25,55 +25,54 @@
  */
 
 /**
- * Displays the management page for groups.
+ * This event handler lists all activated modules with the description
+ * of each module.
  * 
- * @package Zepi\Web\AccessControl
- * @subpackage EventHandler\Administration
+ * @package Zepi\Core\Management
+ * @subpackage EventHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler\Administration;
+namespace Zepi\Core\Management\EventHandler;
 
-use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
+use \Zepi\Turbo\FrameworkInterface\CliEventHandlerInterface;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
-use \Zepi\Turbo\Request\WebRequest;
+use \Zepi\Turbo\Request\CliRequest;
 use \Zepi\Turbo\Response\Response;
+use \Zepi\Core\Management\Exception;
 
 /**
- * Displays the management page for groups.
+ * This event handler lists all activated modules with the description
+ * of each module.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Groups extends FrontendEventHandler
+class ListModules implements CliEventHandlerInterface
 {
     /**
-     * Displays the management page for groups.
+     * This event handler lists all activated modules with the description
+     * of each module.
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Request\CliRequest $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    public function execute(Framework $framework, WebRequest $request, Response $response)
+    public function execute(Framework $framework, CliRequest $request, Response $response)
     {
-        // Prepare the page
-        $this->setTitle($this->translate('Group management', '\\Zepi\\Web\\AccessControl'));
-        $this->activateMenuEntry('group-administration');
+        $output = 'Activated modules:' . PHP_EOL;
+        $output .= '==================' . PHP_EOL . PHP_EOL;
+        $moduleManager = $framework->getModuleManager();
+        foreach ($moduleManager->getModules() as $namespace => $module) {
+            $properties = $moduleManager->getModuleProperties($module->getDirectory());
+            $info = $properties['module'];
+            
+            $output .= '- ' . $info['name'] . ' ' . $info['version'] . ' (' . $namespace . '):' . PHP_EOL;
+            $output .= '  ' . $info['description'] . PHP_EOL . PHP_EOL;
+        }
         
-        // Generate the Table
-        $groupTable = new \Zepi\Web\AccessControl\Table\GroupTable(
-            $framework, 
-            true,
-            true
-        );
-        
-        // Displays the group table
-        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Groups', array(
-            'groupTable' => $groupTable,
-            'tableRenderer' => $this->getTableRenderer()
-        )));
+        $response->setOutputPart('modules', $output);
     }
 }

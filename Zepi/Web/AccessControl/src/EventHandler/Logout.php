@@ -81,12 +81,6 @@ class Logout extends FrontendEventHandler
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        // Redirect if the user hasn't a valid session
-        if (!$request->hasSession()) {
-            $response->redirectTo('/');
-            return;
-        }
-        
         // Initializes the user session
         $this->sessionManager->logoutUser($request, $response);
         

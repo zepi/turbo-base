@@ -81,12 +81,6 @@ class DeleteGroup extends FrontendEventHandler
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        // Redirect if the user hasn't a valid session
-        if (!$request->hasSession() || !$request->getSession()->hasAccess('\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups')) {
-            $response->redirectTo('/');
-            return;
-        }
-        
         // Prepare the page
         $additionalTitle = $this->translate('Delete group', '\\Zepi\\Web\\AccessControl');
         $title = $this->translate('Group management', '\\Zepi\\Web\\AccessControl');

@@ -89,12 +89,6 @@ class ProfileChangePassword extends FrontendEventHandler
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        // Redirect if the user hasn't a valid session
-        if (!$request->hasSession()) {
-            $response->redirectTo('/');
-            return;
-        }
-        
         // Set the title for the page
         $this->setTitle($this->translate('Profile - Change password', '\\Zepi\\Web\\AccessControl'));
         

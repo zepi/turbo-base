@@ -25,8 +25,7 @@
  */
 
 /**
- * The ProtectedMenuEntry representats a protected entry 
- * in the navigation.
+ * The Session represents an active user which is logged in.
  * 
  * @package Zepi\Web\AccessControl
  * @subpackage Entity
@@ -40,8 +39,7 @@ use \Zepi\Web\AccessControl\Entity\User;
 use \Zepi\Turbo\FrameworkInterface\SessionInterface;
 
 /**
- * The ProtectedMenuEntry representats a protected entry 
- * in the navigation.
+ * The Session represents an active user which is logged in.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi

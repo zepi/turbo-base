@@ -49,21 +49,23 @@ use \Zepi\Turbo\Module\ModuleAbstract;
 class Module extends ModuleAbstract
 {
     /**
-     * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessControlManager
      */
     protected $accessControlManager;
     
     /**
-     * @access protected
      * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
     protected $accessLevelManager;
     
     /**
+     * @var \Zepi\Core\AccessControl\Manager\EventAccessManager
+     */
+    protected $eventAccessManager;
+    
+    /**
      * Initializes and return an instance of the given class name.
      * 
-     * @access public
      * @param string $className
      * @return mixed
      */
@@ -98,6 +100,21 @@ class Module extends ModuleAbstract
                 return $this->accessLevelManager;
             break;
             
+            case '\\Zepi\\Core\\AccessControl\\Manager\\EventAccessManager':
+                if ($this->eventAccessManager === null) {
+                    $eventAccessObjectBackend = $this->framework->initiateObject('\Zepi\Turbo\Backend\FileObjectBackend', array(
+                        'path' => $this->framework->getRootDirectory() . '/data/event-access-levels.data'
+                    ));
+            
+                    $this->eventAccessManager = $this->framework->initiateObject($className, array(
+                        'eventAccessObjectBackend' => $eventAccessObjectBackend
+                    ));
+                    $this->eventAccessManager->initializeEventAccessManager();
+                }
+            
+                return $this->eventAccessManager;
+            break;
+            
             case '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine':
                 $dataSourceManager = $this->framework->getDataSourceManager();
                 
@@ -115,7 +132,6 @@ class Module extends ModuleAbstract
     /**
      * This action will be executed on the activation of the module
      * 
-     * @access public
      * @param string $versionNumber
      * @param string $oldVersionNumber
      */
@@ -123,6 +139,10 @@ class Module extends ModuleAbstract
     {
         $runtimeManager = $this->framework->getRuntimeManager();
         $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RemoveAccessLevel', '\\Zepi\\Core\\AccessControl\\FilterHandler\\RevokePermissionsForRemovedAccessLevel');
+        $runtimeManager->addFilterHandler('\\Zepi\\Turbo\\Filter\\VerifyEventName', '\\Zepi\\Core\\AccessControl\\FilterHandler\\CheckEventAccessForSession');
+        
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\RedirectRequestWithoutSession', '\\Zepi\\Core\\AccessControl\\EventHandler\\RedirectRequestWithoutSession');
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\DisplayNoAccessMessage', '\\Zepi\\Core\\AccessControl\\EventHandler\\DisplayNoAccessMessage');
         
         // Data Sources
         $dataSourceManager = $this->framework->getDataSourceManager();
@@ -149,6 +169,13 @@ class Module extends ModuleAbstract
             '\\Global\\Disabled',
             'Disabled User',
             'A disabled user. Can do nothing, not even login.',
+            '\\Zepi\\Core\\AccessControl'
+        ));
+        
+        $accessLevelsManager->addAccessLevel(new \Zepi\Core\AccessControl\Entity\AccessLevel(
+            '\\Global\\Active',
+            'Active User',
+            'A active user. Can login and change the user password.',
             '\\Zepi\\Core\\AccessControl'
         ));
     }

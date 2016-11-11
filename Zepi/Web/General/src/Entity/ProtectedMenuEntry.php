@@ -25,55 +25,67 @@
  */
 
 /**
- * Displays the management page for groups.
+ * The ProtectedMenuEntry representats a protected entry 
+ * in the navigation.
  * 
- * @package Zepi\Web\AccessControl
- * @subpackage EventHandler\Administration
+ * @package Zepi\General\AccessControl
+ * @subpackage Entity
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler\Administration;
-
-use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
-use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
-use \Zepi\Turbo\Request\WebRequest;
-use \Zepi\Turbo\Response\Response;
+namespace Zepi\Web\General\Entity;
 
 /**
- * Displays the management page for groups.
+ * The ProtectedMenuEntry representats a protected entry 
+ * in the navigation.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class Groups extends FrontendEventHandler
+class ProtectedMenuEntry extends MenuEntry
 {
     /**
-     * Displays the management page for groups.
+     * @access protected
+     * @var string
+     */
+    protected $accessLevelKey;
+    
+    /**
+     * Constructs the object
      * 
      * @access public
-     * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\WebRequest $request
-     * @param \Zepi\Turbo\Response\Response $response
+     * @param string $key
+     * @param string $name
+     * @param string $accessLevelKey
+     * @param string $target
+     * @param string $iconClass
+     * @param string $class
+     * @param string $window
      */
-    public function execute(Framework $framework, WebRequest $request, Response $response)
+    public function __construct(
+        $key, 
+        $name,
+        $accessLevelKey,
+        $target = '#', 
+        $iconClass = '',
+        $class = '', 
+        $window = '_self'
+    ) {
+        parent::__construct($key, $name, $target, $iconClass, $class, $window);
+        
+        $this->accessLevelKey = $accessLevelKey;
+    }
+    
+    /**
+     * Returns the access level key for the protected
+     * menu entry.
+     * 
+     * @access public
+     * @return string
+     */
+    public function getAccessLevelKey()
     {
-        // Prepare the page
-        $this->setTitle($this->translate('Group management', '\\Zepi\\Web\\AccessControl'));
-        $this->activateMenuEntry('group-administration');
-        
-        // Generate the Table
-        $groupTable = new \Zepi\Web\AccessControl\Table\GroupTable(
-            $framework, 
-            true,
-            true
-        );
-        
-        // Displays the group table
-        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Groups', array(
-            'groupTable' => $groupTable,
-            'tableRenderer' => $this->getTableRenderer()
-        )));
+        return $this->accessLevelKey;
     }
 }

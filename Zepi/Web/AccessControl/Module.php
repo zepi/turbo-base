@@ -79,7 +79,7 @@ class Module extends ModuleAbstract
         $administrationMenuEntry = $menuManager->getMenuEntryForKey('administration');
         $translationManager = $this->framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
         
-        $accessMenuEntry = new \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry(
+        $accessMenuEntry = new \Zepi\Web\General\Entity\ProtectedMenuEntry(
             'access-administration',
             $translationManager->translate('Access management', '\\Zepi\\Web\\AccessControl'),
             '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups',
@@ -87,7 +87,7 @@ class Module extends ModuleAbstract
         );
         $administrationMenuEntry->addChild($accessMenuEntry);
         
-        $menuEntry = new \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry(
+        $menuEntry = new \Zepi\Web\General\Entity\ProtectedMenuEntry(
             'user-administration',
             $translationManager->translate('User management', '\\Zepi\\Web\\AccessControl'),
             '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups',
@@ -96,7 +96,7 @@ class Module extends ModuleAbstract
         );
         $accessMenuEntry->addChild($menuEntry);
         
-        $menuEntry = new \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry(
+        $menuEntry = new \Zepi\Web\General\Entity\ProtectedMenuEntry(
             'group-administration',
             $translationManager->translate('Group management', '\\Zepi\\Web\\AccessControl'),
             '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups',
@@ -116,7 +116,9 @@ class Module extends ModuleAbstract
     public function activate($versionNumber, $oldVersionNumber = '')
     {
         $runtimeManager = $this->framework->getRuntimeManager();
+        
         $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\Web\\AccessControl\\EventHandler\\ExecuteInstallation', 100);
+        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\DisplayNoAccessMessage', '\\Zepi\\Web\\AccessControl\\EventHandler\\DisplayNoAccessMessage');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Registration', '\\Zepi\\Web\\AccessControl\\EventHandler\\Registration');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Activation', '\\Zepi\\Web\\AccessControl\\EventHandler\\Activation');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\RequestNewPassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\RequestNewPassword');
@@ -125,7 +127,6 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Zepi\\Web\\AccessControl\\EventHandler\\Logout');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Zepi\\Web\\AccessControl\\EventHandler\\Profile');
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
-        $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Management\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Management\\Users');
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession', 1);
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
         $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
@@ -139,12 +140,26 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\DeleteGroup');
         
         
+        // Add the permissions
+        $eventAccessManager = $this->framework->getInstance('\\Zepi\\Core\\AccessControl\\Manager\\EventAccessManager');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Profile', '\\Global\\Active');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Global\\Active');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Logout', '\\Global\\Active');
+
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditUser', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteUser', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Groups', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\EditGroup', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
+        $eventAccessManager->addItem('\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup', '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups');
         
-        $runtimeManager->addFilterHandler('\\Zepi\\Web\\General\\Filter\\MenuManager\\FilterMenuEntries', '\\Zepi\\Web\\AccessControl\\FilterHandler\\FilterMenuEntriesForProtectedEntries');
+        
+        // Filters
         $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
         
         
         
+        // Public routes
         $routeManager = $this->framework->getRouteManager();
         $routeManager->addRoute('register', '\\Zepi\\Web\\AccessControl\\Event\\Registration');
         $routeManager->addRoute('activate|[s:uuid]|[s:token]', '\\Zepi\\Web\\AccessControl\\Event\\Activation');
@@ -168,8 +183,9 @@ class Module extends ModuleAbstract
         $routeManager->addRoute('administration|groups|delete|[s:uuid]|[s:confirmation]', '\\Zepi\\Web\\AccessControl\\Event\\Administration\\DeleteGroup');
         
         
-        
+        // Public templates
         $templatesManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\TemplatesManager');
+        $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\NoAccessMessage', $this->directory . '/templates/NoAccessMessage.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationForm', $this->directory . '/templates/Registration.Form.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\RegistrationFinished', $this->directory . '/templates/Registration.Finished.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\AccessControl\\Templates\\Activation', $this->directory . '/templates/Activation.phtml');

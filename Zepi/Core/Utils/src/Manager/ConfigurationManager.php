@@ -53,7 +53,7 @@ class ConfigurationManager
 
     /**
      * @access protected
-     * @var \stdClass
+     * @var array
      */
     protected $settings;
     

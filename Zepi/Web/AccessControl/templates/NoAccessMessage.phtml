@@ -1,0 +1,15 @@
+<?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Header'); ?>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1><?php echo $this->translate('No Access', '\\Zepi\\Web\\AccessControl'); ?></h1>
+            
+            <div class="message error">
+                <?php echo $this->translate('You have no access to the requested page.', '\\Zepi\\Web\\AccessControl'); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->printTemplate('\\Zepi\\Web\\ThemeZt\\Templates\\Footer'); ?>

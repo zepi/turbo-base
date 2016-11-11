@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,55 +25,48 @@
  */
 
 /**
- * Displays the management page for groups.
+ * If the request is a WebRequest, the user will be redirected to the login page.
+ * Otherwise the event handler will display an information message.
  * 
- * @package Zepi\Web\AccessControl
- * @subpackage EventHandler\Administration
+ * @package Zepi\Core\AccessControl
+ * @subpackage EventHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler\Administration;
+namespace Zepi\Core\AccessControl\EventHandler;
 
-use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
+use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 
 /**
- * Displays the management page for groups.
+ * If the request is a WebRequest, the user will be redirected to the login page.
+ * Otherwise the event handler will display an information message.
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
-class Groups extends FrontendEventHandler
+class RedirectRequestWithoutSession implements EventHandlerInterface
 {
     /**
-     * Displays the management page for groups.
+     * If the request is a WebRequest, the user will be redirected to the login page.
+     * Otherwise the event handler will display an information message.
      * 
      * @access public
      * @param \Zepi\Turbo\Framework $framework
-     * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
      */
-    public function execute(Framework $framework, WebRequest $request, Response $response)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response)
     {
-        // Prepare the page
-        $this->setTitle($this->translate('Group management', '\\Zepi\\Web\\AccessControl'));
-        $this->activateMenuEntry('group-administration');
+        if ($request instanceof WebRequest) {
+            $response->redirectTo('/login/', 307, true);
+            return;
+        }
         
-        // Generate the Table
-        $groupTable = new \Zepi\Web\AccessControl\Table\GroupTable(
-            $framework, 
-            true,
-            true
-        );
-        
-        // Displays the group table
-        $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\Groups', array(
-            'groupTable' => $groupTable,
-            'tableRenderer' => $this->getTableRenderer()
-        )));
+        $response->addOutputPart('You need a session to execute this command!');
     }
 }

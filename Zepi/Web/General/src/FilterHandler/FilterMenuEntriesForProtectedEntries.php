@@ -28,20 +28,20 @@
  * Filters the menu entries and verifies the access 
  * control levels for the protected menu entries.
  * 
- * @package Zepi\Web\AccessControl
+ * @package Zepi\Web\General
  * @subpackage FilterHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\FilterHandler;
+namespace Zepi\Web\General\FilterHandler;
 
 use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry;
+use \Zepi\Web\General\Entity\ProtectedMenuEntry;
 
 /**
  * Filters the menu entries and verifies the access 
@@ -103,7 +103,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
     {
         foreach ($entries as $key => $entry) {
             // If the entry is a ProtectedMenuEntry, verify the entry
-            if ($entry instanceof \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry) {
+            if ($entry instanceof \Zepi\Web\General\Entity\ProtectedMenuEntry) {
                 $result = $this->verifyProtectedEntry($entry, $request);
         
                 // If the entry isn't allowed remove it from the array
@@ -127,7 +127,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
      * Verifies a protected menu entry.
      * 
      * @access protected
-     * @param \Zepi\Web\AccessControl\Entity\ProtectedMenuEntry $protectedEntry
+     * @param \Zepi\Web\General\Entity\ProtectedMenuEntry $protectedEntry
      * @param \Zepi\Turbo\Request\WebRequest $request
      * @return boolean
      */
@@ -144,7 +144,7 @@ class FilterMenuEntriesForProtectedEntries implements FilterHandlerInterface
             return true;
         }
         
-        // Check the database
+        // Check the permissions
         if ($request->getSession()->hasAccess($protectedEntry->getAccessLevelKey())) {
             return true;
         }

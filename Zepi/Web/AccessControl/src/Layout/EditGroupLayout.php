@@ -73,7 +73,7 @@ class EditGroupLayout extends LayoutAbstract
     protected $accessControlManager;
     
     /**
-     * @var \Zepi\Web\AccessControl\Manager\AccessLevelManager
+     * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
      */
     protected $accessLevelManager;
     

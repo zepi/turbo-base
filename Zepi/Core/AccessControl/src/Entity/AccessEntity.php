@@ -37,7 +37,6 @@
 namespace Zepi\Core\AccessControl\Entity;
 
 use \Zepi\Core\AccessControl\Entity\Permission;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Representats one row in the access_entities table as
@@ -262,9 +261,9 @@ class AccessEntity
             // If there is a star in the permission and everything before 
             // the star is equal with the access level, the user has access
             // to the given access level.
-            $posStar = strpos($permission->getAccessLevelKey(), '*');
+            $posStar = strpos($permission, '*');
             if ($posStar !== false) {
-                $startPermission = substr($permission->getAccessLevelKey(), 0, $posStar);
+                $startPermission = substr($permission, 0, $posStar);
                 $startAccessLevel = substr($accessLevel, 0, $posStar);
                 
                 if ($startPermission == $startAccessLevel) {

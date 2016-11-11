@@ -116,12 +116,6 @@ class EditGroup extends FrontendEventHandler
      */
     public function execute(Framework $framework, WebRequest $request, Response $response)
     {
-        // Redirect if the user hasn't a valid session
-        if (!$request->hasSession() || !$request->getSession()->hasAccess('\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups')) {
-            $response->redirectTo('/');
-            return;
-        }
-
         $uuid = $request->getRouteParam('uuid');
         
         // If there is a request parameter we need to edit a user. Otherwise we create a new one.
