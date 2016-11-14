@@ -45,7 +45,7 @@ use \Zepi\Turbo\Framework;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class UnitNumber extends FieldAbstract
+class UnitNumber extends Number
 {
     /**
      * @access protected
@@ -58,18 +58,6 @@ class UnitNumber extends FieldAbstract
      * @var string
      */
     protected $suffix;
-    
-    /**
-     * @access protected
-     * @var integer
-     */
-    protected $minValue;
-    
-    /**
-     * @access protected
-     * @var integer
-     */
-    protected $maxValue;
     
     /**
      * Constructs the object
@@ -91,10 +79,8 @@ class UnitNumber extends FieldAbstract
     {
         $this->prefix = $prefix;
         $this->suffix = $suffix;
-        $this->minValue = $minValue;
-        $this->maxValue = $maxValue;
     
-        parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
+        parent::__construct($key, $label, $isMandatory, $value, $minValue, $maxValue, $helpText, $classes, $placeholder, $tabIndex);
     }
     
     /**
@@ -106,18 +92,6 @@ class UnitNumber extends FieldAbstract
     public function getTemplateName()
     {
         return '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber';
-    }
-    
-    /**
-     * Sets the html form value of the field
-     *
-     * @access public
-     * @param mixed $value
-     * @param \Zepi\Turbo\Request\RequestAbstract $request
-     */
-    public function setValue($value, RequestAbstract $request)
-    {
-        $this->value = intval($value);
     }
     
     /**
@@ -140,70 +114,5 @@ class UnitNumber extends FieldAbstract
     public function getSuffix()
     {
         return $this->suffix;
-    }
-    
-    /**
-     * Returns the min value
-     *
-     * @access public
-     * @return integer
-     */
-    public function getMinValue()
-    {
-        return $this->minValue;
-    }
-    
-    /**
-     * Returns the max value
-     * 
-     * @access public
-     * @return integer
-     */
-    public function getMaxValue()
-    {
-        return $this->maxValue;
-    }
-    
-    /**
-     * Validates the value. Returns true if everything is okey or an Error
-     * object if there was an error.
-     *
-     * @access public
-     * @param \Zepi\Turbo\Framework $framework
-     * @return boolean|\Zepi\Web\UserInterface\Form\Error
-     */
-    public function validate(Framework $framework)
-    {
-        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-    
-        if ($this->minValue !== null && $this->value < $this->minValue) {
-            return new Error(
-                Error::INVALID_VALUE,
-                $translationManager->translate(
-                    'The value for the field %field% is lower than the allowed minimum (%min%).',
-                    '\\Zepi\\Web\\UserInterface',
-                    array(
-                        'field' => $this->label,
-                        'min' => $this->minValue
-                    )
-                )
-            );
-        }
-    
-        if ($this->maxValue !== null && $this->value > $this->maxValue) {
-            return new Error(
-                Error::INVALID_VALUE,
-                $translationManager->translate(
-                    'The value for the field %field% is higher than the allowed maximum (%max%).',
-                    '\\Zepi\\Web\\UserInterface',
-                    array(
-                        'field' => $this->label,
-                        'max' => $this->maxValue
-                    )
-                )
-            );
-        }
-    
-        return true;
     }
 }
