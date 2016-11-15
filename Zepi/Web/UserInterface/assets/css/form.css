@@ -55,3 +55,5 @@
     .selector .item-list .item .item-right-area { width: 40px; }
     .selector .item-list .item .item-button .glyphicon { font-size: 30px; line-height: 30px; }
 }
+
+.ip-field .input-group-addon { line-height: 0; }

@@ -100,6 +100,7 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Hidden', $this->directory . '/templates/Form/Field/hidden.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Number', $this->directory . '/templates/Form/Field/number.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\UnitNumber', $this->directory . '/templates/Form/Field/unitnumber.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\IpField', $this->directory . '/templates/Form/Field/ip-field.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Price', $this->directory . '/templates/Form/Field/price.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Select', $this->directory . '/templates/Form/Field/select.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Checkbox', $this->directory . '/templates/Form/Field/checkbox.phtml');
@@ -137,6 +138,7 @@ class Module extends ModuleAbstract
         
         $assetManager->addAsset(AssetManager::CSS, 'ui-form', $this->directory . '/assets/css/form.css', array('zt-form'));
         $assetManager->addAsset(AssetManager::JS, 'ui-selector', $this->directory . '/assets/js/selector.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-ip-field', $this->directory . '/assets/js/ip-field.js', array('zt-main'));
         
         $assetManager->addAsset(AssetManager::CSS, 'ui-spin', $this->directory . '/assets/css/spin.css', array('zt-form'));
 

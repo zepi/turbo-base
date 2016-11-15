@@ -1,0 +1,31 @@
+<?php 
+
+use \Zepi\Web\UserInterface\Form\Field\IpField;
+
+$field = $additionalData['field']; 
+    
+?>
+<div class="input-group ip-field">
+    <div class="input-group-addon">
+        <?php if ($field->getType() === IpField::TYPE_SUBNET): ?>
+            <span class="label label-primary">Subnet</span>
+        <?php endif; ?>
+        
+        <span class="label label-info ip-type">IP</span>
+    </div>
+    <input  type="text" 
+            name="<?php echo $field->getHtmlName(); ?>" 
+            id="<?php echo $field->getHtmlId(); ?>" 
+            placeholder="<?php echo $field->getPlaceholder(); ?>" 
+            class="form-control <?php echo $field->getHtmlClasses(); ?>" 
+            value="<?php echo $field->getValue(); ?>"
+            <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
+            <?php if (!$field->hasAutocomplete()) { echo 'autocomplete="off"'; } ?>
+            
+            <?php if ($field->getTabIndex() !== null): ?>
+                tabindex="<?php echo $field->getTabIndex(); ?>"
+            <?php endif; ?>
+            
+            data-type="<?php echo $field->getType(); ?>"
+        />
+</div>
