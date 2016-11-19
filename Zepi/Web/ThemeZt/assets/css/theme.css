@@ -69,8 +69,8 @@ nav ul.submenu > li > .submenu-holder { left: 100%; top: -1px; }
 nav div.header-navigation-right ul.submenu > li > .submenu-holder { right: 100%; left: auto; top: -1px; }
 nav ul.submenu ul.submenu li { border-left: 1px solid #AAAAAA; margin-left: -1px; }
 nav ul.submenu ul.submenu li:first-child { margin-left: -1px; }
-nav div.header-navigation-left ul.submenu li.has-children > a:after { position: absolute; right: 0; top: 0; bottom: 0; padding: 4px 0px; font-family: "Material Design Icons"; font-style: normal; font-weight: bold; font-size: 28px; line-height: 1; content: "\f21b"; }
-nav div.header-navigation-right ul.submenu li.has-children > a:before { position: absolute; left: 0; top: 0; bottom: 0; padding: 4px 0px; font-family: "Material Design Icons"; font-style: normal; font-weight: bold; font-size: 28px; line-height: 1; content: "\f21a"; }
+nav div.header-navigation-left ul.submenu li.has-children > a:after { position: absolute; right: 0; top: 0; bottom: 0; padding: 4px 0px; font: normal normal normal 28px/1 "Material Design Icons"; content: "\e5cc"; }
+nav div.header-navigation-right ul.submenu li.has-children > a:before { position: absolute; left: 0; top: 0; bottom: 0; padding: 4px 0px; font: normal normal normal 28px/1 "Material Design Icons"; content: "\e5cb"; }
 nav li ul.submenu > li:hover > a { background: #EEEEEE; }
 nav li ul.submenu > li a:hover,
 nav li ul.submenu > li a:hover .glyphicon,
@@ -145,7 +145,7 @@ nav ol.breadcrumb li a.active { text-decoration: none; }
 nav ol.breadcrumb .glyphicon,
 nav ol.breadcrumb .mdi { margin: -4px 0 0; padding: 0 5px 0 0; }
 nav ol.breadcrumb .mdi { margin: -2px 0 0; font-size: 24px; }
-.breadcrumb > li + li::before { content: "\f21b"; font-family: "Material Design Icons"; font-size: 34px; line-height: 20px; padding: 0; vertical-align: middle; }
+.breadcrumb > li + li::before { content: "\e5cc"; font: normal normal normal 28px/1 "Material Design Icons"; padding: 0; vertical-align: middle; }
 
 /**
  * Container

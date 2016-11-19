@@ -276,7 +276,7 @@ class EditUserLayout extends LayoutAbstract
                                             'submit',
                                             $this->translate('Save', '\\Zepi\\Web\\AccessControl'),
                                             array('btn-large', 'btn-primary'),
-                                            'mdi mdi-floppy'
+                                            'mdi mdi-save'
                                         )
                                     ),
                                     1000

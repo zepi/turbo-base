@@ -52,32 +52,34 @@ class AssetManager
     const BINARY = 'binary';
     
     /**
-     * @access protected
      * @var array
      */
     protected $assets = array();
     
     /**
-     * @access protected
      * @var \Zepi\Turbo\Backend\ObjectBackendAbstract
      */
     protected $assetsObjectBackend;
     
     /**
+     * @var string
+     */
+    protected $rootDirectory;
+    
+    /**
      * Constructs the object
      * 
-     * @access public
      * @param \Zepi\Turbo\Backend\ObjectBackendAbstract $assetsObjectBackend
+     * @param string $rootDirectory
      */
-    public function __construct(ObjectBackendAbstract $assetsObjectBackend)
+    public function __construct(ObjectBackendAbstract $assetsObjectBackend, $rootDirectory)
     {
         $this->assetsObjectBackend = $assetsObjectBackend;
+        $this->rootDirectory = $rootDirectory;
     }
     
     /**
      * Initializes the asset manager.
-     * 
-     * @access public
      */
     public function initializeAssetManager()
     {
@@ -86,8 +88,6 @@ class AssetManager
     
     /**
      * Loads cache data for the assets
-     * 
-     * @access public
      */
     protected function loadAssets()
     {
@@ -101,8 +101,6 @@ class AssetManager
     
     /**
      * Saves the assets cache to the file backend.
-     * 
-     * @access public
      */
     protected function saveAssets()
     {
@@ -127,7 +125,7 @@ class AssetManager
         $asset = new Asset(
             $type,
             $assetName,
-            $fileName,
+            $this->buildSourceFilePath($fileName),
             $dependencies
         );
         
@@ -152,7 +150,6 @@ class AssetManager
     /**
      * Adds a file as an asset.
      * 
-     * @access public
      * @param string $type
      * @param string $fileName
      */
@@ -172,7 +169,6 @@ class AssetManager
     /**
      * Sorts the files by dependencies
      * 
-     * @access public 
      * @param array $assets
      * @return array
      */
@@ -193,7 +189,6 @@ class AssetManager
     /**
      * Returns the sorted assets with all dependencies
      * 
-     * @access public
      * @param array $sortedAssets
      * @param array $assets
      * @param \Zepi\Web\General\Entity\Asset $asset
@@ -251,5 +246,40 @@ class AssetManager
         $file = $this->assets[$type][$assetName];
     
         return $file;
+    }
+    
+    /**
+     * Returns true if the given path is an absolute path
+     *
+     * @param string $filePath
+     * @return boolean
+     */
+    protected function isAbsolutePath($filePath)
+    {
+        if ($filePath === null || $filePath === '') {
+            return false;
+        }
+    
+        if ($filePath[0] === DIRECTORY_SEPARATOR || preg_match('~\A[A-Z]:(?![^/\\\\])~i', $filePath) > 0) {
+            return true;
+        }
+    
+        return false;
+    }
+    
+    /**
+     * Returns the absolute path to the given (relative) file path.
+     * The framework root directory is added if the file path is relative.
+     *
+     * @param string $filePath
+     * @return string
+     */
+    protected function buildSourceFilePath($filePath)
+    {
+        if ($this->isAbsolutePath($filePath)) {
+            return $filePath;
+        }
+    
+        return $this->rootDirectory . '/' . $filePath;
     }
 }

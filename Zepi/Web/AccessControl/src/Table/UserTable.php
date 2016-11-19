@@ -111,7 +111,7 @@ class UserTable extends TableAbstract
 
         switch ($key) {
             case 'name':
-                return '<span class="mdi mdi-account"></span>' . $object->getName();
+                return '<span class="mdi mdi-person"></span>' . $object->getName();
             break;
             
             case 'uuid':

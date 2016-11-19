@@ -56,18 +56,18 @@ class Module extends ModuleAbstract
     {
         // Add the assets
         $assetManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetManager');
-        $assetManager->addAsset(AssetManager::CSS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap.css');
-        $assetManager->addAsset(AssetManager::CSS, 'bootstrap-theme', $this->directory . '/assets/vendor/bootstrap-3.3.7/css/bootstrap-theme.css', array('bootstrap'));
-        $assetManager->addAsset(AssetManager::CSS, 'materialdesignicons', $this->directory . '/assets/vendor/MaterialDesign/css/materialdesignicons.min.css');
+        $assetManager->addAsset(AssetManager::CSS, 'bootstrap', 'vendor/twitter/bootstrap/dist/css/bootstrap.css');
+        $assetManager->addAsset(AssetManager::CSS, 'bootstrap-theme', 'vendor/twitter/bootstrap/dist/css/bootstrap-theme.css', array('bootstrap'));
+        $assetManager->addAsset(AssetManager::CSS, 'materialdesignicons', 'vendor/mervick/material-design-icons/css/material-icons.css');
         $assetManager->addAsset(AssetManager::CSS, 'zt-base', $this->directory . '/assets/css/base.css', array('bootstrap-theme'));
         $assetManager->addAsset(AssetManager::CSS, 'zt-theme', $this->directory . '/assets/css/theme.css', array('zt-base'));
         $assetManager->addAsset(AssetManager::CSS, 'zt-elements', $this->directory . '/assets/css/elements.css', array('zt-base'));
         $assetManager->addAsset(AssetManager::CSS, 'zt-form', $this->directory . '/assets/css/form.css', array('zt-base'));
         $assetManager->addAsset(AssetManager::CSS, 'zt-print', $this->directory . '/assets/css/print.css', array('zt-base'));
         
-        $assetManager->addAsset(AssetManager::JS, 'modernizr', $this->directory . '/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js');
-        $assetManager->addAsset(AssetManager::JS, 'jquery', $this->directory . '/assets/js/vendor/jquery-1.10.1.min.js');
-        $assetManager->addAsset(AssetManager::JS, 'bootstrap', $this->directory . '/assets/vendor/bootstrap-3.3.7/js/bootstrap.min.js', array('jquery'));
+        $assetManager->addAsset(AssetManager::JS, 'modernizr', 'vendor/components/modernizr/modernizr.js');
+        $assetManager->addAsset(AssetManager::JS, 'jquery', 'vendor/components/jquery/jquery.min.js');
+        $assetManager->addAsset(AssetManager::JS, 'bootstrap', 'vendor/twitter/bootstrap/dist/js/bootstrap.min.js', array('jquery'));
         $assetManager->addAsset(AssetManager::JS, 'zt-main', $this->directory . '/assets/js/main.js', array('jquery'));
         
         $assetManager->addAsset(AssetManager::IMAGE, 'logo', $this->directory . '/assets/images/logo.svg');

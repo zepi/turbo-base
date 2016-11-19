@@ -92,7 +92,7 @@ class Module extends ModuleAbstract
             $translationManager->translate('User management', '\\Zepi\\Web\\AccessControl'),
             '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups',
             'administration/users',
-            'mdi-account'
+            'mdi-person'
         );
         $accessMenuEntry->addChild($menuEntry);
         
@@ -101,7 +101,7 @@ class Module extends ModuleAbstract
             $translationManager->translate('Group management', '\\Zepi\\Web\\AccessControl'),
             '\\Zepi\\Web\\AccessControl\\AccessLevel\\EditUsersAndGroups',
             'administration/groups',
-            'mdi-account-multiple'
+            'mdi-group'
         );
         $accessMenuEntry->addChild($menuEntry);
     }

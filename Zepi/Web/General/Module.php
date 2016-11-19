@@ -80,7 +80,8 @@ class Module extends ModuleAbstract
                     $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
 
                     $this->assetManager = new $className(
-                        $assetsObjectBackend
+                        $assetsObjectBackend,
+                        $this->framework->getRootDirectory()
                     );
                     $this->assetManager->initializeAssetManager();
                 }

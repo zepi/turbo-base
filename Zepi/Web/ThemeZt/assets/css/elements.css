@@ -38,7 +38,7 @@ a.btn .mdi { margin-right: 5px; }
 .overview-navigation:after { display: table; clear: both; content: ''; }
 .overview-navigation > div { width: 25%; padding: 0 15px 30px 15px; float: left; }
 .overview-navigation > div .overview-navigation-box { display: block; height: 140px; background: #F6F6F6; border: 1px solid #AAAAAA; padding: 20px; vertical-align: middle; text-align: center; }
-.overview-navigation > div .overview-navigation-icon { font-size: 50px; text-align: center; }
+.overview-navigation > div .overview-navigation-icon { text-align: center; }
 .overview-navigation > div .overview-navigation-label { font-size: 18px; text-align: center; padding: 10px 0 0 0; }
 .overview-navigation > div .overview-navigation-without-icon { padding: 25px 0; }
 .overview-navigation > div a { text-decoration: none; }
@@ -277,16 +277,16 @@ td .message { margin: 20px; }
 /**
  * Message icons
  */
-.message:before { font-family: "Material Design Icons"; font-style: normal; font-weight: normal; line-height: 1; font-size: 36px; content: ""; padding: 13px; position: absolute; top: 0; left: 0; bottom: 0; width: 61px; background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
+.message:before { font: normal normal normal 36px/1 "Material Design Icons"; content: ""; padding: 13px; position: absolute; top: 0; left: 0; bottom: 0; width: 61px; background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
     -webkit-border-radius: 5px 0 0 5px;
     -moz-border-radius:  5px 0 0 5px;
     border-radius:  5px 0 0 5px;
 }
-.message.success:before { content: "\f20d";  }
-.message.error:before { content: "\f22e"; }
-.message.warning:before { content: "\f124"; }
-.message.question:before { content: "\f396"; }
-.message.info:before { content: "\f3b7"; }
+.message.success:before { content: "\e876";  }
+.message.error:before { content: "\e14c"; }
+.message.warning:before { content: "\e002"; }
+.message.question:before { content: "\e887"; }
+.message.info:before { content: "\e88e"; }
 
 /**
  * Tabs

@@ -111,7 +111,7 @@ class GroupTable extends TableAbstract
         
         switch ($key) {
             case 'name':
-                return '<span class="mdi mdi-account-multiple"></span>' . $object->getName();
+                return '<span class="mdi mdi-group"></span>' . $object->getName();
             break;
             
             case 'uuid':

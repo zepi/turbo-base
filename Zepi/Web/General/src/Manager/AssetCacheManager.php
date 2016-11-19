@@ -186,7 +186,7 @@ class AssetCacheManager
     {
         return $type . '/' . $hash . '/' . $version;
     }
-    
+
     /**
      * Returns true if the given file is cached, otherwise return false.
      * 

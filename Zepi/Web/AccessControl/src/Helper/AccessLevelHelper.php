@@ -89,9 +89,9 @@ class AccessLevelHelper
             $description = $accessLevel->getDescription();
             
             if ($accessLevel instanceof GroupAccessLevel) {
-                $icon = 'mdi mdi-account-multiple';
+                $icon = 'mdi mdi-group';
             } else {
-                $icon = 'mdi mdi-code-array';
+                $icon = 'mdi mdi-toll';
 
                 $name = $this->translationManager->translate($name, $accessLevel->getNamespace());
                 $description = $this->translationManager->translate($description, $accessLevel->getNamespace());

@@ -66,7 +66,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'profile',
                 $this->translate('Profile', '\\Zepi\\Web\\AccessControl'),
                 'profile',
-                'mdi-account'
+                'mdi-person'
             );
             $this->getMenuManager()->addMenuEntry('menu-right', $profileMenuEntry, 90);
             
@@ -80,7 +80,7 @@ class RegisterMenuEntries extends FrontendEventHandler
             $changePasswordSubMenuEntry = new \Zepi\Web\General\Entity\HiddenMenuEntry(
                 $this->translate('Change password', '\\Zepi\\Web\\AccessControl'),
                 'profile/change-password',
-                'mdi-key-variant'
+                'mdi-vpn-key'
             );
             $userSettingsSubMenuEntry->addChild($changePasswordSubMenuEntry);
             
@@ -89,7 +89,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'logout',
                 $this->translate('Logout', '\\Zepi\\Web\\AccessControl'),
                 'logout',
-                'mdi-logout'
+                'glyphicon-log-out'
             );
             $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry, 100);
         } else {
@@ -107,7 +107,7 @@ class RegisterMenuEntries extends FrontendEventHandler
                 'login',
                 $this->translate('Login', '\\Zepi\\Web\\AccessControl'),
                 'login',
-                'mdi-login'
+                'glyphicon-log-in'
             );
             $this->getMenuManager()->addMenuEntry('menu-right', $menuEntry, 100);
         }

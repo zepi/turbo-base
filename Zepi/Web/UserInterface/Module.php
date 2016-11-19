@@ -134,7 +134,7 @@ class Module extends ModuleAbstract
         $assetManager->addAsset(AssetManager::JS, 'ui-responsive-tabs', $this->directory . '/assets/vendor/bootstrap-responsive-tabs/js/responsive-tabs.js', array('ui-tabs'));
         $assetManager->addAsset(AssetManager::JS, 'ui-price', $this->directory . '/assets/js/price.js', array('zt-main'));
         $assetManager->addAsset(AssetManager::JS, 'ui-dynamic-zone', $this->directory . '/assets/js/dynamicZone.js', array('zt-main'));
-        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-mask', $this->directory . '/assets/js/jquery.maskMoney.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-mask', $this->directory . '/assets/vendor/jquery-maskmoney/jquery.maskMoney.js', array('zt-main'));
         
         $assetManager->addAsset(AssetManager::CSS, 'ui-form', $this->directory . '/assets/css/form.css', array('zt-form'));
         $assetManager->addAsset(AssetManager::JS, 'ui-selector', $this->directory . '/assets/js/selector.js', array('zt-main'));
@@ -142,12 +142,17 @@ class Module extends ModuleAbstract
         
         $assetManager->addAsset(AssetManager::CSS, 'ui-spin', $this->directory . '/assets/css/spin.css', array('zt-form'));
 
-        $assetManager->addAsset(AssetManager::CSS, 'ui-jquery-is-loading-css', $this->directory . '/assets/css/is-loading.css', array('zt-form'));
-        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-is-loading', $this->directory . '/assets/js/is-loading/jquery.isloading.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-jquery-is-loading-css', $this->directory . '/assets/css/is-loading.css', array('ui-form'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-jquery-is-loading', $this->directory . '/assets/vendor/is-loading/jquery.isloading.js', array('zt-main'));
         $assetManager->addAsset(AssetManager::JS, 'ui-loading-helper', $this->directory . '/assets/js/loadingHelper.js', array('ui-jquery-is-loading'));
         
-        $assetManager->addAsset(AssetManager::CSS, 'ui-datatables-css', $this->directory . '/assets/vendor/DataTables/datatables.min.css', array('zt-form'));
-        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-js', $this->directory . '/assets/vendor/DataTables/datatables.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-datatables-css', 'vendor/datatables/datatables/media/css/dataTables.bootstrap.min.css', array('ui-form'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-datatables-responsive-css', 'vendor/drmonty/datatables-responsive/css/dataTables.responsive.min.css', array('ui-datatables-css'));
+        $assetManager->addAsset(AssetManager::CSS, 'ui-datatables-responsive-bootstrap-css', 'vendor/drmonty/datatables-responsive/css/responsive.bootstrap.min.css', array('ui-datatables-responsive-css'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-js', 'vendor/datatables/datatables/media/js/jquery.dataTables.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-bootstrap-js', 'vendor/datatables/datatables/media/js/dataTables.bootstrap.js', array('ui-datatables-js'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-responsive-js', 'vendor/drmonty/datatables-responsive/js/dataTables.responsive.js', array('ui-datatables-bootstrap-js'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-datatables-responsive-bootstrap-js', 'vendor/drmonty/datatables-responsive/js/responsive.bootstrap.js', array('ui-datatables-responsive-js'));
         $assetManager->addAsset(AssetManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
         
         // Register the event handler
