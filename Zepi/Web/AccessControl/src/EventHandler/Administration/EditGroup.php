@@ -70,12 +70,6 @@ class EditGroup extends FrontendEventHandler
     protected $accessControlManager;
     
     /**
-     * @access protected
-     * @var \Zepi\Core\AccessControl\Manager\AccessLevelManager
-     */
-    protected $accessLevelManager;
-    
-    /**
      * @var \Zepi\Web\AccessControl\Layout\EditGroupLayout
      */
     protected $layout;
@@ -87,22 +81,17 @@ class EditGroup extends FrontendEventHandler
      * @param \Zepi\Web\UserInterface\Frontend\FrontendHelper $frontendHelper
      * @param \Zepi\Web\AccessControl\Manager\GroupManager $groupManager
      * @param \Zepi\Core\AccessControl\Manager\AccessControlManager $accessControlManager
-     * @param \Zepi\Core\AccessControl\Manager\AccessLevelManager $accessLevelManager
      * @param \Zepi\Web\AccessControl\Layout\EditGroupLayout $layout
      */
     public function __construct(
         FrontendHelper $frontendHelper, 
         GroupManager $groupManager, 
         AccessControlManager $accessControlManager, 
-        AccessLevelManager $accessLevelManager, 
-        AccessLevelHelper $accessLevelHelper,
         EditGroupLayout $layout
     ) {
         $this->frontendHelper = $frontendHelper;
         $this->groupManager = $groupManager;
         $this->accessControlManager = $accessControlManager;
-        $this->accessLevelManager = $accessLevelManager;
-        $this->accessLevelHelper = $accessLevelHelper;
         $this->layout = $layout;
     }
     
@@ -205,7 +194,6 @@ class EditGroup extends FrontendEventHandler
         }
     
         // Save the access levels
-        $this->accessControlManager->updatePermissions($group, $formValues['access-levels'], $request->getSession()->getUser());
         $accessLevels = $this->cleanAccessLevels($group->getUuid(), $formValues['access-levels']);
         
         $this->accessControlManager->updatePermissions($group, $accessLevels, $request->getSession()->getUser());
@@ -225,14 +213,60 @@ class EditGroup extends FrontendEventHandler
     protected function cleanAccessLevels($uuid, $accessLevels)
     {
         foreach ($accessLevels as $key => $accessLevel) {
-            $parts = explode('\\', $accessLevel);
-            
-            if ($parts[1] === 'Group' && count($parts) === 3 && $parts[2] === $uuid) {
+            if ($this->hasGroupLoop($accessLevel, $uuid)) {
                 unset($accessLevels[$key]);
             }
         }
-
+        
         return $accessLevels;
+    }
+    
+    /**
+     * Returns true if the given modified group id has a loop
+     * between two groups if we add the given access level.
+     * 
+     * @param string $accessLevel
+     * @param string $modifiedUuid
+     * @return boolean
+     */
+    protected function hasGroupLoop($accessLevel, $modifiedUuid)
+    {
+        $parts = explode('\\', $accessLevel);
+        
+        if (count($parts) < 3 || $parts[1] !== 'Group') {
+            return false;
+        }
+        
+        if ($parts[2] === $modifiedUuid) {
+            return true;
+        }
+        
+        if ($this->hasPermissionForModifiedGroup($modifiedUuid, $parts[2])) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Returns true if the given group uuid has a permission 
+     * for the given modified group uuid.
+     * 
+     * @param string $modifiedUuid
+     * @param string $groupUuid
+     * @return boolean
+     */
+    protected function hasPermissionForModifiedGroup($modifiedUuid, $groupUuid)
+    {
+        $permissions = $this->accessControlManager->getPermissionsRawForUuid($groupUuid);
+        
+        foreach ($permissions as $permission) {
+            $result = $this->hasGroupLoop($permission, $modifiedUuid);
+            
+            if ($result === true) {
+                return true;
+            }
+        }
     }
 
     /**
