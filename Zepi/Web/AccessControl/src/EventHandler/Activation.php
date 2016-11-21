@@ -12,7 +12,6 @@ namespace Zepi\Web\AccessControl\EventHandler;
 
 use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
@@ -75,8 +74,11 @@ class Activation extends FrontendEventHandler
         $activationToken = $request->getRouteParam('token');
         
         // Activate the user
-        $result = $this->activateUser($uuid, $activationToken);
-                
+        $result = array('result' => false, 'message' => $this->translate('Wrong request parameters.', '\\Zepi\\Web\\AccessControl'));
+        if ($uuid != false && $activationToken != false) {
+            $result = $this->activateUser($uuid, $activationToken);
+        }
+        
         // Display the result
         $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Activation', array(
             'result' => $result

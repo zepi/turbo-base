@@ -260,6 +260,10 @@ class EditGroup extends FrontendEventHandler
     {
         $permissions = $this->accessControlManager->getPermissionsRawForUuid($groupUuid);
         
+        if ($permissions === false) {
+            return false;
+        }
+        
         foreach ($permissions as $permission) {
             $result = $this->hasGroupLoop($permission, $modifiedUuid);
             

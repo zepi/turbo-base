@@ -174,7 +174,11 @@ class ConfigurationManager
         }
         
         $parts = explode('.', $path);
-        $this->settings = $this->updateSetting($this->settings, $parts, $value);
+        $settings = $this->updateSetting($this->settings, $parts, $value);
+        
+        if (is_array($settings)) {
+            $this->settings = $settings;
+        }
     }
     
     /**
