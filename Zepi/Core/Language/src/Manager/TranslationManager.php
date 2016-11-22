@@ -103,20 +103,10 @@ class TranslationManager
         // If no translation for the original string is available or the string is not translated 
         // return the original string to the caller.
         if (!isset($this->translatedStrings[$namespace][$string]) || $this->translatedStrings[$namespace][$string] == '') {
-            if (count($arguments) > 0) {
-                $string = $this->replacePlaceholders($string, $arguments);
-            }
-            
-            return $string;
+            return $this->replacePlaceholders($string, $arguments);
         }
         
-        $translatedString = $this->replacePlaceholders($this->translatedStrings[$namespace][$string], $arguments);
-        
-        if (count($arguments) > 0) {
-            $translatedString = $this->replacePlaceholders($translatedString, $arguments);
-        }
-        
-        return $translatedString;
+        return $this->replacePlaceholders($this->translatedStrings[$namespace][$string], $arguments);
     }
     
     /**
@@ -129,6 +119,10 @@ class TranslationManager
      */
     protected function replacePlaceholders($string, $arguments)
     {
+        if (count($arguments) == 0) {
+            return $string;
+        }
+        
         foreach ($arguments as $key => $value) {
             $string = str_replace('%' . $key . '%', $value, $string);
         }

@@ -58,3 +58,4 @@ Group informations = Gruppeninformationen
 User informations = Benutzerinformationen
 Permissions = Berechtigungen
 The username is already in use. = Der Benutzername wird bereits verwendet.
+Do you accept our <a href="%link%" target="_blank">terms of service</a>? = Akzeptieren Sie unsere <a href="%link%" target="_blank">AGBs</a>?
