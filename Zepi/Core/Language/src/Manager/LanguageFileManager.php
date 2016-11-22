@@ -100,8 +100,25 @@ class LanguageFileManager
         $specificFile = $path . '/languages/' . $specificLocale . '.zttf';
         $globalFile = $path . '/languages/' . $globalLocale . '.zttf';
         
-        // If the specific translation file exists for the locale (in example de_DE.zttf) load
-        // the specific translation file. Otherwise try to load the the global translation file.
+        // Load the file content
+        $content = $this->loadFileContent($globalFile, $specificFile);
+        
+        return $content;
+    }
+
+    /**
+     * Loads the content of the translation file. If the specific translation 
+     * file exists for the locale (in example de_DE.zttf) load the specific translation 
+     * file. Otherwise try to load the the global translation file.
+     * 
+     * @param string $globalFile
+     * @param string $specificFile
+     * @return string
+     */
+    protected function loadFileContent($globalFile, $specificFile)
+    {
+        $content = '';
+        
         if (file_exists($specificFile) && is_readable($specificFile)) {
             $content = file_get_contents($specificFile);
         } else if (file_exists($globalFile) && is_readable($globalFile)) {
