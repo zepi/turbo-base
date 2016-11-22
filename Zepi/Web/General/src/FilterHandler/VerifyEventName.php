@@ -76,23 +76,36 @@ class VerifyEventName implements FilterHandlerInterface
             return $value;
         }
         
-        if (isset($urlParts['path'])) {
-            $path = $urlParts['path'];
-        
-            if (substr($path, -1) !== '/' && strrpos($path, '.') < strrpos($path, '/')) {
-                $path .= '/';
-            }
-        
-            $urlParts['path'] = $path;
-        }
-        
+        $urlParts = $this->verifyPath($urlParts);
         $completeUrl = $response->buildUrl($urlParts);
-        
+
         if ($completeUrl !== $request->getRequestedUrl()) {
             $response->redirectTo($completeUrl);
             return null;
         }
         
         return $value;
+    }
+    
+    /**
+     * Verifies the path of the url and adds a slash 
+     * at the end if there is no slash.
+     * 
+     * @param array $urlParts
+     * @return string
+     */
+    protected function verifyPath($urlParts)
+    {
+        if (isset($urlParts['path'])) {
+            $path = $urlParts['path'];
+        
+            if (substr($path, -1) !== '/' && (strrpos($path, '.') === false || strrpos($path, '.') < strrpos($path, '/'))) {
+                $path .= '/';
+            }
+
+            $urlParts['path'] = $path;
+        }
+        
+        return $urlParts;
     }
 }
