@@ -100,6 +100,20 @@ class LoadAssetContent implements WebEventHandlerInterface
             $content = '/** Zepi Assets Manager: File is empty or does not exists! */';
         }
         
+        $this->deliverContent($response, $type, $hash, $version, $content);
+    }
+    
+    /**
+     * Adds the needed headers and prepares the content
+     * 
+     * @param \Zepi\Turbo\Response\Response $response
+     * @param string $type
+     * @param string $hash
+     * @param string $version
+     * @param string $content
+     */
+    protected function deliverContent(Response $response, $type, $hash, $version, $content)
+    {
         // Define the if modified since timestamp
         $cachedAssetTimestamp = $this->assetCacheManager->getCachedAssetTimestamp($type, $hash, $version);
         $ifModifiedSince = -1;
@@ -124,7 +138,7 @@ class LoadAssetContent implements WebEventHandlerInterface
         
         // Verify the cached timestamp and the eTag
         if ($cachedAssetTimestamp === $ifModifiedSince || $eTag === $eTagHeader) {
-            header('HTTP/1,1 304 Not Modified');
+            header('HTTP/1.1 304 Not Modified');
             exit;
         }
         
