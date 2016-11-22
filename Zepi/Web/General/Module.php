@@ -75,12 +75,8 @@ class Module extends ModuleAbstract
         switch ($className) {
             case '\\Zepi\\Web\\General\\Manager\\AssetManager':
                 if ($this->assetManager === null) {
-                    // Get the assets backend
-                    $path = $this->framework->getRootDirectory() . '/data/assets.data';
-                    $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
-
                     $this->assetManager = new $className(
-                        $assetsObjectBackend,
+                        $this->getDataObjectBackend('assets.data'),
                         $this->framework->getRootDirectory()
                     );
                     $this->assetManager->initializeAssetManager();
@@ -121,13 +117,9 @@ class Module extends ModuleAbstract
             
             case '\\Zepi\\Web\\General\\Manager\\TemplatesManager':
                 if ($this->templatesManager === null) {
-                    // Get the templates backend
-                    $path = $this->framework->getRootDirectory() . '/data/templates.data';
-                    $assetsObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
-                    
                     $this->templatesManager = new $className(
                         $this->framework, 
-                        $assetsObjectBackend
+                        $this->getDataObjectBackend('templates.data')
                     );
                     $this->templatesManager->initializeTemplatesManager();
                     
@@ -148,6 +140,20 @@ class Module extends ModuleAbstract
                 return $this->framework->initiateObject($className);
             break;
         }
+    }
+    
+    /**
+     * Returns a data object backend for the given file name
+     * 
+     * @param string $dataFileName
+     * @return \Zepi\Turbo\Backend\FileObjectBackend
+     */
+    protected function getDataObjectBackend($dataFileName)
+    {
+        $path = $this->framework->getRootDirectory() . '/data/' . $dataFileName;
+        $objectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path);
+        
+        return $objectBackend;
     }
     
     /**
