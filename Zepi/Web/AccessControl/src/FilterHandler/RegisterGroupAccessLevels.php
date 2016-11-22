@@ -28,14 +28,14 @@
  * Registers the groups as access levels.
  * 
  * @package Zepi\Web\AccessControl
- * @subpackage EventHandler
+ * @subpackage FilterHandler
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\Web\AccessControl\EventHandler;
+namespace Zepi\Web\AccessControl\FilterHandler;
 
-use \Zepi\Turbo\FrameworkInterface\EventHandlerInterface;
+use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
@@ -51,7 +51,7 @@ use \Zepi\Core\Language\Manager\TranslationManager;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class RegisterGroupAccessLevels implements EventHandlerInterface
+class RegisterGroupAccessLevels implements FilterHandlerInterface
 {
     /**
      * @access protected
@@ -93,18 +93,23 @@ class RegisterGroupAccessLevels implements EventHandlerInterface
      * @param \Zepi\Turbo\Framework $framework
      * @param \Zepi\Turbo\Request\RequestAbstract $request
      * @param \Zepi\Turbo\Response\Response $response
+     * @param mixed $value
+     * @return mixed
      */
-    public function execute(Framework $framework, RequestAbstract $request, Response $response)
+    public function execute(Framework $framework, RequestAbstract $request, Response $response, $value = null)
     {
+        $accessLevels = $value;
         $dataRequest = new DataRequest(1, 0, 'name', 'ASC');
         
         foreach ($this->groupManager->getGroups($dataRequest) as $group) {
-            $this->accessLevelManager->addAccessLevel(new GroupAccessLevel(
+            $accessLevels[] = new GroupAccessLevel(
                 '\\Group\\' . $group->getUuid(),
                 $this->translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),
                 $this->translationManager->translate('Inherits all permissions from this group.', '\\Zepi\\Web\\AccessControl'),
                 '\\Group'
-            ));
+            );
         }
+        
+        return $accessLevels;
     }
 }

@@ -166,8 +166,9 @@ class AccessLevelManager
     {
         // Give the modules the opportunity to add additional access levels
         $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->executeEvent('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels');
         
-        return $this->accessLevels;
+        $accessLevels = $runtimeManager->executeFilter('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RegisterAccessLevels', $this->accessLevels);
+        
+        return $accessLevels;
     }
 }

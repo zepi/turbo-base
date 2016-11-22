@@ -92,7 +92,7 @@ class Module extends ModuleAbstract
             case '\\Zepi\\Web\\General\\Manager\\AssetCacheManager':
                 if ($this->assetCacheManager === null) {
                     // Get the cache backends
-                    $path = $this->directory . '/cache/';
+                    $path = $this->framework->getRootDirectory() . '/cache/';
                     $fileObjectBackend = new \Zepi\Turbo\Backend\FileObjectBackend($path . 'cachedFiles.data');
                     $fileBackend = new \Zepi\Turbo\Backend\FileBackend($path);
             

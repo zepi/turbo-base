@@ -129,7 +129,6 @@ class Module extends ModuleAbstract
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\ProfileChangePassword', '\\Zepi\\Web\\AccessControl\\EventHandler\\ProfileChangePassword');
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\StartSession', 1);
         $runtimeManager->addEventHandler('\\Zepi\\Turbo\\Event\\BeforeExecution', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterMenuEntries');
-        $runtimeManager->addEventHandler('\\Zepi\\Core\\AccessControl\\Event\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\EventHandler\\RegisterGroupAccessLevels');
         
         // Administration
         $runtimeManager->addEventHandler('\\Zepi\\Web\\AccessControl\\Event\\Administration\\Users', '\\Zepi\\Web\\AccessControl\\EventHandler\\Administration\\Users');
@@ -156,6 +155,7 @@ class Module extends ModuleAbstract
         
         // Filters
         $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\PermissionsBackend\\ResolvePermissions', '\\Zepi\\Web\\AccessControl\\FilterHandler\\ResolveGroupPermissions');
+        $runtimeManager->addFilterHandler('\\Zepi\\Core\\AccessControl\\Filter\\AccessLevelManager\\RegisterAccessLevels', '\\Zepi\\Web\\AccessControl\\FilterHandler\\RegisterGroupAccessLevels');
         
         
         
