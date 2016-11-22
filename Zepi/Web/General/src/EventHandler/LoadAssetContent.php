@@ -117,14 +117,14 @@ class LoadAssetContent implements WebEventHandlerInterface
         // Define the if modified since timestamp
         $cachedAssetTimestamp = $this->assetCacheManager->getCachedAssetTimestamp($type, $hash, $version);
         $ifModifiedSince = -1;
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] != '') {
+        if ($this->isHeaderSetAndNotEmpty('HTTP_IF_MODIFIED_SINCE')) {
             $ifModifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
         }
         
         // Define the etag
         $eTag = md5($content);
         $eTagHeader = -1;
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] != '') {
+        if ($this->isHeaderSetAndNotEmpty('HTTP_IF_NONE_MATCH')) {
             $eTagHeader = $_SERVER['HTTP_IF_NONE_MATCH'];
         }
         
@@ -150,6 +150,17 @@ class LoadAssetContent implements WebEventHandlerInterface
         
         // Display the content
         $response->setOutput($content);
+    }
+    
+    /**
+     * Returns true if the given header is set and not empty.
+     * 
+     * @param string $header
+     * @return boolean
+     */
+    protected function isHeaderSetAndNotEmpty($header)
+    {
+        return (isset($_SERVER[$header]) && $_SERVER[$header] != '');
     }
 
     /**
