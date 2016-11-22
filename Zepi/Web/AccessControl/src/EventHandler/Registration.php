@@ -140,12 +140,10 @@ class Registration extends FrontendEventHandler
         $group = $registrationForm->searchPartByKeyAndType('user-data');
         $username = trim($group->getPart('username')->getValue());
         $email = trim($group->getPart('email')->getValue());
-        $emailConfirmed = trim($group->getPart('email-confirmed')->getValue());
         $password = trim($group->getPart('password')->getValue());
-        $passwordConfirmed = trim($group->getPart('password-confirmed')->getValue());
         $tos = $group->getPart('tos-accepted')->getValue();
         
-        $result = $this->validateData($framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos);
+        $result = $this->validateData($framework, $username, $email, $password, $tos);
         
         // If the validate function returned a string there was an error in the validation.
         if ($result !== true) {
@@ -185,13 +183,11 @@ class Registration extends FrontendEventHandler
      * @param \Zepi\Turbo\Framework $framework
      * @param string $username
      * @param string $email
-     * @param string $emailConfirmed
      * @param string $password
-     * @param string $passwordConfirmed
      * @param boolean $tos
      * @return boolean|string
      */
-    protected function validateData(Framework $framework, $username, $email, $emailConfirmed, $password, $passwordConfirmed, $tos)
+    protected function validateData(Framework $framework, $username, $email, $password, $tos)
     {
         // If the given username already exists
         if ($this->userManager->hasUserForUsername($username)) {
@@ -203,22 +199,14 @@ class Registration extends FrontendEventHandler
             return $this->translate('Please insert a valid email address.', '\\Zepi\\Web\\AccessControl');
         }
         
-        if ($email != $emailConfirmed) {
-            return $this->translate('The inserted email adresses are not equal.', '\\Zepi\\Web\\AccessControl');
-        }
-        
         // Password
         if (strlen($password) < 8) {
             return $this->translate('The password needs at least 8 characters.', '\\Zepi\\Web\\AccessControl');
         }
         
-        if ($password != $passwordConfirmed) {
-            return $this->translate('The passwords are not equal.', '\\Zepi\\Web\\AccessControl');
-        }
-        
         // ToS
         if (!$tos) {
-            return $this->translate('The passwords are not equal.', '\\Zepi\\Web\\AccessControl');
+            return $this->translate('Please accept our terms of service.', '\\Zepi\\Web\\AccessControl');
         }
         
         // Everything is okey
@@ -249,7 +237,7 @@ class Registration extends FrontendEventHandler
         // Add the user data group
         $group = new Group(
             'user-data',
-            $this->translate('Please fill out the fields below and accept our terms and conditions.', '\\Zepi\\Web\\AccessControl'),
+            $this->translate('Please fill out the fields below and accept our terms of service.', '\\Zepi\\Web\\AccessControl'),
             array(
                 new Text(
                     'username',
@@ -261,25 +249,9 @@ class Registration extends FrontendEventHandler
                     $this->translate('Email address', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
-                new Text(
-                    'email-confirmed',
-                    $this->translate('Confirm email address', '\\Zepi\\Web\\AccessControl'),
-                    true,
-                    '',
-                    '',
-                    array(),
-                    '',
-                    null,
-                    false
-                ),
                 new Password(
                     'password',
                     $this->translate('Password', '\\Zepi\\Web\\AccessControl'),
-                    true
-                ),
-                new Password(
-                    'password-confirmed',
-                    $this->translate('Confirm password', '\\Zepi\\Web\\AccessControl'),
                     true
                 ),
                 new Checkbox(
