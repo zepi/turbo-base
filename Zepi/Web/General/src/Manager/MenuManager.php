@@ -299,13 +299,25 @@ class MenuManager
             }
         }
         
+        return $this->processBreadcrumbEntries($entry);
+    }
+    
+    /**
+     * Loops trough the navigation tree for the given menu entry
+     * and gets all entries for the breadcrumb navigation
+     * 
+     * @param \Zepi\Web\General\Entity\MenuEntry $entry
+     * @return array
+     */
+    public function processBreadcrumbEntries(MenuEntry $entry)
+    {
         $entries = array(
             $entry
         );
         
         if ($entry->hasParent()) {
-            $parentEntries = $this->getBreadcrumbEntries($entry->getParent());
-            
+            $parentEntries = $this->processBreadcrumbEntries($entry->getParent());
+        
             foreach ($parentEntries as $parentEntry) {
                 $entries[] = $parentEntry;
             }
@@ -314,7 +326,7 @@ class MenuManager
         // If we are in the initial call we reverse the order of the entries
         if ($startEntry) {
             $entries = array_reverse($entries, false);
-            
+        
             // If we have additional breadcrumb function for the breadcrumb navigation
             // we add the function here to the entries array
             if ($this->breadcrumbFunction != '') {
