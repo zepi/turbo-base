@@ -267,21 +267,7 @@ class AssetCacheManager
         }
         
         if ($this->combineAssets) {
-            $isValid = $this->validateTypeCache($type, $files);
-
-            // If the cache isn't valid, we build the cache
-            $result = $isValid;
-            if (!$isValid) {
-                $result = $this->buildTypeCache($type, $files);
-            }
-            
-            // If the cache is valid, load the file
-            if ($result) {
-                $hash = $this->getTypeHash($type);
-                $cachedFile = $this->cachedFiles[$hash]['file'];
-                
-                echo $this->generateHtmlCode($type, $cachedFile);
-            }
+            $this->displayCombinedAssets($type, $files);
         } else {
             foreach ($files as $file) {
                 $cachedFile = $this->generateCachedFile($type, $file->getFileName());
@@ -290,6 +276,31 @@ class AssetCacheManager
                     echo $this->generateHtmlCode($type, $cachedFile['file']);
                 }
             }
+        }
+    }
+    
+    /**
+     * Displays the combined assets for the given asset type
+     * 
+     * @param string $type
+     * @param array $files
+     */
+    protected function displayCombinedAssets($type, $files)
+    {
+        $isValid = $this->validateTypeCache($type, $files);
+        
+        // If the cache isn't valid, we build the cache
+        $result = $isValid;
+        if (!$isValid) {
+            $result = $this->buildTypeCache($type, $files);
+        }
+        
+        // If the cache is valid, load the file
+        if ($result) {
+            $hash = $this->getTypeHash($type);
+            $cachedFile = $this->cachedFiles[$hash]['file'];
+        
+            echo $this->generateHtmlCode($type, $cachedFile);
         }
     }
     
