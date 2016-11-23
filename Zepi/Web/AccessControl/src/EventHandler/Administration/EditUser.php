@@ -233,13 +233,13 @@ class EditUser extends FrontendEventHandler
         $errors = array();
         
         // Username
-        if ($this->userManager->hasUserForUsername($username) && $this->userManager->getUserForUsername($username)->getUuid() != $user->getUuid()) {
+        if ($this->isUsernameInUse($username, $user)) {
             $errors[] = new Error(Error::GENERAL_ERROR, $this->translate('The username is already in use.', '\\Zepi\\Web\\AccessControl'));
         }        
         
         // If the user is new or the password is not empty we need to validate
         // the password.
-        if ($user->isNew() || $password != '') {
+        if ($this->shouldValidatePassword($user, $password)) {
             // Password
             if (strlen($password) < 8) {
                 $errors[] = new Error(Error::WRONG_INPUT, $this->translate('The password needs at least 8 characters.', '\\Zepi\\Web\\AccessControl'));
@@ -255,5 +255,29 @@ class EditUser extends FrontendEventHandler
         }
         
         return true;
+    }
+    
+    /**
+     * Returns true if the username is in use and not is the edited user.
+     * 
+     * @param string $username
+     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @return boolean
+     */
+    protected function isUsernameInUse($username, User $user)
+    {
+        return ($this->userManager->hasUserForUsername($username) && $this->userManager->getUserForUsername($username)->getUuid() != $user->getUuid());
+    }
+    
+    /**
+     * Returns true if the password should be validated.
+     * 
+     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @param string $password
+     * @return boolean
+     */
+    protected function shouldValidatePassword(User $user, $password)
+    {
+        return ($user->isNew() || $password != '');
     }
 }

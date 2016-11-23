@@ -86,8 +86,6 @@ class LanguageFileManager
             return false;
         }
         
-        $content = '';
-        
         $globalLocale = substr($specificLocale, 0, strpos($specificLocale, '_'));
         
         // If the extracted part of the specific locale is empty return false because
