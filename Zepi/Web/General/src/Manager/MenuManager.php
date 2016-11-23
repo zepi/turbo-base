@@ -289,9 +289,7 @@ class MenuManager
     {
         $this->activateCorrectMenuEntry();
         
-        $startEntry = false;
         if ($entry === null) {
-            $startEntry = true;
             $entry = $this->activeMenuEntry;
             
             if ($entry == null) {
