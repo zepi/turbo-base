@@ -299,7 +299,7 @@ class MenuManager
             }
         }
         
-        return $this->processBreadcrumbEntries($entry);
+        return $this->processBreadcrumbEntries($entry, $startEntry);
     }
     
     /**
@@ -307,9 +307,10 @@ class MenuManager
      * and gets all entries for the breadcrumb navigation
      * 
      * @param \Zepi\Web\General\Entity\MenuEntry $entry
+     * @param boolean $startEntry
      * @return array
      */
-    public function processBreadcrumbEntries(MenuEntry $entry)
+    public function processBreadcrumbEntries(MenuEntry $entry, $startEntry = false)
     {
         $entries = array(
             $entry
