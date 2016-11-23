@@ -35,14 +35,12 @@
 
 namespace Zepi\Web\UserInterface\Renderer;
 
-use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Web\UserInterface\Table\TableAbstract;
 use \Zepi\Web\UserInterface\Table\Head;
 use \Zepi\Web\UserInterface\Table\Body;
 use \Zepi\Web\UserInterface\Table\Foot;
 use \Zepi\Web\UserInterface\Table\Row;
-use \Zepi\Web\UserInterface\Table\FilterRow;
 use \Zepi\Web\UserInterface\Table\Column;
 use \Zepi\Web\UserInterface\Table\Cell;
 use \Zepi\Web\UserInterface\Table\PreparedTable;
@@ -59,26 +57,9 @@ class Table
 {
     /**
      * @access protected
-     * @var \Zepi\Web\UserInterface\Renderer\Pagination
-     */
-    protected $paginationRenderer;
-    
-    /**
-     * @access protected
      * @var integer
      */
     protected $routeParamIndex = 0;
-    
-    /**
-     * Constructs the object
-     * 
-     * @access public
-     * @param \Zepi\Web\UserInterface\Renderer\Pagination
-     */
-    public function __construct(Pagination $paginationRenderer)
-    {
-        $this->paginationRenderer = $paginationRenderer;
-    }
     
     /**
      * Sets the route param index
@@ -158,13 +139,6 @@ class Table
             $updateRequired = true;
         }
         
-        $page = $request->getRouteParam($this->routeParamIndex);
-        $pageNotSet = false;
-        if ($page == '') {
-            $page = 1;
-            $pageNotSet = true;
-        }
-
         $sortBy = 'name';
         $sortByDirection = 'ASC';
         
@@ -177,37 +151,10 @@ class Table
         }
         
         // Check if the data request is valid
-        if ($dataRequest !== false && $numberOfEntries == $dataRequest->getNumberOfEntries()) {
-            if (!$pageNotSet) {
-                $dataRequest->setPage($page);
-                $dataRequest->setSortBy($sortBy);
-                $dataRequest->setSortByDirection($sortByDirection);
-            }
-            
+        if ($dataRequest !== false) {
             $new = false;
         } else {
             $dataRequest = new DataRequest($page, $numberOfEntries, $sortBy, $sortByDirection);
-        }
-        
-        // Add the filters if the data request is new or the filter has changed
-        if ($new || $updateRequired) {
-            if ($updateRequired) {
-                $dataRequest->clearFilters();
-            }
-            
-            foreach ($table->getColumns() as $column) {
-                $key = 'table-filter-' . $column->getKey();
-
-                if ($column->isFilterable() && $request->hasParam($key) && $request->getParam($key) != '') {
-                    $value = $table->prepareFilterValue($column->getKey(), $request->getParam($key));
-                    
-                    $dataRequest->addFilter(new Filter(
-                        $column->getKey(),
-                        $value,
-                        'LIKE'
-                    ));
-                }
-            }
         }
         
         // Save the data request to the session if needed
