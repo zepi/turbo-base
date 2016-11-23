@@ -12,23 +12,8 @@ namespace Zepi\Web\UserInterface\EventHandler;
 
 use \Zepi\Web\UserInterface\Frontend\FrontendEventHandler;
 use \Zepi\Turbo\Framework;
-use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Web\UserInterface\Form\Form;
-use \Zepi\Web\UserInterface\Form\Group;
-use \Zepi\Web\UserInterface\Form\ErrorBox;
-use \Zepi\Web\UserInterface\Form\Error;
-use \Zepi\Web\UserInterface\Form\ButtonGroup;
-use \Zepi\Web\UserInterface\Form\Field\Text;
-use \Zepi\Web\UserInterface\Form\Field\Password;
-use \Zepi\Web\UserInterface\Form\Field\Checkbox;
-use \Zepi\Web\UserInterface\Form\Field\Submit;
-use \Zepi\Web\UserInterface\Frontend\FrontendHelper;
-use \Zepi\Web\AccessControl\Entity\User;
-use \Zepi\Web\AccessControl\Manager\UserManager;
-use \Zepi\Core\AccessControl\Manager\AccessControlManager;
-use \Zepi\Web\Mail\Helper\MailHelper;
 
 /**
  * Event handler to handle the load data event for datatables
@@ -57,7 +42,7 @@ class LoadData extends FrontendEventHandler
         $token = $request->getRouteParam('token');
         
         // Verify the datatable session data
-        if ($request->getSessionData('dt-class-' . $token) === false || $request->getSessionData('dt-time-' . $token) === false) {
+        if (!$this->hasValidSessionData($request, $token)) {
             $response->redirectTo('/');
             return;
         }
@@ -81,5 +66,17 @@ class LoadData extends FrontendEventHandler
         }
         
         $response->setOutput(json_encode($data));
+    }
+    
+    /**
+     * Returns true if the session data has the needed
+     * token data
+     * 
+     * @param string $token
+     * @return boolean
+     */
+    protected function hasValidSessionData(WebRequest $request, $token)
+    {
+        return ($request->getSessionData('dt-class-' . $token) !== false && $request->getSessionData('dt-time-' . $token) !== false);
     }
 }
