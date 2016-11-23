@@ -134,27 +134,19 @@ class Table
      */
     protected function generateDataRequest(WebRequest $request, TableAbstract $table, $numberOfEntries)
     {
-        $updateRequired = false;
-        if ($request->hasParam('table-filter-update')) {
-            $updateRequired = true;
-        }
-        
         $sortBy = 'name';
         $sortByDirection = 'ASC';
         
         // If the session has a data request object for the table, load it and refresh the data.
         $savedDataRequestKey = get_class($table) . '.DataRequest.Saved';
-        $new = true;
         $dataRequest = false;
         if ($table->shouldSaveDataRequest() && $request->getSessionData($savedDataRequestKey) !== false) {
             $dataRequest = unserialize($request->getSessionData($savedDataRequestKey));
         }
         
         // Check if the data request is valid
-        if ($dataRequest !== false) {
-            $new = false;
-        } else {
-            $dataRequest = new DataRequest($page, $numberOfEntries, $sortBy, $sortByDirection);
+        if ($dataRequest === false) {
+            $dataRequest = new DataRequest(1, $numberOfEntries, $sortBy, $sortByDirection);
         }
         
         // Save the data request to the session if needed
