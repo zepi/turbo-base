@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,19 +27,19 @@
 /**
  * DataRequest
  * 
- * @package Zepi\Core\Utils
+ * @package Zepi\DataSource\Core
  * @subpackage Entity
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\Core\Utils\Entity;
+namespace Zepi\DataSource\Core\Entity;
 
 /**
  * DataRequest
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 class DataRequest
 {
@@ -102,7 +102,7 @@ class DataRequest
      * Adds a filter
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Entity\Filter $filter
+     * @param \Zepi\DataSource\Core\Entity\Filter $filter
      */
     public function addFilter(Filter $filter)
     {
@@ -144,7 +144,7 @@ class DataRequest
      * 
      * @access public
      * @param string $name
-     * @return false|\Zepi\Core\Utils\Entity\Filter
+     * @return false|\Zepi\DataSource\Core\Entity\Filter
      */
     public function getFilter($name)
     {

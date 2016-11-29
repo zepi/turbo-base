@@ -27,12 +27,12 @@
 /**
  * The exception
  * 
- * @package Zepi\DataSourceDriver\Doctrine
+ * @package Zepi\DataSource\Doctrine
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\DataSourceDriver\Doctrine;
+namespace Zepi\DataSource\Doctrine;
 
 /**
  * The exception

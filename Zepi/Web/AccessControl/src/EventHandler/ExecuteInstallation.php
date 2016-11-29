@@ -97,8 +97,8 @@ class ExecuteInstallation implements CliEventHandlerInterface
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
         // Execute the installer only if there are no users
-        $dataRequest = new \Zepi\Core\Utils\Entity\DataRequest(1, 0, 'name', 'ASC');
-        if ($this->userManager->countUsers($dataRequest) > 0) {
+        $dataRequest = new \Zepi\DataSource\Core\Entity\DataRequest(1, 0, 'name', 'ASC');
+        if ($this->userManager->count($dataRequest) > 0) {
             return;
         }
         

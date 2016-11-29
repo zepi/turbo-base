@@ -44,8 +44,7 @@ use \Zepi\Web\UserInterface\Table\Row;
 use \Zepi\Web\UserInterface\Table\Column;
 use \Zepi\Web\UserInterface\Table\Cell;
 use \Zepi\Web\UserInterface\Table\PreparedTable;
-use \Zepi\Core\Utils\Entity\DataRequest;
-use \Zepi\Core\Utils\Entity\Filter;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * Table Renderer
@@ -162,7 +161,7 @@ class Table
      * 
      * @access protected
      * @param \Zepi\Web\UserInterface\Table\TableAbstract $table
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $dataRequest
      * @return \Zepi\Web\UserInterface\Table\Head
      */
     protected function renderHead(TableAbstract $table, DataRequest $dataRequest)

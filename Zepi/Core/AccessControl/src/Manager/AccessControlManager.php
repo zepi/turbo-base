@@ -37,7 +37,7 @@ namespace Zepi\Core\AccessControl\Manager;
 
 use \Zepi\Core\AccessControl\DataSource\AccessEntitiesDataSourceInterface;
 use \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
 
 /**
@@ -81,12 +81,12 @@ class AccessControlManager
      * 
      * @access public
      * @param string $class
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $dataRequest
      * @return array
      */
-    public function getAccessEntities($class, DataRequest $dataRequest)
+    public function find($class, DataRequest $dataRequest)
     {
-        return $this->accessEntitiesDataSource->getAccessEntities($class, $dataRequest);
+        return $this->accessEntitiesDataSource->find($class, $dataRequest);
     }
     
     /**
@@ -95,12 +95,12 @@ class AccessControlManager
      * 
      * @access public
      * @param string $class
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $dataRequest
      * @return integer
      */
-    public function countAccessEntities($class, DataRequest $dataRequest)
+    public function count($class, DataRequest $dataRequest)
     {
-        return $this->accessEntitiesDataSource->countAccessEntities($class, $dataRequest);
+        return $this->accessEntitiesDataSource->count($class, $dataRequest);
     }
     
     /**

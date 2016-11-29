@@ -37,7 +37,7 @@
 namespace Zepi\Web\UserInterface\Table;
 
 use \Zepi\Turbo\Framework;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * A Table displays a data table in the framework. This function must
@@ -128,7 +128,7 @@ abstract class TableAbstract
      * 
      * @abstract
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $request
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $request
      * @return array
      */
     abstract public function getData(DataRequest $request);
@@ -139,7 +139,7 @@ abstract class TableAbstract
      * 
      * @abstract
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $request
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $request
      * @return integer
      */
     abstract public function countData(DataRequest $request);

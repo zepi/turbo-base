@@ -147,12 +147,12 @@ class Module extends ModuleAbstract
         // Data Sources
         $dataSourceManager = $this->framework->getDataSourceManager();
         $dataSourceManager->addDataSource(
-            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\DataSource\\Doctrine',
             '\\Zepi\\Core\\AccessControl\\DataSource\\AccessEntitiesDataSourceDoctrine'
         );
         
         $dataSourceManager->addDataSource(
-            '\\Zepi\\DataSourceDriver\\Doctrine',
+            '\\Zepi\\DataSource\\Doctrine',
             '\\Zepi\\Core\\AccessControl\\DataSource\\PermissionsDataSourceDoctrine'
         );
         

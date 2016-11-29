@@ -27,12 +27,12 @@
 /**
  * This module delivers the Doctrine data source.
  * 
- * @package Zepi\DataSourceDriver\Doctrine
+ * @package Zepi\DataSource\Doctrine
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\DataSourceDriver\Doctrine;
+namespace Zepi\DataSource\Doctrine;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
 
@@ -46,7 +46,7 @@ class Module extends ModuleAbstract
 {
     /**
      * @access protected
-     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
+     * @var \Zepi\DataSource\Doctrine\Manager\EntityManager
      */
     protected $entityManager;
     
@@ -57,7 +57,7 @@ class Module extends ModuleAbstract
      */
     public function initialize()
     {
-        $this->framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSourceDriver\\Doctrine');
+        $this->framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSource\\Doctrine');
     }
     
     
@@ -71,7 +71,7 @@ class Module extends ModuleAbstract
     public function getInstance($className)
     {
         switch ($className) {
-            case '\\Zepi\\DataSourceDriver\\Doctrine\\Manager\\EntityManager':
+            case '\\Zepi\\DataSource\\Doctrine\\Manager\\EntityManager':
                 if ($this->entityManager === null) {
                     $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
                     
@@ -93,7 +93,7 @@ class Module extends ModuleAbstract
                     $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
                     $doctrineEntityManager = \Doctrine\ORM\EntityManager::create($params, $config);
                     
-                    $this->entityManager = new \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager($doctrineEntityManager);
+                    $this->entityManager = new \Zepi\DataSource\Doctrine\Manager\EntityManager($doctrineEntityManager);
                 }
                 
                 return $this->entityManager;

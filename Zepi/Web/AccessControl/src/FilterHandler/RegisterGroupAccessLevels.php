@@ -39,7 +39,7 @@ use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
 use \Zepi\Core\AccessControl\Manager\AccessLevelManager;
 use \Zepi\Web\AccessControl\Manager\GroupManager;
@@ -101,7 +101,7 @@ class RegisterGroupAccessLevels implements FilterHandlerInterface
         $accessLevels = $value;
         $dataRequest = new DataRequest(1, 0, 'name', 'ASC');
         
-        foreach ($this->groupManager->getGroups($dataRequest) as $group) {
+        foreach ($this->groupManager->find($dataRequest) as $group) {
             $accessLevels[] = new GroupAccessLevel(
                 '\\Group\\' . $group->getUuid(),
                 $this->translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),

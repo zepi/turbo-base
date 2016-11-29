@@ -1,0 +1,11 @@
+{
+    "module": {
+        "name": "Zepi DataSource Core",
+        "description": "This module delivers the core functionality for data sources.",
+        "namespace": "\\Zepi\\DataSource\\Core",
+        "author": "Matthias Zobrist",
+        "copyright": "(C) Copyright 2016 by Matthias Zobrist",
+        "url": "http://www.zepi.net/",
+        "version": "1.0"
+    }
+}

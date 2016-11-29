@@ -10,7 +10,8 @@
     },
     "dependencies": {
         "required": {
-            "\\Zepi\\Core\\AccessControl": "*"
+            "\\Zepi\\Core\\AccessControl": "*",
+            "\\Zepi\\DataSource\\Core": "*"
         }
     }
 }

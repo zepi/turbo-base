@@ -38,7 +38,7 @@ namespace Zepi\Web\AccessControl\Table;
 
 use \Zepi\Web\UserInterface\Table\TableAbstract;
 use \Zepi\Web\UserInterface\Table\Column;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * A Table displays a data table in the framework. This function must
@@ -53,13 +53,13 @@ class GroupTable extends TableAbstract
      * Returns an array with all data which should be displayed on this page
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $request
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $request
      * @return array
      */
     public function getData(DataRequest $request)
     {
         $groupManager = $this->framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-        $groups = $groupManager->getGroups($request);
+        $groups = $groupManager->find($request);
         
         return $groups;
     }
@@ -69,13 +69,13 @@ class GroupTable extends TableAbstract
      * data request object
      *
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $request
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $request
      * @return integer
      */
     public function countData(DataRequest $request)
     {
         $groupManager = $this->framework->getInstance('\\Zepi\\Web\\AccessControl\\Manager\\GroupManager');
-        $numberOfGroups = $groupManager->countGroups($request);
+        $numberOfGroups = $groupManager->count($request);
     
         return $numberOfGroups;
     }

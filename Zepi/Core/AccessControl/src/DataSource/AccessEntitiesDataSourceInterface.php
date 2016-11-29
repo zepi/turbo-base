@@ -36,7 +36,7 @@
 
 namespace Zepi\Core\AccessControl\DataSource;
 
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
 
 /**
@@ -57,7 +57,7 @@ interface AccessEntitiesDataSourceInterface
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return array
      */
-    public function getAccessEntities($class, DataRequest $dataRequest);
+    public function find($class, DataRequest $dataRequest);
 
     /**
      * Returns the number of all found access entities for the given DataRequest
@@ -68,7 +68,26 @@ interface AccessEntitiesDataSourceInterface
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return false|integer
      */
-    public function countAccessEntities($class, DataRequest $dataRequest);
+    public function count($class, DataRequest $dataRequest);
+    
+    /**
+     * Returns true if the given entity id exists
+     *
+     * @param string $class
+     * @param integer $entityId
+     * @return boolean
+     */
+    public function has($class, $entityId);
+    
+    /**
+     * Returns the entity for the given id. Returns false if
+     * there is no entity for the given id.
+     * 
+     * @param string $class
+     * @param integer $entityId
+     * @return false|mixed
+     */
+    public function get($class, $entityId);
     
     /**
      * Returns true if there is a access entity for the given uuid

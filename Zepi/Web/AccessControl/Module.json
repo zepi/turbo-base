@@ -15,7 +15,8 @@
             "\\Zepi\\Core\\Language": "*",
             "\\Zepi\\Web\\General": "*",
             "\\Zepi\\Renderer\\HtmlRenderer": "*",
-            "\\Zepi\\Web\\Mail": "*"
+            "\\Zepi\\Web\\Mail": "*",
+            "\\Zepi\\DataSource\\Core": "*"
         }
     }
 }

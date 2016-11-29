@@ -38,10 +38,10 @@ namespace Zepi\Core\AccessControl\DataSource;
 
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
-use \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager;
+use \Zepi\DataSource\Doctrine\Manager\EntityManager;
 use \Zepi\Turbo\Manager\RuntimeManager;
 use \Zepi\Core\AccessControl\Entity\Permission;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * The PermissionsDataSourceDoctrine communicates with Doctrine and 
@@ -54,7 +54,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
 {
     /**
      * @access protected
-     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
+     * @var \Zepi\DataSource\Doctrine\Manager\EntityManager
      */
     protected $entityManager;
     
@@ -68,7 +68,7 @@ class PermissionsDataSourceDoctrine implements DataSourceInterface, PermissionsD
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager $entityManager
+     * @param \Zepi\DataSource\Doctrine\Manager\EntityManager $entityManager
      * @param \Zepi\Turbo\Manager\RuntimeManager $runtimeManager
      */
     public function __construct(EntityManager $entityManager, RuntimeManager $runtimeManager)

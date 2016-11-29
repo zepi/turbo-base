@@ -38,9 +38,9 @@ namespace Zepi\Core\AccessControl\DataSource;
 
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Turbo\FrameworkInterface\DataSourceInterface;
-use \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager;
+use \Zepi\DataSource\Doctrine\Manager\EntityManager;
 use \Zepi\Core\AccessControl\Entity\AccessEntity;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * The AccessEntitiesDataSourceDoctrine communicates with the database and 
@@ -53,7 +53,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
 {
     /**
      * @access protected
-     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
+     * @var \Zepi\DataSource\Doctrine\Manager\EntityManager
      */
     protected $entityManager;
     
@@ -67,7 +67,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      * Constructs the object
      * 
      * @access public
-     * @param \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager $entityManager
+     * @param \Zepi\DataSource\Doctrine\Manager\EntityManager $entityManager
      * @param \Zepi\Core\AccessControl\DataSource\PermissionsDataSourceInterface $permissionsDataSource
      */
     public function __construct(EntityManager $entityManager, PermissionsDataSourceInterface $permissionsDataSource)
@@ -92,14 +92,13 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      * Returns an array with all found access entities for the given DataRequest
      * object. 
      *
-     * @access public 
      * @param string $class
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return array
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot load the access entities for the given data request.
      */
-    public function getAccessEntities($class, DataRequest $dataRequest)
+    public function find($class, DataRequest $dataRequest)
     {
         try {
             $dataRequest->setSelectedFields(array('*'));
@@ -126,14 +125,13 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      * Returns the number of all found access entities for the given DataRequest
      * object.
      *
-     * @access public 
      * @param string $class
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
      * @return false|integer
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot count the access entities for the given data request.
      */
-    public function countAccessEntities($class, DataRequest $dataRequest)
+    public function count($class, DataRequest $dataRequest)
     {
         try {
             $request = clone $dataRequest;
@@ -155,6 +153,63 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
             return $data->getSingleScalarResult();
         } catch (\Exception $e) {
             throw new Exception('Cannot count the access entities for the given data request.', 0, $e);
+        }
+    }
+    
+    /**
+     * Returns true if the given entity id exists
+     *
+     * @param string $class
+     * @param integer $entityId
+     * @return boolean
+     *
+     * @throws \Zepi\Core\AccessControl\Exception Cannot check if there is an access entitiy for the given class "{class}" and id "{entityId}".
+     */
+    public function has($class, $entityId)
+    {
+        try {
+            $em = $this->entityManager->getDoctrineEntityManager();
+            $data = $em->getRepository($class)->findOneBy(array(
+                'id' => $entityId,
+            ));
+             
+            if ($data !== null) {
+                return true;
+            }
+             
+            return false;
+        } catch (\Exception $e) {
+            throw new Exception('Cannot check if there is an access entitiy for the given class "' . $class . '" and id "' . $entityId . '".', 0, $e);
+        }
+    }
+    
+    /**
+     * Returns the entity for the given id. Returns false if
+     * there is no entity for the given id.
+     * 
+     * @param string $class
+     * @param integer $entityId
+     * @return false|mixed
+     *
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load the access entitiy for the given class "{class}" and id "{entityId}".
+     */
+    public function get($class, $entityId)
+    {
+        try {
+            $em = $this->entityManager->getDoctrineEntityManager();
+            $accessEntity = $em->getRepository($class)->findOneBy(array(
+                'id' => $entityId,
+            ));
+            
+            if ($accessEntity !== null) {
+                $this->loadPermissions($accessEntity);
+            
+                return $accessEntity;
+            }
+            
+            return false;
+        } catch (\Exception $e) {
+            throw new Exception('Cannot load the access entitiy for the given class "' . $class . '" and id "' . $entityId . '".', 0, $e);
         }
     }
     
@@ -252,7 +307,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      * @param string $name
      * @return false|\Zepi\Core\AccessControl\Entity\AccessEntity
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot load access entitiy from the database for the given type "{type}" and name "{name}".
+     * @throws \Zepi\Core\AccessControl\Exception Cannot load access entitiy from the database for the given class "{class}" and name "{name}".
      */
     public function getAccessEntityForName($class, $name)
     {
@@ -270,7 +325,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
             
             return false;
         } catch (\Exception $e) {
-            throw new Exception('Cannot load the access entitiy for the given type "' . $type . '" and name "' . $name . '".', 0, $e);
+            throw new Exception('Cannot load the access entitiy for the given class "' . $class . '" and name "' . $name . '".', 0, $e);
         }
     }
     

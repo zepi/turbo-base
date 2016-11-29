@@ -36,7 +36,7 @@
 
 namespace Zepi\Core\AccessControl\DataSource;
 
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * The PermissionsBackend communicates with the database and 

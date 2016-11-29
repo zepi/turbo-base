@@ -39,7 +39,7 @@ use \Zepi\Turbo\FrameworkInterface\FilterHandlerInterface;
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Response\Response;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\Web\AccessControl\Entity\GroupAccessLevel;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 

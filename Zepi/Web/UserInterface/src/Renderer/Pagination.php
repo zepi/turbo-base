@@ -42,7 +42,7 @@ use \Zepi\Web\UserInterface\Pagination\ActivePage;
 use \Zepi\Web\UserInterface\Pagination\Button;
 use \Zepi\Web\UserInterface\Pagination\Dots;
 use \Zepi\Web\UserInterface\Pagination\Pagination as PaginationObject;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 
 /**
  * Pagination Renderer
@@ -62,7 +62,7 @@ class Pagination
      * Prepares the Pagination object for the given DataRequest and number of entries per page
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $dataRequest
      * @param string $paginationUrl
      * @param integer $numberOfEntries
      * @param integer $numberOfEntriesPerPage

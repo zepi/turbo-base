@@ -2,7 +2,7 @@
     "module": {
         "name": "Doctrine Data Source",
         "description": "This module delivers the Doctrine data source.",
-        "namespace": "\\Zepi\\DataSourceDriver\\Doctrine",
+        "namespace": "\\Zepi\\DataSource\\Doctrine",
         "author": "Matthias Zobrist",
         "copyright": "(C) Copyright 2016 by Matthias Zobrist",
         "url": "http://www.zepi.net/",
@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "required": {
+            "\\Zepi\\DataSource\\Core": "*",
             "\\Zepi\\Core\\Utils": "*"
         }
     }

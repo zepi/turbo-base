@@ -38,8 +38,8 @@ namespace Zepi\Api\AccessControl\Manager;
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Api\AccessControl\Entity\Token;
-use \Zepi\Core\Utils\Entity\DataRequest;
-use \Zepi\Core\Utils\Entity\Filter;
+use \Zepi\DataSource\Core\Entity\DataRequest;
+use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
 
 /**
  * Manages the access entity type "Token"
@@ -47,7 +47,7 @@ use \Zepi\Core\Utils\Entity\Filter;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
-class TokenManager
+class TokenManager implements DataSourceManagerInterface
 {
     /**
      * @var string
@@ -215,27 +215,49 @@ class TokenManager
     }
     
     /**
-     * Returns all token entities for the given data request
+     * Returns an array with all entities for the given data request.
      * 
-     * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
-     * @return array
+     * @param \Zepi\DataSource\Core\DataRequest $dataRequest
+     * @return false|array
      */
-    public function getTokens(DataRequest $dataRequest)
+    public function find(DataRequest $dataRequest)
     {
-        return $this->accessControlManager->getAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->find(self::ACCESS_ENTITY_TYPE, $dataRequest);
     }
     
     /**
-     * Returns the number of tokens for the given data request
-     * 
-     * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * Returns the number of entities which are available for the given
+     * data request.
+     *
+     * @param \Zepi\DataSource\Core\DataRequest $dataRequest
      * @return integer
      */
-    public function countTokens(DataRequest $dataRequest)
+    public function count(DataRequest $dataRequest)
     {
-        return $this->accessControlManager->countAccessEntities(self::ACCESS_ENTITY_TYPE, $dataRequest);
+        return $this->accessControlManager->count(self::ACCESS_ENTITY_TYPE, $dataRequest);
+    }
+    
+    /**
+     * Returns true if the given entity id exists
+     *
+     * @param integer $entityId
+     * @return boolean
+     */
+    public function has($entityId)
+    {
+        return $this->accessControlManager->has(self::ACCESS_ENTITY_TYPE, $entityId);
+    }
+    
+    /**
+     * Returns the entity for the given id. Returns false if
+     * there is no entity for the given id.
+     *
+     * @param integer $entityId
+     * @return false|mixed
+     */
+    public function get($entityId)
+    {
+        return $this->accessControlManager->get(self::ACCESS_ENTITY_TYPE, $entityId);
     }
     
     /**

@@ -12,7 +12,8 @@
         "required": {
             "\\Zepi\\Core\\Utils": "*",
             "\\Zepi\\Renderer\\HtmlRenderer": "*",
-            "\\Zepi\\Web\\General": "*"
+            "\\Zepi\\Web\\General": "*",
+            "\\Zepi\\DataSource\\Core": "*"
         }
     }
 }

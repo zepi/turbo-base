@@ -27,16 +27,15 @@
 /**
  * Entity Manager to work with the doctrine entity manager
  * 
- * @package Zepi\DataSourceDriver\Doctrine
+ * @package Zepi\DataSource\Doctrine
  * @subpackage Manager
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
 
-namespace Zepi\DataSourceDriver\Doctrine\Manager;
+namespace Zepi\DataSource\Doctrine\Manager;
 
-use \Zepi\DataSourceDriver\Doctrine\Exception;
-use \Zepi\Core\Utils\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use \Doctrine\ORM\QueryBuilder;
 
@@ -67,7 +66,7 @@ class EntityManager
      * Builds the query for the given data request object
      * 
      * @access public
-     * @param \Zepi\Core\Utils\Entity\DataRequest $dataRequest
+     * @param \Zepi\DataSource\Core\Entity\DataRequest $dataRequest
      * @param \Doctrine\ORM\QueryBuilder $queryBuilder
      * @param string $entity
      * @param string $tableCode
