@@ -109,6 +109,16 @@ class AccessEntity
     }
     
     /**
+     * Returns the string representation for the access entity
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+    
+    /**
      * Returns the id of the access entitiy
      * 
      * @access public

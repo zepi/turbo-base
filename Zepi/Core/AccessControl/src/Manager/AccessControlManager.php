@@ -104,6 +104,32 @@ class AccessControlManager
     }
     
     /**
+     * Returns true if there is a access entity for the given entity id
+     *
+     * @access public
+     * @param string $class
+     * @param string $entityId
+     * @return boolean
+     */
+    public function has($class, $entityId)
+    {
+        return $this->accessEntitiesDataSource->has($class, $entityId);
+    }
+    
+    /**
+     * Returns the access entity object for the given entity id
+     *
+     * @access public
+     * @param string $class
+     * @param string $entityId
+     * @return false|\Zepi\Core\AccessControl\Entity\Accessentity
+     */
+    public function get($class, $entityId)
+    {
+        return $this->accessEntitiesDataSource->get($class, $entityId);
+    }
+    
+    /**
      * Adds an access entity. Returns the uuid of the access entity
      * or false, if the access entity can not be inserted.
      * 
