@@ -37,7 +37,6 @@
         init: function() {
         	var _ipField = this;
         	
-        	this.input.keypress(function (event) { _ipField.validateInput(event); });
         	this.input.keyup(function (event) { _ipField.validateIp(); });
             this.input.change(function (event) { _ipField.validateIp(); });
         	
@@ -76,19 +75,6 @@
             } else if (!hasInput) {
                 formGroup.removeClass('has-feedback').removeClass('has-success').removeClass('has-error');
                 formGroup.find('span.form-control-feedback').remove();
-            }
-        },
-        
-        validateInput: function (event) {
-            this.validateType();
-            
-            var allowedCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '/'];
-            if (this.family == 'IPv6' || this.family == 'IP') {
-                allowedCharacters.push('a', 'b', 'c', 'd', 'e', 'f', ':');
-            }
-            
-            if (allowedCharacters.indexOf(event.key.toLowerCase()) == -1) {
-                event.preventDefault(false);
             }
         },
         
