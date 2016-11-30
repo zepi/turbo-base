@@ -127,7 +127,7 @@ class AccessEntitiesDataSourceDoctrine implements DataSourceInterface, AccessEnt
      *
      * @param string $class
      * @param \Zepi\Core\Utils\DataRequest $dataRequest
-     * @return false|integer
+     * @return integer
      * 
      * @throws \Zepi\Core\AccessControl\Exception Cannot count the access entities for the given data request.
      */
