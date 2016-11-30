@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 zepi
+ * Copyright (c) 2016 zepi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,18 +27,18 @@
 /**
  * The exception
  * 
- * @package Zepi\Core\Utils
+ * @package Zepi\DataSource\Core
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 
-namespace Zepi\Core\Utils;
+namespace Zepi\DataSource\Core;
 
 /**
  * The exception
  * 
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2015 zepi
+ * @copyright Copyright (c) 2016 zepi
  */
 class Exception extends \Zepi\Turbo\Exception
 {
