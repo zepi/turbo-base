@@ -35,7 +35,10 @@
 
 namespace Zepi\Web\UserInterface\Form\Field;
 
-use \Zepi\Web\UserInterface\Manager\ManagerInterface;
+use \Zepi\Turbo\Request\RequestAbstract;
+use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\Entity\DataRequest;
+use \Zepi\DataSource\Core\Entity\Filter;
 
 /**
  * Form Element Entity Select
@@ -43,19 +46,37 @@ use \Zepi\Web\UserInterface\Manager\ManagerInterface;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
-class Select extends FieldAbstract
+class EntitySelect extends FieldAbstract
 {
     /**
-     * @var \Zepi\Web\UserInterface\Manager\ManagerInterface
+     * @var \Zepi\DataSource\Core\Manager\DataSourceManagerInterface
      */
-    protected $entityManager = array();
+    protected $dataSourceManager = array();
+    
+    /**
+     * @var string
+     */
+    protected $fieldName;
+    
+    /**
+     * @var integer
+     */
+    protected $maxNumberOfSelection;
+    
+    /**
+     * @var callable
+     */
+    protected $displayOptionCallback;
     
     /**
      * Constructs the object
      *
      * @access public
      * @param string $label
-     * @param \Zepi\Web\UserInterface\Manager\ManagerInterface $entityManager
+     * @param \Zepi\DataSource\Core\Manager\DataSourceManagerInterface $dataSourceManager
+     * @param string $fieldName
+     * @param integer $maxNumberOfSelection
+     * @param callable $displayOptionCallback
      * @param boolean $isMandatory
      * @param array $value
      * @param string $helpText
@@ -64,17 +85,23 @@ class Select extends FieldAbstract
      * @param integer $tabIndex
      */
     public function __construct(
-            $key,
-            $label,
-            ManagerInterface $entityManager,
-            $isMandatory = false,
-            $value = array(),
-            $helpText = '',
-            $classes = array(),
-            $placeholder = '',
-            $tabIndex = null
+        $key,
+        $label,
+        DataSourceManagerInterface $dataSourceManager,
+        $fieldName,
+        $maxNumberOfSelection = 1,
+        $displayOptionCallback = false,
+        $isMandatory = false,
+        $value = array(),
+        $helpText = '',
+        $classes = array(),
+        $placeholder = '',
+        $tabIndex = null
     ) {
-        $this->entityManager = $entityManager;
+        $this->dataSourceManager = $dataSourceManager;
+        $this->fieldName = $fieldName;
+        $this->maxNumberOfSelection = $maxNumberOfSelection;
+        $this->displayOptionCallback = $displayOptionCallback;
     
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }
@@ -96,8 +123,66 @@ class Select extends FieldAbstract
      * @access public
      * @return array
      */
-    public function getAvailableValues()
+    public function getAvailableValues($query = '')
     {
-        return $this->availableValues;
+        $dataRequest = new DataRequest(0, 0, $this->fieldName, 'ASC');
+        
+        if ($query != '') {
+            $dataRequest->addFilter(new Filter($this->fieldName, '*' . $query . '*', 'LIKE'));
+        }
+        
+        $values = $this->dataSourceManager->find($dataRequest);
+        
+        return $values;
+    }
+    
+    /**
+     * Sets the html form value of the field
+     *
+     * @access public
+     * @param mixed $value
+     * @param \Zepi\Turbo\Request\RequestAbstract $request
+     */
+    public function setValue($value, RequestAbstract $request)
+    {
+        if (!$this->dataSourceManager->has($value)) {
+            return;
+        }
+        
+        if (is_array($value)) {
+            $this->value = array();
+            foreach ($value as $id) {
+                $this->value[] = $this->dataSourceManager->get($id);
+            }
+        } else {
+            $this->value = $this->dataSourceManager->get($value);
+        }
+    }
+    
+    /**
+     * Returns the maximum number of selected entities
+     * 
+     * @return integer
+     */
+    public function getMaxNumberOfSelection()
+    {
+        return $this->maxNumberOfSelection;
+    }
+    
+    /**
+     * Returns true if the field contains the given entity as value
+     * 
+     * @param mixed $entity
+     * @return boolean
+     */
+    public function hasEntity($entity)
+    {
+        if (is_array($this->value) && in_array($entity, $this->value)) {
+            return true;
+        } else if ($this->value === $entity) {
+            return true;
+        }
+        
+        return false;
     }
 }

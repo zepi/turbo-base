@@ -92,7 +92,7 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ButtonGroup', $this->directory . '/templates/Form/button-group.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\ErrorBox', $this->directory . '/templates/Form/error-box.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base', $this->directory . '/templates/Form/Field/base.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace', $this->directory . '/templates/Form/Field/noSpace.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\NoSpace', $this->directory . '/templates/Form/Field/no-space.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Blank', $this->directory . '/templates/Form/Field/blank.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Abstract', $this->directory . '/templates/Form/Field/abstract.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Text', $this->directory . '/templates/Form/Field/text.phtml');
@@ -108,7 +108,8 @@ class Module extends ModuleAbstract
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Password', $this->directory . '/templates/Form/Field/password.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Button', $this->directory . '/templates/Form/Field/button.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Selector', $this->directory . '/templates/Form/Field/selector.phtml');
-        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\DynamicZone', $this->directory . '/templates/Form/Field/dynamicZone.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\DynamicZone', $this->directory . '/templates/Form/Field/dynamic-zone.phtml');
+        $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\EntitySelect', $this->directory . '/templates/Form/Field/entity-select.phtml');
         $templatesManager->addTemplate('\\Zepi\\Web\\UserInterface\\Templates\\Form\\Snippet\\SelectorItem', $this->directory . '/templates/Form/Snippet/selector-item.phtml');
         
         // Table
@@ -132,7 +133,7 @@ class Module extends ModuleAbstract
         $assetManager = $this->framework->getInstance('\\Zepi\\Web\\General\\Manager\\AssetManager');
         $assetManager->addAsset(AssetManager::JS, 'ui-tabs', $this->directory . '/assets/js/tabs.js', array('zt-main'));
         $assetManager->addAsset(AssetManager::JS, 'ui-responsive-tabs', $this->directory . '/assets/vendor/bootstrap-responsive-tabs/js/responsive-tabs.js', array('ui-tabs'));
-        $assetManager->addAsset(AssetManager::JS, 'ui-price', $this->directory . '/assets/js/price.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-form-fields', $this->directory . '/assets/js/form-fields.js', array('zt-main'));
         $assetManager->addAsset(AssetManager::JS, 'ui-dynamic-zone', $this->directory . '/assets/js/dynamicZone.js', array('zt-main'));
         $assetManager->addAsset(AssetManager::JS, 'ui-jquery-mask', $this->directory . '/assets/vendor/jquery-maskmoney/jquery.maskMoney.js', array('zt-main'));
         
@@ -154,6 +155,9 @@ class Module extends ModuleAbstract
         $assetManager->addAsset(AssetManager::JS, 'ui-datatables-responsive-js', 'vendor/drmonty/datatables-responsive/js/dataTables.responsive.js', array('ui-datatables-bootstrap-js'));
         $assetManager->addAsset(AssetManager::JS, 'ui-datatables-responsive-bootstrap-js', 'vendor/drmonty/datatables-responsive/js/responsive.bootstrap.js', array('ui-datatables-responsive-js'));
         $assetManager->addAsset(AssetManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
+        
+        $assetManager->addAsset(AssetManager::CSS, 'ui-selectize-bootstrap-css', 'vendor/grimmlink/selectize/dist/css/selectize.bootstrap3.css', array('ui-form'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-selectize-js', 'vendor/grimmlink/selectize/dist/js/standalone/selectize.min.js', array('zt-main'));
         
         // Register the event handler
         $runtimeManager = $this->framework->getRuntimeManager();

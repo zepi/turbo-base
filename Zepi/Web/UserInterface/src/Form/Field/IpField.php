@@ -113,6 +113,10 @@ class IpField extends FieldAbstract
     {
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
     
+        if ($this->value == '' && !$this->isMandatory) {
+            return true;
+        }
+        
         try {
             $ipObject = $this->createIpObject($this->value);
         } catch (ParseException $e) {

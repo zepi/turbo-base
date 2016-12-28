@@ -1,7 +1,7 @@
 /**
  * zepi Turbo
  * 
- * UserInterface Selector Field Type
+ * IP Address Field Type
  */
 ;(function ( $, window, document, undefined ) {
     var pluginName = "ztIpAddress",
