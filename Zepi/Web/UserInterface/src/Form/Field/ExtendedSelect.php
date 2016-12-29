@@ -51,6 +51,7 @@ class ExtendedSelect extends Select
      * @param boolean $isMandatory
      * @param array $value
      * @param array $availableValues
+     * @param integer $maxNumberOfSelection
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
@@ -62,12 +63,13 @@ class ExtendedSelect extends Select
         $isMandatory = false,
         $value = array(),
         $availableValues = array(),
+        $maxNumberOfSelection = 1,
         $helpText = '',
         $classes = array(),
         $placeholder = '',
         $tabIndex = null
     ) {
-        parent::__construct($key, $label, $isMandatory, $value, $availableValues, $helpText, $classes, $placeholder, $tabIndex);
+        parent::__construct($key, $label, $isMandatory, $value, $availableValues, $maxNumberOfSelection, $helpText, $classes, $placeholder, $tabIndex);
         
         $this->classes[] = 'extended-select';
     }

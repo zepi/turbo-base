@@ -39,6 +39,8 @@ use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
 use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\DataSource\Core\Entity\Filter;
+use \Zepi\Web\UserInterface\Form\Error;
+use \Zepi\Turbo\Framework;
 
 /**
  * Form Element Entity Select
@@ -145,16 +147,20 @@ class EntitySelect extends FieldAbstract
      */
     public function setValue($value, RequestAbstract $request)
     {
-        if (!$this->dataSourceManager->has($value)) {
-            return;
-        }
-        
-        if (is_array($value)) {
+        if ($this->maxNumberOfSelection > 1) {
             $this->value = array();
             foreach ($value as $id) {
+                if (!$this->dataSourceManager->has($id)) {
+                    continue;
+                }
+                
                 $this->value[] = $this->dataSourceManager->get($id);
             }
         } else {
+            if (!$this->dataSourceManager->has($value)) {
+                return;
+            }
+            
             $this->value = $this->dataSourceManager->get($value);
         }
     }
@@ -175,7 +181,7 @@ class EntitySelect extends FieldAbstract
      * @param mixed $entity
      * @return boolean
      */
-    public function hasEntity($entity)
+    public function isSelected($entity)
     {
         if (is_array($this->value) && in_array($entity, $this->value)) {
             return true;
@@ -184,5 +190,34 @@ class EntitySelect extends FieldAbstract
         }
         
         return false;
+    }
+    
+    /**
+     * Validates the value. Returns true if everything is okey or an Error
+     * object if there was an error.
+     *
+     * @access public
+     * @param \Zepi\Turbo\Framework $framework
+     * @return boolean|\Zepi\Web\UserInterface\Form\Error
+     */
+    public function validate(Framework $framework)
+    {
+        $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
+    
+        if ($this->maxNumberOfSelection > 1 && count($this->value) > $this->maxNumberOfSelection) {
+            return new Error(
+                Error::INVALID_VALUE,
+                $translationManager->translate(
+                    'You have selected too many items in the field %field%. Please select only %max% items.',
+                    '\\Zepi\\Web\\UserInterface',
+                    array(
+                        'field' => $this->label,
+                        'max' => $this->maxNumberOfSelection
+                    )
+                )
+            );
+        }
+    
+        return true;
     }
 }

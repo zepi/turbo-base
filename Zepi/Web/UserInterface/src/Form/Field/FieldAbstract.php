@@ -39,6 +39,7 @@ use \Zepi\Web\UserInterface\Form\Group;
 use \Zepi\Web\UserInterface\Layout\Part;
 use \Zepi\Turbo\Request\RequestAbstract;
 use \Zepi\Turbo\Framework;
+use \Zepi\Web\UserInterface\Form\Error;
 
 /**
  * Form FieldAbstract
@@ -113,6 +114,11 @@ abstract class FieldAbstract extends Part
      * @var string
      */
     protected $templateKey = '\\Zepi\\Web\\UserInterface\\Templates\\Form\\Field\\Base';
+    
+    /**
+     * @var array
+     */
+    protected $errors = array();
     
     /**
      * Constructs the object
@@ -377,5 +383,35 @@ abstract class FieldAbstract extends Part
     public function validate(Framework $framework)
     {
         return true;
+    }
+    
+    /**
+     * Adds an error object to the field
+     * 
+     * @param \Zepi\Web\UserInterface\Form\Error $error
+     */
+    public function addError(Error $error)
+    {
+        $this->errors[] = $error;
+    }
+    
+    /**
+     * Returns true if the field has any errors
+     * 
+     * @return boolean
+     */
+    public function hasErrors()
+    {
+        return (count($this->errors) > 0);
+    }
+    
+    /**
+     * Returns the error objects for the field
+     * 
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

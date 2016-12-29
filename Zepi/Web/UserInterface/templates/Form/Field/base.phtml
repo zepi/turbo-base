@@ -1,6 +1,7 @@
 <?php
     $layoutRenderer = $additionalData['layoutRenderer']; 
     $container = $additionalData['container'];
+    $form = $container->getParentOfType('\\Zepi\\Web\\UserInterface\\Form\\Form');
     
     $showLabel = false;
     $classes = '';
@@ -18,7 +19,14 @@
         $classes = 'col-sm-8 col-sm-offset-4';
     }
 ?>
-<div class="form-group">
+
+<div class="form-group 
+    <?php if ($container->hasErrors()): ?>
+        has-error
+    <?php elseif($form !== false && $form->isSubmitted() && !$container->hasErrors() && !empty($container->getValue())): ?>
+        has-success
+    <?php endif; ?>
+    ">
     <?php if ($showLabel): ?>
         <label for="<?php echo $container->getHtmlId(); ?>" class="col-sm-4 control-label <?php echo $additionalClasses; ?>"><?php echo $container->getLabel(); ?></label>
     <?php endif; ?>
@@ -26,5 +34,11 @@
     <div class="<?php echo $classes . ' ' . $additionalClasses; ?>">
         <?php echo $this->templatesManager->renderTemplate($container->getTemplateName(), array('field' => $container)); ?>
         <p class="help-block"><?php echo $container->getHelpText(); ?></p>
+        
+        <?php if ($container->hasErrors()): ?>
+            <?php foreach ($container->getErrors() as $error): ?>
+                <p class="help-block"><?php echo $error->getErrorMessage(); ?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </div>

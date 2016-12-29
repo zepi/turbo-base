@@ -1,5 +1,9 @@
 <?php $field = $additionalData['field']; ?>
-<select name="<?php echo $field->getHtmlName(); ?>" 
+<select <?php if ($field->getMaxNumberOfSelection() > 0): ?>
+            name="<?php echo $field->getHtmlName(); ?>[]"
+        <?php else: ?>
+            name="<?php echo $field->getHtmlName(); ?>"
+        <?php endif; ?> 
         id="<?php echo $field->getHtmlId(); ?>" 
         class="form-control <?php echo $field->getHtmlClasses(); ?>"
         <?php if ($field->isMandatory()) { echo 'required="required"'; } ?>
@@ -7,10 +11,15 @@
         <?php if ($field->getTabIndex() !== null): ?>
             tabindex="<?php echo $field->getTabIndex(); ?>"
         <?php endif; ?>
+        
+        <?php if ($field->getMaxNumberOfSelection() > 1): ?>
+            multiple="multiple"
+            data-max="<?php echo $field->getMaxNumberOfSelection(); ?>"
+        <?php endif; ?>
     >
     <?php foreach ($field->getAvailableValues() as $value => $label): ?>
         <option value="<?php echo $value; ?>"
-                <?php if ($field->getValue() === $value) { echo 'selected="selected"'; } ?>
+                <?php if ($field->isSelected($value)) { echo 'selected="selected"'; } ?>
             >
             <?php echo $label; ?>
         </option>

@@ -13,14 +13,14 @@
             tabindex="<?php echo $field->getTabIndex(); ?>"
         <?php endif; ?>
         
-        <?php if ($field->getMaxNumberOfSelection()): ?>
+        <?php if ($field->getMaxNumberOfSelection() > 1): ?>
             multiple="multiple"
             data-max="<?php echo $field->getMaxNumberOfSelection(); ?>"
         <?php endif; ?>
     >
     <?php foreach ($field->getAvailableValues() as $entity): ?>
         <option value="<?php echo $entity->getId(); ?>"
-                <?php if ($field->hasEntity($entity)) { echo 'selected="selected"'; } ?>
+                <?php if ($field->isSelected($entity)) { echo 'selected="selected"'; } ?>
             >
             <?php echo $entity; ?>
         </option>

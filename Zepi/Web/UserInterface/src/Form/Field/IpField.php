@@ -112,7 +112,6 @@ class IpField extends FieldAbstract
     public function validate(Framework $framework)
     {
         $translationManager = $framework->getInstance('\\Zepi\\Core\\Language\\Manager\\TranslationManager');
-    
         if ($this->value == '' && !$this->isMandatory) {
             return true;
         }

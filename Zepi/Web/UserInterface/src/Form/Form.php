@@ -248,17 +248,21 @@ class Form extends Part
         foreach ($this->getChildrenByType('\\Zepi\\Web\\UserInterface\\Form\\Field\\FieldAbstract') as $field) {
             // Validate mandatory fields
             if ($field->isMandatory() && !$field->hasValue()) {
-                $errors[] = new Error(
+                $fieldError = new Error(
                     Error::MANDATORY_FIELD, 
                     sprintf($translationManager->translate('%s is a mandatory field. Please fill out the field.', '\\Zepi\\Web\\UserInterface'), $field->getLabel()), 
                     $field
                 );
+                
+                $errors[] = $fieldError;
+                $field->addError($fieldError);
             }
             
             $result = $field->validate($framework);
             
             if ($result !== true) {
                 $errors[] = $result;
+                $field->addError($result);
             }
         }
         

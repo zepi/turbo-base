@@ -5,12 +5,15 @@ jQuery(document).ready(function () {
 	// Extended select fields
 	jQuery('.extended-select').each(function () {
 	    var maxNumberOfSelection = 1;
-	    console.log(jQuery(this).data('max'));
+	    var plugins = [];
+
 	    if (jQuery(this).data('max') != '') {
 	        maxNumberOfSelection = jQuery(this).data('max');
+	        plugins.push('remove_button');
 	    }
 	    
 	    jQuery(this).selectize({
+	        plugins: plugins,
 	        create: false,
 	        maxItems: maxNumberOfSelection
 	    });
