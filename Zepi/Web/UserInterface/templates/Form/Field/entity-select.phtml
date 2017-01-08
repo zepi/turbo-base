@@ -17,12 +17,30 @@
             multiple="multiple"
             data-max="<?php echo $field->getMaxNumberOfSelection(); ?>"
         <?php endif; ?>
+        
+        <?php if ($field instanceof Zepi\Web\UserInterface\Form\Field\ExtendedEntitySelect): ?>
+            data-extended-options="<?php echo urlencode(json_encode($field->getExtendedOptions())); ?>"
+        <?php endif; ?>
     >
-    <?php foreach ($field->getAvailableValues() as $entity): ?>
-        <option value="<?php echo $entity->getId(); ?>"
-                <?php if ($field->isSelected($entity)) { echo 'selected="selected"'; } ?>
-            >
-            <?php echo $entity; ?>
-        </option>
-    <?php endforeach; ?>
+    <?php if ($field instanceof Zepi\Web\UserInterface\Form\Field\ExtendedEntitySelect): ?>
+        <?php if ($field->getMaxNumberOfSelection() > 1): ?>
+            <?php foreach ($field->getValue() as $entity): ?>
+                <option value="<?php echo $entity->getId(); ?>" selected>
+                    <?php echo $entity; ?>
+                </option>
+            <?php endforeach; ?>
+        <?php elseif ($field->hasValue()): ?>
+            <option value="<?php echo $field->getValue()->getId(); ?>" selected>
+                <?php echo $field->getValue(); ?>
+            </option>
+        <?php endif; ?>
+    <?php else: ?>
+        <?php foreach ($field->getAvailableValues() as $entity): ?>
+            <option value="<?php echo $entity->getId(); ?>"
+                    <?php if ($field->isSelected($entity)) { echo 'selected="selected"'; } ?>
+                >
+                <?php echo $entity; ?>
+            </option>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </select>

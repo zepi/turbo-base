@@ -79,7 +79,7 @@ class EntityManager
         $hasWhere = false;
         $i = 1;
         foreach ($dataRequest->getFilters() as $filter) {
-            $whereQuery = $tableCode . '.' . $filter->getFieldName() . ' ' . $filter->getMode() . ' :' . $i;
+            $whereQuery = $tableCode . '.' . $filter->getFieldName() . ' ' . $filter->getMode() . ' :p' . $i;
             if ($hasWhere) {
                 $queryBuilder->andWhere($whereQuery);
             } else {
@@ -87,7 +87,7 @@ class EntityManager
                 $hasWhere = true;
             }
             
-            $queryBuilder->setParameter($i, $filter->getNeededValue());
+            $queryBuilder->setParameter('p' . $i, $this->prepareValue($filter->getNeededValue(), $filter->getMode()));
             $i++;
         }
         
@@ -106,6 +106,23 @@ class EntityManager
             $queryBuilder->setFirstResult($dataRequest->getOffset());
             $queryBuilder->setMaxResults($dataRequest->getNumberOfEntries());
         }
+    }
+    
+    /**
+     * Replaces the % characters in the value if the mode contains
+     * "LIKE".
+     * 
+     * @param mixed $value
+     * @param string $mode
+     * @return mixed
+     */
+    protected function prepareValue($value, $mode)
+    {
+        if (strpos($mode, 'LIKE') !== false) {
+            return str_replace('*', '%', $value);
+        }
+        
+        return $value;
     }
     
     /**

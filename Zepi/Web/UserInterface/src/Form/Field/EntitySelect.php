@@ -53,7 +53,7 @@ class EntitySelect extends FieldAbstract
     /**
      * @var \Zepi\DataSource\Core\Manager\DataSourceManagerInterface
      */
-    protected $dataSourceManager = array();
+    protected $dataSourceManager = null;
     
     /**
      * @var string
@@ -66,11 +66,6 @@ class EntitySelect extends FieldAbstract
     protected $maxNumberOfSelection;
     
     /**
-     * @var callable
-     */
-    protected $displayOptionCallback;
-    
-    /**
      * Constructs the object
      *
      * @access public
@@ -78,7 +73,6 @@ class EntitySelect extends FieldAbstract
      * @param \Zepi\DataSource\Core\Manager\DataSourceManagerInterface $dataSourceManager
      * @param string $fieldName
      * @param integer $maxNumberOfSelection
-     * @param callable $displayOptionCallback
      * @param boolean $isMandatory
      * @param array $value
      * @param string $helpText
@@ -92,9 +86,8 @@ class EntitySelect extends FieldAbstract
         DataSourceManagerInterface $dataSourceManager,
         $fieldName,
         $maxNumberOfSelection = 1,
-        $displayOptionCallback = false,
         $isMandatory = false,
-        $value = array(),
+        $value = null,
         $helpText = '',
         $classes = array(),
         $placeholder = '',
@@ -103,7 +96,6 @@ class EntitySelect extends FieldAbstract
         $this->dataSourceManager = $dataSourceManager;
         $this->fieldName = $fieldName;
         $this->maxNumberOfSelection = $maxNumberOfSelection;
-        $this->displayOptionCallback = $displayOptionCallback;
     
         parent::__construct($key, $label, $isMandatory, $value, $helpText, $classes, $placeholder, $tabIndex);
     }

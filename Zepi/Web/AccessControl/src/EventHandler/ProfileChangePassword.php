@@ -96,7 +96,7 @@ class ProfileChangePassword extends FrontendEventHandler
         $changePasswordForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
-        $changePasswordForm->processFormData($request);
+        $changePasswordForm->processFormData($request, $response);
         
         $result = false;
         $errors = array();

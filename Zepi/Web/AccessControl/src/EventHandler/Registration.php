@@ -90,7 +90,7 @@ class Registration extends FrontendEventHandler
         $registrationForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
-        $registrationForm->processFormData($request);
+        $registrationForm->processFormData($request, $response);
         
         // Validate the form data and authorize the user
         $result = false;

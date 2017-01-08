@@ -44,6 +44,11 @@ namespace Zepi\Web\UserInterface\Form\Field;
 class ExtendedSelect extends Select
 {
     /**
+     * @var array
+     */
+    protected $extendedOptions;
+    
+    /**
      * Constructs the object
      *
      * @access public
@@ -52,6 +57,7 @@ class ExtendedSelect extends Select
      * @param array $value
      * @param array $availableValues
      * @param integer $maxNumberOfSelection
+     * @param array $extendedOptions
      * @param string $helpText
      * @param array $classes
      * @param string $placeholder
@@ -64,13 +70,25 @@ class ExtendedSelect extends Select
         $value = array(),
         $availableValues = array(),
         $maxNumberOfSelection = 1,
+        $extendedOptions = array(),
         $helpText = '',
         $classes = array(),
         $placeholder = '',
         $tabIndex = null
     ) {
         parent::__construct($key, $label, $isMandatory, $value, $availableValues, $maxNumberOfSelection, $helpText, $classes, $placeholder, $tabIndex);
-        
+
+        $this->extendedOptions = $extendedOptions;
         $this->classes[] = 'extended-select';
+    }
+    
+    /**
+     * Returns the extended options
+     *
+     * @return array
+     */
+    public function getExtendedOptions()
+    {
+        return $this->extendedOptions;
     }
 }

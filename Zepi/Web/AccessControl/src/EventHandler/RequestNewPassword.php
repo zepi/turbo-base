@@ -79,7 +79,7 @@ class RequestNewPassword extends FrontendEventHandler
         $requestForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
-        $requestForm->processFormData($request);
+        $requestForm->processFormData($request, $response);
         
         // Validate the form data and authorize the user
         $result = false;

@@ -157,7 +157,7 @@ class Module extends ModuleAbstract
         $assetManager->addAsset(AssetManager::JS, 'ui-datatables-initialization-js', $this->directory . '/assets/js/dataTables.js', array('ui-datatables-js'));
         
         $assetManager->addAsset(AssetManager::CSS, 'ui-selectize-bootstrap-css', 'vendor/grimmlink/selectize/dist/css/selectize.bootstrap3.css', array('ui-form'));
-        $assetManager->addAsset(AssetManager::JS, 'ui-selectize-js', 'vendor/grimmlink/selectize/dist/js/standalone/selectize.min.js', array('zt-main'));
+        $assetManager->addAsset(AssetManager::JS, 'ui-selectize-js', 'vendor/grimmlink/selectize/dist/js/standalone/selectize.js', array('zt-main'));
         
         // Register the event handler
         $runtimeManager = $this->framework->getRuntimeManager();

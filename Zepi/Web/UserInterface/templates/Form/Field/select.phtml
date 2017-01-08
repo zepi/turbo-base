@@ -16,6 +16,10 @@
             multiple="multiple"
             data-max="<?php echo $field->getMaxNumberOfSelection(); ?>"
         <?php endif; ?>
+        
+        <?php if ($field instanceof Zepi\Web\UserInterface\Form\Field\ExtendedSelect): ?>
+            data-extended-options="<?php echo urlencode(json_encode($field->getExtendedOptions())); ?>"
+        <?php endif; ?>
     >
     <?php foreach ($field->getAvailableValues() as $value => $label): ?>
         <option value="<?php echo $value; ?>"

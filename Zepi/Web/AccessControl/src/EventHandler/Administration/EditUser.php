@@ -133,7 +133,7 @@ class EditUser extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Process the data
-        $result = $this->processFormData($request, $user);
+        $result = $this->processFormData($request, $response, $user);
         if ($result === true) {
             // Display the successful saved message
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditUserFinished', array(
@@ -155,12 +155,13 @@ class EditUser extends FrontendEventHandler
      * user into the database.
      * 
      * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\User $user
      * @return boolean|string
      */
-    protected function processFormData(WebRequest $request, User $user)
+    protected function processFormData(WebRequest $request, Response $response, User $user)
     {
-        $result = $this->layout->validateFormData($request, function ($formValues) use ($user) {
+        $result = $this->layout->validateFormData($request, $response, function ($formValues) use ($user) {
             return $this->validateData(
                 $user, 
                 $formValues['required-data.username'],

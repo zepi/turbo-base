@@ -112,7 +112,7 @@ class Login extends FrontendEventHandler
         $loginForm = $this->createForm($framework, $request, $response);
         
         // Process the submitted form data
-        $loginForm->processFormData($request);
+        $loginForm->processFormData($request, $response);
         
         // Validate the form data and authorize the user
         $result = false;

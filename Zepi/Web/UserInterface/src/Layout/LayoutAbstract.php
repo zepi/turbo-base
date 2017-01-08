@@ -37,6 +37,7 @@ namespace Zepi\Web\UserInterface\Layout;
 
 use \Zepi\Turbo\Framework;
 use \Zepi\Turbo\Request\WebRequest;
+use \Zepi\Turbo\Response\Response;
 use \Zepi\Core\Language\Manager\TranslationManager;
 use \Zepi\Web\UserInterface\Form\Form;
 
@@ -111,12 +112,13 @@ abstract class LayoutAbstract
      * Searches the submitted Form object in the layout and validates the data
      * 
      * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Response\Response $response
      * @param callable $callback
      * @return string
      */
-    public function validateFormData(WebRequest $request, callable $callback = null)
+    public function validateFormData(WebRequest $request, Response $response, callable $callback = null)
     {
-        $form = $this->searchSubmittedForm($request);
+        $form = $this->searchSubmittedForm($request, $response);
         
         if ($form === null) {
             return Form::NOT_SUBMITTED;
@@ -146,15 +148,16 @@ abstract class LayoutAbstract
      * Searches the submitted form object in the layout.
      * 
      * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Response\Response $response
      * @return null|\Zepi\Web\UserInterface\Form\Form
      */
-    protected function searchSubmittedForm(WebRequest $request)
+    protected function searchSubmittedForm(WebRequest $request, Response $response)
     {
         $this->verifyLayout();
         
         $form = null;
         foreach ($this->layout->getChildrenByType('\\Zepi\\Web\\UserInterface\\Form\\Form', true) as $availableForm) {
-            $availableForm->processFormData($request);
+            $availableForm->processFormData($request, $response);
         
             if ($availableForm->isSubmitted()) {
                 $form = $availableForm;

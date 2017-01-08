@@ -125,7 +125,7 @@ class EditGroup extends FrontendEventHandler
         $this->setTitle($title, $additionalTitle);
         
         // Process the data
-        $result = $this->processFormData($request, $group);
+        $result = $this->processFormData($request, $response, $group);
         if ($result === true) {
             // Display the successful saved message
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\EditGroupFinished', array(
@@ -146,12 +146,13 @@ class EditGroup extends FrontendEventHandler
      * group into the database.
      *
      * @param \Zepi\Turbo\Request\WebRequest $request
+     * @param \Zepi\Turbo\Response\Response $response
      * @param \Zepi\Web\AccessControl\Entity\Group $group
      * @return boolean|string
      */
-    protected function processFormData(WebRequest $request, EntityGroup $group)
+    protected function processFormData(WebRequest $request, Response $response, EntityGroup $group)
     {
-        $result = $this->layout->validateFormData($request, function ($formValues) use ($group) {
+        $result = $this->layout->validateFormData($request, $response, function ($formValues) use ($group) {
             return $this->validateData(
                 $group,
                 $formValues['required-data.groupname']
