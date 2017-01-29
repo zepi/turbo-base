@@ -39,7 +39,8 @@ use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Web\AccessControl\Entity\Group;
 use \Zepi\DataSource\Core\Entity\DataRequest;
-use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
+use \Zepi\DataSource\Core\Entity\EntityInterface;
 
 /**
  * Manages the access entity type "Group"
@@ -47,7 +48,7 @@ use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class GroupManager implements DataSourceManagerInterface
+class GroupManager implements DataAccessInterface
 {
     /**
      * @var string
@@ -75,14 +76,19 @@ class GroupManager implements DataSourceManagerInterface
     /**
      * Adds the given group to the access entities
      * 
-     * @param \Zepi\Web\AccessControl\Entity\Group $group
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $group
      * @return false|\Zepi\Web\AccessControl\Entity\Group
      * 
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
      * @throws \Zepi\Web\AccessControl\Exception Cannot add the group. The name of the group is already in use.
      * @throws \Zepi\Web\AccessControl\Exception Cannot add the group. Internal software error.
      */
-    public function addGroup(Group $group)
+    public function add(EntityInterface $group)
     {
+        if (!is_a($group, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($group) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the name of the group already is used we cannot add a new group
         if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $group->getName())) {
             throw new Exception('Cannot add the group. The name of the group is already in use.');
@@ -101,13 +107,18 @@ class GroupManager implements DataSourceManagerInterface
     /**
      * Updates the given Group
      * 
-     * @param \Zepi\Web\AccessControl\Entity\Group $group
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $group
      * @return boolean
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot update the group. The group does not exist.
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot update the group. The group does not exist.
      */
-    public function updateGroup(Group $group)
+    public function update(EntityInterface $group)
     {
+        if (!is_a($group, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($group) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot update the group
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. The group does not exist.');
@@ -120,13 +131,18 @@ class GroupManager implements DataSourceManagerInterface
     /**
      * Deletes the group with the given uuid
      *
-     * @param \Zepi\Web\AccessControl\Entity\Group $group
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $group
      * @return boolean
      *
-     * @throws \Zepi\Core\AccessControl\Exception Cannot delete the group. Group does not exist.
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot delete the group. Group does not exist.
      */
-    public function deleteGroup($group)
+    public function delete(EntityInterface $group)
     {
+        if (!is_a($group, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($group) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot delete the group
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $group->getUuid())) {
             throw new Exception('Cannot update the group. Group does not exist.');

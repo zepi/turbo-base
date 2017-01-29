@@ -185,9 +185,9 @@ class EditGroup extends FrontendEventHandler
     
         // Save the group
         if ($group->isNew()) {
-            $group = $this->groupManager->addGroup($group);
+            $group = $this->groupManager->add($group);
         } else {
-            $this->groupManager->updateGroup($group);
+            $this->groupManager->update($group);
         }
     
         if ($group === false) {

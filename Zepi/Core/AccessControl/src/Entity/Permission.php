@@ -36,6 +36,7 @@
 
 namespace Zepi\Core\AccessControl\Entity;
 
+use \Zepi\DataSource\Core\Entity\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,7 +49,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Entity 
  * @Table(name="permissions")
  */
-class Permission
+class Permission implements EntityInterface
 {
     /**
      * @ID

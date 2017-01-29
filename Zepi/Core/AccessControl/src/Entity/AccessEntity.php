@@ -37,6 +37,7 @@
 namespace Zepi\Core\AccessControl\Entity;
 
 use \Zepi\Core\AccessControl\Entity\Permission;
+use \Zepi\DataSource\Core\Entity\EntityInterface;
 
 /**
  * Representats one row in the access_entities table as
@@ -47,7 +48,7 @@ use \Zepi\Core\AccessControl\Entity\Permission;
  * 
  * @MappedSuperclass
  */
-class AccessEntity
+class AccessEntity implements EntityInterface
 {
     /**
      * @ID

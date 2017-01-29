@@ -205,9 +205,9 @@ class EditUser extends FrontendEventHandler
 
         // Save the user
         if ($user->isNew()) {
-            $user = $this->userManager->addUser($user);
+            $user = $this->userManager->add($user);
         } else {
-            $this->userManager->updateUser($user);
+            $this->userManager->update($user);
         }
         
         if ($user === false) {

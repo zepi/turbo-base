@@ -36,7 +36,7 @@
 namespace Zepi\Web\UserInterface\Form\Field;
 
 use \Zepi\Turbo\Request\RequestAbstract;
-use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
 use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\DataSource\Core\Entity\Filter;
 use \Zepi\Web\UserInterface\Form\Error;
@@ -51,7 +51,7 @@ use \Zepi\Turbo\Framework;
 class EntitySelect extends FieldAbstract
 {
     /**
-     * @var \Zepi\DataSource\Core\Manager\DataSourceManagerInterface
+     * @var \Zepi\DataSource\Core\DataAccess\DataAccessInterface
      */
     protected $dataSourceManager = null;
     
@@ -70,7 +70,7 @@ class EntitySelect extends FieldAbstract
      *
      * @access public
      * @param string $label
-     * @param \Zepi\DataSource\Core\Manager\DataSourceManagerInterface $dataSourceManager
+     * @param \Zepi\DataSource\Core\DataAccess\DataAccessInterface $dataSourceManager
      * @param string $fieldName
      * @param integer $maxNumberOfSelection
      * @param boolean $isMandatory
@@ -83,7 +83,7 @@ class EntitySelect extends FieldAbstract
     public function __construct(
         $key,
         $label,
-        DataSourceManagerInterface $dataSourceManager,
+        DataAccessInterface $dataSourceManager,
         $fieldName,
         $maxNumberOfSelection = 1,
         $isMandatory = false,

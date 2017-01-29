@@ -35,7 +35,7 @@
 
 namespace Zepi\Web\UserInterface\Form\Field;
 
-use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
 use \Zepi\Turbo\Request\WebRequest;
 use \Zepi\Turbo\Response\Response;
 use \Zepi\Web\UserInterface\Form\Form;
@@ -60,7 +60,7 @@ class ExtendedEntitySelect extends EntitySelect
      *
      * @access public
      * @param string $label
-     * @param \Zepi\DataSource\Core\Manager\DataSourceManagerInterface $dataSourceManager
+     * @param \Zepi\DataSource\Core\DataAccess\DataAccessInterface $dataSourceManager
      * @param string $fieldName
      * @param integer $maxNumberOfSelection
      * @param array $extendedOptions
@@ -74,7 +74,7 @@ class ExtendedEntitySelect extends EntitySelect
     public function __construct(
         $key,
         $label,
-        DataSourceManagerInterface $dataSourceManager,
+        DataAccessInterface $dataSourceManager,
         $fieldName,
         $maxNumberOfSelection = 1,
         $extendedOptions = array(),

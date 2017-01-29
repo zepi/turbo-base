@@ -39,7 +39,8 @@ use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Web\AccessControl\Entity\User;
 use \Zepi\DataSource\Core\Entity\DataRequest;
-use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
+use \Zepi\DataSource\Core\Entity\EntityInterface;
 
 /**
  * Manages the access entity type "user"
@@ -47,7 +48,7 @@ use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2015 zepi
  */
-class UserManager implements DataSourceManagerInterface
+class UserManager implements DataAccessInterface
 {
     /**
      * @var string
@@ -75,14 +76,19 @@ class UserManager implements DataSourceManagerInterface
     /**
      * Adds the given user to the access entities
      * 
-     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $user
      * @return false|\Zepi\Web\AccessControl\Entity\User
      * 
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
      * @throws \Zepi\Web\AccessControl\Exception Cannot add the user. Username is already in use.
      * @throws \Zepi\Web\AccessControl\Exception Cannot add the user. Internal software error.
      */
-    public function addUser(User $user)
+    public function add(EntityInterface $user)
     {
+        if (!is_a($user, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($user) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the username already is used we cannot add a new user
         if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $user->getName())) {
             throw new Exception('Cannot add the user. Username is already in use.');
@@ -101,13 +107,18 @@ class UserManager implements DataSourceManagerInterface
     /**
      * Updates the given user
      * 
-     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $user
      * @return boolean
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot update the user. User does not exist.
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot update the user. User does not exist.
      */
-    public function updateUser(User $user)
+    public function update(EntityInterface $user)
     {
+        if (!is_a($user, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($user) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot update the user
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
             throw new Exception('Cannot update the user. User does not exist.');
@@ -120,13 +131,18 @@ class UserManager implements DataSourceManagerInterface
     /**
      * Deletes the user with the given uuid
      * 
-     * @param \Zepi\Web\AccessControl\Entity\User $user
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $user
      * @return boolean
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot delete the user. User does not exist.
+     * @throws \Zepi\Web\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Web\AccessControl\Exception Cannot delete the user. User does not exist.
      */
-    public function deleteUser($user)
+    public function delete(EntityInterface $user)
     {
+        if (!is_a($user, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($user) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot delete the user
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $user->getUuid())) {
             throw new Exception('Cannot delete the user. User does not exist.');

@@ -115,7 +115,7 @@ class DeleteUser extends FrontendEventHandler
         
         // If $result isn't true, display the edit user form
         if ($request->getRouteParam('confirmation') === 'confirmed') {
-            $this->userManager->deleteUser($user);
+            $this->userManager->delete($user);
             
             $response->setOutput($this->render('\\Zepi\\Web\\AccessControl\\Templates\\Administration\\DeleteUserFinished', array(
                 'user' => $user

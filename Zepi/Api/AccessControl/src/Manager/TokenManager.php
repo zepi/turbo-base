@@ -38,8 +38,9 @@ namespace Zepi\Api\AccessControl\Manager;
 use \Zepi\Core\AccessControl\Exception;
 use \Zepi\Core\AccessControl\Manager\AccessControlManager;
 use \Zepi\Api\AccessControl\Entity\Token;
+use \Zepi\DataSource\Core\Entity\EntityInterface;
 use \Zepi\DataSource\Core\Entity\DataRequest;
-use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
+use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
 
 /**
  * Manages the access entity type "Token"
@@ -47,7 +48,7 @@ use \Zepi\DataSource\Core\Manager\DataSourceManagerInterface;
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
  * @copyright Copyright (c) 2016 zepi
  */
-class TokenManager implements DataSourceManagerInterface
+class TokenManager implements DataAccessInterface
 {
     /**
      * @var string
@@ -75,14 +76,19 @@ class TokenManager implements DataSourceManagerInterface
     /**
      * Adds the given token to the access entities
      * 
-     * @param \Zepi\Api\AccessControl\Entity\Token $token
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $token
      * @return false|\Zepi\Api\AccessControl\Entity\Token
      * 
+     * @throws \Zepi\Api\AccessControl\Exception The given entity is not compatible with this data source.
      * @throws \Zepi\Api\AccessControl\Exception Cannot add the token. Name is already in use.
      * @throws \Zepi\Api\AccessControl\Exception Cannot add the token. Internal softeware error.
      */
-    public function addToken(Token $token)
+    public function add(EntityInterface $token)
     {
+        if (!is_a($token, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($token) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the name already is used we cannot add a new token
         if ($this->accessControlManager->hasAccessEntityForName(self::ACCESS_ENTITY_TYPE, $token->getName())) {
             throw new Exception('Cannot add the token. Name is already in use.');
@@ -101,13 +107,18 @@ class TokenManager implements DataSourceManagerInterface
     /**
      * Updates the given token
      * 
-     * @param \Zepi\Web\AccessControl\Entity\Token $token
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $token
      * @return boolean
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot update the token. Token does not exist.
+     * @throws \Zepi\Api\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Api\AccessControl\Exception Cannot update the token. Token does not exist.
      */
-    public function updateToken(Token $token)
+    public function update(EntityInterface $token)
     {
+        if (!is_a($token, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($token) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot update the token
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $token->getUuid())) {
             throw new Exception('Cannot update the token. Token does not exist.');
@@ -120,13 +131,18 @@ class TokenManager implements DataSourceManagerInterface
     /**
      * Deletes the token with the given uuid
      * 
-     * @param \Zepi\Web\AccessControl\Entity\Token $token
+     * @param \Zepi\DataSource\Core\Entity\EntityInterface $token
      * @return boolean
      * 
-     * @throws \Zepi\Core\AccessControl\Exception Cannot delete the token. Token does not exist.
+     * @throws \Zepi\Api\AccessControl\Exception The given entity is not compatible with this data source.
+     * @throws \Zepi\Api\AccessControl\Exception Cannot delete the token. Token does not exist.
      */
-    public function deleteToken(Token $token)
+    public function delete(EntityInterface $token)
     {
+        if (!is_a($token, self::ACCESS_ENTITY_TYPE)) {
+            throw new Exception('The given entity (' . get_class($token) . ') is not compatible with this data source (' . self::class . '.');
+        }
+        
         // If the uuid does not exists we cannot delete the token
         if (!$this->accessControlManager->hasAccessEntityForUuid(self::ACCESS_ENTITY_TYPE, $token->getUuid())) {
             throw new Exception('Cannot update the token. Token does not exist.');

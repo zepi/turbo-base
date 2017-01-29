@@ -2,7 +2,7 @@
 /*
  * The MIT License (MIT)
 *
-* Copyright (c) 2016 zepi
+* Copyright (c) 2017 zepi
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -25,57 +25,23 @@
 */
 
 /**
- * Interface to define the DataSource Manager methods
+ * Tags an entity for any data access methods as entity.
 *
 * @package Zepi\DataSource\Core
-* @subpackage Manager
+* @subpackage Entity
 * @author Matthias Zobrist <matthias.zobrist@zepi.net>
-* @copyright Copyright (c) 2016 zepi
+* @copyright Copyright (c) 2017 zepi
 */
 
-namespace Zepi\DataSource\Core\Manager;
-
-use \Zepi\DataSource\Core\Entity\DataRequest;
+namespace Zepi\DataSource\Core\Entity;
 
 /**
- * Interface to define the DataSource Manager methods
+ * Tags an entity for any data access methods as entity.
  *
  * @author Matthias Zobrist <matthias.zobrist@zepi.net>
- * @copyright Copyright (c) 2016 zepi
+ * @copyright Copyright (c) 2017 zepi
  */
-interface DataSourceManagerInterface
+interface EntityInterface
 {
-    /**
-     * Returns an array with all entities for the given data request.
-     * 
-     * @param \Zepi\DataSource\Core\DataRequest $dataRequest
-     * @return false|array
-     */
-    public function find(DataRequest $dataRequest);
     
-    /**
-     * Returns the number of entities which are available for the given
-     * data request.
-     *
-     * @param \Zepi\DataSource\Core\DataRequest $dataRequest
-     * @return integer
-     */
-    public function count(DataRequest $dataRequest);
-    
-    /**
-     * Returns true if the given entity id exists
-     * 
-     * @param integer $entityId
-     * @return boolean
-     */
-    public function has($entityId);
-    
-    /**
-     * Returns the entity for the given id. Returns false if
-     * there is no entity for the given id.
-     * 
-     * @param integer $entityId
-     * @return false|mixed
-     */
-    public function get($entityId);
 }
