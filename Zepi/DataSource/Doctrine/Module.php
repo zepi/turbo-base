@@ -121,5 +121,8 @@ class Module extends ModuleAbstract
         $configurationManager->addSettingIfNotSet('doctrine.databaseUser', '');
         $configurationManager->addSettingIfNotSet('doctrine.databasePassword', '');
         $configurationManager->saveConfigurationFile();
+        
+        $runtimeManager = $this->framework->getRuntimeManager();
+        $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\DataSource\\Doctrine\\EventHandler\\ExecuteInstallation', 1);
     }
 }

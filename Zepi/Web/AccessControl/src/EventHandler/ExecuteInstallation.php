@@ -117,7 +117,7 @@ class ExecuteInstallation implements CliEventHandlerInterface
         $user->setNewPassword($password);
         
         // Save the super-admin user
-        $user = $this->userManager->addUser($user);
+        $user = $this->userManager->add($user);
         
         // Add the super-admin access level
         $this->accessControlManager->grantPermission(
