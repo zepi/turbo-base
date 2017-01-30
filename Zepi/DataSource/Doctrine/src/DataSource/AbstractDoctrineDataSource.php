@@ -77,16 +77,16 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
             $dataRequest->setSelectedFields(array('*'));
             
             $queryBuilder = $this->entityManager->getQueryBuilder();
-            $this->entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, $this->getEntityClass(), 'ir');
+            $this->entityManager->buildDataRequestQuery($dataRequest, $queryBuilder, $this->getEntityClass(), 'e');
             
-            $ipRanges = $queryBuilder->getQuery()->getResult();
-            if ($ipRanges == null) {
+            $entities = $queryBuilder->getQuery()->getResult();
+            if ($entities == null) {
                 return array();
             }
             
-            return $ipRanges;
+            return $entities;
         } catch (\Exception $e) {
-            throw new Exception('Cannot load the IP ranges for the given data request from the database.', 0, $e);
+            throw new Exception('Cannot load the entities for the given data request.', 0, $e);
         }
     }
 
@@ -109,10 +109,10 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
             $request->setNumberOfEntries(0);
             
             $queryBuilder = $this->entityManager->getQueryBuilder();
-            $this->entityManager->buildDataRequestQuery($request, $queryBuilder, $this->getEntityClass(), 'ir');
+            $this->entityManager->buildDataRequestQuery($request, $queryBuilder, $this->getEntityClass(), 'e');
             
             // Count
-            $queryBuilder->select($queryBuilder->expr()->count('ir.id'));
+            $queryBuilder->select($queryBuilder->expr()->count('e.id'));
 
             $data = $queryBuilder->getQuery();
             if ($data === false) {
@@ -121,7 +121,7 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
 
             return $data->getSingleScalarResult();
         } catch (\Exception $e) {
-            throw new Exception('Cannot count the IP ranges for the given data request.', 0, $e);
+            throw new Exception('Cannot count the entities for the given data request.', 0, $e);
         }
     }
     
@@ -199,7 +199,7 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
             $em->persist($entity);
             $em->flush();
             
-            return $ipRange->getId();
+            return $entity->getId();
         } catch (\Exception $e) {
             throw new Exception('Cannot add the entity "' . $entity . '".', 0, $e);
         }
