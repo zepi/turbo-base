@@ -12,6 +12,7 @@
 namespace Zepi\DataSource\Doctrine\DataSource;
 
 use \Zepi\DataSource\Doctrine\Exception;
+use \Zepi\DataSource\Doctrine\Manager\EntityManager;
 use \Zepi\DataSource\Core\Entity\DataRequest;
 use \Zepi\DataSource\Core\Entity\EntityInterface;
 use \Zepi\DataSource\Core\DataAccess\DataAccessInterface;
