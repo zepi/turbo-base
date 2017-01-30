@@ -56,6 +56,13 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
     }
     
     /**
+     * Returns the entity class as a string
+     * 
+     * @return string
+     */
+    abstract public function getEntityClass();
+    
+    /**
      * Returns an array with all found entities for the given DataRequest
      * object. 
      *
