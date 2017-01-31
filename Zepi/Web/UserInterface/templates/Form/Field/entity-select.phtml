@@ -1,6 +1,6 @@
 <?php $field = $additionalData['field']; ?>
 <select 
-        <?php if ($field->getMaxNumberOfSelection() > 0): ?>
+        <?php if ($field->getMaxNumberOfSelection() > 1): ?>
             name="<?php echo $field->getHtmlName(); ?>[]"
         <?php else: ?>
             name="<?php echo $field->getHtmlName(); ?>"
