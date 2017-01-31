@@ -116,7 +116,7 @@ class Select extends FieldAbstract
                 $this->value[] = $id;
             }
         } else {
-            $this->value = $id;
+            $this->value = $value;
         }
     }
     
