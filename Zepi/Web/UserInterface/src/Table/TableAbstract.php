@@ -73,6 +73,11 @@ abstract class TableAbstract
     protected $saveDataRequest;
     
     /**
+     * @var array
+     */
+    protected $options = array();
+    
+    /**
      * Constructs the object
      * 
      * @access public
@@ -185,5 +190,52 @@ abstract class TableAbstract
     public function prepareFilterValue($key, $value)
     {
         return $value;
+    }
+    
+    /**
+     * Returns null if the key is not set or the 
+     * value of the option for the given key
+     * 
+     * @param string $key
+     * @return null|mixed
+     */
+    public function getOption($key)
+    {
+        if (!isset($this->options[$key])) {
+            return null;
+        }
+        
+        return $this->options[$key];
+    }
+    
+    /**
+     * Returns the whole options array
+     * 
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
+    /**
+     * Sets a single option
+     * 
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+    }
+    
+    /**
+     * Overrides all options
+     * 
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
     }
 }

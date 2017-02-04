@@ -158,7 +158,7 @@ class ProfileChangePassword extends FrontendEventHandler
         $user->setNewPassword($newPassword);
         
         // Get the UserManager to update the user
-        $result = $this->userManager->updateUser($user);
+        $result = $this->userManager->update($user);
         
         return $result;
     }

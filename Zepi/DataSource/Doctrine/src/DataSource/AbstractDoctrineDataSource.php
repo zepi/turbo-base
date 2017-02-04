@@ -28,7 +28,7 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
 {
     /**
      * @access protected
-     * @var \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager
+     * @var \Zepi\DataSource\Doctrine\Manager\EntityManager
      */
     protected $entityManager;
     
@@ -36,7 +36,7 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
      * Constructs the object
      *
      * @access public
-     * @param \Zepi\DataSourceDriver\Doctrine\Manager\EntityManager $entityManager
+     * @param \Zepi\DataSource\Doctrine\Manager\EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -183,7 +183,7 @@ abstract class AbstractDoctrineDataSource implements DataAccessInterface
      * or false, if the entity can not inserted.
      * 
      * @param \Zepi\DataSource\Core\Entity\EntityInterface $entity
-     * @return string|false
+     * @return \Zepi\DataSource\Core\Entity\EntityInterface|false
      * 
      * @throws \Zepi\DataSource\Doctrine\Exception The given entity is not compatible with this data source.
      * @throws \Zepi\DataSource\Doctrine\Exception Cannot add the entity "{entity}".

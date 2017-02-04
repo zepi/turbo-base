@@ -83,6 +83,10 @@
                 sSortDescending: '<?php echo $this->translate(': activate to sort column descending', '\\Zepi\\Web\\UserInterface'); ?>'
             }
         };
+
+        <?php if ($preparedTable->getOption('order') !== null): ?>
+            options.order = <?php echo json_encode($preparedTable->getOption('order')); ?>;
+        <?php endif; ?>
         
         <?php if ($preparedTable->hasHead() && $preparedTable->getHead()->hasRows()): ?>
             options.columns = <?php echo json_encode($preparedTable->getHead()->getColumnOptions()); ?>

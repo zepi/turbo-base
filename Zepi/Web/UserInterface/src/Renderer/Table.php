@@ -99,6 +99,7 @@ class Table
         }
 
         $preparedTable = new PreparedTable($table, $table->getColumns());
+        $preparedTable->setOptions($table->getOptions());
         
         // Add the table head
         $preparedTable->setHead($this->renderHead($table, $dataRequest));

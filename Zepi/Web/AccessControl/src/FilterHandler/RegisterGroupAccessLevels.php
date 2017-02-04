@@ -101,7 +101,13 @@ class RegisterGroupAccessLevels implements FilterHandlerInterface
         $accessLevels = $value;
         $dataRequest = new DataRequest(1, 0, 'name', 'ASC');
         
-        foreach ($this->groupManager->find($dataRequest) as $group) {
+        $groups = $this->groupManager->find($dataRequest);
+        
+        if ($groups === false) {
+            return $accessLevels;
+        }
+        
+        foreach ($groups as $group) {
             $accessLevels[] = new GroupAccessLevel(
                 '\\Group\\' . $group->getUuid(),
                 $this->translationManager->translate('Group', '\\Zepi\\Web\\AccessControl') . ' ' . $group->getName(),

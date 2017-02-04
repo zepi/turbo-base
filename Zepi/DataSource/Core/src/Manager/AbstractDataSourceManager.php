@@ -112,7 +112,7 @@ abstract class AbstractDataSourceManager implements DataAccessInterface
      * or false, if the entity can not inserted.
      *
      * @param \Zepi\DataSource\Core\Entity\EntityInterface $entity
-     * @return string|false
+     * @return \Zepi\DataSource\Core\Entity\EntityInterface|false
      */
     public function add(EntityInterface $entity)
     {

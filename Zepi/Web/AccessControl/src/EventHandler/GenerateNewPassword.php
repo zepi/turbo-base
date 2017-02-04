@@ -128,7 +128,7 @@ class GenerateNewPassword extends FrontendEventHandler
         $user->setMetaData('passwordRequestTokenLifetime', 0);
         
         // Update the user
-        $this->userManager->updateUser($user);
+        $this->userManager->update($user);
         
         // Send the request mail
         $this->mailHelper->sendMail(

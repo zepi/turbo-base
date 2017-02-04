@@ -144,7 +144,7 @@ class RequestNewPassword extends FrontendEventHandler
         $user->setMetaData('passwordRequestToken', $token);
         $user->setMetaData('passwordRequestTokenLifetime', time() + 3600);
         
-        $this->userManager->updateUser($user);
+        $this->userManager->update($user);
         
         // Send the request mail
         $requestLink = $request->getFullRoute('/generate-new-password/' . $user->getUuid() . '/' . $token . '/');
