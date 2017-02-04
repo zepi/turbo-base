@@ -195,15 +195,25 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td .dtr-data .btn { margin-r
  * Text colors
  */
 .success,
-.success > a { color: #009a07; }
+.success > a
+.text-success,
+.text-success > a { color: #009a07; }
 .error,
-.error > a { color: #be0000; }
+.error > a,
+.text-error,
+.text-error > a { color: #be0000; }
 .warning,
-.warning > a { color: #b47b00; }
+.warning > a,
+.text-warning,
+.text-warning > a { color: #b47b00; }
 .question,
-.question > a { color: #6b00be; }
+.question > a
+.text-question
+.text-question > a { color: #6b00be; }
 .info,
-.info > a { color: #007ab3; }
+.info > a,
+.text-info,
+.text-info > a { color: #007ab3; }
 
 /**
  * Navigation
