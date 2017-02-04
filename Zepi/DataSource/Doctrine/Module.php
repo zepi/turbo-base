@@ -36,6 +36,7 @@ namespace Zepi\DataSource\Doctrine;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
 use \Doctrine\Common\Proxy\AbstractProxyFactory;
+use \Zepi\Turbo\Request\WebRequest;
 
 /**
  * This module delivers the Doctrine data source.
@@ -59,6 +60,26 @@ class Module extends ModuleAbstract
     public function initialize()
     {
         $this->framework->getDataSourceManager()->addDefinition('*', '\\Zepi\\DataSource\\Doctrine');
+    }
+    
+    protected function prepareCacheDirectory($environment)
+    {
+        $path = $this->framework->getRootDirectory() . '/cache/doctrine/';
+        $request = $this->framework->getRequest();
+        
+        if ($environment === 'DEV') {
+            if ($request instanceof WebRequest) {
+                $path .= 'web/';
+            } else {
+                $path .= 'cli/';
+            }
+        }
+        
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+        
+        return $path;
     }
     
     
@@ -89,23 +110,20 @@ class Module extends ModuleAbstract
                         $paths[] = $module->getDirectory() . '/src/';
                     }
                     
-                    $environment = $configurationManager->getSetting('environment');
+                    $environment = strtoupper($configurationManager->getSetting('environment'));
                     $isDevMode = false;
-                    if (strtoupper($environment) == 'DEV') {
+                    if ($environment == 'DEV') {
                         $isDevMode = true;
                     }
                       
                     $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
                     
-                    if (strtoupper($environment) == 'DEV') {
-                        $config->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_EVAL);
+                    $path = $this->prepareCacheDirectory($environment);
+                    $config->setProxyDir($path);
+                    
+                    if ($environment == 'DEV') {
+                        $config->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_ALWAYS);
                     } else {
-                        $path = $this->framework->getRootDirectory() . '/cache/doctrine/';
-                        if (!file_exists($path)) {
-                            mkdir($path, 0755, true);
-                        }
-                        
-                        $config->setProxyDir($path);
                         $config->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
                     }
                     
@@ -141,6 +159,6 @@ class Module extends ModuleAbstract
         $configurationManager->saveConfigurationFile();
         
         $runtimeManager = $this->framework->getRuntimeManager();
-        $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\DataSource\\Doctrine\\EventHandler\\ExecuteInstallation', 1);
+        $runtimeManager->addEventHandler('\\Zepi\\Installation\\ExecuteInstallation', '\\Zepi\\DataSource\\Doctrine\\EventHandler\\ExecuteInstallation', 51);
     }
 }
