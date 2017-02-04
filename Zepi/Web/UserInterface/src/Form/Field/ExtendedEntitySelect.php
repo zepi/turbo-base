@@ -127,6 +127,11 @@ class ExtendedEntitySelect extends EntitySelect
         $query = $request->getParam('form-extended-entity-select-query');
         $entities = $this->getAvailableValues($query);
         
+        if ($entities === false) {
+            $response->setOutput(json_encode(array('error' => true)), true);
+            return;
+        }
+        
         $data = array();
         foreach ($entities as $entity) {
             $data[] = array('id' => $entity->getId(), 'name' => (string) $entity);
