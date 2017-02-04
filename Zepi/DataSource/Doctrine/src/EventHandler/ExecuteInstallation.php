@@ -58,6 +58,13 @@ class ExecuteInstallation implements CliEventHandlerInterface
      */
     public function execute(Framework $framework, CliRequest $request, Response $response)
     {
+        $configurationManager = $framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $environment = $configurationManager->getSetting('environment');
+        
+        if (strtoupper($environment) != 'DEV') {
+            passthru($framework->getRootDirectory() . '/vendor/bin/doctrine orm:generate-proxies');
+        }
+        
         passthru($framework->getRootDirectory() . '/vendor/bin/doctrine orm:schema-tool:update --force');
     }
 }

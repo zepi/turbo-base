@@ -35,6 +35,7 @@
 namespace Zepi\DataSource\Doctrine;
 
 use \Zepi\Turbo\Module\ModuleAbstract;
+use \Doctrine\Common\Proxy\AbstractProxyFactory;
 
 /**
  * This module delivers the Doctrine data source.
@@ -88,9 +89,26 @@ class Module extends ModuleAbstract
                         $paths[] = $module->getDirectory() . '/src/';
                     }
                     
-                    $isDevMode = true;
-                    
+                    $environment = $configurationManager->getSetting('environment');
+                    $isDevMode = false;
+                    if (strtoupper($environment) == 'DEV') {
+                        $isDevMode = true;
+                    }
+                      
                     $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+                    
+                    if (strtoupper($environment) == 'DEV') {
+                        $config->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_EVAL);
+                    } else {
+                        $path = $this->framework->getRootDirectory() . '/cache/doctrine/';
+                        if (!file_exists($path)) {
+                            mkdir($path, 0755, true);
+                        }
+                        
+                        $config->setProxyDir($path);
+                        $config->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
+                    }
+                    
                     $doctrineEntityManager = \Doctrine\ORM\EntityManager::create($params, $config);
                     
                     $this->entityManager = new \Zepi\DataSource\Doctrine\Manager\EntityManager($doctrineEntityManager);

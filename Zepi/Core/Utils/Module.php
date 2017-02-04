@@ -89,6 +89,9 @@ class Module extends ModuleAbstract
      */
     public function activate($versionNumber, $oldVersionNumber = '')
     {
-        
+        // Configuration values
+        $configurationManager = $this->framework->getInstance('\\Zepi\\Core\\Utils\\Manager\\ConfigurationManager');
+        $configurationManager->addSettingIfNotSet('environment', 'DEV');
+        $configurationManager->saveConfigurationFile();
     }
 }
