@@ -36,7 +36,7 @@ h2 { font-size: 22px; line-height: 28px; padding: 8px 0; margin: 0 0 20px 0; bor
 /**
  * Header navigation
  */
-nav.header-navigation { background: #EAEAEA; border-bottom: 1px solid #AAAAAA; margin: 0 0 20px 0; }
+nav.header-navigation { background: #EAEAEA; border-bottom: 1px solid #AAAAAA; margin: 0 0 30px 0; }
 nav.header-navigation div.header-navigation-left { float: left; border-right: 1px solid #ffffff; height: 39px; }
 nav.header-navigation div.header-navigation-right { float: right; border-left: 1px solid #AAAAAA; height: 39px; }
 nav.header-navigation ul { list-style-type: none; padding: 0; margin: 0; display: inline-block; }
@@ -137,7 +137,7 @@ nav .responsive-submenu-button { display: none; }
 /**
  * Breadcrumb
  */
-nav ol.breadcrumb { margin-bottom: 50px; padding: 0 15px; overflow-x: auto; white-space: nowrap; }
+nav ol.breadcrumb { margin-bottom: 20px; padding: 0 15px; overflow-x: auto; white-space: nowrap; }
 nav ol.breadcrumb li { padding: 0; line-height: 44px; }
 nav ol.breadcrumb li a { display: inline-block; }
 nav ol.breadcrumb li a.icon-link { padding: 0; }
@@ -150,5 +150,5 @@ nav ol.breadcrumb .mdi { margin: -2px 0 0; font-size: 24px; }
 /**
  * Container
  */
-.container-fluid { max-width: 90%; } 
+.container-fluid { max-width: 80%; } 
 
