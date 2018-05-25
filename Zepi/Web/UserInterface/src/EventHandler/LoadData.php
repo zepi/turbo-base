@@ -50,6 +50,11 @@ class LoadData extends FrontendEventHandler
         $class = $request->getSessionData('dt-class-' . $token);
         $time = $request->getSessionData('dt-time-' . $token);
         
+        $options = json_decode($request->getSessionData('dt-options-' . $token), true);
+        if (!is_array($options)) {
+            $options = array();
+        }
+        
         // Session time expired
         if ($time > time() + 600) {
             $response->redirectTo('/');
@@ -57,6 +62,7 @@ class LoadData extends FrontendEventHandler
         }
         
         $table = new $class($framework, false);
+        $table->setOptions($options);
         $generator = $this->getTableRenderer();
         
         $preparedTable = $generator->prepareTable($request, $table, '');

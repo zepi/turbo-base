@@ -119,6 +119,7 @@ class Table
         $preparedTable->setToken($token);
         $request->setSessionData('dt-class-' . $token, get_class($table));
         $request->setSessionData('dt-time-' . $token, time());
+        $request->setSessionData('dt-options-' . $token, json_encode($table->getOptions()));
         
         return $preparedTable;
     }
